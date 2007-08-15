@@ -1,6 +1,27 @@
+diff -r 901f2e7621ca debian/README
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/debian/README	Thu Aug 16 00:44:55 2007 +0200
+@@ -0,0 +1,17 @@
++Hobbit for Debian
++=================
++
++This Debian package follows pretty closely the original debianization shipped
++by upstream. The main differences are
++
++- 'hobbit' depends on 'hobbit-client' rather than conflicting with it; it uses
++  the client package for monitoring the local host. (The client package's init
++  script/daemon is disabled when the server is installed.)
++
++- Access to the monitoring website is restricted to localhost by default.
++  Edit /etc/apache2/hobbit to change this.
++
++- Debconf manages /etc/default/hobbit-client directly without the use of a
++  temporary file in /var/run. (There is no HOBBITSERVERS variable.)
++
++ -- Christoph Berg <myon@debian.org>  Thu, 16 Aug 2007 00:07:40 +0200
 diff -r 901f2e7621ca debian/changelog
 --- a/debian/changelog	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/changelog	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/changelog	Thu Aug 16 00:44:55 2007 +0200
 @@ -1,3 +1,9 @@ hobbit (4.2.0-1) unstable; urgency=low
 +hobbit (4.2.0-2) unstable; urgency=low
 +
@@ -13,7 +34,7 @@ diff -r 901f2e7621ca debian/changelog
    * Hobbit version 4.2: New upstream release.
 diff -r 901f2e7621ca debian/control
 --- a/debian/control	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/control	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/control	Thu Aug 16 00:44:55 2007 +0200
 @@ -1,13 +1,14 @@ Source: hobbit
  Source: hobbit
  Section: net
@@ -44,7 +65,7 @@ diff -r 901f2e7621ca debian/control
   Client data collection package for Hobbit. This gathers
 diff -r 901f2e7621ca debian/copyright
 --- a/debian/copyright	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/copyright	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/copyright	Thu Aug 16 00:44:55 2007 +0200
 @@ -1,13 +1,132 @@ This package was debianized by Henrik St
  This package was debianized by Henrik Stoerner <henrik@hswn.dk> on
  Sun,  6 Mar 2005 21:58:45 +0100.
@@ -90,7 +111,7 @@ diff -r 901f2e7621ca debian/copyright
 +  this software for any purpose.  It is provided "as is"
 +  without express or implied warranty.
 +
-+client/hobbitclient-sco_sv.sh: (not present in the binary packages)
++client/hobbitclient-sco_sv.sh:
 +  SCO_SV client for Hobbit
 +  Copyright (C) 2005-2006 Henrik Storner
 +  Copyright (C) 2006 Charles Goyard
@@ -185,7 +206,7 @@ diff -r 901f2e7621ca debian/copyright
 +  [including the GNU Public Licence.]
 diff -r 901f2e7621ca debian/hobbit-client.config
 --- a/debian/hobbit-client.config	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.config	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.config	Thu Aug 16 00:44:55 2007 +0200
 @@ -10,17 +10,26 @@ if [ -e $CONFIGFILE ]; then
     . $CONFIGFILE || true
  fi
@@ -219,7 +240,7 @@ diff -r 901f2e7621ca debian/hobbit-client.config
  
 diff -r 901f2e7621ca debian/hobbit-client.default
 --- a/debian/hobbit-client.default	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.default	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.default	Thu Aug 16 00:44:55 2007 +0200
 @@ -10,7 +10,7 @@
  # or (multiple servers)
  #   HOBBITSERVERS="10.0.0.1 192.168.1.1" 
@@ -229,9 +250,16 @@ diff -r 901f2e7621ca debian/hobbit-client.default
  
  # Hostname used by the client for its reports.
  # Must match the name for this host in the Hobbit servers'
+diff -r 901f2e7621ca debian/hobbit-client.dirs
+--- a/debian/hobbit-client.dirs	Wed Aug 15 13:32:16 2007 +0200
++++ b/debian/hobbit-client.dirs	Thu Aug 16 00:44:55 2007 +0200
+@@ -1,1 +1,2 @@
+-/etc/default
++etc/default
++var/run/hobbit
 diff -r 901f2e7621ca debian/hobbit-client.init
 --- a/debian/hobbit-client.init	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.init	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.init	Thu Aug 16 00:44:55 2007 +0200
 @@ -16,50 +16,36 @@ DMNOPTS=""
  DMNOPTS=""
  if [ -f /etc/default/hobbit-client ] ; then
@@ -301,7 +329,7 @@ diff -r 901f2e7621ca debian/hobbit-client.init
  	N=/etc/init.d/$NAME
 diff -r 901f2e7621ca debian/hobbit-client.postinst
 --- a/debian/hobbit-client.postinst	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.postinst	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.postinst	Thu Aug 16 00:44:55 2007 +0200
 @@ -2,8 +2,6 @@
  # postinst script for hobbit
  #
@@ -311,7 +339,7 @@ diff -r 901f2e7621ca debian/hobbit-client.postinst
  
  # summary of how this script can be called:
  #        * <postinst> `configure' <most-recently-configured-version>
-@@ -20,26 +18,42 @@ CONFIGFILE=/etc/default/hobbit-client
+@@ -20,26 +18,45 @@ CONFIGFILE=/etc/default/hobbit-client
  CONFIGFILE=/etc/default/hobbit-client
  . /usr/share/debconf/confmodule
  
@@ -322,12 +350,15 @@ diff -r 901f2e7621ca debian/hobbit-client.postinst
 -        # Setup permissions for the newly created "hobbit" user to write
 +	getent group hobbit > /dev/null || addgroup --system hobbit
 +	getent passwd hobbit > /dev/null || adduser --system \
-+		--home /var/lib/hobbit --no-create-home \
++		--home /var/run/hobbit --no-create-home \
 +		--ingroup hobbit --disabled-password --disabled-login \
 +		--gecos "Hobbit System Monitor" hobbit
++
 +	# Setup permissions for the newly created "hobbit" user to write
  	# data where he needs to.
  	# NB: Dont change the "tmp" directory, since it is a symlink to /tmp
++	test -d /var/run/hobbit || mkdir /var/run/hobbit
++	chown hobbit:hobbit /var/run/hobbit
          cd /var/log/hobbit; chown hobbit:hobbit .
  	cd /usr/lib/hobbit/client; chown hobbit:hobbit logs; chmod 755 logs
  
@@ -363,7 +394,7 @@ diff -r 901f2e7621ca debian/hobbit-client.postinst
      abort-upgrade|abort-remove|abort-deconfigure)
 diff -r 901f2e7621ca debian/hobbit-client.postrm
 --- a/debian/hobbit-client.postrm	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.postrm	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.postrm	Thu Aug 16 00:44:55 2007 +0200
 @@ -17,24 +17,27 @@ set -e
  # for details, see http://www.debian.org/doc/debian-policy/ or
  # the debian-policy package
@@ -407,7 +438,7 @@ diff -r 901f2e7621ca debian/hobbit-client.postrm
  exit 0
 diff -r 901f2e7621ca debian/hobbit-client.preinst
 --- a/debian/hobbit-client.preinst	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.preinst	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.preinst	Thu Aug 16 00:44:55 2007 +0200
 @@ -16,12 +16,10 @@ set -e
  
  case "$1" in
@@ -434,7 +465,7 @@ diff -r 901f2e7621ca debian/hobbit-client.preinst
  exit 0
 diff -r 901f2e7621ca debian/hobbit-client.templates
 --- a/debian/hobbit-client.templates	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit-client.templates	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit-client.templates	Thu Aug 16 00:44:55 2007 +0200
 @@ -1,19 +1,25 @@ Template: hobbit-client/HOBBITSERVERS
 -Template: hobbit-client/HOBBITSERVERS
 +Template: hobbit-client/BBDISP
@@ -474,14 +505,14 @@ diff -r 901f2e7621ca debian/hobbit-client.templates
  
 diff -r 901f2e7621ca debian/hobbit.conffiles
 --- a/debian/hobbit.conffiles	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.conffiles	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit.conffiles	Thu Aug 16 00:44:55 2007 +0200
 @@ -1,3 +0,0 @@
 -/var/lib/hobbit/www/menu/menu_items.js
 -/var/lib/hobbit/www/menu/menu_tpl.js
 -/var/lib/hobbit/www/menu/menu.css
 diff -r 901f2e7621ca debian/hobbit.config
 --- a/debian/hobbit.config	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.config	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit.config	Thu Aug 16 00:44:55 2007 +0200
 @@ -1,8 +1,6 @@
  #!/bin/sh
  
@@ -531,16 +562,17 @@ diff -r 901f2e7621ca debian/hobbit.config
 -
 diff -r 901f2e7621ca debian/hobbit.dirs
 --- a/debian/hobbit.dirs	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.dirs	Wed Aug 15 21:31:19 2007 +0200
-@@ -1,2 +1,4 @@ usr/bin
++++ b/debian/hobbit.dirs	Thu Aug 16 00:44:55 2007 +0200
+@@ -1,2 +1,5 @@ usr/bin
 +etc/apache2/conf.d
  usr/bin
  usr/sbin
++usr/share/hobbit
 +var/run/hobbit
 diff -r 901f2e7621ca debian/hobbit.init
 --- a/debian/hobbit.init	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.init	Wed Aug 15 21:31:19 2007 +0200
-@@ -1,52 +1,94 @@
++++ b/debian/hobbit.init	Thu Aug 16 00:44:55 2007 +0200
+@@ -1,52 +1,95 @@
 -#! /bin/sh
 +#!/bin/sh
 +
@@ -578,8 +610,8 @@ diff -r 901f2e7621ca debian/hobbit.init
  
 -set -e
 +	start-stop-daemon --exec $DAEMON --chuid hobbit --start -- \
-+		--config=/usr/lib/hobbit/server/etc/hobbitlaunch.cfg \
-+		--env=/usr/lib/hobbit/server/etc/hobbitserver.cfg \
++		--config=/etc/hobbit/hobbitlaunch.cfg \
++		--env=/etc/hobbit/hobbitserver.cfg \
 +		--log=/var/log/hobbit/hobbitlaunch.log --pidfile=$PIDFILE
 +	echo "Hobbit started"
 +	;;
@@ -629,7 +661,7 @@ diff -r 901f2e7621ca debian/hobbit.init
 -	su -c "$DAEMON restart" - hobbit
 -	echo "$NAME."
 +
-+   "restart")
++   "restart"|"force-reload")
 +	if test -s $PIDFILE
 +	then
 +		$0 stop
@@ -648,7 +680,8 @@ diff -r 901f2e7621ca debian/hobbit.init
 +   "reload")
 +	if test -s $PIDFILE
 +	then
-+		kill -HUP `cat /var/log/hobbit/hobbitd.pid`
++		echo "Reloading hobbitd config."
++		kill -HUP `cat /var/run/hobbit/hobbitd.pid`
 +	else
 +		echo "hobbitd not running (no PID file)"
 +	fi
@@ -667,14 +700,14 @@ diff -r 901f2e7621ca debian/hobbit.init
  	;;
 +
 +   *)
-+   	echo "Usage: $0 start|stop|restart|reload|status|rotate"
++   	echo "Usage: $0 start|stop|restart|force-reload|reload|status|rotate"
 +	break;
  esac
  
  exit 0
 diff -r 901f2e7621ca debian/hobbit.postinst
 --- a/debian/hobbit.postinst	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.postinst	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit.postinst	Thu Aug 16 00:44:55 2007 +0200
 @@ -4,13 +4,6 @@
  # see: dh_installdeb(1)
  
@@ -699,7 +732,7 @@ diff -r 901f2e7621ca debian/hobbit.postinst
  	# Do the debconf stuff
  	db_get hobbit/BBSERVERHOSTNAME
  	BBSERVERHOSTNAME="$RET"
-@@ -46,12 +42,38 @@ case "$1" in
+@@ -46,12 +42,36 @@ case "$1" in
  	db_stop
  
  	# Update configuration file
@@ -737,14 +770,12 @@ diff -r 901f2e7621ca debian/hobbit.postinst
 +EOF
 +	fi
 +
-+	test -d /var/run/hobbit || mkdir /var/run/hobbit
-+	chown hobbit:hobbit /var/run/hobbit
 +	touch /etc/hobbit/hobbitpasswd /etc/hobbit/hobbitgroups
 +	test -e /etc/init.d/apache2 && invoke-rc.d apache2 reload
      ;;
  
      abort-upgrade|abort-remove|abort-deconfigure)
-@@ -69,6 +91,5 @@ esac
+@@ -69,6 +89,5 @@ esac
  
  #DEBHELPER#
  
@@ -753,7 +784,7 @@ diff -r 901f2e7621ca debian/hobbit.postinst
  
 diff -r 901f2e7621ca debian/hobbit.postrm
 --- a/debian/hobbit.postrm	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.postrm	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit.postrm	Thu Aug 16 00:44:55 2007 +0200
 @@ -17,24 +17,23 @@ set -e
  # for details, see http://www.debian.org/doc/debian-policy/ or
  # the debian-policy package
@@ -792,7 +823,7 @@ diff -r 901f2e7621ca debian/hobbit.postrm
  exit 0
 diff -r 901f2e7621ca debian/hobbit.preinst
 --- a/debian/hobbit.preinst	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.preinst	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit.preinst	Thu Aug 16 00:44:55 2007 +0200
 @@ -16,12 +16,10 @@ set -e
  
  case "$1" in
@@ -819,7 +850,7 @@ diff -r 901f2e7621ca debian/hobbit.preinst
  exit 0
 diff -r 901f2e7621ca debian/hobbit.prerm
 --- a/debian/hobbit.prerm	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/hobbit.prerm	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/hobbit.prerm	Thu Aug 16 00:44:55 2007 +0200
 @@ -19,7 +19,6 @@ set -e
  
  case "$1" in
@@ -830,7 +861,7 @@ diff -r 901f2e7621ca debian/hobbit.prerm
          ;;
 diff -r 901f2e7621ca debian/rules
 --- a/debian/rules	Wed Aug 15 13:32:16 2007 +0200
-+++ b/debian/rules	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/rules	Thu Aug 16 00:44:55 2007 +0200
 @@ -50,8 +50,7 @@ Makefile: configure
  	./configure
  
@@ -841,7 +872,7 @@ diff -r 901f2e7621ca debian/rules
  	dh_testdir
  
  	# Add here commands to compile the package.
-@@ -63,105 +62,77 @@ clean:
+@@ -63,105 +62,85 @@ clean:
  	dh_testdir
  	dh_testroot
  	rm -f build-stamp 
@@ -865,17 +896,29 @@ diff -r 901f2e7621ca debian/rules
 -	cd $(CURDIR)/debian/hobbit/usr/lib/hobbit/client && mv etc/hobbitclient.cfg $(CURDIR)/debian/hobbit/etc/hobbit && rm -rf $(CURDIR)/debian/hobbit/usr/lib/hobbit/client/etc && ln -s ../../../../etc/hobbit etc
 -	cd $(CURDIR)/debian/hobbit/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
 -	cd $(CURDIR)/debian/hobbit/usr/lib/hobbit/client && rmdir tmp  && ln -s ../../../../var/lib/hobbit/tmp tmp
++	cd $(CURDIR)/debian/hobbit/var/lib/hobbit/www && \
++		mv gifs ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/gifs . && \
++		mv help ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/help . && \
++		mv menu ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/menu .
++	# We depend on the -client package
 +	rm -rf $(CURDIR)/debian/hobbit/usr/lib/hobbit/client
-+#	cd $(CURDIR)/debian/hobbit/usr/lib/hobbit/client && mv etc/hobbitclient.cfg $(CURDIR)/debian/hobbit/etc/hobbit && rm -rf $(CURDIR)/debian/hobbit/usr/lib/hobbit/client/etc && ln -s ../../../../etc/hobbit etc
-+#	cd $(CURDIR)/debian/hobbit/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
-+#	cd $(CURDIR)/debian/hobbit/usr/lib/hobbit/client && rmdir tmp  && ln -s ../../../../var/lib/hobbit/tmp tmp
-+#	mv $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client/etc/hobbitclient.cfg /tmp/hobbitclient.cfg.$$
++	# These variables are managed by debconf in /etc/default/hobbit
 +	sed -i -e's!^BBSERVERHOSTNAME=.*!include /etc/default/hobbit!' \
 +		-e'/^BBSERVERIP=/d' -e'/^BBSERVERWWWNAME=/d' \
 +		$(CURDIR)/debian/hobbit/etc/hobbit/hobbitserver.cfg
-+	mv $(CURDIR)/debian/hobbit/etc/hobbit/hobbit-apache.conf $(CURDIR)/debian/hobbit/etc/apache2/conf.d/hobbit
-+	rm $(CURDIR)/debian/hobbit/etc/hobbit/bb-hosts
++	# Fix some paths
++	sed -i -e's!pidfile=\$$[^/]*/!pidfile=/var/run/hobbit/!' \
++		-e's!/usr/lib/hobbit/\(server\|client\)/etc!/etc/hobbit!' \
++		$(CURDIR)/debian/hobbit/etc/hobbit/hobbitlaunch.cfg
++	mv $(CURDIR)/debian/hobbit/etc/hobbit/hobbit-apache.conf \
++		$(CURDIR)/debian/hobbit/etc/apache2/conf.d/hobbit
++	# Access restricted by default
++	sed -i -e's/Allow from all/Allow from localhost/' \
++		$(CURDIR)/debian/hobbit/etc/apache2/conf.d/hobbit
++	# We use a modified version of this as /etc/init.d/hobbit
 +	rm $(CURDIR)/debian/hobbit/usr/lib/hobbit/server/hobbit.sh
++	# Autogenerated on first install
++	rm $(CURDIR)/debian/hobbit/etc/hobbit/bb-hosts
  
  
 -install-client: build
@@ -887,7 +930,6 @@ diff -r 901f2e7621ca debian/rules
 +	dh_installdirs -a
  	PKGBUILD=1 INSTALLROOT=$(CURDIR)/debian/hobbit-client/ $(MAKE) install-client
 -	cp debian/hobbit-client.default $(CURDIR)/debian/hobbit-client/etc/default/hobbit-client
-+#	cp debian/hobbit-client.default $(CURDIR)/debian/hobbit-client/etc/default/hobbit-client
  	mkdir -p $(CURDIR)/debian/hobbit-client/var/log/hobbit
  	mkdir -p $(CURDIR)/debian/hobbit-client/etc/hobbit
  	cd $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client && mv etc/* $(CURDIR)/debian/hobbit-client/etc/hobbit && rmdir etc && ln -s ../../../../etc/hobbit etc
@@ -895,9 +937,16 @@ diff -r 901f2e7621ca debian/rules
  	cd $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client && rmdir tmp && ln -s ../../../../tmp tmp
 -	mv $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client/etc/hobbitclient.cfg /tmp/hobbitclient.cfg.$$
 -	cat /tmp/hobbitclient.cfg.$$ | sed -e 's!^BBDISP=.*!include /var/run/hobbitclient-runtime.cfg!' | grep -v "^BBDISPLAYS=" >$(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client/etc/hobbitclient.cfg
++	# These variables are managed by debconf in /etc/default/hobbit-client
 +	sed -i -e's!^BBDISP=.*!include /etc/default/hobbit-client!' \
 +		-e'/^BBDISPLAYS=/d' \
 +		$(CURDIR)/debian/hobbit-client/etc/hobbit/hobbitclient.cfg
++	# Fix some paths
++	sed -i -e's!\$$[^ ]*/\([^ ]*\.pid\)!/var/run/hobbit/\1!' \
++		-e's!\$$HOBBITCLIENTHOME/etc!/etc/hobbit!' \
++		-e's!\$$HOBBITCLIENTHOME/logs!/var/log/hobbit!' \
++		$(CURDIR)/debian/hobbit-client/etc/hobbit/clientlaunch.cfg \
++		$(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client/runclient.sh
  
  
 -# Build architecture-independent files here.
@@ -912,43 +961,43 @@ diff -r 901f2e7621ca debian/rules
 -	dh_installchangelogs Changes
 -	dh_installdocs
 -	dh_installexamples
+-#	dh_install
+-#	dh_installmenu
+-	dh_installdebconf	
+-	dh_installlogrotate
+-#	dh_installemacsen
+-#	dh_installpam
+-#	dh_installmime
+-	dh_installinit
+-#	dh_installcron
+-#	dh_installinfo
+-	dh_installman
+-	dh_link
+-#	dh_strip
+-	dh_compress
+-	dh_fixperms
+-#	dh_perl
+-#	dh_python
+-#	dh_makeshlibs
+-	dh_installdeb
+-	dh_shlibdeps
+-	dh_gencontrol
+-	dh_md5sums
+-	dh_builddeb
 +binary binary-arch: build install install-client
 +	dh_testdir -a
 +	dh_testroot -a
 +	dh_installchangelogs -a Changes
 +	dh_installdocs -a
 +	dh_installexamples -a
- #	dh_install
- #	dh_installmenu
--	dh_installdebconf	
--	dh_installlogrotate
 +	dh_installdebconf -a
 +	dh_installlogrotate -a
- #	dh_installemacsen
- #	dh_installpam
- #	dh_installmime
--	dh_installinit
 +	dh_installinit -a
- #	dh_installcron
- #	dh_installinfo
--	dh_installman
--	dh_link
--#	dh_strip
--	dh_compress
--	dh_fixperms
 +	dh_installman -a
 +	dh_link -a
 +	dh_strip -a
 +	dh_compress -a
 +	dh_fixperms -a
- #	dh_perl
- #	dh_python
- #	dh_makeshlibs
--	dh_installdeb
--	dh_shlibdeps
--	dh_gencontrol
--	dh_md5sums
--	dh_builddeb
 +	dh_installdeb -a
 +	dh_shlibdeps -a
 +	dh_gencontrol -a
@@ -992,7 +1041,7 @@ diff -r 901f2e7621ca debian/rules
  .PHONY: build clean binary-indep binary-arch binary install 
 diff -r 901f2e7621ca debian/watch
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/watch	Wed Aug 15 21:31:19 2007 +0200
++++ b/debian/watch	Thu Aug 16 00:44:55 2007 +0200
 @@ -0,0 +1,2 @@
 +version=3
 +http://sf.net/hobbitmon/hobbit-(.*).tar.gz
