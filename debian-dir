@@ -1,7 +1,7 @@
 diff -r 1e2ca1703d7d debian/README
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/README	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,17 @@
++++ b/debian/README	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,24 @@
 +Hobbit for Debian
 +=================
 +
@@ -12,16 +12,23 @@ diff -r 1e2ca1703d7d debian/README
 +  the client package for monitoring the local host. (The client package's init
 +  script/daemon is disabled when the server is installed.)
 +
-+- Access to the monitoring website is restricted to localhost by default.
-+  Edit /etc/apache2/hobbit to change this.
++- No binaries are installed in /usr/bin. /usr/bin/bb would conflict with
++  /usr/games/bb from the "bb" package.
 +
 +- Debconf manages /etc/default/hobbit-client directly without the use of a
 +  temporary file in /var/run. (There is no HOBBITSERVERS variable.)
 +
++- Access to the monitoring website is restricted to localhost by default.
++  Edit /etc/apache2/hobbit to change this.
++
++- The javascript menu has been replaced by a CSS menu; the animated gifs were
++  replaced by static versions in the default install, change BBSKIN for the
++  animated version.
++
 + -- Christoph Berg <myon@debian.org>  Thu, 16 Aug 2007 00:07:40 +0200
 diff -r 1e2ca1703d7d debian/changelog
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/changelog	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/changelog	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,87 @@
 +hobbit (4.2.0.dfsg-1) unstable; urgency=low
 +
@@ -30,7 +37,7 @@ diff -r 1e2ca1703d7d debian/changelog
 +    + Removed non-free tigra menu files from hobbitd/wwwfiles/menu/.
 +    + Removed upstream's debian/ dir.
 +
-+ -- Christoph Berg <myon@debian.org>  Sat, 18 Aug 2007 20:45:10 +0200
++ -- Christoph Berg <myon@debian.org>  Sat, 18 Aug 2007 22:05:09 +0200
 +
 +hobbit (4.2.0-1) unstable; urgency=low
 +
@@ -112,24 +119,25 @@ diff -r 1e2ca1703d7d debian/changelog
 + -- Henrik Stoerner <henrik@hswn.dk>  Wed, 30 Mar 2005 21:31:03 +0200
 diff -r 1e2ca1703d7d debian/compat
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/compat	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/compat	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,1 @@
 +4
 diff -r 1e2ca1703d7d debian/control
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/control	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,44 @@
++++ b/debian/control	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,45 @@
 +Source: hobbit
 +Section: net
 +Priority: optional
 +Maintainer: Christoph Berg <myon@debian.org>
 +Uploaders: Martin Zobel-Helas <zobel@debian.org>
-+Build-Depends: debhelper (>= 4.0.0), librrd2-dev, libssl-dev, libldap2-dev, libpcre3-dev
++Build-Depends: debhelper (>= 4.0.0), librrd2-dev, libssl-dev, libldap2-dev, libpcre3-dev,
++ imagemagick, po-debconf
 +Standards-Version: 3.7.2
 +
 +Package: hobbit
 +Architecture: any
-+Depends: hobbit-client, ${shlibs:Depends}, ${misc:Depends}, adduser
++Depends: hobbit-client, ${shlibs:Depends}, ${misc:Depends}
 +Description: monitoring system for systems, networks and applications
 + Hobbit is a network- and applications-monitoring system designed for use in
 + large-scale networks. But it will also work just fine on a small network with
@@ -147,7 +155,7 @@ diff -r 1e2ca1703d7d debian/control
 +Package: hobbit-client
 +Architecture: any
 +Conflicts: hobbit (<= 4.2.0-1)
-+Depends: ${shlibs:Depends}, ${misc:Depends}
++Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
 +Description: client for the Hobbit network monitor
 + Hobbit is a network- and applications-monitoring system designed for use in
 + large-scale networks. But it will also work just fine on a small network with
@@ -165,8 +173,8 @@ diff -r 1e2ca1703d7d debian/control
 +
 diff -r 1e2ca1703d7d debian/copyright
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/copyright	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,132 @@
++++ b/debian/copyright	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,134 @@
 +This package was debianized by Henrik Stoerner <henrik@hswn.dk> on
 +Sun,  6 Mar 2005 21:58:45 +0100.
 +
@@ -174,6 +182,9 @@ diff -r 1e2ca1703d7d debian/copyright
 +<myon@debian.org> on Wed, 15 Aug 2007 21:09:40 +0200.
 +
 +It was downloaded from http://sourceforge.net/projects/hobbitmon/
++The tarball was rebuild to remove a non-free javascript menu and the debian/
++directory. The new menu was written by Christoph Berg but is sufficiently
++trivial such that it is copyright-free.
 +
 +Upstream author: Henrik Stoerner <henrik@hswn.dk>
 +
@@ -188,23 +199,6 @@ diff -r 1e2ca1703d7d debian/copyright
 +Public License can be found in `/usr/share/common-licenses/GPL'.
 +
 +Other copyrights:
-+
-+Several files in bbnet/:
-+  Copyright 1998 by the Massachusetts Institute of Technology.
-+  Copyright 1998, 2000 by the Massachusetts Institute of Technology.
-+  Copyright (C) 2004 by Daniel Stenberg et al
-+
-+  Permission to use, copy, modify, and distribute this
-+  software and its documentation for any purpose and without
-+  fee is hereby granted, provided that the above copyright
-+  notice appear in all copies and that both that copyright
-+  notice and this permission notice appear in supporting
-+  documentation, and that the name of M.I.T. not be used in
-+  advertising or publicity pertaining to distribution of the
-+  software without specific, written prior permission.
-+  M.I.T. makes no representations about the suitability of
-+  this software for any purpose.  It is provided "as is"
-+  without express or implied warranty.
 +
 +client/hobbitclient-sco_sv.sh:
 +  SCO_SV client for Hobbit
@@ -299,9 +293,25 @@ diff -r 1e2ca1703d7d debian/copyright
 +  derivative of this code cannot be changed.  i.e. this code cannot simply be
 +  copied and put under another distribution licence
 +  [including the GNU Public Licence.]
++
++There is a nested c-ares tarball in bbnet/:
++  Copyright 1998, 2000 by the Massachusetts Institute of Technology.
++  Copyright (C) 2004 by Daniel Stenberg et al
++
++  Permission to use, copy, modify, and distribute this
++  software and its documentation for any purpose and without
++  fee is hereby granted, provided that the above copyright
++  notice appear in all copies and that both that copyright
++  notice and this permission notice appear in supporting
++  documentation, and that the name of M.I.T. not be used in
++  advertising or publicity pertaining to distribution of the
++  software without specific, written prior permission.
++  M.I.T. makes no representations about the suitability of
++  this software for any purpose.  It is provided "as is"
++  without express or implied warranty.
 diff -r 1e2ca1703d7d debian/docs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/docs	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/docs	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,6 @@
 +README
 +README.CLIENT
@@ -309,73 +319,9 @@ diff -r 1e2ca1703d7d debian/docs
 +CREDITS
 +RELEASENOTES
 +docs/TODO
-diff -r 1e2ca1703d7d debian/dropdown.css
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/dropdown.css	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,60 @@
-+#menue {
-+position:absolute;
-+top: 0px;
-+left: 0;
-+padding-bottom: 2px;
-+z-index: 200;
-+}
-+
-+.outer {
-+float: left;
-+display: block;
-+overflow: hidden;
-+width: 10em;
-+height: 1.3em;
-+text-align: left;
-+border: 1px solid #123456;
-+font: 12px Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
-+background: #123456;
-+color: #FFFFFF;
-+}
-+.outer:hover {
-+height: auto;
-+border: 1px solid #FFFFFF;
-+background: #5AA7E5;
-+color: #FFFFFF;
-+}
-+
-+a.inner-1 {
-+margin-top: 2px;
-+}
-+a.inner,
-+a.inner-1 {
-+display: block;
-+width: 9.9em;
-+padding: 2px 0;
-+text-decoration: none;
-+font-weight: normal;
-+border: 0px;
-+color: #000000;
-+background: #46B446;
-+}
-+a:visited.inner,
-+a:visited.inner-1 {
-+color: #202020;
-+background: #46B446;
-+}
-+a:hover.inner,
-+a:hover.inner-1 {
-+background-color: #f7eedb;
-+background: #5AE55A;
-+}
-+
-+span.menutag {
-+display: block;
-+cursor: default;
-+}
-+
-+span.invis {
-+display: none;
-+}
 diff -r 1e2ca1703d7d debian/hobbit-client.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.config	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.config	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,35 @@
 +#!/bin/sh
 +
@@ -414,14 +360,14 @@ diff -r 1e2ca1703d7d debian/hobbit-client.config
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.dirs	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.dirs	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/default
 +usr/bin
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit-client.files
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.files	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.files	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,13 @@
 +usr/share/man/man1/bb.1
 +usr/share/man/man1/bbcmd.1
@@ -438,12 +384,23 @@ diff -r 1e2ca1703d7d debian/hobbit-client.files
 +usr/share/man/man1/orcahobbit.1
 diff -r 1e2ca1703d7d debian/hobbit-client.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.init	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,58 @@
++++ b/debian/hobbit-client.init	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,69 @@
 +#! /bin/sh
 +#
 +# hobbitclient    This shell script takes care of starting and stopping
 +#                 the hobbit client.
++
++### BEGIN INIT INFO
++# Provides:          hobbit-client
++# Required-Start:    $local_fs $network
++# Required-Stop:     $local_fs $network
++# Default-Start:     2 3 4 5
++# Default-Stop:      0 1 6
++# Short-Description: Hobbit system monitor client
++# Description:       Client to feed system data to a remote
++#                    Hobbit server.
++### END INIT INFO
 +
 +PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 +DAEMON=/usr/lib/hobbit/client/runclient.sh
@@ -500,7 +457,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.init
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postinst	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.postinst	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,78 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -582,7 +539,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postrm	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.postrm	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,43 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -629,7 +586,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit-client.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.preinst	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.preinst	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,38 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -671,36 +628,36 @@ diff -r 1e2ca1703d7d debian/hobbit-client.preinst
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.templates	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit-client.templates	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,25 @@
 +Template: hobbit-client/BBDISP
 +Type: string
 +Default: 127.0.0.1
-+Description: Hobbit server (BBDISP)
-+ The network address used to access your Hobbit server is stored in the
-+ variable BBDISP. Consider using the IP-adress instead of a hostname, in
-+ case of a problem DNS might not work.
++_Description: Hobbit server (BBDISP):
++ The address used to access your Hobbit server is stored in the variable
++ BBDISP. Consider using the IP address instead of a hostname, in case of a
++ problem DNS might not work.
 +
 +Template: hobbit-client/BBDISPLAYS
 +Type: string
 +Default: 
-+Description: Hobbit server list (BBDISPLAYS)
-+ The network addresses used to access your Hobbit servers. If you have multiple
++_Description: Hobbit server list (BBDISPLAYS):
++ The addresses used to access several Hobbit servers. If you have multiple
 + servers, set BBDISP to 0.0.0.0, and set BBDISPLAYS to a space-separated list
 + of hostnames (or IPs). (Otherwise leave it empty.)
 +
 +Template: hobbit-client/CLIENTHOSTNAME
 +Type: string
 +Default: 
-+Description: Client hostname
++_Description: Client hostname:
 + The hostname used by the Hobbit client when sending
-+ reports to the Hobbit server. This name must match 
++ reports to the Hobbit server. This name must match
 + the named used in the bb-hosts file on the Hobbit
 + server.
 +
 diff -r 1e2ca1703d7d debian/hobbit.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.config	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit.config	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,34 @@
 +#!/bin/sh
 +
@@ -738,21 +695,32 @@ diff -r 1e2ca1703d7d debian/hobbit.config
 +
 diff -r 1e2ca1703d7d debian/hobbit.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.dirs	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit.dirs	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/apache2/conf.d
 +usr/share/hobbit
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.init	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,96 @@
++++ b/debian/hobbit.init	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,107 @@
 +#!/bin/sh
 +
 +# Startup script for the Hobbit monitor
 +#
 +# This starts the "hobbitlaunch" tool, which in turn starts
 +# all of the other Hobbit server programs.
++
++### BEGIN INIT INFO
++# Provides:          hobbit
++# Required-Start:    $local_fs $network
++# Required-Stop:     $local_fs $network
++# Default-Start:     2 3 4 5
++# Default-Stop:      0 1 6
++# Short-Description: Hobbit system monitor server
++# Description:       Hobbit system monitor, server part.
++#                    (Also monitors the local host.)
++### END INIT INFO
 +
 +PIDFILE=/var/run/hobbit/hobbitlaunch.pid
 +DAEMON=/usr/lib/hobbit/server/bin/hobbitlaunch
@@ -845,7 +813,7 @@ diff -r 1e2ca1703d7d debian/hobbit.init
 +
 diff -r 1e2ca1703d7d debian/hobbit.logrotate
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.logrotate	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit.logrotate	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,16 @@
 +#
 +#       Logrotate fragment for Hobbit.
@@ -865,8 +833,8 @@ diff -r 1e2ca1703d7d debian/hobbit.logrotate
 +
 diff -r 1e2ca1703d7d debian/hobbit.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postinst	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,93 @@
++++ b/debian/hobbit.postinst	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,92 @@
 +#! /bin/sh
 +# postinst script for hobbit
 +#
@@ -895,7 +863,6 @@ diff -r 1e2ca1703d7d debian/hobbit.postinst
 +	cd /var/lib/hobbit; chown hobbit:hobbit . acks data disabled hist histlogs hostdata logs rrd tmp www
 +	cd /var/lib/hobbit/www; chown hobbit:hobbit . html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
 +	cd /etc/hobbit; chgrp www-data hobbit-nkview.cfg hobbit-nkview.cfg.bak; chmod g+w hobbit-nkview.cfg hobbit-nkview.cfg.bak
-+	chown root /usr/lib/hobbit/server/bin/hobbitping; chmod 4755 /usr/lib/hobbit/server/bin/hobbitping
 +	cd /usr/lib/hobbit/client; chown hobbit:hobbit logs tmp; chmod u+w logs tmp
 +
 +	CONFIGFILE=/etc/default/hobbit
@@ -962,7 +929,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postrm	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit.postrm	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,39 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -983,8 +950,6 @@ diff -r 1e2ca1703d7d debian/hobbit.postrm
 +# for details, see http://www.debian.org/doc/debian-policy/ or
 +# the debian-policy package
 +
-+#DEBHELPER
-+
 +case "$1" in
 +	purge|disappear)
 +	rm -f /etc/hobbit/bb-hosts /etc/hobbit/hobbitgroups /etc/hobbit/hobbitpasswd
@@ -1002,10 +967,12 @@ diff -r 1e2ca1703d7d debian/hobbit.postrm
 +	;;
 +esac
 +
++#DEBHELPER#
++
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.preinst	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit.preinst	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,38 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -1047,27 +1014,27 @@ diff -r 1e2ca1703d7d debian/hobbit.preinst
 +
 diff -r 1e2ca1703d7d debian/hobbit.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.templates	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/hobbit.templates	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,24 @@
 +Template: hobbit/BBSERVERHOSTNAME
 +Type: string
 +Default: localhost
-+Description: Hostname of the Hobbit server
++_Description: Hostname of the Hobbit server:
 + The hostname of the Hobbit server - this is usually
 + the fully-qualified DNS name for this host. It should
-+ be resolvable via DNS, or you may run into problems 
++ be resolvable via DNS, or you may run into problems
 + with your network tests.
 +
 +Template: hobbit/BBSERVERIP
 +Type: string
 +Default: 127.0.0.1
-+Description: IP-address of the Hobbit server
-+ The network address used to access your Hobbit server.
++_Description: IP address of the Hobbit server:
++ The address used to access your Hobbit server.
 +
 +Template: hobbit/BBSERVERWWWNAME
 +Type: string
 +Default: localhost
-+Description: Hostname used to access the Hobbit webserver
++_Description: Hostname used to access the Hobbit webserver:
 + Webservers sometimes use a different hostname than the name
 + of the server they are running on - e.g. www.sample.com
 + is the web hostname, but the server might be known as
@@ -1075,7 +1042,7 @@ diff -r 1e2ca1703d7d debian/hobbit.templates
 +
 diff -r 1e2ca1703d7d debian/menu.cfg
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/menu.cfg	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/menu.cfg	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,36 @@
 +HOBBITMENU=\" <div id=\"menue\"> \
 +    <div class=\"outer\"> \
@@ -1113,10 +1080,303 @@ diff -r 1e2ca1703d7d debian/menu.cfg
 +	<a class=\"inner\" href=\"/hobbit/help/manpages/\">Hobbit man-pages</a> \
 +    </div> \
 +</div><!-- menuebox -->"
+diff -r 1e2ca1703d7d debian/menu.css
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/debian/menu.css	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,60 @@
++#menue {
++position:absolute;
++top: 0px;
++left: 0;
++padding-bottom: 2px;
++z-index: 200;
++}
++
++.outer {
++float: left;
++display: block;
++overflow: hidden;
++width: 10em;
++height: 1.3em;
++text-align: left;
++border: 1px solid #123456;
++font: 12px Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
++background: #123456;
++color: #FFFFFF;
++}
++.outer:hover {
++height: auto;
++border: 1px solid #FFFFFF;
++background: #5AA7E5;
++color: #FFFFFF;
++}
++
++a.inner-1 {
++margin-top: 2px;
++}
++a.inner,
++a.inner-1 {
++display: block;
++width: 9.9em;
++padding: 2px 0;
++text-decoration: none;
++font-weight: normal;
++border: 0px;
++color: #000000;
++background: #46B446;
++}
++a:visited.inner,
++a:visited.inner-1 {
++color: #202020;
++background: #46B446;
++}
++a:hover.inner,
++a:hover.inner-1 {
++background-color: #f7eedb;
++background: #5AE55A;
++}
++
++span.menutag {
++display: block;
++cursor: default;
++}
++
++span.invis {
++display: none;
++}
+diff -r 1e2ca1703d7d debian/po/POTFILES.in
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/debian/po/POTFILES.in	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,2 @@
++[type: gettext/rfc822deb] hobbit.templates
++[type: gettext/rfc822deb] hobbit-client.templates
+diff -r 1e2ca1703d7d debian/po/de.po
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/debian/po/de.po	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,111 @@
++# hobbit
++# Copyright (C) 2007
++# This file is distributed under the same license as the PACKAGE package.
++# Christoph Berg <myon@debian.org>
++#
++#, fuzzy
++msgid ""
++msgstr ""
++"Project-Id-Version: hobbit\n"
++"Report-Msgid-Bugs-To: myon@debian.org\n"
++"POT-Creation-Date: 2007-08-18 23:30+0200\n"
++"PO-Revision-Date: 2007-08-18 23:32+0200\n"
++"Last-Translator: Christoph Berg <myon@debian.org>\n"
++"Language-Team: debian-l10n-german <debian-l10n-german@lists.debian.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=utf-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:1001
++msgid "Hostname of the Hobbit server:"
++msgstr "Hostname des Hobbit-Servers:"
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:1001
++msgid ""
++"The hostname of the Hobbit server - this is usually the fully-qualified DNS "
++"name for this host. It should be resolvable via DNS, or you may run into "
++"problems with your network tests."
++msgstr "Hostname des Hobbit-Servers - normalerweise der voll qualifizierte DNS-Name dieses Hosts. Er sollte über DNS auflösbar sein, ansonsten könnte es Probleme mit Netzwerktests geben."
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:2001
++msgid "IP address of the Hobbit server:"
++msgstr "IP-Adresse des Hobbit-Servers:"
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:2001
++msgid "The address used to access your Hobbit server."
++msgstr "Adresse zum Zugriff auf den Hobbit-Server."
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:3001
++msgid "Hostname used to access the Hobbit webserver:"
++msgstr "Hostname zum Zugriff auf den Hobbit-Webserver:"
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:3001
++msgid ""
++"Webservers sometimes use a different hostname than the name of the server "
++"they are running on - e.g. www.sample.com is the web hostname, but the "
++"server might be known as web01.sample.com"
++msgstr ""
++"Webserver haben manchmal einen anderen Hostnamen als der Server auf dem sie "
++"laufen - z.B. www.beispiel.de ist der Web-Hostname, aber der Server ist als "
++"web01.beispiel.de bekannt."
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:1001
++msgid "Hobbit server (BBDISP):"
++msgstr "Hobbit-Server (BBDISP):"
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:1001
++msgid ""
++"The address used to access your Hobbit server is stored in the variable "
++"BBDISP. Consider using the IP address instead of a hostname, in case of a "
++"problem DNS might not work."
++msgstr "Die zum Zugriff auf den Hobbit-Server benutzte Netzwerkadresse wird in der Variable BBDISP gespeichert. Möglichst IP-Adressen statt Hostnamen benutzen, im Problemfall könnte DNS nicht funktionieren."
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:2001
++msgid "Hobbit server list (BBDISPLAYS):"
++msgstr "Hobbit-Server-Liste (BBDISPLAYS):"
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:2001
++msgid ""
++"The addresses used to access several Hobbit servers. If you have multiple "
++"servers, set BBDISP to 0.0.0.0, and set BBDISPLAYS to a space-separated list "
++"of hostnames (or IPs). (Otherwise leave it empty.)"
++msgstr ""
++"Zum Zugriff auf mehrere Hobbit-Server benutzte Adressen. Wenn Sie "
++"mehrere Server haben, setzen Sie BBDISP auf 0.0.0.0 und setzen BBDISPLAYS "
++"auf eine Leerzeichen-getrennte Liste von Hostnamen (oder IPs). (Ansonsten "
++"leer lassen.)"
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:3001
++msgid "Client hostname:"
++msgstr "Client-Hostname:"
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:3001
++msgid ""
++"The hostname used by the Hobbit client when sending reports to the Hobbit "
++"server. This name must match the named used in the bb-hosts file on the "
++"Hobbit server."
++msgstr "Beim Senden von Reports an den Server vom Hobbit-Client benutzter Hostname. Der Name muss mit dem in der Datei bb-hosts auf dem Server übereinstimmen."
+diff -r 1e2ca1703d7d debian/po/templates.pot
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/debian/po/templates.pot	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,104 @@
++# SOME DESCRIPTIVE TITLE.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the PACKAGE package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
++#
++#, fuzzy
++msgid ""
++msgstr ""
++"Project-Id-Version: PACKAGE VERSION\n"
++"Report-Msgid-Bugs-To: myon@debian.org\n"
++"POT-Creation-Date: 2007-08-18 23:30+0200\n"
++"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: LANGUAGE <LL@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=CHARSET\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:1001
++msgid "Hostname of the Hobbit server:"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:1001
++msgid ""
++"The hostname of the Hobbit server - this is usually the fully-qualified DNS "
++"name for this host. It should be resolvable via DNS, or you may run into "
++"problems with your network tests."
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:2001
++msgid "IP address of the Hobbit server:"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:2001
++msgid "The address used to access your Hobbit server."
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:3001
++msgid "Hostname used to access the Hobbit webserver:"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit.templates:3001
++msgid ""
++"Webservers sometimes use a different hostname than the name of the server "
++"they are running on - e.g. www.sample.com is the web hostname, but the "
++"server might be known as web01.sample.com"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:1001
++msgid "Hobbit server (BBDISP):"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:1001
++msgid ""
++"The address used to access your Hobbit server is stored in the variable "
++"BBDISP. Consider using the IP address instead of a hostname, in case of a "
++"problem DNS might not work."
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:2001
++msgid "Hobbit server list (BBDISPLAYS):"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:2001
++msgid ""
++"The addresses used to access several Hobbit servers. If you have multiple "
++"servers, set BBDISP to 0.0.0.0, and set BBDISPLAYS to a space-separated list "
++"of hostnames (or IPs). (Otherwise leave it empty.)"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:3001
++msgid "Client hostname:"
++msgstr ""
++
++#. Type: string
++#. Description
++#: ../hobbit-client.templates:3001
++msgid ""
++"The hostname used by the Hobbit client when sending reports to the Hobbit "
++"server. This name must match the named used in the bb-hosts file on the "
++"Hobbit server."
++msgstr ""
 diff -r 1e2ca1703d7d debian/rules
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/rules	Sat Aug 18 21:01:19 2007 +0200
-@@ -0,0 +1,155 @@
++++ b/debian/rules	Sun Aug 19 00:13:38 2007 +0200
+@@ -0,0 +1,177 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
 +
@@ -1183,6 +1443,7 @@ diff -r 1e2ca1703d7d debian/rules
 +	rm -f build-stamp 
 +	[ ! -f Makefile ] || $(MAKE) distclean
 +	dh_clean 
++	debconf-updatepo
 +
 +install-clean:
 +	dh_clean -k
@@ -1192,15 +1453,27 @@ diff -r 1e2ca1703d7d debian/rules
 +	dh_testroot
 +	dh_installdirs -a
 +	PKGBUILD=1 INSTALLROOT=$(CURDIR)/debian/hobbit/ $(MAKE) install
++	# Static content in /usr/share
 +	cd $(CURDIR)/debian/hobbit/var/lib/hobbit/www && \
 +		mv gifs ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/gifs . && \
 +		mv help ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/help . && \
 +		mv menu ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/menu .
++	# Create static gifs
++	cd $(CURDIR)/debian/hobbit/usr/share/hobbit/gifs && mkdir static && \
++		for gif in *.gif ; do \
++			convert "$$gif[0]" xpm:- | convert xpm:- static/$$gif || exit 1 ; \
++		done && \
++		cd static && ln -s ../*.ico .
 +	# We depend on the -client package
 +	rm -rf $(CURDIR)/debian/hobbit/usr/lib/hobbit/client
-+	# These variables are managed by debconf in /etc/default/hobbit
++	# This needs root
++	chmod 4755 $(CURDIR)/debian/hobbit/usr/lib/hobbit/server/bin/hobbitping
++	# These variables are managed by debconf in /etc/default/hobbit;
++	# static icons by default please
 +	sed -i -e's!^BBSERVERHOSTNAME=.*!include /etc/default/hobbit!' \
 +		-e'/^BBSERVERIP=/d' -e'/^BBSERVERWWWNAME=/d' \
++		-e's!BBSERVERWWWURL/gifs!BBSERVERWWWURL/gifs/static!' \
++		-e'/^BBMENUSKIN/iinclude /etc/hobbit/web/menu.cfg' \
 +		$(CURDIR)/debian/hobbit/etc/hobbit/hobbitserver.cfg
 +	# Fix some paths
 +	sed -i -e's!pidfile=\$$[^/]*/!pidfile=/var/run/hobbit/!' \
@@ -1215,6 +1488,14 @@ diff -r 1e2ca1703d7d debian/rules
 +	rm $(CURDIR)/debian/hobbit/usr/lib/hobbit/server/hobbit.sh
 +	# Autogenerated on first install
 +	rm $(CURDIR)/debian/hobbit/etc/hobbit/bb-hosts
++	# Install a free menu
++	cp debian/menu.css $(CURDIR)/debian/hobbit/usr/share/hobbit/menu
++	cp debian/menu.cfg $(CURDIR)/debian/hobbit/etc/hobbit/web
++	sed -i -e's/ Transitional//' -e'/"Topline"/i&HOBBITMENU' \
++		$(CURDIR)/debian/hobbit/etc/hobbit/web/*_header
++	# Make lintian happy
++	install -m644 -D debian/hobbit.lintian \
++		$(CURDIR)/debian/hobbit/usr/share/lintian/overrides/hobbit
 +
 +
 +install-client: build install-clean
@@ -1227,8 +1508,9 @@ diff -r 1e2ca1703d7d debian/rules
 +	cd $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client && mv etc/* $(CURDIR)/debian/hobbit-client/etc/hobbit && rmdir etc && ln -s ../../../../etc/hobbit etc
 +	cd $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
 +	cd $(CURDIR)/debian/hobbit-client/usr/lib/hobbit/client && rmdir tmp && ln -s ../../../../tmp tmp
-+	cd $(CURDIR)/debian/hobbit-client/usr/bin && \
-+		ln -s ../lib/hobbit/client/bin/bb ../lib/hobbit/client/bin/bbcmd .
++	# No binaries in /usr/bin for now, conflicts with /usr/games/bb
++	#cd $(CURDIR)/debian/hobbit-client/usr/bin && \
++	#	ln -s ../lib/hobbit/client/bin/bb ../lib/hobbit/client/bin/bbcmd .
 +	# These variables are managed by debconf in /etc/default/hobbit-client
 +	sed -i -e's!^BBDISP=.*!include /etc/default/hobbit-client!' \
 +		-e'/^BBDISPLAYS=/d' \
@@ -1264,7 +1546,7 @@ diff -r 1e2ca1703d7d debian/rules
 +	dh_link -a
 +	dh_strip -a
 +	dh_compress -a
-+	dh_fixperms -a
++	dh_fixperms -a -Xbin/hobbitping
 +	dh_installdeb -a
 +	dh_shlibdeps -a
 +	dh_gencontrol -a
@@ -1274,7 +1556,7 @@ diff -r 1e2ca1703d7d debian/rules
 +.PHONY: build clean binary-indep binary-arch binary install 
 diff -r 1e2ca1703d7d debian/watch
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/watch	Sat Aug 18 21:01:19 2007 +0200
++++ b/debian/watch	Sun Aug 19 00:13:38 2007 +0200
 @@ -0,0 +1,2 @@
 +version=3
 +http://sf.net/hobbitmon/hobbit-(.*).tar.gz

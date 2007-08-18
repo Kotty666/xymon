@@ -1,0 +1,52 @@
+diff -r b5f2a50e38fe hobbitd/Makefile
+--- a/hobbitd/Makefile	Sat Aug 18 21:36:21 2007 +0200
++++ b/hobbitd/Makefile	Sat Aug 18 21:37:37 2007 +0200
+@@ -117,7 +117,7 @@ cfgfiles:
+ 	cat etcfiles/hobbit-alerts.cfg.DIST | sed -e 's!@BBHOSTNAME@!$(BBHOSTNAME)!g' | sed -e 's!@BBHOSTIP@!$(BBHOSTIP)!g' >etcfiles/hobbit-alerts.cfg
+ 	cat etcfiles/hobbitlaunch.cfg.DIST | sed -e 's!@BBHOME@!$(BBHOME)!g' | sed -e 's!@BBTOPDIR@!$(BBTOPDIR)!g' >etcfiles/hobbitlaunch.cfg
+ 	cat etcfiles/hobbitcgi.cfg.DIST | sed -e 's!@BBHOME@!$(BBHOME)!g' >etcfiles/hobbitcgi.cfg
+-	cat wwwfiles/menu/menu_items.js.DIST | sed -e 's!@BBHOSTURL@!$(BBHOSTURL)!g' | sed -e 's!@BBCGIURL@!$(BBCGIURL)!g' | sed -e 's!@SECUREBBCGIURL@!$(SECUREBBCGIURL)!g' >wwwfiles/menu/menu_items.js
++#	cat wwwfiles/menu/menu_items.js.DIST | sed -e 's!@BBHOSTURL@!$(BBHOSTURL)!g' | sed -e 's!@BBCGIURL@!$(BBCGIURL)!g' | sed -e 's!@SECUREBBCGIURL@!$(SECUREBBCGIURL)!g' >wwwfiles/menu/menu_items.js
+ 
+ %.o: %.c
+ 	$(CC) $(CFLAGS) -c -o $@ $<
+diff -r b5f2a50e38fe hobbitd/webfiles/bb_footer
+--- a/hobbitd/webfiles/bb_footer	Sat Aug 18 21:36:21 2007 +0200
++++ b/hobbitd/webfiles/bb_footer	Sat Aug 18 21:37:37 2007 +0200
+@@ -9,16 +9,5 @@
+ </TR>
+ </TABLE>
+ 
+-
+-<!-- menu script itself. you should not modify this file -->
+-<script type="text/javascript" language="JavaScript" src="&BBMENUSKIN/menu.js"></script>
+-<!-- items structure. menu hierarchy and links are stored there -->
+-<script type="text/javascript" language="JavaScript" src="&BBMENUSKIN/menu_items.js"></script>
+-<!-- files with geometry and styles structures -->
+-<script type="text/javascript" language="JavaScript" src="&BBMENUSKIN/menu_tpl.js"></script>
+-<script type="text/javascript" language="JavaScript">
+-        new menu (MENU_ITEMS, MENU_POS);
+-</script>
+-
+ </BODY>
+ </HTML>
+diff -r b5f2a50e38fe hobbitd/webfiles/hobbitnk_footer
+--- a/hobbitd/webfiles/hobbitnk_footer	Sat Aug 18 21:36:21 2007 +0200
++++ b/hobbitd/webfiles/hobbitnk_footer	Sat Aug 18 21:37:37 2007 +0200
+@@ -56,16 +56,5 @@
+ </TR>
+ </TABLE>
+ 
+-
+-<!-- menu script itself. you should not modify this file -->
+-<script type="text/javascript" language="JavaScript" src="&BBMENUSKIN/menu.js"></script>
+-<!-- items structure. menu hierarchy and links are stored there -->
+-<script type="text/javascript" language="JavaScript" src="&BBMENUSKIN/menu_items.js"></script>
+-<!-- files with geometry and styles structures -->
+-<script type="text/javascript" language="JavaScript" src="&BBMENUSKIN/menu_tpl.js"></script>
+-<script type="text/javascript" language="JavaScript">
+-        new menu (MENU_ITEMS, MENU_POS);
+-</script>
+-
+ </BODY>
+ </HTML>
