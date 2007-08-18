@@ -1,6 +1,6 @@
 diff -r 1e2ca1703d7d debian/README
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/README	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/README	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,17 @@
 +Hobbit for Debian
 +=================
@@ -21,7 +21,7 @@ diff -r 1e2ca1703d7d debian/README
 + -- Christoph Berg <myon@debian.org>  Thu, 16 Aug 2007 00:07:40 +0200
 diff -r 1e2ca1703d7d debian/changelog
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/changelog	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/changelog	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,87 @@
 +hobbit (4.2.0.dfsg-1) unstable; urgency=low
 +
@@ -112,12 +112,12 @@ diff -r 1e2ca1703d7d debian/changelog
 + -- Henrik Stoerner <henrik@hswn.dk>  Wed, 30 Mar 2005 21:31:03 +0200
 diff -r 1e2ca1703d7d debian/compat
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/compat	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/compat	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,1 @@
 +4
 diff -r 1e2ca1703d7d debian/control
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/control	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/control	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,44 @@
 +Source: hobbit
 +Section: net
@@ -165,7 +165,7 @@ diff -r 1e2ca1703d7d debian/control
 +
 diff -r 1e2ca1703d7d debian/copyright
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/copyright	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/copyright	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,132 @@
 +This package was debianized by Henrik Stoerner <henrik@hswn.dk> on
 +Sun,  6 Mar 2005 21:58:45 +0100.
@@ -299,35 +299,9 @@ diff -r 1e2ca1703d7d debian/copyright
 +  derivative of this code cannot be changed.  i.e. this code cannot simply be
 +  copied and put under another distribution licence
 +  [including the GNU Public Licence.]
-diff -r 1e2ca1703d7d debian/default
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/default	Sat Aug 18 20:51:08 2007 +0200
-@@ -0,0 +1,22 @@
-+# Configure the Hobbit client settings.
-+
-+# You MUST set the list of Hobbit servers that this
-+# client reports to.
-+# It is good to use IP-adresses here instead of DNS 
-+# names - DNS might not work if there's a problem.
-+#
-+# E.g. (a single Hobbit server)
-+#   HOBBITSERVERS="192.168.1.1" 
-+# or (multiple servers)
-+#   HOBBITSERVERS="10.0.0.1 192.168.1.1" 
-+
-+HOBBITSERVERS=""
-+
-+# The defaults usually suffice for the rest of this file, 
-+# but you can tweak the hostname that the client reports 
-+# data with, and the OS name used (typically needed only on 
-+# RHEL or RHAS servers).
-+
-+# CLIENTHOSTNAME=""
-+# CLIENTOS="rhel3"
-+
 diff -r 1e2ca1703d7d debian/docs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/docs	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/docs	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,6 @@
 +README
 +README.CLIENT
@@ -337,7 +311,7 @@ diff -r 1e2ca1703d7d debian/docs
 +docs/TODO
 diff -r 1e2ca1703d7d debian/dropdown.css
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/dropdown.css	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/dropdown.css	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,60 @@
 +#menue {
 +position:absolute;
@@ -401,7 +375,7 @@ diff -r 1e2ca1703d7d debian/dropdown.css
 +}
 diff -r 1e2ca1703d7d debian/hobbit-client.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.config	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.config	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,35 @@
 +#!/bin/sh
 +
@@ -438,45 +412,16 @@ diff -r 1e2ca1703d7d debian/hobbit-client.config
 +db_input medium hobbit-client/CLIENTHOSTNAME || true
 +db_go || true
 +
-diff -r 1e2ca1703d7d debian/hobbit-client.default
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.default	Sat Aug 18 20:51:08 2007 +0200
-@@ -0,0 +1,25 @@
-+# Configure the Hobbit client settings.
-+
-+# You MUST set the list of Hobbit servers that this
-+# client reports to.
-+# It is good to use IP-adresses here instead of DNS 
-+# names - DNS might not work if there's a problem.
-+#
-+# E.g. (a single Hobbit server)
-+#   HOBBITSERVERS="192.168.1.1" 
-+# or (multiple servers)
-+#   HOBBITSERVERS="10.0.0.1 192.168.1.1" 
-+
-+HOBBITSERVERS="127.0.0.1"
-+
-+# Hostname used by the client for its reports.
-+# Must match the name for this host in the Hobbit servers'
-+# bb-hosts file.
-+CLIENTHOSTNAME=""
-+
-+# The defaults usually suffice for the rest of this file, 
-+# but you can tweak the OS name used (typically needed only
-+# on RHEL or RHAS servers).
-+
-+# CLIENTOS="rhel3"
-+
 diff -r 1e2ca1703d7d debian/hobbit-client.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.dirs	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.dirs	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/default
 +usr/bin
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit-client.files
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.files	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.files	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,13 @@
 +usr/share/man/man1/bb.1
 +usr/share/man/man1/bbcmd.1
@@ -493,7 +438,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.files
 +usr/share/man/man1/orcahobbit.1
 diff -r 1e2ca1703d7d debian/hobbit-client.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.init	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.init	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,58 @@
 +#! /bin/sh
 +#
@@ -555,7 +500,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.init
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postinst	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.postinst	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,78 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -637,7 +582,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postrm	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.postrm	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,43 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -684,7 +629,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit-client.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.preinst	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.preinst	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,38 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -724,51 +669,9 @@ diff -r 1e2ca1703d7d debian/hobbit-client.preinst
 +exit 0
 +
 +
-diff -r 1e2ca1703d7d debian/hobbit-client.prerm
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.prerm	Sat Aug 18 20:51:08 2007 +0200
-@@ -0,0 +1,38 @@
-+#! /bin/sh
-+# prerm script for hobbit
-+#
-+# see: dh_installdeb(1)
-+
-+set -e
-+
-+# summary of how this script can be called:
-+#        * <prerm> `remove'
-+#        * <old-prerm> `upgrade' <new-version>
-+#        * <new-prerm> `failed-upgrade' <old-version>
-+#        * <conflictor's-prerm> `remove' `in-favour' <package> <new-version>
-+#        * <deconfigured's-prerm> `deconfigure' `in-favour'
-+#          <package-being-installed> <version> `removing'
-+#          <conflicting-package> <version>
-+# for details, see http://www.debian.org/doc/debian-policy/ or
-+# the debian-policy package
-+
-+
-+case "$1" in
-+    remove|upgrade|deconfigure)
-+        ;;
-+    failed-upgrade)
-+        ;;
-+    *)
-+        echo "prerm called with unknown argument \`$1'" >&2
-+        exit 1
-+    ;;
-+esac
-+
-+# dh_installdeb will replace this with shell code automatically
-+# generated by other debhelper scripts.
-+
-+#DEBHELPER#
-+
-+exit 0
-+
-+
 diff -r 1e2ca1703d7d debian/hobbit-client.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.templates	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit-client.templates	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,25 @@
 +Template: hobbit-client/BBDISP
 +Type: string
@@ -797,7 +700,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.templates
 +
 diff -r 1e2ca1703d7d debian/hobbit.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.config	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.config	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,34 @@
 +#!/bin/sh
 +
@@ -835,14 +738,14 @@ diff -r 1e2ca1703d7d debian/hobbit.config
 +
 diff -r 1e2ca1703d7d debian/hobbit.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.dirs	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.dirs	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/apache2/conf.d
 +usr/share/hobbit
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.init	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.init	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,96 @@
 +#!/bin/sh
 +
@@ -942,7 +845,7 @@ diff -r 1e2ca1703d7d debian/hobbit.init
 +
 diff -r 1e2ca1703d7d debian/hobbit.logrotate
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.logrotate	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.logrotate	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,16 @@
 +#
 +#       Logrotate fragment for Hobbit.
@@ -962,7 +865,7 @@ diff -r 1e2ca1703d7d debian/hobbit.logrotate
 +
 diff -r 1e2ca1703d7d debian/hobbit.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postinst	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.postinst	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,93 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -1059,7 +962,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postrm	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.postrm	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,39 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -1102,7 +1005,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.preinst	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.preinst	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,38 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -1142,51 +1045,9 @@ diff -r 1e2ca1703d7d debian/hobbit.preinst
 +exit 0
 +
 +
-diff -r 1e2ca1703d7d debian/hobbit.prerm
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.prerm	Sat Aug 18 20:51:08 2007 +0200
-@@ -0,0 +1,38 @@
-+#! /bin/sh
-+# prerm script for hobbit
-+#
-+# see: dh_installdeb(1)
-+
-+set -e
-+
-+# summary of how this script can be called:
-+#        * <prerm> `remove'
-+#        * <old-prerm> `upgrade' <new-version>
-+#        * <new-prerm> `failed-upgrade' <old-version>
-+#        * <conflictor's-prerm> `remove' `in-favour' <package> <new-version>
-+#        * <deconfigured's-prerm> `deconfigure' `in-favour'
-+#          <package-being-installed> <version> `removing'
-+#          <conflicting-package> <version>
-+# for details, see http://www.debian.org/doc/debian-policy/ or
-+# the debian-policy package
-+
-+
-+case "$1" in
-+    remove|upgrade|deconfigure)
-+        ;;
-+    failed-upgrade)
-+        ;;
-+    *)
-+        echo "prerm called with unknown argument \`$1'" >&2
-+        exit 1
-+    ;;
-+esac
-+
-+# dh_installdeb will replace this with shell code automatically
-+# generated by other debhelper scripts.
-+
-+#DEBHELPER#
-+
-+exit 0
-+
-+
 diff -r 1e2ca1703d7d debian/hobbit.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.templates	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/hobbit.templates	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,24 @@
 +Template: hobbit/BBSERVERHOSTNAME
 +Type: string
@@ -1214,7 +1075,7 @@ diff -r 1e2ca1703d7d debian/hobbit.templates
 +
 diff -r 1e2ca1703d7d debian/menu.cfg
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/menu.cfg	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/menu.cfg	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,36 @@
 +HOBBITMENU=\" <div id=\"menue\"> \
 +    <div class=\"outer\"> \
@@ -1254,7 +1115,7 @@ diff -r 1e2ca1703d7d debian/menu.cfg
 +</div><!-- menuebox -->"
 diff -r 1e2ca1703d7d debian/rules
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/rules	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/rules	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,155 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
@@ -1413,7 +1274,7 @@ diff -r 1e2ca1703d7d debian/rules
 +.PHONY: build clean binary-indep binary-arch binary install 
 diff -r 1e2ca1703d7d debian/watch
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/watch	Sat Aug 18 20:51:08 2007 +0200
++++ b/debian/watch	Sat Aug 18 21:01:19 2007 +0200
 @@ -0,0 +1,2 @@
 +version=3
 +http://sf.net/hobbitmon/hobbit-(.*).tar.gz
