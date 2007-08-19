@@ -1,6 +1,6 @@
 diff -r 1e2ca1703d7d debian/README
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/README	Sun Aug 19 17:15:31 2007 +0200
++++ b/debian/README	Sun Aug 19 17:37:19 2007 +0200
 @@ -0,0 +1,25 @@
 +Hobbit for Debian
 +=================
@@ -29,7 +29,7 @@ diff -r 1e2ca1703d7d debian/README
 + -- Christoph Berg <myon@debian.org>  Thu, 16 Aug 2007 00:07:40 +0200
 diff -r 1e2ca1703d7d debian/changelog
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/changelog	Sun Aug 19 17:15:31 2007 +0200
++++ b/debian/changelog	Sun Aug 19 17:37:19 2007 +0200
 @@ -0,0 +1,87 @@
 +hobbit (4.2.0.dfsg-1) unstable; urgency=low
 +
@@ -120,12 +120,12 @@ diff -r 1e2ca1703d7d debian/changelog
 + -- Henrik Stoerner <henrik@hswn.dk>  Wed, 30 Mar 2005 21:31:03 +0200
 diff -r 1e2ca1703d7d debian/compat
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/compat	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/compat	Sun Aug 19 17:37:19 2007 +0200
 @@ -0,0 +1,1 @@
 +4
 diff -r 1e2ca1703d7d debian/control
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/control	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/control	Sun Aug 19 17:37:19 2007 +0200
 @@ -0,0 +1,46 @@
 +Source: hobbit
 +Section: net
@@ -175,7 +175,7 @@ diff -r 1e2ca1703d7d debian/control
 +
 diff -r 1e2ca1703d7d debian/copyright
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/copyright	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/copyright	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,134 @@
 +This package was debianized by Henrik Stoerner <henrik@hswn.dk> on
 +Sun,  6 Mar 2005 21:58:45 +0100.
@@ -313,7 +313,7 @@ diff -r 1e2ca1703d7d debian/copyright
 +  without express or implied warranty.
 diff -r 1e2ca1703d7d debian/docs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/docs	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/docs	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,6 @@
 +README
 +README.CLIENT
@@ -323,7 +323,7 @@ diff -r 1e2ca1703d7d debian/docs
 +docs/TODO
 diff -r 1e2ca1703d7d debian/hobbit-client.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.config	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.config	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,35 @@
 +#!/bin/sh
 +
@@ -362,14 +362,14 @@ diff -r 1e2ca1703d7d debian/hobbit-client.config
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.dirs	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.dirs	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/default
 +usr/bin
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit-client.files
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.files	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.files	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,13 @@
 +usr/share/man/man1/bb.1
 +usr/share/man/man1/bbcmd.1
@@ -386,8 +386,8 @@ diff -r 1e2ca1703d7d debian/hobbit-client.files
 +usr/share/man/man1/orcahobbit.1
 diff -r 1e2ca1703d7d debian/hobbit-client.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.init	Sun Aug 19 17:15:32 2007 +0200
-@@ -0,0 +1,73 @@
++++ b/debian/hobbit-client.init	Sun Aug 19 17:37:20 2007 +0200
+@@ -0,0 +1,79 @@
 +#! /bin/sh
 +#
 +# hobbitclient    This shell script takes care of starting and stopping
@@ -452,18 +452,44 @@ diff -r 1e2ca1703d7d debian/hobbit-client.init
 +	sleep 1
 +	$0 start
 +	;;
++  rotate)
++	for PIDFILE in /var/run/hobbit/*.pid
++	do
++		kill -HUP `cat $PIDFILE`
++	done
++	;;
 +  *)
 +	N=/etc/init.d/$NAME
-+	echo "Usage: $N {start|stop|restart|force-reload}" >&2
++	echo "Usage: $N {start|stop|restart|force-reload|rotate}" >&2
 +	exit 1
 +	;;
 +esac
 +
 +exit 0
 +
+diff -r 1e2ca1703d7d debian/hobbit-client.logrotate
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/debian/hobbit-client.logrotate	Sun Aug 19 17:37:20 2007 +0200
+@@ -0,0 +1,16 @@
++#
++#       Logrotate fragment for Hobbit.
++#
++/var/log/hobbit/*.log {
++        weekly
++        compress
++        delaycompress
++        rotate 5
++        missingok
++        nocreate
++        sharedscripts
++        postrotate
++                /etc/init.d/hobbit rotate
++        endscript
++}
++
 diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postinst	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.postinst	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,78 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -545,7 +571,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postrm	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.postrm	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,43 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -592,7 +618,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit-client.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.preinst	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.preinst	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,38 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -634,7 +660,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.preinst
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.templates	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit-client.templates	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,25 @@
 +Template: hobbit-client/BBDISP
 +Type: string
@@ -663,7 +689,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.templates
 +
 diff -r 1e2ca1703d7d debian/hobbit.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.config	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.config	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,34 @@
 +#!/bin/sh
 +
@@ -701,14 +727,14 @@ diff -r 1e2ca1703d7d debian/hobbit.config
 +
 diff -r 1e2ca1703d7d debian/hobbit.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.dirs	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.dirs	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/apache2/conf.d
 +usr/share/hobbit
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.init	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.init	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,111 @@
 +#!/bin/sh
 +
@@ -823,32 +849,12 @@ diff -r 1e2ca1703d7d debian/hobbit.init
 +
 diff -r 1e2ca1703d7d debian/hobbit.lintian
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.lintian	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.lintian	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,1 @@
 +hobbit: setuid-binary usr/lib/hobbit/server/bin/hobbitping 4755 root/root
-diff -r 1e2ca1703d7d debian/hobbit.logrotate
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.logrotate	Sun Aug 19 17:15:32 2007 +0200
-@@ -0,0 +1,16 @@
-+#
-+#       Logrotate fragment for Hobbit.
-+#
-+/var/log/hobbit/*.log {
-+        weekly
-+        compress
-+        delaycompress
-+        rotate 5
-+        missingok
-+        nocreate
-+        sharedscripts
-+        postrotate
-+                /etc/init.d/hobbit rotate
-+        endscript
-+}
-+
 diff -r 1e2ca1703d7d debian/hobbit.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postinst	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.postinst	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,92 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -944,7 +950,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postrm	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.postrm	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,39 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -987,7 +993,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.preinst	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.preinst	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,38 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -1029,7 +1035,7 @@ diff -r 1e2ca1703d7d debian/hobbit.preinst
 +
 diff -r 1e2ca1703d7d debian/hobbit.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.templates	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/hobbit.templates	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,24 @@
 +Template: hobbit/BBSERVERHOSTNAME
 +Type: string
@@ -1057,7 +1063,7 @@ diff -r 1e2ca1703d7d debian/hobbit.templates
 +
 diff -r 1e2ca1703d7d debian/menu.cfg
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/menu.cfg	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/menu.cfg	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,36 @@
 +HOBBITMENU=\" <div id=\"menue\"> \
 +    <div class=\"outer\"> \
@@ -1097,7 +1103,7 @@ diff -r 1e2ca1703d7d debian/menu.cfg
 +</div><!-- menuebox -->"
 diff -r 1e2ca1703d7d debian/menu.css
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/menu.css	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/menu.css	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,60 @@
 +#menue {
 +position:absolute;
@@ -1161,13 +1167,13 @@ diff -r 1e2ca1703d7d debian/menu.css
 +}
 diff -r 1e2ca1703d7d debian/po/POTFILES.in
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/po/POTFILES.in	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/po/POTFILES.in	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,2 @@
 +[type: gettext/rfc822deb] hobbit.templates
 +[type: gettext/rfc822deb] hobbit-client.templates
 diff -r 1e2ca1703d7d debian/po/de.po
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/po/de.po	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/po/de.po	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,111 @@
 +# hobbit
 +# Copyright (C) 2007
@@ -1282,7 +1288,7 @@ diff -r 1e2ca1703d7d debian/po/de.po
 +msgstr "Beim Senden von Reports an den Server vom Hobbit-Client benutzter Hostname. Der Name muss mit dem in der Datei bb-hosts auf dem Server übereinstimmen."
 diff -r 1e2ca1703d7d debian/po/templates.pot
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/po/templates.pot	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/po/templates.pot	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,104 @@
 +# SOME DESCRIPTIVE TITLE.
 +# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -1390,7 +1396,7 @@ diff -r 1e2ca1703d7d debian/po/templates.pot
 +msgstr ""
 diff -r 1e2ca1703d7d debian/rules
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/rules	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/rules	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,181 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
@@ -1575,7 +1581,7 @@ diff -r 1e2ca1703d7d debian/rules
 +.PHONY: build clean binary-indep binary-arch binary install 
 diff -r 1e2ca1703d7d debian/watch
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/watch	Sun Aug 19 17:15:32 2007 +0200
++++ b/debian/watch	Sun Aug 19 17:37:20 2007 +0200
 @@ -0,0 +1,2 @@
 +version=3
 +http://sf.net/hobbitmon/hobbit-(.*).tar.gz
