@@ -1,7 +1,7 @@
 diff -r 1e2ca1703d7d debian/README
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/README	Thu Aug 23 17:10:11 2007 +0200
-@@ -0,0 +1,25 @@
++++ b/debian/README	Thu Aug 23 17:24:34 2007 +0200
+@@ -0,0 +1,22 @@
 +Hobbit for Debian
 +=================
 +
@@ -11,9 +11,6 @@ diff -r 1e2ca1703d7d debian/README
 +- 'hobbit' depends on 'hobbit-client' rather than conflicting with it; it uses
 +  the client package for monitoring the local host. (The client package's init
 +  script/daemon is disabled when the server is installed.)
-+
-+- No binaries are installed in /usr/bin. /usr/bin/bb would conflict with
-+  /usr/games/bb from the "bb" package.
 +
 +- Additional tests to run can be plugged into /etc/hobbit/clientlaunch.d/*.cfg.
 +  Client and server will read these files on startup. Install the
@@ -29,15 +26,16 @@ diff -r 1e2ca1703d7d debian/README
 + -- Christoph Berg <myon@debian.org>  Thu, 16 Aug 2007 00:07:40 +0200
 diff -r 1e2ca1703d7d debian/changelog
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/changelog	Thu Aug 23 17:10:11 2007 +0200
-@@ -0,0 +1,95 @@
++++ b/debian/changelog	Thu Aug 23 17:24:34 2007 +0200
+@@ -0,0 +1,96 @@
 +hobbit (4.2.0.dfsg-2) unstable; urgency=low
 +
++  * Install /usr/bin/bb and bbcmd.
 +  * Use HOBBITSERVERS in /etc/default/hobbit-client (again).
 +  * Consistently use start-stop-daemon for daemon handling.
 +  * Priority: extra.
 +
-+ -- Christoph Berg <myon@debian.org>  Thu, 23 Aug 2007 16:45:12 +0200
++ -- Christoph Berg <myon@debian.org>  Thu, 23 Aug 2007 17:24:10 +0200
 +
 +hobbit (4.2.0.dfsg-1) unstable; urgency=low
 +
@@ -128,12 +126,12 @@ diff -r 1e2ca1703d7d debian/changelog
 + -- Henrik Stoerner <henrik@hswn.dk>  Wed, 30 Mar 2005 21:31:03 +0200
 diff -r 1e2ca1703d7d debian/compat
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/compat	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/compat	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,1 @@
 +4
 diff -r 1e2ca1703d7d debian/control
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/control	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/control	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,46 @@
 +Source: hobbit
 +Section: net
@@ -183,7 +181,7 @@ diff -r 1e2ca1703d7d debian/control
 +
 diff -r 1e2ca1703d7d debian/copyright
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/copyright	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/copyright	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,134 @@
 +This package was debianized by Henrik Stoerner <henrik@hswn.dk> on
 +Sun,  6 Mar 2005 21:58:45 +0100.
@@ -321,7 +319,7 @@ diff -r 1e2ca1703d7d debian/copyright
 +  without express or implied warranty.
 diff -r 1e2ca1703d7d debian/docs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/docs	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/docs	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,6 @@
 +README
 +README.CLIENT
@@ -331,7 +329,7 @@ diff -r 1e2ca1703d7d debian/docs
 +docs/TODO
 diff -r 1e2ca1703d7d debian/hobbit-client.config
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.config	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.config	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,22 @@
 +#!/bin/sh
 +
@@ -357,7 +355,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.config
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.default.dist
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.default.dist	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.default.dist	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,21 @@
 +# Configure the Hobbit client settings.
 +
@@ -382,7 +380,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.default.dist
 +CLIENTHOSTNAME=""
 diff -r 1e2ca1703d7d debian/hobbit-client.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.dirs	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.dirs	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,6 @@
 +etc/default
 +etc/hobbit
@@ -392,7 +390,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.dirs
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit-client.files
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.files	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.files	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,13 @@
 +usr/share/man/man1/bb.1
 +usr/share/man/man1/bbcmd.1
@@ -409,7 +407,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.files
 +usr/share/man/man1/orcahobbit.1
 diff -r 1e2ca1703d7d debian/hobbit-client.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.init	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.init	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,84 @@
 +#! /bin/sh
 +#
@@ -497,7 +495,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.init
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.logrotate
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.logrotate	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.logrotate	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,16 @@
 +#
 +#       Logrotate fragment for Hobbit.
@@ -517,7 +515,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.logrotate
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postinst	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.postinst	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,78 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -599,7 +597,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postinst
 +
 diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.postrm	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.postrm	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,43 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -646,7 +644,7 @@ diff -r 1e2ca1703d7d debian/hobbit-client.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit-client.templates
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit-client.templates	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit-client.templates	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,18 @@
 +Template: hobbit-client/HOBBITSERVERS
 +Type: string
@@ -668,14 +666,14 @@ diff -r 1e2ca1703d7d debian/hobbit-client.templates
 +
 diff -r 1e2ca1703d7d debian/hobbit.dirs
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.dirs	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit.dirs	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,3 @@
 +etc/apache2/conf.d
 +usr/share/hobbit
 +var/run/hobbit
 diff -r 1e2ca1703d7d debian/hobbit.init
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.init	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit.init	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,115 @@
 +#!/bin/sh
 +
@@ -794,12 +792,12 @@ diff -r 1e2ca1703d7d debian/hobbit.init
 +
 diff -r 1e2ca1703d7d debian/hobbit.lintian
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.lintian	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit.lintian	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,1 @@
 +hobbit: setuid-binary usr/lib/hobbit/server/bin/hobbitping 4755 root/root
 diff -r 1e2ca1703d7d debian/hobbit.postinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postinst	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit.postinst	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,68 @@
 +#! /bin/sh
 +# postinst script for hobbit
@@ -871,7 +869,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postinst
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit.postrm
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.postrm	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit.postrm	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,51 @@
 +#! /bin/sh
 +# postrm script for hobbit
@@ -926,7 +924,7 @@ diff -r 1e2ca1703d7d debian/hobbit.postrm
 +exit 0
 diff -r 1e2ca1703d7d debian/hobbit.preinst
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/hobbit.preinst	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/hobbit.preinst	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,15 @@
 +#! /bin/sh
 +# preinst script for hobbit
@@ -945,7 +943,7 @@ diff -r 1e2ca1703d7d debian/hobbit.preinst
 +exit 0
 diff -r 1e2ca1703d7d debian/menu.cfg
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/menu.cfg	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/menu.cfg	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,36 @@
 +HOBBITMENU=\" <div id=\"menue\"> \
 +    <div class=\"outer\"> \
@@ -985,7 +983,7 @@ diff -r 1e2ca1703d7d debian/menu.cfg
 +</div><!-- menuebox -->"
 diff -r 1e2ca1703d7d debian/menu.css
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/menu.css	Thu Aug 23 17:10:11 2007 +0200
++++ b/debian/menu.css	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,60 @@
 +#menue {
 +position:absolute;
@@ -1049,12 +1047,12 @@ diff -r 1e2ca1703d7d debian/menu.css
 +}
 diff -r 1e2ca1703d7d debian/po/POTFILES.in
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/po/POTFILES.in	Thu Aug 23 17:10:12 2007 +0200
++++ b/debian/po/POTFILES.in	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,1 @@
 +[type: gettext/rfc822deb] hobbit-client.templates
 diff -r 1e2ca1703d7d debian/po/de.po
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/po/de.po	Thu Aug 23 17:10:12 2007 +0200
++++ b/debian/po/de.po	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,53 @@
 +# hobbit
 +# Copyright (C) 2007
@@ -1111,7 +1109,7 @@ diff -r 1e2ca1703d7d debian/po/de.po
 +"Der Name muss mit dem in der Datei bb-hosts auf dem Server übereinstimmen."
 diff -r 1e2ca1703d7d debian/po/templates.pot
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/po/templates.pot	Thu Aug 23 17:10:12 2007 +0200
++++ b/debian/po/templates.pot	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,47 @@
 +# SOME DESCRIPTIVE TITLE.
 +# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -1162,8 +1160,8 @@ diff -r 1e2ca1703d7d debian/po/templates.pot
 +msgstr ""
 diff -r 1e2ca1703d7d debian/rules
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/rules	Thu Aug 23 17:10:12 2007 +0200
-@@ -0,0 +1,173 @@
++++ b/debian/rules	Thu Aug 23 17:24:34 2007 +0200
+@@ -0,0 +1,172 @@
 +#!/usr/bin/make -f
 +
 +CFLAGS = -Wall -g
@@ -1287,9 +1285,8 @@ diff -r 1e2ca1703d7d debian/rules
 +	cd $C/usr/lib/hobbit/client && mv etc/* $C/etc/hobbit && rmdir etc && ln -s ../../../../etc/hobbit etc
 +	cd $C/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
 +	cd $C/usr/lib/hobbit/client && rmdir tmp && ln -s ../../../../tmp tmp
-+	# No binaries in /usr/bin for now, conflicts with /usr/games/bb
-+	#cd $C/usr/bin && \
-+	#	ln -s ../lib/hobbit/client/bin/bb ../lib/hobbit/client/bin/bbcmd .
++	cd $C/usr/bin && \
++		ln -s ../lib/hobbit/client/bin/bb ../lib/hobbit/client/bin/bbcmd .
 +	cp debian/hobbit-client.default.dist $C/usr/share/hobbit/hobbit-client.default
 +	# These variables are managed by debconf in /etc/default/hobbit-client
 +	# HOBBITCLIENTHOME is undefined, sigh
@@ -1339,7 +1336,7 @@ diff -r 1e2ca1703d7d debian/rules
 +.PHONY: build clean binary-indep binary-arch binary install 
 diff -r 1e2ca1703d7d debian/watch
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/debian/watch	Thu Aug 23 17:10:12 2007 +0200
++++ b/debian/watch	Thu Aug 23 17:24:34 2007 +0200
 @@ -0,0 +1,2 @@
 +version=3
 +http://sf.net/hobbitmon/hobbit-(.*).tar.gz
