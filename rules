@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+include /usr/share/quilt/quilt.make
+
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -8,7 +10,7 @@ else
 	CFLAGS += -O2
 endif
 
-Makefile: configure
+Makefile: configure $(QUILT_STAMPFN)
 	dh_testdir
 	# Add here commands to configure the package.
 	USEHOBBITPING=y \
@@ -45,7 +47,7 @@ build-stamp: Makefile
 
 	touch build-stamp
 
-clean:
+clean: unpatch
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 

@@ -4,6 +4,7 @@ hobbit (4.2.0.dfsg-3) unstable; urgency=low
     Portuguese, thanks Américo Monteiro (Closes: #439693).
     French, thanks Geoffroy Youri Berret (Closes: #440504).
   * Actually install README.Debian.
+  * Quiltize source.
 
  -- Christoph Berg <myon@debian.org>  Thu, 06 Sep 2007 21:59:16 +0200
 
