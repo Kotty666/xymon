@@ -6,6 +6,8 @@ Uploaders: Martin Zobel-Helas <zobel@debian.org>
 Build-Depends: debhelper (>= 4.0.0), librrd2-dev, libssl-dev, libldap2-dev, libpcre3-dev,
  imagemagick, po-debconf, quilt (>= 0.40-1)
 Standards-Version: 3.7.2
+Vcs-Hg: http://hg.debian.org/hg/collab-maint/hobbit/debian
+Homepage: http://hobbitmon.sourceforge.net/
 
 Package: hobbit
 Architecture: any
