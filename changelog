@@ -7,7 +7,7 @@ hobbit (4.2.0.dfsg-3) unstable; urgency=low
   * Quiltize source.
   * Conflict with bb (<= 1.3rc1-8), it ships bb.1.
 
- -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 00:17:07 +0200
+ -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 00:19:12 +0200
 
 hobbit (4.2.0.dfsg-2) unstable; urgency=low
 
