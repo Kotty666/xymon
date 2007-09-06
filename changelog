@@ -5,8 +5,9 @@ hobbit (4.2.0.dfsg-3) unstable; urgency=low
     French, thanks Geoffroy Youri Berret (Closes: #440504).
   * Actually install README.Debian.
   * Quiltize source.
+  * Conflict with bb (<= 1.3rc1-8), it ships bb.1.
 
- -- Christoph Berg <myon@debian.org>  Thu, 06 Sep 2007 21:59:16 +0200
+ -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 00:17:07 +0200
 
 hobbit (4.2.0.dfsg-2) unstable; urgency=low
 
