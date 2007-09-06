@@ -1,0 +1,115 @@
+#!/bin/sh
+
+# Startup script for the Hobbit monitor
+#
+# This starts the "hobbitlaunch" tool, which in turn starts
+# all of the other Hobbit server programs.
+
+### BEGIN INIT INFO
+# Provides:          hobbit
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Hobbit system monitor server
+# Description:       Hobbit system monitor, server part.
+#                    (Also monitors the local host.)
+### END INIT INFO
+
+PIDFILE=/var/run/hobbit/hobbitlaunch.pid
+DAEMON=/usr/lib/hobbit/server/bin/hobbitlaunch
+NAME="hobbitd"
+DESC="Hobbit Server"
+
+test -x $DAEMON || exit 0
+
+# Include hobbitclient defaults if available
+if [ -f /etc/default/hobbit-client ] ; then
+	. /etc/default/hobbit-client
+fi
+
+case "$1" in
+   "start")
+	if [ "$HOBBITSERVERS" = "" ]; then
+		echo "Please configure HOBBITSERVERS in /etc/default/hobbit-client"
+		exit 0
+	fi
+
+	set -- $HOBBITSERVERS
+	if [ $# -eq 1 ]; then
+		echo "BBDISP=\"$HOBBITSERVERS\""
+		echo "BBDISPLAYS=\"\""
+	else
+		echo "BBDISP=\"0.0.0.0\""
+		echo "BBDISPLAYS=\"$HOBBITSERVERS\""
+	fi > /var/run/hobbit/bbdisp-runtime.cfg
+
+	for cfg in /etc/hobbit/clientlaunch.d/*.cfg ; do
+		test -e $cfg && echo "include $cfg"
+	done > /var/run/hobbit/clientlaunch-include.cfg
+
+	echo -n "Starting $DESC: "
+	start-stop-daemon --exec $DAEMON --chuid hobbit --start -- \
+		--config=/etc/hobbit/hobbitlaunch.cfg \
+		--env=/etc/hobbit/hobbitserver.cfg \
+		--log=/var/log/hobbit/hobbitlaunch.log \
+		--pidfile=$PIDFILE && echo "$NAME."
+	;;
+
+   "stop")
+	echo -n "Stopping $DESC: "
+	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop && echo "$NAME."
+	;;
+
+   "status")
+	if test -s $PIDFILE
+	then
+		kill -0 `cat $PIDFILE`
+		if test $? -eq 0
+		then
+			echo "Hobbit (hobbitlaunch) running with PID `cat $PIDFILE`"
+		else
+			echo "Hobbit not running, removing stale PID file"
+			rm -f $PIDFILE
+		fi
+	else
+		echo "Hobbit (hobbitlaunch) does not appear to be running"
+	fi
+	;;
+
+   "restart"|"force-reload")
+	if test -s $PIDFILE
+	then
+		$0 stop
+		sleep 5
+		$0 start
+	else
+		echo "hobbitlaunch does not appear to be running, starting it"
+		$0 start
+	fi
+	;;
+
+   "reload")
+	if test -s $PIDFILE
+	then
+		echo "Reloading hobbitd config."
+		kill -HUP `cat /var/run/hobbit/hobbitd.pid`
+	else
+		echo "hobbitd not running (no PID file)"
+	fi
+	;;
+
+   "rotate")
+	for PIDFILE in /var/run/hobbit/*.pid
+	do
+		test -e $PIDFILE && kill -HUP `cat $PIDFILE`
+	done
+	;;
+
+   *)
+   	echo "Usage: $0 start|stop|restart|force-reload|reload|status|rotate"
+	break;
+esac
+
+exit 0
+

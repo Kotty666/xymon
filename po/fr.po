@@ -1,0 +1,55 @@
+# Translation of hobbit debconf templates to French
+# Copyright (C) 2007 Geoffroy Youri Berret <mxondebian@free.fr>
+# This file is distributed under the same license as the hobbit package.
+#
+# Geoffroy Youri Berret <mxondebian@free.fr>, 2007.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: hobbit\n"
+"Report-Msgid-Bugs-To: myon@debian.org\n"
+"POT-Creation-Date: 2007-08-23 15:36+0200\n"
+"PO-Revision-Date: 2007-08-28 21:51-0700\n"
+"Last-Translator: Geoffroy Youri Berret <mxondebian@free.fr>\n"
+"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid "Hobbit server:"
+msgstr "Serveur hobbit :"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid ""
+"The network address used to access your Hobbit server(s). If you have "
+"multiple servers, list all of them separated by spaces. Consider using the "
+"IP-adresses instead of hostnames, in case of a problem DNS might not work."
+msgstr ""
+"Veuillez indiquer l'adresse du (ou des) serveur(s) Hobbit. Les serveurs "
+"multiples éventuels doivent être séparés par des espaces. Il est conseillé "
+"d'indiquer les adresses IP plutôt que les noms d'hôtes afin d'éviter des "
+"difficultés si la résolution de noms de domaine (DNS) ne fonctionne plus."
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid "Client hostname:"
+msgstr "Nom d'hôte du client Hobbit :"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid ""
+"The hostname used by the Hobbit client when sending reports to the Hobbit "
+"server. This name must match the named used in the bb-hosts file on the "
+"Hobbit server."
+msgstr ""
+"Veuillez indiquer le nom d'hôte utilisé par le client Hobbit pour envoyer "
+"les rapports au serveur Hobbit. Ce nom doit correpondre à celui utilisé dans "
+"le fichier bb-hosts sur le serveur Hobbit."

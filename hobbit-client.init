@@ -1,0 +1,84 @@
+#! /bin/sh
+#
+# hobbitclient    This shell script takes care of starting and stopping
+#                 the hobbit client.
+
+### BEGIN INIT INFO
+# Provides:          hobbit-client
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Hobbit system monitor client
+# Description:       Client to feed system data to a remote
+#                    Hobbit server.
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON="/usr/lib/hobbit/client/bin/hobbitlaunch"
+NAME=hobbitclient
+DESC="Hobbit Client"
+PIDFILE="/var/run/hobbit/clientlaunch.pid"
+
+test -x $DAEMON || exit 0
+
+# Include hobbitclient defaults if available
+if [ -f /etc/default/hobbit-client ] ; then
+	. /etc/default/hobbit-client
+fi
+
+set -e
+
+case "$1" in
+  start)
+	# do not run the client script on the server
+	[ -x /usr/lib/hobbit/server/bin/hobbitd ] && exit 0
+
+	if [ "$HOBBITSERVERS" = "" ]; then
+		echo "Please configure HOBBITSERVERS in /etc/default/hobbit-client"
+		exit 0
+	fi
+
+	set -- $HOBBITSERVERS
+	if [ $# -eq 1 ]; then
+		echo "BBDISP=\"$HOBBITSERVERS\""
+		echo "BBDISPLAYS=\"\""
+	else
+		echo "BBDISP=\"0.0.0.0\""
+		echo "BBDISPLAYS=\"$HOBBITSERVERS\""
+	fi > /var/run/hobbit/bbdisp-runtime.cfg
+
+	for cfg in /etc/hobbit/clientlaunch.d/*.cfg ; do
+		test -e $cfg && echo "include $cfg"
+	done > /var/run/hobbit/clientlaunch-include.cfg
+
+	echo -n "Starting $DESC: "
+	start-stop-daemon --exec $DAEMON --chuid hobbit --start -- \
+		--config=/etc/hobbit/clientlaunch.cfg \
+		--log=/var/log/hobbit/clientlaunch.log \
+		--pidfile=$PIDFILE && echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop && echo "$NAME."
+	;;
+  restart|force-reload)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+  rotate)
+	for PIDFILE in /var/run/hobbit/*.pid
+	do
+		test -e $PIDFILE && kill -HUP `cat $PIDFILE`
+	done
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload|rotate}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
+

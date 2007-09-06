@@ -1,0 +1,68 @@
+#! /bin/sh
+# postinst script for hobbit
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+case "$1" in
+    configure)
+        # Setup permissions for the newly created "hobbit" user to write
+	# data where he needs to.
+	# And for the Apache-run CGI's to generate reports.
+        cd /var/log/hobbit; chown hobbit:hobbit .
+	cd /var/lib/hobbit; chown hobbit:hobbit . acks data disabled hist histlogs hostdata logs rrd tmp www
+	cd /var/lib/hobbit/www; chown hobbit:hobbit . html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
+	cd /etc/hobbit; chgrp www-data hobbit-nkview.cfg hobbit-nkview.cfg.bak; chmod g+w hobbit-nkview.cfg hobbit-nkview.cfg.bak
+	cd /usr/lib/hobbit/client; chown hobbit:hobbit logs tmp; chmod u+w logs tmp
+
+	if ! test -e /etc/hobbit/bb-hosts ; then
+		if test -e /etc/default/hobbit-client ; then
+			. /etc/default/hobbit-client || true
+		fi
+		cat > /etc/hobbit/bb-hosts <<EOF
+# Master configuration file for Hobbit
+#
+# This file defines several things:
+#
+# 1) By adding hosts to this file, you define hosts that are monitored by Hobbit
+# 2) By adding "page", "subpage", "group" definitions, you define the layout
+#    of the Hobbit webpages, and how hosts are divided among the various webpages 
+#    that Hobbit generates.
+# 3) Several other definitions can be done for each host, see the bb-hosts(5)
+#    man-page.
+#
+# You need to define at least the Hobbit server itself here.
+
+127.0.0.1	$CLIENTHOSTNAME	# bbd http://$CLIENTHOSTNAME/
+EOF
+	fi
+
+	touch /etc/hobbit/hobbitpasswd /etc/hobbit/hobbitgroups
+	test -e /etc/init.d/apache2 && invoke-rc.d apache2 reload
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

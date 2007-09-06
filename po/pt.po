@@ -1,0 +1,55 @@
+# translation of hobbit debconf to Portuguese
+# Copyright (C) 2007 Américo Monteiro
+# This file is distributed under the same license as the hobbit package.
+#
+# Américo Monteiro <a_monteiro@netcabo.pt>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: hobbit 4.2.0.dfsg-2\n"
+"Report-Msgid-Bugs-To: myon@debian.org\n"
+"POT-Creation-Date: 2007-08-23 15:36+0200\n"
+"PO-Revision-Date: 2007-08-26 14:49+0100\n"
+"Last-Translator: Américo Monteiro <a_monteiro@netcabo.pt>\n"
+"Language-Team: Portuguese <traduz@debianpt.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid "Hobbit server:"
+msgstr "Servidor Hobbit:"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid ""
+"The network address used to access your Hobbit server(s). If you have "
+"multiple servers, list all of them separated by spaces. Consider using the "
+"IP-adresses instead of hostnames, in case of a problem DNS might not work."
+msgstr ""
+"O endereço de rede usado para aceder ao(s) seu(s) servidor(es) Hobbit. Se você "
+"tem vários servidores, liste-os todos separando-os por espaços. Considere usar "
+"os endereços IP em vez de nomes de máquinas, em caso de problemas com o "
+"DNS que pode não funcionar."
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid "Client hostname:"
+msgstr "Nome da máquina cliente:"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid ""
+"The hostname used by the Hobbit client when sending reports to the Hobbit "
+"server. This name must match the named used in the bb-hosts file on the "
+"Hobbit server."
+msgstr ""
+"O nome da máquina usada pelo cliente Hobbit quando envia relatórios para "
+"o servidor Hobbit. Este nome tem que coincidir com o nome usado no ficheiro "
+"bb-hosts no servidor Hobbit."
+

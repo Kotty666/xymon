@@ -1,0 +1,3 @@
+etc/apache2/conf.d
+usr/share/hobbit
+var/run/hobbit

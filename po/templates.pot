@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: myon@debian.org\n"
+"POT-Creation-Date: 2007-08-23 15:36+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid "Hobbit server:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid ""
+"The network address used to access your Hobbit server(s). If you have "
+"multiple servers, list all of them separated by spaces. Consider using the "
+"IP-adresses instead of hostnames, in case of a problem DNS might not work."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid "Client hostname:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid ""
+"The hostname used by the Hobbit client when sending reports to the Hobbit "
+"server. This name must match the named used in the bb-hosts file on the "
+"Hobbit server."
+msgstr ""

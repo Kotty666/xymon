@@ -1,0 +1,1 @@
+hobbit: setuid-binary usr/lib/hobbit/server/bin/hobbitping 4755 root/root

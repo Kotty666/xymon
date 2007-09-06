@@ -1,0 +1,53 @@
+# hobbit
+# Copyright (C) 2007
+# This file is distributed under the same license as the hobbit package.
+# Christoph Berg <myon@debian.org>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: hobbit\n"
+"Report-Msgid-Bugs-To: myon@debian.org\n"
+"POT-Creation-Date: 2007-08-23 15:36+0200\n"
+"PO-Revision-Date: 2007-08-23 15:39+0200\n"
+"Last-Translator: Christoph Berg <myon@debian.org>\n"
+"Language-Team: debian-l10n-german <debian-l10n-german@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid "Hobbit server:"
+msgstr "Hobbit-Server:"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:1001
+msgid ""
+"The network address used to access your Hobbit server(s). If you have "
+"multiple servers, list all of them separated by spaces. Consider using the "
+"IP-adresses instead of hostnames, in case of a problem DNS might not work."
+msgstr ""
+"Adresse zum Zugriff auf Ihren Hobbit-Server. Wenn es mehrere Server sind "
+"werden die Adressen mit Leerzeichen getrennt. "
+"Möglichst IP-Adressen statt Hostnamen benutzen, "
+"im Problemfall könnte DNS nicht funktionieren."
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid "Client hostname:"
+msgstr "Client-Hostname:"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid ""
+"The hostname used by the Hobbit client when sending reports to the Hobbit "
+"server. This name must match the named used in the bb-hosts file on the "
+"Hobbit server."
+msgstr ""
+"Beim Senden von Reports an den Server vom Hobbit-Client benutzter Hostname. "
+"Der Name muss mit dem in der Datei bb-hosts auf dem Server übereinstimmen."

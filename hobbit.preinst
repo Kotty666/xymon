@@ -1,0 +1,15 @@
+#! /bin/sh
+# preinst script for hobbit
+
+set -e
+
+case "$1" in
+    install)
+	# stop the client when the server is installed
+	invoke-rc.d hobbit-client stop || true
+	;;
+esac
+
+#DEBHELPER#
+
+exit 0
