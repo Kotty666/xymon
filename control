@@ -28,10 +28,9 @@ Description: monitoring system for systems, networks and applications
 
 Package: hobbit-client
 Architecture: any
-Conflicts: hobbit (<= 4.2.0-1)
+Conflicts: hobbit (<= 4.2.0-1), bb (<= 1.3rc1-8)
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
 Suggests: hobbit-plugins
-Conflicts: bb (<= 1.3rc1-8)
 Description: client for the Hobbit network monitor
  Hobbit is a network- and applications-monitoring system designed for use in
  large-scale networks. But it will also work just fine on a small network with
