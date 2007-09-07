@@ -1,0 +1,85 @@
+Index: hobbit-4.2.0.dfsg/docs/hobbit-apacheconf.txt
+===================================================================
+--- hobbit-4.2.0.dfsg.orig/docs/hobbit-apacheconf.txt	2007-09-07 17:39:37.000000000 +0200
++++ hobbit-4.2.0.dfsg/docs/hobbit-apacheconf.txt	2007-09-07 17:40:04.000000000 +0200
+@@ -9,35 +9,35 @@
+ #     the Hobbit webfiles as the root URL. In that case,
+ #     you should instead set this:
+ #
+-#          DocumentRoot /usr/local/hobbit/server/www/
++#          DocumentRoot /usr/lib/hobbit/server/www/
+ 
+-Alias /hobbit/  "/usr/local/hobbit/server/www/"
+-<Directory "/usr/local/hobbit/server/www/">
++Alias /hobbit/  "/usr/lib/hobbit/server/www/"
++<Directory "/usr/lib/hobbit/server/www/">
+     Options Indexes FollowSymLinks Includes MultiViews
+     Order allow,deny
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias /hobbit-cgi/ "/usr/local/hobbit/cgi-bin/"
+-<Directory "/usr/local/hobbit/cgi-bin">
++ScriptAlias /hobbit-cgi/ "/usr/lib/hobbit/cgi-bin/"
++<Directory "/usr/lib/hobbit/cgi-bin">
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias /hobbit-seccgi/ "/usr/local/hobbit/cgi-secure/"
+-<Directory "/usr/local/hobbit/cgi-secure">
++ScriptAlias /hobbit-seccgi/ "/usr/lib/hobbit/cgi-secure/"
++<Directory "/usr/lib/hobbit/cgi-secure">
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+     Allow from all
+ 
+     # Password file where users with access to these scripts are kept.
+-    # Create it with "htpasswd -c /usr/local/hobbit/server/etc/hobbitpasswd USERNAME"
+-    # Add more users / change passwords with "htpasswd /usr/local/hobbit/server/etc/hobbitpasswd USERNAME"
++    # Create it with "htpasswd -c /usr/lib/hobbit/server/etc/hobbitpasswd USERNAME"
++    # Add more users / change passwords with "htpasswd /usr/lib/hobbit/server/etc/hobbitpasswd USERNAME"
+ 
+-    AuthUserFile /usr/local/hobbit/server/etc/hobbitpasswd
++    AuthUserFile /usr/lib/hobbit/server/etc/hobbitpasswd
+     AuthType Basic
+     AuthName "Hobbit Administration"
+     Require valid-user
+Index: hobbit-4.2.0.dfsg/docs/hobbit-mrtg.html
+===================================================================
+--- hobbit-4.2.0.dfsg.orig/docs/hobbit-mrtg.html	2007-09-07 17:39:37.000000000 +0200
++++ hobbit-4.2.0.dfsg/docs/hobbit-mrtg.html	2007-09-07 17:40:13.000000000 +0200
+@@ -35,7 +35,7 @@ file like this at the top of the file:</
+ 
+ <pre>
+ # For Hobbit integration
+-WorkDir: /usr/local/hobbit/data/rrd
++WorkDir: /usr/lib/hobbit/data/rrd
+ LogFormat: rrdtool
+ </pre>
+ 
+@@ -59,7 +59,7 @@ query the SNMP daemon on the router.</p>
+ 
+ <p>The <tt><b>Directory[mrtg.myrouter.eth0]:&nbsp;myrouter.sample.com</b></tt> instructs MRTG to
+ save the data file in this directory relative to the <b>WorkDir</b> directory, i.e. the final directory 
+-for the RRD datafile will be <tt>/usr/local/hobbit/data/rrd/myrouter.sample.com</tt> which is
++for the RRD datafile will be <tt>/usr/lib/hobbit/data/rrd/myrouter.sample.com</tt> which is
+ where Hobbit expects all of the RRD-files for the myrouter.sample.com host to be. The
+ name of the RRD data-file will be <b>mrtg.myrouter.eth0.rrd</b> - i.e. the name of the target.</p>
+ 
+Index: hobbit-4.2.0.dfsg/docs/install.html
+===================================================================
+--- hobbit-4.2.0.dfsg.orig/docs/install.html	2007-09-07 17:39:38.000000000 +0200
++++ hobbit-4.2.0.dfsg/docs/install.html	2007-09-07 17:40:13.000000000 +0200
+@@ -163,7 +163,7 @@ directory (recommended for better securi
+ password-file that controls access to this directory. Use the <tt>htpasswd</tt>
+ command both to create the password file and to add or delete users:<br>
+ <pre><tt>
+-	# /usr/sbin/htpasswd -c /usr/local/hobbit/server/etc/hobbitpasswd admin
++	# /usr/sbin/htpasswd -c /usr/lib/hobbit/server/etc/hobbitpasswd admin
+ 	New password:
+ 	Re-type new password:
+ 	Adding password for user admin

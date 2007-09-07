@@ -3,9 +3,10 @@ hobbit (4.2.0.dfsg-3) unstable; urgency=low
   * Debconf translations:
     Portuguese, thanks Américo Monteiro (Closes: #439693).
     French, thanks Geoffroy Youri Berret (Closes: #440504).
-  * Actually install README.Debian.
+  * Actually install README.Debian and fix paths in html docs
+    (Closes: #440949).
   * Quiltize source.
-  * Conflict with bb (<= 1.3rc1-8), it ships bb.1.
+  * Conflict with bb (<= 1.3rc1-8), it ships bb.1 (Closes: #441011).
 
  -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 00:19:12 +0200
 

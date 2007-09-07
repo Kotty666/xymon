@@ -13,7 +13,7 @@ by upstream. The main differences are
   hobbit-plugins package for some pre-packaged modules.
 
 - Access to the monitoring website is restricted to localhost by default.
-  Edit /etc/apache2/hobbit to change this.
+  Edit /etc/apache2/conf.d/hobbit to change this.
 
 - The javascript menu has been replaced by a CSS menu; the animated gifs were
   replaced by static versions in the default install, change BBSKIN for the
