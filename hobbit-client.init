@@ -19,6 +19,7 @@ DAEMON="/usr/lib/hobbit/client/bin/hobbitlaunch"
 NAME=hobbitclient
 DESC="Hobbit Client"
 PIDFILE="/var/run/hobbit/clientlaunch.pid"
+HOBBITCLIENTHOME="/usr/lib/hobbit/client"
 
 test -x $DAEMON || exit 0
 
@@ -26,6 +27,9 @@ test -x $DAEMON || exit 0
 if [ -f /etc/default/hobbit-client ] ; then
 	. /etc/default/hobbit-client
 fi
+MACHINE="$CLIENTHOSTNAME"
+MACHINEDOTS="`hostname -f`"
+export HOBBITSERVERS HOBBITCLIENTHOME CLIENTHOSTNAME MACHINE MACHINEDOTS
 
 set -e
 

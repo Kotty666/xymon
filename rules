@@ -128,7 +128,7 @@ install-client: build install-clean
 	cp debian/hobbit-client.default.dist $C/usr/share/hobbit/hobbit-client.default
 	# These variables are managed by debconf in /etc/default/hobbit-client
 	# HOBBITCLIENTHOME is undefined, sigh
-	sed -i -e's!^BBDISP=.*!include /var/run/hobbit/bbdisp-runtime.cfg!' \
+	sed -i -e's!^BBDISP=.*!include /etc/default/hobbit-client\ninclude /var/run/hobbit/bbdisp-runtime.cfg!' \
 		-e'/^BBDISPLAYS=/d' \
 		-e'/^BBHOME=/iHOBBITCLIENTHOME="\/usr\/lib\/hobbit\/client"' \
 		$C/etc/hobbit/hobbitclient.cfg

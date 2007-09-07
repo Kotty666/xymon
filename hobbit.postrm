@@ -19,7 +19,8 @@ set -e
 
 case "$1" in
 	purge|disappear)
-	rm -f /etc/hobbit/bb-hosts /etc/hobbit/hobbitgroups /etc/hobbit/hobbitpasswd
+	rm -f /etc/hobbit/bb-hosts /etc/hobbit/hobbitgroups /etc/hobbit/hobbitpasswd \
+		/etc/default/hobbit
 	if -e /usr/share/debconf/confmodule ; then
 		. /usr/share/debconf/confmodule
 		db_purge

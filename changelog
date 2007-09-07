@@ -6,9 +6,12 @@ hobbit (4.2.0.dfsg-3) unstable; urgency=low
   * Actually install README.Debian and fix paths in html docs
     (Closes: #440949).
   * Quiltize source.
-  * Conflict with bb (<= 1.3rc1-8), it ships bb.1 (Closes: #441011).
+  * hobbit-client:
+    + Conflict with bb (<= 1.3rc1-8), it ships bb.1 (Closes: #441011).
+    + Set missing environment variables (Closes: #441199, thanks Jason
+      Cormie).
 
- -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 00:19:12 +0200
+ -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 19:13:22 +0200
 
 hobbit (4.2.0.dfsg-2) unstable; urgency=low
 
