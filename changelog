@@ -1,3 +1,12 @@
+hobbit (4.2.0.dfsg-4) unstable; urgency=low
+
+  * Instead of conflicting with bb, move binaries to /usr/sbin and manpages to
+    section 8. This is compliant with the release policy as the default PATH
+    from /etc/profile contains either /usr/games or /usr/sbin, but never both.
+    (Closes: #441030 again)
+
+ -- Christoph Berg <myon@debian.org>  Thu, 13 Sep 2007 20:56:49 +0200
+
 hobbit (4.2.0.dfsg-3) unstable; urgency=low
 
   * Debconf translations:
@@ -7,7 +16,7 @@ hobbit (4.2.0.dfsg-3) unstable; urgency=low
     (Closes: #440949).
   * Quiltize source.
   * hobbit-client:
-    + Conflict with bb (<= 1.3rc1-8), it ships bb.1 (Closes: #441011).
+    + Conflict with bb (<= 1.3rc1-8), it ships bb.1 (Closes: #441030).
     + Set missing environment variables (Closes: #441199, thanks Jason
       Cormie).
 
