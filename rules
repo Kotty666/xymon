@@ -126,8 +126,10 @@ install-client: build install-clean
 	cd $C/usr/lib/hobbit/client && mv etc/* $C/etc/hobbit && rmdir etc && ln -s ../../../../etc/hobbit etc
 	cd $C/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
 	cd $C/usr/lib/hobbit/client && rmdir tmp && ln -s ../../../../tmp tmp
-	cd $C/usr/sbin && \
-		ln -s ../lib/hobbit/client/bin/bb ../lib/hobbit/client/bin/bbcmd .
+	# rename bb to hobbit as it conflicts with the aalib demo
+	cd $C/usr/bin && \
+		ln -s ../lib/hobbit/client/bin/bb hobbit && \
+		ln -s ../lib/hobbit/client/bin/bbcmd bbcmd
 	cp debian/hobbit-client.default.dist $C/usr/share/hobbit/hobbit-client.default
 	# These variables are managed by debconf in /etc/default/hobbit-client
 	# HOBBITCLIENTHOME is undefined, sigh
@@ -161,16 +163,12 @@ binary binary-arch: build install-server install-client
 				rm -v $$f ; ln -s ../../client/bin/$$f ; \
 			fi \
 		done
-	# Move manpages to section 8
-	cd $C/usr/share/man/man1 && for f in *.1 ; do \
-		sed -e 's/\.TH \(.*\) 1 /.TH \1 8 /' $$f > ../man8/`basename $$f .1`.8 || exit 1 ; \
-		rm $$f || exit 1 ; \
-	done
-	rmdir $C/usr/share/man/man1
 	dh_installdebconf -a
 	dh_installlogrotate -a
 	dh_installinit -a
 	dh_installman -a
+	cd $C/usr/share/man/man1 && mv bb.1 hobbit.1
+	cd $C/usr/share/man/man8 && ln -s ../man1/hobbit.1 bb.8
 	dh_link -a
 	dh_strip -a
 	dh_compress -a

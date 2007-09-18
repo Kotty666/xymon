@@ -1,11 +1,10 @@
 hobbit (4.2.0.dfsg-4) unstable; urgency=low
 
-  * Instead of conflicting with bb, move binaries to /usr/sbin and manpages to
-    section 8. This is compliant with the release policy as the default PATH
-    from /etc/profile contains either /usr/games or /usr/sbin, but never both.
-    (Closes: #441030 again)
+  * Instead of conflicting with bb, rename our 'bb' binary to 'hobbit'.
+    Move bb.1 to bb.8 (Closes: #441030 again).
+  * Send (reformatted) dpkg -l output with client message.
 
- -- Christoph Berg <myon@debian.org>  Thu, 13 Sep 2007 20:56:49 +0200
+ -- Christoph Berg <myon@debian.org>  Wed, 19 Sep 2007 00:36:23 +0200
 
 hobbit (4.2.0.dfsg-3) unstable; urgency=low
 

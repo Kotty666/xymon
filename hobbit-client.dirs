@@ -1,6 +1,6 @@
 etc/default
 etc/hobbit
-usr/sbin
+usr/bin
 usr/share/hobbit
 var/log/hobbit
 var/run/hobbit
