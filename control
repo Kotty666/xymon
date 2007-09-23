@@ -12,9 +12,9 @@ Homepage: http://hobbitmon.sourceforge.net/
 Package: hobbit
 Architecture: any
 Depends: hobbit-client, ${shlibs:Depends}, ${misc:Depends}
-Description: monitoring system for systems, networks and applications
+Description: monitoring system for systems, networks and applications - server
  Hobbit is a network- and applications-monitoring system designed for use in
- large-scale networks. But it will also work just fine on a small network with
+ large-scale networks. It will also work just fine on a small network with
  just a few nodes. It is low-overhead and high-performance, with an easy to use
  web front-end. It handles monitoring of network services, and through client
  packages it can also be used to monitor server-specific items. Alerts can

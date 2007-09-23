@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hobbit\n"
 "Report-Msgid-Bugs-To: myon@debian.org\n"
-"POT-Creation-Date: 2007-08-23 15:36+0200\n"
+"POT-Creation-Date: 2007-09-23 12:28+0200\n"
 "PO-Revision-Date: 2007-08-28 21:51-0700\n"
 "Last-Translator: Geoffroy Youri Berret <mxondebian@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -19,17 +19,22 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:1001
+#: ../hobbit-client.templates:2001
 msgid "Hobbit server:"
 msgstr "Serveur hobbit :"
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:1001
+#: ../hobbit-client.templates:2001
+#, fuzzy
+#| msgid ""
+#| "The network address used to access your Hobbit server(s). If you have "
+#| "multiple servers, list all of them separated by spaces. Consider using "
+#| "the IP-adresses instead of hostnames, in case of a problem DNS might not "
+#| "work."
 msgid ""
-"The network address used to access your Hobbit server(s). If you have "
-"multiple servers, list all of them separated by spaces. Consider using the "
-"IP-adresses instead of hostnames, in case of a problem DNS might not work."
+"Please enter the network address used to access the Hobbit server(s). If you "
+"use multiple servers, use a space-separated list of addresses."
 msgstr ""
 "Veuillez indiquer l'adresse du (ou des) serveur(s) Hobbit. Les serveurs "
 "multiples éventuels doivent être séparés par des espaces. Il est conseillé "
@@ -39,16 +44,29 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../hobbit-client.templates:2001
+msgid ""
+"Using host names instead of IP addresses is discouraged in case the network "
+"experiences DNS failures."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:3001
 msgid "Client hostname:"
 msgstr "Nom d'hôte du client Hobbit :"
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../hobbit-client.templates:3001
+#, fuzzy
+#| msgid ""
+#| "The hostname used by the Hobbit client when sending reports to the Hobbit "
+#| "server. This name must match the named used in the bb-hosts file on the "
+#| "Hobbit server."
 msgid ""
-"The hostname used by the Hobbit client when sending reports to the Hobbit "
-"server. This name must match the named used in the bb-hosts file on the "
-"Hobbit server."
+"Please enter the host name used by the Hobbit client when sending reports to "
+"the Hobbit server. This name must match the name used in the bb-hosts file "
+"on the Hobbit server."
 msgstr ""
 "Veuillez indiquer le nom d'hôte utilisé par le client Hobbit pour envoyer "
 "les rapports au serveur Hobbit. Ce nom doit correpondre à celui utilisé dans "

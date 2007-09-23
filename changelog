@@ -1,3 +1,15 @@
+hobbit (4.2.0.dfsg-5) unstable; urgency=low
+
+  * The Smith inquisition reviewed our templates - thanks Christian Perrier.
+    (Closes: #442953)
+    + Basque, thanks Piarres Beobide (Closes: #443155).
+    + Vietnamese, thanks Clytie Siddall (Closes: #443161).
+    + Portuguese, thanks Américo Monteiro (Closes: #443214).
+    + Finnish, thanks Esko Arajärvi (Closes: #443617).
+    + Czech, thanks Miroslav Kure (Closes: #443667).
+
+ -- Christoph Berg <myon@debian.org>  Sun, 23 Sep 2007 12:34:22 +0200
+
 hobbit (4.2.0.dfsg-4) unstable; urgency=low
 
   * Instead of conflicting with bb, rename our 'bb' binary to 'hobbit'.
