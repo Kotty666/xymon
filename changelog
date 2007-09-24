@@ -7,8 +7,9 @@ hobbit (4.2.0.dfsg-5) unstable; urgency=low
     + Portuguese, thanks Américo Monteiro (Closes: #443214).
     + Finnish, thanks Esko Arajärvi (Closes: #443617).
     + Czech, thanks Miroslav Kure (Closes: #443667).
+    + Russian, thanks Yuri Kozlov (Closes: #443861).
 
- -- Christoph Berg <myon@debian.org>  Sun, 23 Sep 2007 12:34:22 +0200
+ -- Christoph Berg <myon@debian.org>  Tue, 25 Sep 2007 00:05:09 +0200
 
 hobbit (4.2.0.dfsg-4) unstable; urgency=low
 
