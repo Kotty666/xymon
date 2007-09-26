@@ -1,3 +1,9 @@
+hobbit (4.2.0.dfsg-6) unstable; urgency=low
+
+  * Use $BBSERVERWWWURL and friends in menu.cfg.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 26 Sep 2007 11:32:00 +0200
+
 hobbit (4.2.0.dfsg-5) unstable; urgency=low
 
   * The Smith inquisition reviewed our templates - thanks Christian Perrier.
