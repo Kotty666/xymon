@@ -2,7 +2,7 @@ hobbit (4.2.0.dfsg-6) unstable; urgency=low
 
   * Use $BBSERVERWWWURL and friends in menu.cfg.
 
- -- Christoph Berg <myon@debian.org>  Wed, 26 Sep 2007 11:32:00 +0200
+ -- Christoph Berg <myon@debian.org>  Thu, 27 Sep 2007 22:48:28 +0200
 
 hobbit (4.2.0.dfsg-5) unstable; urgency=low
 
@@ -14,6 +14,7 @@ hobbit (4.2.0.dfsg-5) unstable; urgency=low
     + Finnish, thanks Esko Arajärvi (Closes: #443617).
     + Czech, thanks Miroslav Kure (Closes: #443667).
     + Russian, thanks Yuri Kozlov (Closes: #443861).
+    + Tamil, thanks Tirumurti Vasudevan (Closes: #444281).
 
  -- Christoph Berg <myon@debian.org>  Tue, 25 Sep 2007 00:05:09 +0200
 
