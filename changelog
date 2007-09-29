@@ -9,9 +9,10 @@ hobbit (4.2.0.dfsg-5) unstable; urgency=low
     + Czech, thanks Miroslav Kure (Closes: #443667).
     + Russian, thanks Yuri Kozlov (Closes: #443861).
     + Tamil, thanks Tirumurti Vasudevan (Closes: #444281).
+    + Italian, thanks Luca Monducci (Closes: #444610).
   * Use $BBSERVERWWWURL and friends in menu.cfg.
 
- -- Christoph Berg <myon@debian.org>  Thu, 27 Sep 2007 22:52:17 +0200
+ -- Christoph Berg <myon@debian.org>  Sat, 29 Sep 2007 23:25:51 +0200
 
 hobbit (4.2.0.dfsg-4) unstable; urgency=low
 
