@@ -12,9 +12,11 @@ hobbit (4.2.0.dfsg-5) unstable; urgency=low
     + Italian, thanks Luca Monducci (Closes: #444610).
     + French, thanks Geoffroy Youri Berret (Closes: #444659).
     + Galician, thanks Jacobo Tarrio (Closes: #444751).
+    + Brazilian Portuguese, thanks Felipe Augusto van de Wiel.
+      (Closes: #445339)
   * Use $BBSERVERWWWURL and friends in menu.cfg.
 
- -- Christoph Berg <myon@debian.org>  Sun, 30 Sep 2007 20:32:49 +0200
+ -- Christoph Berg <myon@debian.org>  Fri, 05 Oct 2007 17:09:33 +0200
 
 hobbit (4.2.0.dfsg-4) unstable; urgency=low
 
