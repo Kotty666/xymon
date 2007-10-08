@@ -15,8 +15,10 @@ hobbit (4.2.0.dfsg-5) unstable; urgency=low
     + Brazilian Portuguese, thanks Felipe Augusto van de Wiel.
       (Closes: #445339)
   * Use $BBSERVERWWWURL and friends in menu.cfg.
+  * Fix reading of /etc/default/hobbit-client in config script.
+    (Closes: #445828)
 
- -- Christoph Berg <myon@debian.org>  Fri, 05 Oct 2007 17:09:33 +0200
+ -- Christoph Berg <myon@debian.org>  Mon, 08 Oct 2007 22:40:39 +0200
 
 hobbit (4.2.0.dfsg-4) unstable; urgency=low
 
