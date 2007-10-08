@@ -1,0 +1,60 @@
+# Galician translation of hobbit's debconf templates
+# This file is distributed under the same license as the hobbit package.
+# Jacobo Tarrio <jtarrio@debian.org>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: hobbit\n"
+"Report-Msgid-Bugs-To: myon@debian.org\n"
+"POT-Creation-Date: 2007-09-19 07:31+0200\n"
+"PO-Revision-Date: 2007-09-30 18:53+0100\n"
+"Last-Translator: Jacobo Tarrio <jtarrio@debian.org>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid "Hobbit server:"
+msgstr "Servidor Hobbit:"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid ""
+"Please enter the network address used to access the Hobbit server(s). If you "
+"use multiple servers, use a space-separated list of addresses."
+msgstr ""
+"Introduza o enderezo de rede que quere empregar para acceder ao servidor "
+"Hobbit. Se emprega varios servidores, introduza unha lista de enderezos "
+"separados por espazos."
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:2001
+msgid ""
+"Using host names instead of IP addresses is discouraged in case the network "
+"experiences DNS failures."
+msgstr ""
+"Recoméndase non empregar nomes, senón enderezos IP, para evitar problemas no "
+"caso de que a rede teña problemas con DNS."
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:3001
+msgid "Client hostname:"
+msgstr "Nome do cliente:"
+
+#. Type: string
+#. Description
+#: ../hobbit-client.templates:3001
+msgid ""
+"Please enter the host name used by the Hobbit client when sending reports to "
+"the Hobbit server. This name must match the name used in the bb-hosts file "
+"on the Hobbit server."
+msgstr ""
+"Introduza o nome empregado polo cliente Hobbit ao enviar informes ao "
+"servidor Hobbit. Este nome debe coincidir co nome empregado no ficheiro bb-"
+"hosts no servidor Hobbit."
