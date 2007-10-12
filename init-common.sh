@@ -20,7 +20,7 @@ create_includefiles ()
 		test -e $cfg && echo "include $cfg"
 	done > /var/run/hobbit/clientlaunch-include.cfg
 
-	test -d /etc/hobbit/hobbitlaunch.d || return
+	test -d /etc/hobbit/hobbitlaunch.d || return 0
 	for cfg in /etc/hobbit/hobbitlaunch.d/*.cfg ; do
 		test -e $cfg && echo "include $cfg"
 	done > /var/run/hobbit/hobbitlaunch-include.cfg
