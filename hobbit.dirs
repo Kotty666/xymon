@@ -1,3 +1,4 @@
 etc/apache2/conf.d
+etc/hobbit/hobbitlaunch.d
 usr/share/hobbit
 var/run/hobbit

@@ -1,9 +1,18 @@
 hobbit (4.2.0.dfsg-6) unstable; urgency=low
 
+  * Drop "hobbit" binary again, instead bbcmd will set PATH to include
+    the hobbit binaries.
+  * Add /etc/hobbit/hobbitlaunch.d/ directory for server extensions.
+  * When upgrading from a pre-Debian version, move old directories in
+    /var/lib/hobbit/www/ away, we want them to be symlinks.
   * Add missing "test" in postrm. Thanks to Yukio Shiiya for the patch.
     (Closes: #446347)
+  * Add COLUMS=200 to the dpkg -l call for Sarge compatibility.
+  * Remove /usr/lib/hobbit/*/tmp/ symlinks, set BBTMP="/var/lib/hobbit/tmp".
+  * Add some examples to the default bb-hosts file.
+  * Move the config file tweaking from debian/rules to quilt.
 
- -- Christoph Berg <myon@debian.org>  Fri, 12 Oct 2007 20:56:51 +0200
+ -- Christoph Berg <myon@debian.org>  Fri, 12 Oct 2007 23:02:14 +0200
 
 hobbit (4.2.0.dfsg-5) unstable; urgency=low
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 # Startup script for the Hobbit monitor
 #
@@ -28,25 +28,11 @@ if [ -f /etc/default/hobbit-client ] ; then
 	. /etc/default/hobbit-client
 fi
 
+. /usr/share/hobbit/init-common.sh
+
 case "$1" in
    "start")
-	if [ "$HOBBITSERVERS" = "" ]; then
-		echo "Please configure HOBBITSERVERS in /etc/default/hobbit-client"
-		exit 0
-	fi
-
-	set -- $HOBBITSERVERS
-	if [ $# -eq 1 ]; then
-		echo "BBDISP=\"$HOBBITSERVERS\""
-		echo "BBDISPLAYS=\"\""
-	else
-		echo "BBDISP=\"0.0.0.0\""
-		echo "BBDISPLAYS=\"$HOBBITSERVERS\""
-	fi > /var/run/hobbit/bbdisp-runtime.cfg
-
-	for cfg in /etc/hobbit/clientlaunch.d/*.cfg ; do
-		test -e $cfg && echo "include $cfg"
-	done > /var/run/hobbit/clientlaunch-include.cfg
+	create_includefiles
 
 	echo -n "Starting $DESC: "
 	start-stop-daemon --exec $DAEMON --chuid hobbit --start -- \
@@ -92,6 +78,7 @@ case "$1" in
    "reload")
 	if test -s $PIDFILE
 	then
+		create_includefiles
 		echo "Reloading hobbitd config."
 		kill -HUP `cat /var/run/hobbit/hobbitd.pid`
 	else

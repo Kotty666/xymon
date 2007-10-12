@@ -4,9 +4,26 @@
 set -e
 
 case "$1" in
-    install)
+    install|upgrade)
 	# stop the client when the server is installed
 	invoke-rc.d hobbit-client stop || true
+	if test "$2" && dpkg --compare-versions "$2" lt 4.2.0.dfsg-2 &&
+			test -d /var/lib/hobbit/www ; then
+		if test -e /etc/logrotate.d/hobbit && ! test -e /etc/logrotate.d/hobbit.dpkg-old ; then
+			mv /etc/logrotate.d/hobbit /etc/logrotate.d/hobbit.dpkg-old
+		fi
+		# we want to replace directories with symlinks, prod dpkg to do it
+		move_dir () {
+			test -d "$1" || return
+			test -h "$1" && return
+			test -e "$1.dpkg-old" && return
+			mv "$1" "$1.dpkg-old"
+		}
+		cd /var/lib/hobbit/www
+		move_dir gifs
+		move_dir help
+		move_dir menu
+	fi
 	;;
 esac
 

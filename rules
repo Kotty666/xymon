@@ -83,25 +83,7 @@ install-server: build install-clean
 	rm -rf $S/usr/lib/hobbit/client
 	# This needs root
 	chmod 4755 $S/usr/lib/hobbit/server/bin/hobbitping
-	# These variables are managed by debconf in /etc/default/hobbit;
-	# static icons by default please
-	sed -i -e'/^BBSERVERHOSTNAME=/iinclude /etc/default/hobbit-client' \
-		-e's!^BBSERVERHOSTNAME=.*!BBSERVERHOSTNAME="$$CLIENTHOSTNAME"!' \
-		-e'/^BBSERVERIP=/d' \
-		-e's!^BBDISP=.*!include /var/run/hobbit/bbdisp-runtime.cfg!' \
-		-e'/^BBDISPLAYS=/d' \
-		-e's!BBSERVERWWWURL/gifs!BBSERVERWWWURL/gifs/static!' \
-		-e'/^BBMENUSKIN/iinclude /etc/hobbit/web/menu.cfg' \
-		$S/etc/hobbit/hobbitserver.cfg
-	echo "include /var/run/hobbit/clientlaunch-include.cfg" >> \
-		$S/etc/hobbit/hobbitlaunch.cfg
-	# pid files go into /var/run/hobbit
-	sed -i -e's!pidfile=\$$[^/]*/!pidfile=/var/run/hobbit/!' \
-		$S/etc/hobbit/hobbitlaunch.cfg
 	mv $S/etc/hobbit/hobbit-apache.conf \
-		$S/etc/apache2/conf.d/hobbit
-	# Access restricted by default
-	sed -i -e's/Allow from all/Allow from localhost/' \
 		$S/etc/apache2/conf.d/hobbit
 	# We use a modified version of this as /etc/init.d/hobbit
 	rm $S/usr/lib/hobbit/server/hobbit.sh
@@ -125,21 +107,10 @@ install-client: build install-clean
 	PKGBUILD=1 INSTALLROOT=$C/ $(MAKE) install-client
 	cd $C/usr/lib/hobbit/client && mv etc/* $C/etc/hobbit && rmdir etc && ln -s ../../../../etc/hobbit etc
 	cd $C/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
-	cd $C/usr/lib/hobbit/client && rmdir tmp && ln -s ../../../../tmp tmp
-	# rename bb to hobbit as it conflicts with the aalib demo
-	cd $C/usr/bin && \
-		ln -s ../lib/hobbit/client/bin/bb hobbit && \
-		ln -s ../lib/hobbit/client/bin/bbcmd bbcmd
+	cd $C/usr/lib/hobbit/client && rmdir tmp
+	# the only command needed in /usr/bin is bbcmd, its PATH includes our private .../bin
+	cd $C/usr/bin && ln -s ../lib/hobbit/client/bin/bbcmd bbcmd
 	cp debian/hobbit-client.default.dist $C/usr/share/hobbit/hobbit-client.default
-	# These variables are managed by debconf in /etc/default/hobbit-client
-	# HOBBITCLIENTHOME is undefined, sigh
-	sed -i -e's!^BBDISP=.*!include /etc/default/hobbit-client\ninclude /var/run/hobbit/bbdisp-runtime.cfg!' \
-		-e'/^BBDISPLAYS=/d' \
-		-e'/^BBHOME=/iHOBBITCLIENTHOME="\/usr\/lib\/hobbit\/client"' \
-		$C/etc/hobbit/hobbitclient.cfg
-	# pid files go into /var/run/hobbit
-	sed -i -e's!\$$[^ ]*/\([^ ]*\.pid\)!/var/run/hobbit/\1!' \
-		$C/etc/hobbit/clientlaunch.cfg
 	# dynamic list of installed client extensions
 	echo "include /var/run/hobbit/clientlaunch-include.cfg" >> \
 		$C/etc/hobbit/clientlaunch.cfg

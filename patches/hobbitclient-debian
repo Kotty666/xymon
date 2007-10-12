@@ -5,7 +5,7 @@
  echo "[ps]"
  ps -Aw -o pid,ppid,user,start,state,pri,pcpu,time,pmem,rsz,vsz,cmd
 +echo "[dpkg]"
-+dpkg -l | awk '/^..  / { print $1 " " $2 " " $3 }'
++COLUMNS=200 dpkg -l | awk '/^..  / { print $1 " " $2 " " $3 }'
  
  # $TOP must be set, the install utility should do that for us if it exists.
  if test "$TOP" != ""

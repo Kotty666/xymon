@@ -1,0 +1,162 @@
+--- a/hobbitd/etcfiles/hobbitserver.cfg.DIST
++++ b/hobbitd/etcfiles/hobbitserver.cfg.DIST
+@@ -5,8 +5,8 @@ BBSERVERLOGS="@BBLOGDIR@"		# Directory f
+ HOBBITCLIENTHOME="@BBTOPDIR@/client"    # BBHOME directory for the client
+ 
+ 
+-BBSERVERHOSTNAME="@BBHOSTNAME@"		# The hostname of your server
+-BBSERVERIP="@BBHOSTIP@"			# The IP-address of your server. Use the real one, not 127.0.0.1 .
++include /etc/default/hobbit-client
++BBSERVERHOSTNAME="$CLIENTHOSTNAME"
+ BBSERVEROS="@BBHOSTOS@"			# The operating system of your server. linux,freebsd,solaris,hpux,aix,osf
+ 
+ BBSERVERWWWNAME="@BBHOSTNAME@"		# The name used for this hosts' webserver
+@@ -31,8 +31,7 @@ PATH="/bin:/usr/bin:/sbin:/usr/sbin:/usr
+ 
+ # General settings
+ BBPORT="1984"			# Portnumber where hobbitd/bbd listens
+-BBDISP="$BBSERVERIP"		# IP of a single hobbit/bbd server
+-BBDISPLAYS=""			# IP of multiple hobbit/bbd servers. If used, BBDISP must be 0.0.0.0
++include /var/run/hobbit/bbdisp-runtime.cfg
+ FQDN="TRUE"			# Use fully-qualified hostnames internally. Keep it TRUE unless you know better.
+ BBGHOSTS="1"                    # How to handle status messages from unknown hosts.
+                                 # 0=accept message, 1=discard message, 2=discard message and log the event
+@@ -57,9 +56,10 @@ BBWEBHOST="http://$BBSERVERWWWNAME"		# J
+ BBWEBHOSTURL="$BBWEBHOST$BBSERVERWWWURL"	# Prefix for all static Hobbit pages - http://www.foo.com/bb
+ BBWEBHTMLLOGS="$BBWEBHOSTURL/html"		# Prefix for the Hobbit HTML logs (only if BBLOGSTATUS=STATIC)
+ BBWEB="$BBSERVERWWWURL"				# Hobbit URL prefix without the host part
+-BBSKIN="$BBSERVERWWWURL/gifs"			# Hobbit URL prefix for the GIF files
++BBSKIN="$BBSERVERWWWURL/gifs/static"			# Hobbit URL prefix for the GIF files
+ BBHELPSKIN="$BBSERVERWWWURL/help"               # Hobbit URL prefix for the online help files.
+ BBNOTESSKIN="$BBSERVERWWWURL/notes"             # Hobbit URL prefix for the online notes-files.
++include /etc/hobbit/web/menu.cfg
+ BBMENUSKIN="$BBSERVERWWWURL/menu"               # Hobbit URL prefix for the webpage menu files.
+ BBREPURL="$BBSERVERWWWURL/rep"			# Hobbit URL prefix for the Hobbit availability reports
+ BBSNAPURL="$BBSERVERWWWURL/snap"		# Hobbit URL prefix for the Hobbit snapshots
+@@ -69,7 +69,7 @@ SECURECGIBINURL="$BBSERVERSECURECGIURL"	
+ 
+ # Locations of system-wide files and directories
+ BBHOME="@BBHOME@"				# The Hobbit server directory, where programs and configurations go. 
+-BBTMP="$BBHOME/tmp"				# Directory used for temporary files.
++BBTMP="/var/lib/hobbit/tmp"			# Directory used for temporary files.
+ BBHOSTS="$BBHOME/etc/bb-hosts"			# The bb-hosts file
+ BB="$BBHOME/bin/bb"				# The 'bb' client program
+ BBGEN="$BBHOME/bin/bbgen"			# The bbgen program
+--- a/hobbitd/etcfiles/hobbit-apache-open.DIST
++++ b/hobbitd/etcfiles/hobbit-apache-open.DIST
+@@ -15,7 +15,7 @@ Alias @BBHOSTURL@/  "@INSTALLWWWDIR@/"
+ <Directory "@INSTALLWWWDIR@">
+     Options Indexes FollowSymLinks Includes MultiViews
+     Order allow,deny
+-    Allow from all
++    Allow from localhost ::1/128
+ </Directory>
+ 
+ ScriptAlias @BBCGIURL@/ "@CGIDIR@/"
+@@ -23,6 +23,6 @@ ScriptAlias @BBCGIURL@/ "@CGIDIR@/"
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+-    Allow from all
++    Allow from localhost ::1/128
+ </Directory>
+ 
+--- a/hobbitd/etcfiles/hobbit-apache-secure.DIST
++++ b/hobbitd/etcfiles/hobbit-apache-secure.DIST
+@@ -15,7 +15,7 @@ Alias @BBHOSTURL@/  "@INSTALLWWWDIR@/"
+ <Directory "@INSTALLWWWDIR@">
+     Options Indexes FollowSymLinks Includes MultiViews
+     Order allow,deny
+-    Allow from all
++    Allow from localhost ::1/128
+ </Directory>
+ 
+ ScriptAlias @BBCGIURL@/ "@CGIDIR@/"
+@@ -23,7 +23,7 @@ ScriptAlias @BBCGIURL@/ "@CGIDIR@/"
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+-    Allow from all
++    Allow from localhost ::1/128
+ </Directory>
+ 
+ ScriptAlias @SECUREBBCGIURL@/ "@SECURECGIDIR@/"
+@@ -31,7 +31,7 @@ ScriptAlias @SECUREBBCGIURL@/ "@SECURECG
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+-    Allow from all
++    Allow from localhost ::1/128
+ 
+     # Password file where users with access to these scripts are kept.
+     # Create it with "htpasswd -c @INSTALLETCDIR@/hobbitpasswd USERNAME"
+--- a/hobbitd/etcfiles/hobbitlaunch.cfg.DIST
++++ b/hobbitd/etcfiles/hobbitlaunch.cfg.DIST
+@@ -11,7 +11,7 @@
+ # you want to run).
+ [hobbitd]
+ 	ENVFILE @BBHOME@/etc/hobbitserver.cfg
+-	CMD hobbitd --pidfile=$BBSERVERLOGS/hobbitd.pid --restart=$BBTMP/hobbitd.chk --checkpoint-file=$BBTMP/hobbitd.chk --checkpoint-interval=600 --log=$BBSERVERLOGS/hobbitd.log --admin-senders=127.0.0.1,$BBSERVERIP --store-clientlogs=!msgs
++	CMD hobbitd --pidfile=/var/run/hobbit/hobbitd.pid --restart=$BBTMP/hobbitd.chk --checkpoint-file=$BBTMP/hobbitd.chk --checkpoint-interval=600 --log=$BBSERVERLOGS/hobbitd.log --admin-senders=127.0.0.1,$BBSERVERIP --store-clientlogs=!msgs
+ 
+ 
+ # "bbstatus" saves status-logs in text- and html-format, like the old Big Brother 
+@@ -124,7 +124,7 @@
+ [bbproxy]
+ 	DISABLED
+ 	ENVFILE @BBHOME@/etc/hobbitserver.cfg
+-	CMD $BBHOME/bin/bbproxy --hobbitd --bbdisplay=YOUR.HOBBIT.SERVER.IP --report=$MACHINE.bbproxy --no-daemon --pidfile=$BBSERVERLOGS/bbproxy.pid
++	CMD $BBHOME/bin/bbproxy --hobbitd --bbdisplay=YOUR.HOBBIT.SERVER.IP --report=$MACHINE.bbproxy --no-daemon --pidfile=/var/run/hobbit/bbproxy.pid
+ 	LOGFILE $BBSERVERLOGS/bbproxy.log
+ 
+ 
+@@ -139,7 +139,7 @@
+ [hobbitfetch]
+ 	DISABLED
+ 	ENVFILE @BBHOME@/etc/hobbitserver.cfg
+-	CMD $BBHOME/bin/hobbitfetch --server=YOUR.HOBBIT.SERVER.IP --no-daemon --pidfile=$BBSERVERLOGS/hobbitfetch.pid
++	CMD $BBHOME/bin/hobbitfetch --server=YOUR.HOBBIT.SERVER.IP --no-daemon --pidfile=/var/run/hobbit/hobbitfetch.pid
+ 	LOGFILE $BBSERVERLOGS/hobbitfetch.log
+ 
+ 
+@@ -204,3 +204,5 @@
+ 	LOGFILE $BBSERVERLOGS/hobbitclient.log
+ 	INTERVAL 5m
+ 
++include /var/run/hobbit/clientlaunch-include.cfg
++include /var/run/hobbit/hobbitlaunch-include.cfg
+--- a/client/clientlaunch.cfg.DIST
++++ b/client/clientlaunch.cfg.DIST
+@@ -16,7 +16,7 @@
+ [msgcache]
+ 	DISABLED
+ 	ENVFILE $HOBBITCLIENTHOME/etc/hobbitclient.cfg
+-	CMD $HOBBITCLIENTHOME/bin/msgcache --no-daemon --pidfile=$HOBBITCLIENTHOME/logs/msgcache.pid
++	CMD $HOBBITCLIENTHOME/bin/msgcache --no-daemon --pidfile=/var/run/hobbit/msgcache.pid
+ 	LOGFILE $HOBBITCLIENTHOME/logs/msgcache.log
+ 
+ # The main client task
+--- a/client/hobbitclient.cfg.DIST
++++ b/client/hobbitclient.cfg.DIST
+@@ -1,15 +1,16 @@
+ # Environment settings for the Hobbit client.
+ 
+-BBDISP="@BBHOSTIP@"             # IP address of the Hobbit server
+-BBDISPLAYS=""                   # IP of multiple Hobbit servers. BBDISP must be "0.0.0.0".
++include /etc/default/hobbit-client
++include /var/run/hobbit/bbdisp-runtime.cfg
+ CONFIGCLASS="$BBOSTYPE"         # Default configuration class for logfiles
+ 
+-PATH="/bin:/usr/bin:/sbin:/usr/sbin:/etc"  # PATH setting for the client scripts.
++PATH="/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/lib/hobbit/client/bin"  # PATH setting for the client scripts.
+ 
+ # You normally dont need to modify anything below here
+ BBPORT="1984"                   # Portnumber where hobbitd listens
++HOBBITCLIENTHOME="/usr/lib/hobbit/client"
+ BBHOME="$HOBBITCLIENTHOME"      # Directory for the Hobbit client files
+ BB="$BBHOME/bin/bb"             # The Hobbit client "bb" utility
+-BBTMP="$BBHOME/tmp"             # Where we may store temporary files.
+-BBCLIENTLOGS="$BBHOME/logs"     # Where we store the client logfiles
++BBTMP="/var/lib/hobbit/tmp"     # Where we may store temporary files.
++BBCLIENTLOGS="/var/log/hobbit"  # Where we store the client logfiles
+ 

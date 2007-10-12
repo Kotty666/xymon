@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -e
 #
 # hobbitclient    This shell script takes care of starting and stopping
 #                 the hobbit client.
@@ -27,34 +27,18 @@ test -x $DAEMON || exit 0
 if [ -f /etc/default/hobbit-client ] ; then
 	. /etc/default/hobbit-client
 fi
-MACHINE="$CLIENTHOSTNAME"
-MACHINEDOTS="`hostname -f`"
+[ -z "$MACHINE" ] && MACHINE="$CLIENTHOSTNAME"
+[ -z "$MACHINEDOTS" ] && MACHINEDOTS="`hostname -f`"
 export HOBBITSERVERS HOBBITCLIENTHOME CLIENTHOSTNAME MACHINE MACHINEDOTS
 
-set -e
+. /usr/share/hobbit/init-common.sh
 
 case "$1" in
   start)
 	# do not run the client script on the server
 	[ -x /usr/lib/hobbit/server/bin/hobbitd ] && exit 0
 
-	if [ "$HOBBITSERVERS" = "" ]; then
-		echo "Please configure HOBBITSERVERS in /etc/default/hobbit-client"
-		exit 0
-	fi
-
-	set -- $HOBBITSERVERS
-	if [ $# -eq 1 ]; then
-		echo "BBDISP=\"$HOBBITSERVERS\""
-		echo "BBDISPLAYS=\"\""
-	else
-		echo "BBDISP=\"0.0.0.0\""
-		echo "BBDISPLAYS=\"$HOBBITSERVERS\""
-	fi > /var/run/hobbit/bbdisp-runtime.cfg
-
-	for cfg in /etc/hobbit/clientlaunch.d/*.cfg ; do
-		test -e $cfg && echo "include $cfg"
-	done > /var/run/hobbit/clientlaunch-include.cfg
+	create_includefiles
 
 	echo -n "Starting $DESC: "
 	start-stop-daemon --exec $DAEMON --chuid hobbit --start -- \
@@ -67,9 +51,18 @@ case "$1" in
 	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop && echo "$NAME."
 	;;
   restart|force-reload)
+	if [ -x /usr/lib/hobbit/server/bin/hobbitd ] ; then
+		echo "Hobbit server installed. Please restart 'hobbit' instead."
+		exit 0
+	fi
 	$0 stop
 	sleep 1
 	$0 start
+	;;
+  reload)
+	[ -x /usr/lib/hobbit/server/bin/hobbitd ] && exit 0
+	create_includefiles
+	kill -HUP `cat /var/run/hobbit/clientlaunch.pid`
 	;;
   rotate)
 	for PIDFILE in /var/run/hobbit/*.pid

@@ -21,11 +21,14 @@ case "$1" in
         # Setup permissions for the newly created "hobbit" user to write
 	# data where he needs to.
 	# And for the Apache-run CGI's to generate reports.
-        cd /var/log/hobbit; chown hobbit:hobbit .
+	test -d /var/run/hobbit || mkdir /var/run/hobbit
+	chown hobbit:hobbit /var/run/hobbit
+	test -d /var/log/hobbit || mkdir /var/log/hobbit
+	chown hobbit:adm /var/log/hobbit ; chmod 2755 /var/log/hobbit
+
 	cd /var/lib/hobbit; chown hobbit:hobbit . acks data disabled hist histlogs hostdata logs rrd tmp www
-	cd /var/lib/hobbit/www; chown hobbit:hobbit . html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
+	cd /var/lib/hobbit/www; chown hobbit:hobbit html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
 	cd /etc/hobbit; chgrp www-data hobbit-nkview.cfg hobbit-nkview.cfg.bak; chmod g+w hobbit-nkview.cfg hobbit-nkview.cfg.bak
-	cd /usr/lib/hobbit/client; chown hobbit:hobbit logs tmp; chmod u+w logs tmp
 
 	if ! test -e /etc/hobbit/bb-hosts ; then
 		if test -e /etc/default/hobbit-client ; then
@@ -45,11 +48,18 @@ case "$1" in
 #
 # You need to define at least the Hobbit server itself here.
 
+#0.0.0.0	.default.	# NOPROPRED:+apt,+libs
+
+#group Servers
 127.0.0.1	$CLIENTHOSTNAME	# bbd http://$CLIENTHOSTNAME/
+
+#group Dialup
+#0.0.0.0	notebook.bla.net # noconn dialup
 EOF
 	fi
 
-	touch /etc/hobbit/hobbitpasswd /etc/hobbit/hobbitgroups
+	test -e /etc/hobbit/hobbitpasswd || touch /etc/hobbit/hobbitpasswd
+	test -e /etc/hobbit/hobbitgroups || touch /etc/hobbit/hobbitgroups
 	test -e /etc/init.d/apache2 && invoke-rc.d apache2 reload
     ;;
 
