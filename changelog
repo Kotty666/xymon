@@ -1,3 +1,10 @@
+hobbit (4.2.0.dfsg-6) unstable; urgency=low
+
+  * Add missing "test" in postrm. Thanks to Yukio Shiiya for the patch.
+    (Closes: #446347)
+
+ -- Christoph Berg <myon@debian.org>  Fri, 12 Oct 2007 20:56:51 +0200
+
 hobbit (4.2.0.dfsg-5) unstable; urgency=low
 
   * The Smith inquisition reviewed our templates - thanks Christian Perrier.
