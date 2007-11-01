@@ -1,11 +1,14 @@
 hobbit (4.2.0.dfsg-7) unstable; urgency=low
 
   * Add patch by Roland Rosenfeld to adjust description width in the netstat
-    graphs (Closes: #447484).
+    graphs. (Closes: #447484)
   * Return 0 in init-common.sh, thanks to Jason Cormie for spotting.
-    (Closes: #448482).
+    (Closes: #448482)
+  * Recreate /usr/lib/hobbit/*/tmp/ symlinks, pointing to /var/lib/hobbit/tmp,
+    and properly set permissions. (Closes: #448489)
+  * Make our HOBBITMENU work for the ghost clients report. (Closes: #446095)
 
- -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 16:58:03 +0100
+ -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 17:28:53 +0100
 
 hobbit (4.2.0.dfsg-6) unstable; urgency=low
 

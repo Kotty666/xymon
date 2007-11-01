@@ -29,6 +29,8 @@ case "$1" in
 
 	test -d /var/run/hobbit || mkdir /var/run/hobbit
 	chown hobbit:hobbit /var/run/hobbit
+	test -d /var/lib/hobbit/tmp || mkdir /var/lib/hobbit/tmp
+	chown hobbit:hobbit /var/lib/hobbit/tmp
 	test -d /var/log/hobbit || mkdir /var/log/hobbit
 	chown hobbit:adm /var/log/hobbit ; chmod 2755 /var/log/hobbit
 

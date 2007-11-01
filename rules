@@ -107,7 +107,7 @@ install-client: build install-clean
 	PKGBUILD=1 INSTALLROOT=$C/ $(MAKE) install-client
 	cd $C/usr/lib/hobbit/client && mv etc/* $C/etc/hobbit && rmdir etc && ln -s ../../../../etc/hobbit etc
 	cd $C/usr/lib/hobbit/client && rmdir logs && ln -s ../../../../var/log/hobbit logs
-	cd $C/usr/lib/hobbit/client && rmdir tmp
+	cd $C/usr/lib/hobbit/client && rmdir tmp && ln -s ../../../../var/lib/hobbit/tmp
 	# the only command needed in /usr/bin is bbcmd, its PATH includes our private .../bin
 	cd $C/usr/bin && ln -s ../lib/hobbit/client/bin/bbcmd bbcmd
 	cp debian/hobbit-client.default.dist $C/usr/share/hobbit/hobbit-client.default

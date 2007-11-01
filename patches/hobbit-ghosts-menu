@@ -1,0 +1,10 @@
+--- a/web/hobbit-ghosts.sh
++++ b/web/hobbit-ghosts.sh
+@@ -3,5 +3,7 @@
+ # This is the Hobbit wrapper for the ghosts CGI
+ 
+ . /usr/lib/hobbit/server/etc/hobbitcgi.cfg
++. /usr/lib/hobbit/server/etc/web/menu.cfg
++export HOBBITMENU
+  exec /usr/lib/hobbit/server/bin/hobbit-ghosts.cgi $CGI_GHOSTS_OPTS
+ 
