@@ -2,8 +2,10 @@ hobbit (4.2.0.dfsg-7) unstable; urgency=low
 
   * Add patch by Roland Rosenfeld to adjust description width in the netstat
     graphs (Closes: #447484).
+  * Return 0 in init-common.sh, thanks to Jason Cormie for spotting.
+    (Closes: #448482).
 
- -- Christoph Berg <myon@debian.org>  Fri, 26 Oct 2007 14:55:35 +0200
+ -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 16:58:03 +0100
 
 hobbit (4.2.0.dfsg-6) unstable; urgency=low
 

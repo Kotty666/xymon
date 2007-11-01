@@ -24,4 +24,6 @@ create_includefiles ()
 	for cfg in /etc/hobbit/hobbitlaunch.d/*.cfg ; do
 		test -e $cfg && echo "include $cfg"
 	done > /var/run/hobbit/hobbitlaunch-include.cfg
+
+	return 0
 }
