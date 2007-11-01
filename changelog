@@ -9,9 +9,10 @@ hobbit (4.2.0.dfsg-7) unstable; urgency=low
   * Make our HOBBITMENU work for the ghost clients report. (Closes: #446095)
   * Grab patch from upstream to fix slightly broken NCV parsing.
   * Add /etc/hobbit/hobbitgraph.d/ and /etc/hobbit/hobbitserver.d/.
+  * Improve TCP tests time granularity.
   * Translations: Dutch, thanks Bart Cornelis. (Closes: #448934)
 
- -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 20:23:07 +0100
+ -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 20:51:26 +0100
 
 hobbit (4.2.0.dfsg-6) unstable; urgency=low
 
