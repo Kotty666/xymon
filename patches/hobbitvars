@@ -42,6 +42,11 @@
  BBHOSTS="$BBHOME/etc/bb-hosts"			# The bb-hosts file
  BB="$BBHOME/bin/bb"				# The 'bb' client program
  BBGEN="$BBHOME/bin/bbgen"			# The bbgen program
+@@ -185,3 +185,4 @@ BBGENSNAPOPTS="$BBGENOPTS"			# bbgen(1) 
+ # For the bb-hist CGI 
+ BBHISTEXT=""					# What extensions to run on history pages.
+ 
++include /var/run/hobbit/hobbitserver-include.cfg
 --- a/hobbitd/etcfiles/hobbit-apache-open.DIST
 +++ b/hobbitd/etcfiles/hobbit-apache-open.DIST
 @@ -15,7 +15,7 @@ Alias @BBHOSTURL@/  "@INSTALLWWWDIR@/"
@@ -160,3 +165,10 @@
 +BBTMP="/var/lib/hobbit/tmp"     # Where we may store temporary files.
 +BBCLIENTLOGS="/var/log/hobbit"  # Where we store the client logfiles
  
+--- a/hobbitd/etcfiles/hobbitgraph.cfg
++++ b/hobbitd/etcfiles/hobbitgraph.cfg
+@@ -1136,3 +1136,4 @@
+ 	GPRINT:cnt@RRDIDX@:AVERAGE: %6.1lf (avg)\n
+ 
+ 
++include /var/run/hobbit/hobbitgraph-include.cfg

@@ -7,8 +7,10 @@ hobbit (4.2.0.dfsg-7) unstable; urgency=low
   * Recreate /usr/lib/hobbit/*/tmp/ symlinks, pointing to /var/lib/hobbit/tmp,
     and properly set permissions. (Closes: #448489)
   * Make our HOBBITMENU work for the ghost clients report. (Closes: #446095)
+  * Grab patch from upstream to fix slightly broken NCV parsing.
+  * Add /etc/hobbit/hobbitgraph.d/ and /etc/hobbit/hobbitserver.d/.
 
- -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 17:28:53 +0100
+ -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 20:21:24 +0100
 
 hobbit (4.2.0.dfsg-6) unstable; urgency=low
 

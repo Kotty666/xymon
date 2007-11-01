@@ -4,3 +4,4 @@ hobbitclient-debian
 hobbitvars
 hobbitgraph.netstat
 hobbit-ghosts-menu
+ncv-ignoretext.patch -p0
