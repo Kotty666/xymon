@@ -1,3 +1,9 @@
+hobbit (4.2.0.dfsg-8) unstable; urgency=low
+
+  * Set umask to 022 on startup.
+
+ -- Christoph Berg <myon@debian.org>  Fri, 16 Nov 2007 11:12:58 +0100
+
 hobbit (4.2.0.dfsg-7) unstable; urgency=low
 
   * Add patch by Roland Rosenfeld to adjust description width in the netstat

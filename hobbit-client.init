@@ -41,7 +41,8 @@ case "$1" in
 	create_includefiles
 
 	echo -n "Starting $DESC: "
-	start-stop-daemon --exec $DAEMON --chuid hobbit --start -- \
+	start-stop-daemon --exec $DAEMON --chuid hobbit --umask 022 --start \
+		-- \
 		--config=/etc/hobbit/clientlaunch.cfg \
 		--log=/var/log/hobbit/clientlaunch.log \
 		--pidfile=$PIDFILE && echo "$NAME."
