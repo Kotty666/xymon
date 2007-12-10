@@ -3,8 +3,9 @@ hobbit (4.2.0.dfsg-8) unstable; urgency=low
   * Set umask to 022 on startup.
   * Fix mailq regexp in hobbitgraph.cfg, thanks to Roland Rosenfeld for the
     patch. (Closes: #450830)
+  * Add librrd0-dev as alternative to build-depends.
 
- -- Christoph Berg <myon@debian.org>  Mon, 10 Dec 2007 16:49:58 +0100
+ -- Christoph Berg <myon@debian.org>  Mon, 10 Dec 2007 17:01:10 +0100
 
 hobbit (4.2.0.dfsg-7) unstable; urgency=low
 
