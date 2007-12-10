@@ -1,0 +1,11 @@
+--- a/hobbitd/etcfiles/hobbitgraph.cfg
++++ b/hobbitd/etcfiles/hobbitgraph.cfg
+@@ -923,7 +923,7 @@
+ 
+ [mailq]
+ 	# This handles "mailq.rrd", "mailqin.rrd" and "mailqout.rrd"
+-	FNPATTERN mailq(.+).rrd
++	FNPATTERN mailq(.*).rrd
+ 	TITLE Mail Queue Length
+ 	YAXIS Queue Length
+ 	DEF:mailq@RRDIDX@=@RRDFN@:mailq:AVERAGE
