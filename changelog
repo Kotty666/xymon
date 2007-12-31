@@ -1,6 +1,7 @@
 hobbit (4.2.0.dfsg-9) unstable; urgency=low
 
   * Add splitncv patch by Charles Goyard.
+  * Updated lintian overrides.
 
  -- Christoph Berg <myon@debian.org>  Sat, 22 Dec 2007 20:22:45 +0100
 

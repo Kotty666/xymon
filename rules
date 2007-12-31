@@ -115,6 +115,9 @@ install-client: build install-clean
 	echo "include /var/run/hobbit/clientlaunch-include.cfg" >> \
 		$C/etc/hobbit/clientlaunch.cfg
 	rm $C/usr/lib/hobbit/client/runclient.sh
+	# Make lintian happy
+	install -m644 -D debian/hobbit-client.lintian \
+		$C/usr/share/lintian/overrides/hobbit-client
 
 
 binary-indep:
@@ -134,6 +137,7 @@ binary binary-arch: build install-server install-client
 				rm -v $$f ; ln -s ../../client/bin/$$f ; \
 			fi \
 		done
+	rmdir $S/usr/share/man/man7
 	dh_installdebconf -a
 	dh_installlogrotate -a
 	dh_installinit -a
