@@ -9,3 +9,4 @@ rrd_net_granularity
 hobbitgraph.mailq
 disk-linecount
 splitncv
+ldap-deprecated

@@ -23,8 +23,6 @@ Description: monitoring system for systems, networks and applications - server
  .
  Hobbit has a great deal of inspiration from the non-free Big Brother package,
  but does not include any Big Brother code.
- .
- http://hobbitmon.sourceforge.net/
 
 Package: hobbit-client
 Architecture: any
@@ -43,6 +41,3 @@ Description: client for the Hobbit network monitor
  This is the client data collection package for Hobbit. It gathers statistics
  and data from a single system and reports it to the Hobbit monitor. You should
  run this on all systems if you have a Hobbit server installed.
- .
- http://hobbitmon.sourceforge.net/
-

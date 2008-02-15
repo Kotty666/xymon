@@ -1,3 +1,10 @@
+hobbit (4.2.0.dfsg-10) unstable; urgency=low
+
+  * Add patch by dann frazier to define LDAP_DEPRECATED to continue using the
+    deprecated libldap interfaces, thanks. (Closes: #463424)
+
+ -- Christoph Berg <myon@debian.org>  Fri, 15 Feb 2008 12:18:50 +0100
+
 hobbit (4.2.0.dfsg-9) unstable; urgency=low
 
   * Add splitncv patch by Charles Goyard.
