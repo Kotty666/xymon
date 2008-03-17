@@ -51,7 +51,7 @@ case "$1" in
 	echo -n "Stopping $DESC: "
 	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop && echo "$NAME."
 	;;
-  restart|force-reload)
+  restart)
 	if [ -x /usr/lib/hobbit/server/bin/hobbitd ] ; then
 		echo "Hobbit server installed. Please restart 'hobbit' instead."
 		exit 0
@@ -60,7 +60,7 @@ case "$1" in
 	sleep 1
 	$0 start
 	;;
-  reload)
+  reload|force-reload)
 	[ -x /usr/lib/hobbit/server/bin/hobbitd ] && exit 0
 	create_includefiles
 	kill -HUP `cat /var/run/hobbit/clientlaunch.pid`

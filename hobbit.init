@@ -64,7 +64,7 @@ case "$1" in
 	fi
 	;;
 
-   "restart"|"force-reload")
+   "restart")
 	if test -s $PIDFILE
 	then
 		$0 stop
@@ -76,7 +76,7 @@ case "$1" in
 	fi
 	;;
 
-   "reload")
+   "reload"|"force-reload")
 	if test -s $PIDFILE
 	then
 		create_includefiles
