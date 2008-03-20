@@ -1,5 +1,6 @@
 etc/default
 etc/hobbit/clientlaunch.d
+etc/hobbit/hobbitclient.d
 usr/bin
 usr/share/hobbit
 var/lib/hobbit/tmp

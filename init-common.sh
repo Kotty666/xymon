@@ -38,5 +38,11 @@ create_includefiles ()
 		done > /var/run/hobbit/hobbitserver-include.cfg
 	fi
 
+	if test -d /etc/hobbit/hobbitclient.d ; then
+		for cfg in /etc/hobbit/hobbitclient.d/*.cfg ; do
+			test -e $cfg && echo "include $cfg"
+		done > /var/run/hobbit/hobbitclient-include.cfg
+	fi
+
 	return 0
 }

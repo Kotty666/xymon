@@ -1,6 +1,7 @@
-hobbit (4.2.0.dfsg-11) unstable; urgency=low
+hobbit (4.2.0.dfsg-11) UNRELEASED; urgency=low
 
   * Make force-reload reload, not restart in init scripts.
+  * Add /etc/hobbit/hobbitclient.d/.
 
  -- Christoph Berg <myon@debian.org>  Mon, 17 Mar 2008 12:33:35 +0100
 
