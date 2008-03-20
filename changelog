@@ -1,8 +1,9 @@
-hobbit (4.2.0.dfsg-11) unreleased/unstable; urgency=low
+hobbit (4.2.0.dfsg-11) unstable; urgency=low
 
   * Make force-reload reload, not restart in init scripts.
   * Add patch to allow "/http" in URLs (require full "/http[s]://" for proxy
     requests).
+  * Add /etc/hobbit/hobbitclient.d/.
 
  -- Christoph Berg <myon@debian.org>  Wed, 19 Mar 2008 16:53:45 +0100
 
