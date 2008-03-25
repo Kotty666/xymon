@@ -1,11 +1,13 @@
-hobbit (4.2.0.dfsg-11) unstable; urgency=low
+hobbit (4.2.0.dfsg-11) unrelease-unstable; urgency=low
 
   * Make force-reload reload, not restart in init scripts.
+  * Move init scripts to S98 and Should-Start: $all so monitored services have
+    already started. (S98 only effective on new installs.)
   * Add patch to allow "/http" in URLs (require full "/http[s]://" for proxy
     requests).
   * Add /etc/hobbit/hobbitclient.d/.
 
- -- Christoph Berg <myon@debian.org>  Wed, 19 Mar 2008 16:53:45 +0100
+ -- Christoph Berg <myon@debian.org>  Tue, 25 Mar 2008 11:35:55 +0100
 
 hobbit (4.2.0.dfsg-10) unstable; urgency=low
 
