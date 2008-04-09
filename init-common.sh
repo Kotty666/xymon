@@ -7,6 +7,8 @@ create_includefiles ()
 		exit 0
 	fi
 
+	umask 022
+
 	set -- $HOBBITSERVERS
 	if [ $# -eq 1 ]; then
 		echo "BBDISP=\"$HOBBITSERVERS\""
