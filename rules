@@ -93,10 +93,6 @@ install-server: build install-clean
 	# Install a free menu
 	sed -i -e's/ Transitional//' -e'/"Topline"/i&HOBBITMENU' \
 		$S/etc/hobbit/web/*_header
-	# Make lintian happy
-	install -m644 -D debian/hobbit.lintian \
-		$S/usr/share/lintian/overrides/hobbit
-
 
 install-client: build install-clean
 	#################### Installing client ########################
@@ -115,10 +111,6 @@ install-client: build install-clean
 	echo "include /var/run/hobbit/clientlaunch-include.cfg" >> \
 		$C/etc/hobbit/clientlaunch.cfg
 	rm $C/usr/lib/hobbit/client/runclient.sh
-	# Make lintian happy
-	install -m644 -D debian/hobbit-client.lintian \
-		$C/usr/share/lintian/overrides/hobbit-client
-
 
 binary-indep:
 
@@ -129,6 +121,7 @@ binary binary-arch: build install-server install-client
 	dh_installchangelogs -a Changes
 	dh_installdocs -a
 	dh_installexamples -a
+	-dh_lintian -a
 	# move some files into the client package
 	dh_movefiles --sourcedir=debian/hobbit -a
 	cd $S/usr/lib/hobbit/server/bin && \

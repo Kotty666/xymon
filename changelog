@@ -1,3 +1,9 @@
+hobbit (4.2.0.dfsg-12) unstable; urgency=low
+
+  * Use dh_lintian.
+
+ -- Christoph Berg <myon@debian.org>  Mon, 21 Apr 2008 22:11:51 +0200
+
 hobbit (4.2.0.dfsg-11) unstable; urgency=low
 
   * Make force-reload reload, not restart in init scripts.
