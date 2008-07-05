@@ -5,8 +5,9 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
   * Do not ignore tmpfs mountpoints in hobbitclient-linux.sh, but add
     /dev, /dev/shm, and /lib/init/rw to the default IGNORE list in
     /etc/hobbit/hobbit-clients.cfg. (Closes: #487157)
+  * Add README.source.
 
- -- Christoph Berg <myon@debian.org>  Sat, 05 Jul 2008 14:43:23 +0200
+ -- Christoph Berg <myon@debian.org>  Sat, 05 Jul 2008 14:57:16 +0200
 
 hobbit (4.2.0.dfsg-12) unstable; urgency=low
 
