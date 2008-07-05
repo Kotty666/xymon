@@ -1,2 +1,3 @@
 version=3
+options="dversionmangle=s/\.dfsg$//" \
 http://sf.net/hobbitmon/hobbit-(.*).tar.gz
