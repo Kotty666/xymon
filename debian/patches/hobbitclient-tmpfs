@@ -1,0 +1,24 @@
+--- a/client/hobbitclient-linux.sh
++++ b/client/hobbitclient-linux.sh
+@@ -42,7 +42,7 @@ uptime
+ echo "[who]"
+ who
+ echo "[df]"
+-df -Pl -x none -x tmpfs -x shmfs -x unknown -x iso9660 | sed -e '/^[^ 	][^ 	]*$/{
++df -Pl -x none -x shmfs -x unknown -x iso9660 | sed -e '/^[^ 	][^ 	]*$/{
+ N
+ s/[ 	]*\n[ 	]*/ /
+ }'
+--- a/hobbitd/etcfiles/hobbit-clients.cfg
++++ b/hobbitd/etcfiles/hobbit-clients.cfg
+@@ -347,6 +347,10 @@
+ # be placed at the end of the file.
+ 
+ DEFAULT
++	# Ignore some usually uninteresting tmpfs mounts.
++	DISK    /dev IGNORE
++	DISK    /dev/shm IGNORE
++	DISK    /lib/init/rw IGNORE
+ 	# These are the built-in defaults.
+ 	UP      1h
+ 	LOAD    5.0 10.0

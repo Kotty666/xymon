@@ -5,6 +5,7 @@ files
 *.debhelper
 *.substvars
 stamp-patched
+.pc
 
 # upstream
 COPYING
