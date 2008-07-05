@@ -1,5 +1,5 @@
---- release/hobbit-4.2.0/hobbitd/rrd/do_ncv.c	2006-08-09 22:10:06.000000000 +0200
-+++ hobbitd/rrd/do_ncv.c	2006-09-14 22:49:06.259129035 +0200
+--- a/hobbitd/rrd/do_ncv.c
++++ b/hobbitd/rrd/do_ncv.c
 @@ -11,7 +11,7 @@
  /*                                                                            */
  /*----------------------------------------------------------------------------*/
@@ -9,7 +9,7 @@
  
  int do_ncv_rrd(char *hostname, char *testname, char *msg, time_t tstamp) 
  { 
-@@ -44,11 +44,22 @@
+@@ -44,11 +44,22 @@ int do_ncv_rrd(char *hostname, char *tes
  
  		l += strspn(l, " \t\n");
  		if (*l) { 

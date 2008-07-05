@@ -4,7 +4,7 @@ hobbitclient-debian
 hobbitvars
 hobbitgraph.netstat
 hobbit-ghosts-menu
-ncv-ignoretext.patch -p0
+ncv-ignoretext.patch 
 rrd_net_granularity
 hobbitgraph.mailq
 disk-linecount

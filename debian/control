@@ -27,7 +27,7 @@ Description: monitoring system for systems, networks and applications - server
 Package: hobbit-client
 Architecture: any
 Conflicts: hobbit (<= 4.2.0-1)
-Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base
 Suggests: hobbit-plugins
 Description: client for the Hobbit network monitor
  Hobbit is a network- and applications-monitoring system designed for use in

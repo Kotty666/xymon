@@ -1,4 +1,4 @@
-#! /bin/sh -e
+#! /bin/sh
 #
 # hobbitclient    This shell script takes care of starting and stopping
 #                 the hobbit client.
@@ -23,6 +23,9 @@ HOBBITCLIENTHOME="/usr/lib/hobbit/client"
 
 test -x $DAEMON || exit 0
 
+. /lib/lsb/init-functions
+. /usr/share/hobbit/init-common.sh
+
 # Include hobbitclient defaults if available
 if [ -f /etc/default/hobbit-client ] ; then
 	. /etc/default/hobbit-client
@@ -31,8 +34,6 @@ fi
 [ -z "$MACHINEDOTS" ] && MACHINEDOTS="`hostname -f`"
 export HOBBITSERVERS HOBBITCLIENTHOME CLIENTHOSTNAME MACHINE MACHINEDOTS
 
-. /usr/share/hobbit/init-common.sh
-
 case "$1" in
   start)
 	# do not run the client script on the server
@@ -40,20 +41,22 @@ case "$1" in
 
 	create_includefiles
 
-	echo -n "Starting $DESC: "
+	log_daemon_msg "Starting $DESC" "$NAME"
 	start-stop-daemon --exec $DAEMON --chuid hobbit --umask 022 --start \
 		-- \
 		--config=/etc/hobbit/clientlaunch.cfg \
 		--log=/var/log/hobbit/clientlaunch.log \
-		--pidfile=$PIDFILE && echo "$NAME."
+		--pidfile=$PIDFILE
+	log_end_msg $?
 	;;
   stop)
-	echo -n "Stopping $DESC: "
-	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop && echo "$NAME."
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop --retry 5
+	log_end_msg $?
 	;;
   restart)
 	if [ -x /usr/lib/hobbit/server/bin/hobbitd ] ; then
-		echo "Hobbit server installed. Please restart 'hobbit' instead."
+		log_action_msg "Hobbit server installed. Please restart 'hobbit' instead"
 		exit 0
 	fi
 	$0 stop
