@@ -1,3 +1,9 @@
+hobbit (4.2.0.dfsg-14) unstable; urgency=low
+
+  * Swedish debconf translation, thanks Martin Ågren. (Closes: #491368)
+
+ -- Christoph Berg <myon@debian.org>  Sat, 19 Jul 2008 01:24:50 +0200
+
 hobbit (4.2.0.dfsg-13) unstable; urgency=low
 
   * Use lsb init functions.
