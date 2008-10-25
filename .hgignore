@@ -3,7 +3,10 @@ hobbit
 hobbit-client
 files
 *.debhelper
+*.debhelper.log
 *.substvars
+Makefile
+build-stamp
 stamp-patched
 .pc
 

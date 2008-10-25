@@ -1,3 +1,9 @@
+hobbit (4.2.0.dfsg-15) unstable; urgency=medium
+
+  * bbnet/contest.c: Do not crash on long-living SSL certs. (Closes: #503111)
+
+ -- Christoph Berg <myon@debian.org>  Sat, 25 Oct 2008 14:04:35 +0200
+
 hobbit (4.2.0.dfsg-14) unstable; urgency=low
 
   * Swedish debconf translation, thanks Martin Ågren. (Closes: #491368)
