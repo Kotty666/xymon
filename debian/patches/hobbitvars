@@ -22,21 +22,21 @@
  BBGHOSTS="1"                    # How to handle status messages from unknown hosts.
                                  # 0=accept message, 1=discard message, 2=discard message and log the event
 @@ -57,9 +56,10 @@ BBWEBHOST="http://$BBSERVERWWWNAME"		# J
- BBWEBHOSTURL="$BBWEBHOST$BBSERVERWWWURL"	# Prefix for all static Hobbit pages - http://www.foo.com/bb
- BBWEBHTMLLOGS="$BBWEBHOSTURL/html"		# Prefix for the Hobbit HTML logs (only if BBLOGSTATUS=STATIC)
- BBWEB="$BBSERVERWWWURL"				# Hobbit URL prefix without the host part
--BBSKIN="$BBSERVERWWWURL/gifs"			# Hobbit URL prefix for the GIF files
-+BBSKIN="$BBSERVERWWWURL/gifs/static"			# Hobbit URL prefix for the GIF files
- BBHELPSKIN="$BBSERVERWWWURL/help"               # Hobbit URL prefix for the online help files.
- BBNOTESSKIN="$BBSERVERWWWURL/notes"             # Hobbit URL prefix for the online notes-files.
+ BBWEBHOSTURL="$BBWEBHOST$BBSERVERWWWURL"	# Prefix for all static Xymon pages - http://www.foo.com/bb
+ BBWEBHTMLLOGS="$BBWEBHOSTURL/html"		# Prefix for the Xymon HTML logs (only if BBLOGSTATUS=STATIC)
+ BBWEB="$BBSERVERWWWURL"				# Xymon URL prefix without the host part
+-BBSKIN="$BBSERVERWWWURL/gifs"			# Xymon URL prefix for the GIF files
++BBSKIN="$BBSERVERWWWURL/gifs/static"		# Xymon URL prefix for the GIF files
+ BBHELPSKIN="$BBSERVERWWWURL/help"               # Xymon URL prefix for the online help files.
+ BBNOTESSKIN="$BBSERVERWWWURL/notes"             # Xymon URL prefix for the online notes-files.
 +include /etc/hobbit/web/menu.cfg
- BBMENUSKIN="$BBSERVERWWWURL/menu"               # Hobbit URL prefix for the webpage menu files.
- BBREPURL="$BBSERVERWWWURL/rep"			# Hobbit URL prefix for the Hobbit availability reports
- BBSNAPURL="$BBSERVERWWWURL/snap"		# Hobbit URL prefix for the Hobbit snapshots
+ BBMENUSKIN="$BBSERVERWWWURL/menu"               # Xymon URL prefix for the webpage menu files.
+ BBREPURL="$BBSERVERWWWURL/rep"			# Xymon URL prefix for the Xymon availability reports
+ BBSNAPURL="$BBSERVERWWWURL/snap"		# Xymon URL prefix for the Xymon snapshots
 @@ -69,7 +69,7 @@ SECURECGIBINURL="$BBSERVERSECURECGIURL"	
  
  # Locations of system-wide files and directories
- BBHOME="@BBHOME@"				# The Hobbit server directory, where programs and configurations go. 
+ BBHOME="@BBHOME@"				# The Xymon server directory, where programs and configurations go. 
 -BBTMP="$BBHOME/tmp"				# Directory used for temporary files.
 +BBTMP="/var/lib/hobbit/tmp"			# Directory used for temporary files.
  BBHOSTS="$BBHOME/etc/bb-hosts"			# The bb-hosts file
@@ -169,8 +169,9 @@
 +include /var/run/hobbit/hobbitclient-include.cfg
 --- a/hobbitd/etcfiles/hobbitgraph.cfg
 +++ b/hobbitd/etcfiles/hobbitgraph.cfg
-@@ -1136,3 +1136,4 @@
- 	GPRINT:cnt@RRDIDX@:AVERAGE: %6.1lf (avg)\n
- 
- 
+@@ -1753,3 +1753,5 @@
+         GPRINT:o@RRDIDX@:MIN: \: %8.1lf%s (min)
+         GPRINT:o@RRDIDX@:AVERAGE: \: %8.1lf%s (avg)\n
+ ####### End of graph definitions from hobbit-perl-client #############
++
 +include /var/run/hobbit/hobbitgraph-include.cfg

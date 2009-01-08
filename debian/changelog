@@ -1,3 +1,13 @@
+xymon (4.2.2.dfsg-17) experimental; urgency=low
+
+  * Hobbit was renamed to Xymon (pronounced 'simon').
+  * New upstream version mostly consisting of the "all-in-one" patch and
+    support for BBWin clients.
+  * Remove patches that went upstream: bbgen_ASN1_UTCTIME, disk-linecount,
+    http-proxy-url, ldap-deprecated, ncv-ignoretext.patch.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 08 Jan 2009 15:00:15 +0100
+
 hobbit (4.2.0.dfsg-16) unstable; urgency=low
 
   * Spanish debconf translation, thanks Enrique Monge. (Closes: #505206)

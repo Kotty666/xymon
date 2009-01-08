@@ -4,12 +4,6 @@ hobbitclient-debian
 hobbitvars
 hobbitgraph.netstat
 hobbit-ghosts-menu
-ncv-ignoretext.patch 
 rrd_net_granularity
 hobbitgraph.mailq
-disk-linecount
-splitncv
-ldap-deprecated
-http-proxy-url
 hobbitclient-tmpfs
-bbgen_ASN1_UTCTIME
