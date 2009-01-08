@@ -5,7 +5,7 @@ usr/share/man/man1/bbhostgrep.1
 usr/share/man/man1/bbhostshow.1
 usr/share/man/man5/clientlaunch.cfg.5
 usr/share/man/man1/clientupdate.1
-usr/share/man/man7/hobbit.7
+usr/share/man/man7/xymon.7
 usr/share/man/man5/hobbitclient.cfg.5
 usr/share/man/man8/hobbitlaunch.8
 usr/share/man/man1/logfetch.1

@@ -1,4 +1,4 @@
-Source: hobbit
+Source: xymon
 Section: net
 Priority: extra
 Maintainer: Christoph Berg <myon@debian.org>
@@ -9,35 +9,31 @@ Standards-Version: 3.8.0
 Vcs-Hg: http://hg.debian.org/hg/collab-maint/hobbit/debian
 Homepage: http://hobbitmon.sourceforge.net/
 
-Package: hobbit
+Package: xymon
 Architecture: any
-Depends: hobbit-client, ${shlibs:Depends}, ${misc:Depends}
-Description: monitoring system for systems, networks and applications - server
- Hobbit is a network- and applications-monitoring system designed for use in
- large-scale networks. It will also work just fine on a small network with
- just a few nodes. It is low-overhead and high-performance, with an easy to use
- web front-end. It handles monitoring of network services, and through client
- packages it can also be used to monitor server-specific items. Alerts can
- trigger when monitoring detects a problem, resulting in e-mails or calls to
- your pager or mobile phone.
+Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
+Description: monitoring system for systems, networks and applications
+ Xymon (previously called Hobbit) is a network- and applications-
+ monitoring system designed for use in large-scale networks. But it will
+ also work just fine on a small network with just a few nodes. It is
+ low-overhead and high-performance, with an easy to use web front-end.
+ It handles monitoring of network services, and through client packages
+ it can also be used to monitor server- specific items.  Alerts can
+ trigger when monitoring detects a problem, resulting in e-mails or
+ calls to your pager or mobile phone.
  .
- Hobbit has a great deal of inspiration from the non-free Big Brother package,
- but does not include any Big Brother code.
+ Xymon has a great deal of inspiration from the non-free Big Brother
+ package, but does not include any Big Brother code.
 
-Package: hobbit-client
+Package: xymon-client
 Architecture: any
-Conflicts: hobbit (<= 4.2.0-1)
+Conflicts: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2)
+Provides: hobbit-client
+Replaces: hobbit-client (<< 4.2.2)
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base
-Suggests: hobbit-plugins
-Description: client for the Hobbit network monitor
- Hobbit is a network- and applications-monitoring system designed for use in
- large-scale networks. But it will also work just fine on a small network with
- just a few nodes. It is low-overhead and high-performance, with an easy to use
- web front-end. It handles monitoring of network services, and through client
- packages it can also be used to monitor server-specific items. Alerts can
- trigger when monitoring detects a problem, resulting in e-mails or calls to
- your pager or mobile phone.
- .
- This is the client data collection package for Hobbit. It gathers statistics
- and data from a single system and reports it to the Hobbit monitor. You should
- run this on all systems if you have a Hobbit server installed.
+Suggests: xymon-plugins | hobbit-plugins
+Description: client for the Xymon network monitor
+ Client data collection package for Xymon (previously known as Hobbit).
+ This gathers statistics and data from a single system and reports it to
+ the Xymon monitor. You should run this on all systems if you have a
+ Xymon server installed.

@@ -55,8 +55,8 @@ clean: unpatch
 	dh_clean 
 	debconf-updatepo
 
-S=$(CURDIR)/debian/hobbit
-C=$(CURDIR)/debian/hobbit-client
+S=$(CURDIR)/debian/xymon
+C=$(CURDIR)/debian/xymon-client
 
 install-clean:
 	dh_clean -k
@@ -73,7 +73,7 @@ install-server: build install-clean
 	cd $S/var/lib/hobbit/www && \
 		mv gifs ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/gifs . && \
 		mv help ../../../../usr/share/hobbit && ln -s ../../../../usr/share/hobbit/help . && \
-		rmdir menu && ln -s ../../../../usr/share/hobbit/menu .
+		rm -rf menu && ln -s ../../../../usr/share/hobbit/menu .
 	# Create static gifs
 	cd $S/usr/share/hobbit/gifs && mkdir static && \
 		for gif in *.gif ; do \
@@ -123,7 +123,7 @@ binary binary-arch: build install-server install-client
 	dh_installexamples -a
 	-dh_lintian -a
 	# move some files into the client package
-	dh_movefiles --sourcedir=debian/hobbit -a
+	dh_movefiles --sourcedir=debian/xymon -a
 	cd $S/usr/lib/hobbit/server/bin && \
 		for f in * ; do \
 			if [ -f $C/usr/lib/hobbit/client/bin/$$f ] ; then \
@@ -132,8 +132,10 @@ binary binary-arch: build install-server install-client
 		done
 	rmdir $S/usr/share/man/man7
 	dh_installdebconf -a
-	dh_installlogrotate -a
-	dh_installinit -a -- defaults 98 02
+	# use the old file names for now
+	dh_installlogrotate --name=hobbit-client -a
+	dh_installinit --name=hobbit -p'xymon' -- defaults 98 02
+	dh_installinit --name=hobbit-client -p'xymon-client' -- defaults 98 02
 	dh_installman -a
 	cd $C/usr/share/man/man1 && mv bb.1 hobbit.1
 	cd $C/usr/share/man/man8 && ln -s ../man1/hobbit.1 bb.8

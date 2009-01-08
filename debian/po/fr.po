@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the hobbit package.
 #
 # Geoffroy Youri Berret <mxondebian@free.fr>, 2007.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: hobbit\n"
-"Report-Msgid-Bugs-To: myon@debian.org\n"
-"POT-Creation-Date: 2007-09-19 07:31+0200\n"
+"Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
+"POT-Creation-Date: 2009-01-08 15:38+0100\n"
 "PO-Revision-Date: 2007-08-28 21:51-0700\n"
 "Last-Translator: Geoffroy Youri Berret <mxondebian@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -19,13 +19,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../xymon-client.templates:2001
 msgid "Hobbit server:"
 msgstr "Serveur hobbit :"
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../xymon-client.templates:2001
 msgid ""
 "Please enter the network address used to access the Hobbit server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
@@ -35,21 +35,24 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../xymon-client.templates:2001
 msgid ""
 "Using host names instead of IP addresses is discouraged in case the network "
 "experiences DNS failures."
-msgstr "Il est conseillé d'indiquer les adresses IP plutôt que les noms d'hôtes afin d'éviter des difficulté si la résolution de noms de domaine (DNS) ne fonctionne plus."
+msgstr ""
+"Il est conseillé d'indiquer les adresses IP plutôt que les noms d'hôtes afin "
+"d'éviter des difficulté si la résolution de noms de domaine (DNS) ne "
+"fonctionne plus."
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:3001
+#: ../xymon-client.templates:3001
 msgid "Client hostname:"
 msgstr "Nom d'hôte du client :"
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:3001
+#: ../xymon-client.templates:3001
 msgid ""
 "Please enter the host name used by the Hobbit client when sending reports to "
 "the Hobbit server. This name must match the name used in the bb-hosts file "

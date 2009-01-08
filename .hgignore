@@ -1,6 +1,6 @@
 syntax:glob
-hobbit
-hobbit-client
+xymon
+xymon-client
 files
 *.debhelper
 *.debhelper.log

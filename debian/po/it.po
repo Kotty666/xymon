@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hobbit debconf templates\n"
-"Report-Msgid-Bugs-To: myon@debian.org\n"
-"POT-Creation-Date: 2007-09-19 07:31+0200\n"
+"Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
+"POT-Creation-Date: 2009-01-08 15:38+0100\n"
 "PO-Revision-Date: 2007-09-22 10:09+0200\n"
 "Last-Translator: Luca Monducci <luca.mo@tiscali.it>\n"
 "Language-Team: Italian <debian-l10n-italian@lists.debian.org>\n"
@@ -17,13 +17,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../xymon-client.templates:2001
 msgid "Hobbit server:"
 msgstr "Server Hobbit:"
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../xymon-client.templates:2001
 msgid ""
 "Please enter the network address used to access the Hobbit server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
@@ -34,23 +34,23 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:2001
+#: ../xymon-client.templates:2001
 msgid ""
 "Using host names instead of IP addresses is discouraged in case the network "
 "experiences DNS failures."
 msgstr ""
-"L'uso dei nomi host al posto degli indirizzi IP è sconsigliato nel caso "
-"si verifichino dei problemi con il DNS."
+"L'uso dei nomi host al posto degli indirizzi IP è sconsigliato nel caso si "
+"verifichino dei problemi con il DNS."
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:3001
+#: ../xymon-client.templates:3001
 msgid "Client hostname:"
 msgstr "Nome host del client:"
 
 #. Type: string
 #. Description
-#: ../hobbit-client.templates:3001
+#: ../xymon-client.templates:3001
 msgid ""
 "Please enter the host name used by the Hobbit client when sending reports to "
 "the Hobbit server. This name must match the name used in the bb-hosts file "
