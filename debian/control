@@ -11,6 +11,9 @@ Homepage: http://hobbitmon.sourceforge.net/
 
 Package: xymon
 Architecture: any
+Conflicts: hobbit (<< 4.2.2)
+Provides: hobbit
+Replaces: hobbit (<< 4.2.2)
 Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
 Description: monitoring system for systems, networks and applications
  Xymon (previously called Hobbit) is a network- and applications-
