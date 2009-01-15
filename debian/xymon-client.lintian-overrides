@@ -1,2 +1,1 @@
-hobbit-client: spelling-error-in-copyright publically publicly
-hobbit-client: package-contains-empty-directory usr/lib/hobbit/client/ext/
+xymon-client: package-contains-empty-directory usr/lib/hobbit/client/ext/

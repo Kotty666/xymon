@@ -1,5 +1,4 @@
-hobbit: package-contains-empty-directory usr/lib/hobbit/server/download/
+xymon: package-contains-empty-directory usr/lib/hobbit/server/download/
 #446982
-hobbit: possibly-insecure-handling-of-tmp-files-in-maintainer-script preinst:30
-hobbit: setuid-binary usr/lib/hobbit/server/bin/hobbitping 4755 root/root
-hobbit: spelling-error-in-copyright publically publicly
+xymon: possibly-insecure-handling-of-tmp-files-in-maintainer-script preinst:30
+xymon: setuid-binary usr/lib/hobbit/server/bin/hobbitping 4755 root/root

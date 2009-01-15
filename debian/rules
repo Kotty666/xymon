@@ -121,6 +121,7 @@ binary binary-arch: build install-server install-client
 	dh_installchangelogs -a Changes
 	dh_installdocs -a
 	dh_installexamples -a
+	# ignore missing dh_lintian for older dh versions
 	-dh_lintian -a
 	# move some files into the client package
 	dh_movefiles --sourcedir=debian/xymon -a

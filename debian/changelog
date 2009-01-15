@@ -6,8 +6,9 @@ xymon (4.2.2.dfsg-1) experimental; urgency=low
     support for BBWin clients.
   * Remove patches that went upstream: bbgen_ASN1_UTCTIME, disk-linecount,
     http-proxy-url, ldap-deprecated, ncv-ignoretext.patch.
+  * Known issue: only the first dns test for a host works.
 
- -- Christoph Berg <myon@debian.org>  Thu, 08 Jan 2009 16:15:57 +0100
+ -- Christoph Berg <myon@debian.org>  Thu, 15 Jan 2009 09:55:18 +0100
 
 hobbit (4.2.0.dfsg-16) unstable; urgency=low
 
