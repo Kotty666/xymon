@@ -1,3 +1,9 @@
+xymon (4.2.2.dfsg-2) experimental; urgency=low
+
+  * Add "IFEXIST" patch to hobbit-clients.cfg/files test. By Bernd Zeimetz.
+
+ -- Christoph Berg <myon@debian.org>  Mon, 19 Jan 2009 17:11:51 +0100
+
 xymon (4.2.2.dfsg-1) experimental; urgency=low
 
   * Hobbit was renamed to Xymon (pronounced 'simon'). We only rename the

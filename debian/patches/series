@@ -7,3 +7,4 @@ hobbit-ghosts-menu
 rrd_net_granularity
 hobbitgraph.mailq
 hobbitclient-tmpfs
+hobbit_files_ifexist
