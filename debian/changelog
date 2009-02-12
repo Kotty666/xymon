@@ -1,3 +1,9 @@
+xymon (4.2.3~rc1.dfsg-1) experimental; urgency=low
+
+  * New upstream release candidate.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 12 Feb 2009 16:25:24 +0100
+
 xymon (4.2.2.dfsg-2) experimental; urgency=low
 
   * Add "IFEXIST" patch to hobbit-clients.cfg/files test. By Bernd Zeimetz.

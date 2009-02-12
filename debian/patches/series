@@ -8,3 +8,6 @@ rrd_net_granularity
 hobbitgraph.mailq
 hobbitclient-tmpfs
 hobbit_files_ifexist
+
+# Hotfix past 4.2.3-RC1
+hobbitd-cookie.patch -p0

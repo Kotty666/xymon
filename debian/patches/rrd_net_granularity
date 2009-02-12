@@ -11,28 +11,28 @@
  	}
 --- a/bbnet/bbtest-net.c
 +++ b/bbnet/bbtest-net.c
-@@ -1746,8 +1746,8 @@ void send_results(service_t *service, in
+@@ -1644,8 +1644,8 @@ void send_results(service_t *service, in
  		}
  
  		if (t->duration.tv_sec != -1) {
 -			sprintf(msgtext, "\nSeconds: %u.%02u\n", 
--				(unsigned int)t->duration.tv_sec, (unsigned int)t->duration.tv_usec / 10000);
+-				(unsigned int)t->duration.tv_sec, (unsigned int)t->duration.tv_nsec / 10000000);
 +			sprintf(msgtext, "\nSeconds: %f\n", 
-+				(unsigned int)t->duration.tv_sec + (unsigned int)t->duration.tv_usec / 1000000.0);
++				(unsigned int)t->duration.tv_sec + (unsigned int)t->duration.tv_nsec / 1000000000.0);
  			addtostatus(msgtext);
  		}
  		addtostatus("\n\n");
 --- a/bbnet/dns.c
 +++ b/bbnet/dns.c
-@@ -354,7 +354,7 @@ int dns_test_server(char *serverip, char
+@@ -349,7 +349,7 @@ int dns_test_server(char *serverip, char
  		tst = strtok(NULL, ",");
  	}
  	xfree(tspec);
--	sprintf(msg, "\nSeconds: %u.%03u\n", (unsigned int)tspent->tv_sec, (unsigned int)tspent->tv_usec/1000);
-+	sprintf(msg, "\nSeconds: %f\n", (unsigned int)tspent->tv_sec + (unsigned int)tspent->tv_usec/1000000.0);
+-	sprintf(msg, "\nSeconds: %u.%03u\n", (unsigned int)tspent->tv_sec, (unsigned int)tspent->tv_nsec/1000000);
++	sprintf(msg, "\nSeconds: %f\n", (unsigned int)tspent->tv_sec + (unsigned int)tspent->tv_nsec/1000000000.0);
  	addtobuffer(banner, msg);
  
- 	return (status != ARES_SUCCESS);
+ 	ares_destroy(channel);
 --- a/bbnet/httpresult.c
 +++ b/bbnet/httpresult.c
 @@ -235,9 +235,9 @@ void send_http_results(service_t *httpte
@@ -41,32 +41,45 @@
  
 -			sprintf(urlmsg, "\nSeconds: %5d.%02d\n\n", 
 -				(unsigned int)req->tcptest->totaltime.tv_sec, 
--				(unsigned int)req->tcptest->totaltime.tv_usec / 10000 );
+-				(unsigned int)req->tcptest->totaltime.tv_nsec / 10000000 );
 +			sprintf(urlmsg, "\nSeconds: %f\n\n", 
 +				(unsigned int)req->tcptest->totaltime.tv_sec +
-+				(unsigned int)req->tcptest->totaltime.tv_usec / 1000000.0 );
++				(unsigned int)req->tcptest->totaltime.tv_nsec / 1000000000.0);
  			addtostatus(urlmsg);
  			xfree(urlmsg);
  		}
 --- a/bbnet/ldaptest.c
 +++ b/bbnet/ldaptest.c
-@@ -444,8 +444,8 @@ void send_ldap_results(service_t *ldapte
+@@ -443,8 +443,8 @@ void send_ldap_results(service_t *ldapte
  		}
  		if (req->faileddeps) addtostatus(req->faileddeps);
  
 -		sprintf(msgline, "\nSeconds: %u.%02u\n",
--			(unsigned int)req->duration.tv_sec, (unsigned int)req->duration.tv_usec / 10000);
+-			(unsigned int)req->duration.tv_sec, (unsigned int)req->duration.tv_nsec / 10000000);
 +		sprintf(msgline, "\nSeconds: %f\n",
-+			(unsigned int)req->duration.tv_sec + (unsigned int)req->duration.tv_usec / 1000000.0);
++			(unsigned int)req->duration.tv_sec + (unsigned int)req->duration.tv_nsec / 1000000000.0);
  
  		addtostatus(msgline);
  	}
+@@ -463,9 +463,9 @@ void show_ldap_test_results(service_t *l
+ 		req = (ldap_data_t *) t->privdata;
+ 
+ 		printf("URL        : %s\n", t->testspec);
+-		printf("Time spent : %u.%02u\n", 
+-			(unsigned int)req->duration.tv_sec, 
+-			(unsigned int)req->duration.tv_nsec / 10000000);
++		printf("Time spent : %f\n", 
++			(unsigned int)req->duration.tv_sec +
++			(unsigned int)req->duration.tv_nsec / 1000000000.0);
+ 		printf("LDAP output:\n%s\n", textornull(req->output));
+ 		printf("------------------------------------------------------\n");
+ 	}
 --- a/bbnet/hobbitping.c
 +++ b/bbnet/hobbitping.c
-@@ -354,11 +354,11 @@ void show_results(void)
+@@ -357,11 +357,11 @@ void show_results(void)
  		if (hosts[idx]->received > 0) {
  			printf("%s is alive", inet_ntoa(hosts[idx]->addr.sin_addr));
- 			rtt_usecs = (hosts[idx]->rtt_total.tv_sec*1000000 + hosts[idx]->rtt_total.tv_usec) / hosts[idx]->received;
+ 			rtt_usecs = (hosts[idx]->rtt_total.tv_sec*1000000 + (hosts[idx]->rtt_total.tv_nsec / 1000)) / hosts[idx]->received;
 -			if (rtt_usecs >= 1000) {
 -				printf(" (%lu ms)\n", rtt_usecs / 1000);
 +			if (rtt_usecs >= 3000) {
