@@ -112,9 +112,18 @@ install-client: build install-clean
 		$C/etc/hobbit/clientlaunch.cfg
 	rm $C/usr/lib/hobbit/client/runclient.sh
 
-binary-indep:
+binary: binary-arch binary-indep
 
-binary binary-arch: build install-server install-client
+binary-indep:
+	#################### Building dummy packages ########################
+	dh_testdir -i
+	dh_installchangelogs -i
+	dh_installdocs -i
+	dh_compress -i
+	dh_gencontrol -i
+	dh_builddeb -i
+
+binary-arch: build install-server install-client
 	#################### Building .deb files ########################
 	dh_testdir -a
 	dh_testroot -a

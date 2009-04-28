@@ -1,11 +1,12 @@
 syntax:glob
-xymon
-xymon-client
-files
-*.debhelper
-*.debhelper.log
-*.substvars
-Makefile
+debian/hobbit
+debian/hobbit-client
+debian/xymon
+debian/xymon-client
+debian/files
+debian/*.debhelper
+debian/*.debhelper.log
+debian/*.substvars
 build-stamp
 stamp-patched
 .pc
@@ -14,6 +15,7 @@ stamp-patched
 COPYING
 CREDITS
 Changes
+Makefile
 README
 README.CLIENT
 RELEASENOTES
