@@ -59,12 +59,15 @@ case "$1" in
 		if test $? -eq 0
 		then
 			echo "Hobbit (hobbitlaunch) running with PID `cat $PIDFILE`"
+			exit 0
 		else
 			echo "Hobbit not running, removing stale PID file"
 			rm -f $PIDFILE
+			exit 1
 		fi
 	else
 		echo "Hobbit (hobbitlaunch) does not appear to be running"
+		exit 3
 	fi
 	;;
 

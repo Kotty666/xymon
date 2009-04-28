@@ -54,6 +54,24 @@ case "$1" in
 	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop --retry 5
 	log_end_msg $?
 	;;
+  status)
+	if test -s $PIDFILE
+	then
+		kill -0 `cat $PIDFILE`
+		if test $? -eq 0
+		then
+                        echo "Hobbit client running with PID `cat $PIDFILE`"
+			exit 0
+		else
+			echo "Hobbit client not running, removing stale PID file"
+			rm -f $PIDFILE
+			exit 1
+		fi
+	else
+		echo "Hobbit client does not appear to be running"
+		exit 3
+	fi
+	;;
   restart)
 	if [ -x /usr/lib/hobbit/server/bin/hobbitd ] ; then
 		log_action_msg "Hobbit server installed. Please restart 'hobbit' instead"
@@ -76,7 +94,7 @@ case "$1" in
 	;;
   *)
 	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload|rotate}" >&2
+	echo "Usage: $N {start|stop|restart|force-reload|status|rotate}" >&2
 	exit 1
 	;;
 esac
