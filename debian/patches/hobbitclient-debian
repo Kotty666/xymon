@@ -1,9 +1,9 @@
 --- a/client/hobbitclient-linux.sh
 +++ b/client/hobbitclient-linux.sh
-@@ -63,6 +63,8 @@ echo "[ifstat]"
- /sbin/ifconfig
+@@ -66,6 +66,8 @@ echo "[ifstat]"
+ if test -r /proc/mdstat; then echo "[mdstat]"; cat /proc/mdstat; fi
  echo "[ps]"
- ps -Aw -o pid,ppid,user,start,state,pri,pcpu,time,pmem,rsz,vsz,cmd
+ ps -Aww -o pid,ppid,user,start,state,pri,pcpu,time,pmem,rsz,vsz,cmd
 +echo "[dpkg]"
 +COLUMNS=200 dpkg -l | awk '/^..  / { print $1 " " $2 " " $3 }'
  

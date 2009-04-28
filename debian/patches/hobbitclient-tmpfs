@@ -12,11 +12,11 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
  echo "[who]"
  who
  echo "[df]"
--df -Pl -x none -x tmpfs -x shmfs -x unknown -x iso9660 | sed -e '/^[^ 	][^ 	]*$/{
-+df -Pl -x none -x shmfs -x unknown -x iso9660 | sed -e '/^[^ 	][^ 	]*$/{
+-EXCLUDES=`cat /proc/filesystems | grep nodev | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
++EXCLUDES=`cat /proc/filesystems | grep nodev | grep -v tmpfs | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
+ df -Pl -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
  N
  s/[ 	]*\n[ 	]*/ /
- }'
 --- a/hobbitd/etcfiles/hobbit-clients.cfg
 +++ b/hobbitd/etcfiles/hobbit-clients.cfg
 @@ -347,6 +347,10 @@

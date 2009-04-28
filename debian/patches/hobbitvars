@@ -169,9 +169,8 @@
 +include /var/run/hobbit/hobbitclient-include.cfg
 --- a/hobbitd/etcfiles/hobbitgraph.cfg
 +++ b/hobbitd/etcfiles/hobbitgraph.cfg
-@@ -1753,3 +1753,5 @@
-         GPRINT:o@RRDIDX@:MIN: \: %8.1lf%s (min)
-         GPRINT:o@RRDIDX@:AVERAGE: \: %8.1lf%s (avg)\n
- ####### End of graph definitions from hobbit-perl-client #############
-+
+@@ -1868,3 +1868,4 @@
+          GPRINT:pct:AVERAGE: \: %3.1lf (avg)\n
+ # End of System z graph definitions
+ 
 +include /var/run/hobbit/hobbitgraph-include.cfg
