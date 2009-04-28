@@ -9,6 +9,11 @@ create_includefiles ()
 
 	umask 022
 
+	if ! [ -d /var/run/hobbit ] ; then
+		mkdir /var/run/hobbit
+		chown hobbit:hobbit /var/run/hobbit
+	fi
+
 	set -- $HOBBITSERVERS
 	if [ $# -eq 1 ]; then
 		echo "BBDISP=\"$HOBBITSERVERS\""

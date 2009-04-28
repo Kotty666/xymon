@@ -3,10 +3,11 @@ xymon (4.3.0~beta2.dfsg-1) unstable; urgency=low
   * New upstream release candidate. (Closes: #497819, #511560)
   * Rebuilding fixes librrd dependency. (Closes: #521045)
   * Forbid parallel building.
+  * init scripts create /var/run/hobbit if missing. By Axel Beckert.
   * init scripts properly support 'status'. By Peter Eisentraut.
     (Closes: #525347)
 
- -- Christoph Berg <myon@debian.org>  Tue, 28 Apr 2009 11:58:59 +0200
+ -- Christoph Berg <myon@debian.org>  Tue, 28 Apr 2009 12:28:14 +0200
 
 xymon (4.2.3~rc1.dfsg-1) experimental; urgency=low
 
