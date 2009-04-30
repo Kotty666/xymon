@@ -2,7 +2,6 @@ Source: xymon
 Section: net
 Priority: extra
 Maintainer: Christoph Berg <myon@debian.org>
-Uploaders: Martin Zobel-Helas <zobel@debian.org>
 Build-Depends: debhelper (>= 4.0.0), librrd2-dev | librrd0-dev, libssl-dev, libldap2-dev, libpcre3-dev,
  imagemagick, po-debconf, quilt (>= 0.40)
 Standards-Version: 3.8.1
