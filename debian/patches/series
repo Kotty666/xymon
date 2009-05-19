@@ -8,4 +8,7 @@ rrd_net_granularity
 hobbitgraph.mailq
 hobbitclient-tmpfs
 hobbit_files_ifexist
+
+# bug fixes
 526176-ldap
+hobbitd-rrdparameters
