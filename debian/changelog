@@ -1,8 +1,11 @@
 xymon (4.3.0~beta2.dfsg-3) unstable; urgency=low
 
   * Fix SPLITNCV rrd generation.
+  * Czech debconf translation added, thanks Martin Šín. (Closes: #535029)
+  * Update Build-Depends to librrd-dev, dropping Sarge support.
+  * Bump Standards-Version and DH compat level.
 
- -- Christoph Berg <myon@debian.org>  Tue, 19 May 2009 11:00:25 +0200
+ -- Christoph Berg <myon@debian.org>  Sun, 16 Aug 2009 14:32:56 +0200
 
 xymon (4.3.0~beta2.dfsg-2) unstable; urgency=low
 
