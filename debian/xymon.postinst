@@ -60,7 +60,9 @@ EOF
 
 	test -e /etc/hobbit/hobbitpasswd || touch /etc/hobbit/hobbitpasswd
 	test -e /etc/hobbit/hobbitgroups || touch /etc/hobbit/hobbitgroups
-	test -e /etc/init.d/apache2 && invoke-rc.d apache2 reload
+	if test -e /etc/init.d/apache2 ; then
+	    invoke-rc.d apache2 reload || :
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

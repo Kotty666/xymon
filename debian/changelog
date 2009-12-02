@@ -3,8 +3,10 @@ xymon (4.3.0~beta2.dfsg-4) unstable; urgency=low
   * Japanese debconf translation, thanks Hideki Yamane. (Closes: #558065)
   * Fix bashism in hobbitclient-linux.sh, thanks Raphael Geissert.
     (Closes: #530227)
+  * Ignore apache2 reload errors in postinst. Suggested by Giacomo Catenazzi.
+    (Closes: #528195)
 
- -- Christoph Berg <myon@debian.org>  Wed, 02 Dec 2009 13:30:44 +0100
+ -- Christoph Berg <myon@debian.org>  Wed, 02 Dec 2009 14:18:48 +0100
 
 xymon (4.3.0~beta2.dfsg-3) unstable; urgency=low
 
