@@ -59,7 +59,7 @@ S=$(CURDIR)/debian/xymon
 C=$(CURDIR)/debian/xymon-client
 
 install-clean:
-	dh_clean -k
+	dh_prep
 
 install: install-server install-client
 install-server: build install-clean
