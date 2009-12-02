@@ -12,3 +12,4 @@ hobbit_files_ifexist
 # bug fixes
 526176-ldap
 hobbitd-rrdparameters
+530227-hobbitclient-bashism
