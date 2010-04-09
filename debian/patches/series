@@ -14,3 +14,4 @@ hobbit_files_ifexist
 526176-ldap
 hobbitd-rrdparameters
 530227-hobbitclient-bashism
+kfreebsd-makefile

@@ -111,6 +111,12 @@ install-client: build install-clean
 	echo "include /var/run/hobbit/clientlaunch-include.cfg" >> \
 		$C/etc/hobbit/clientlaunch.cfg
 	rm $C/usr/lib/hobbit/client/runclient.sh
+ifneq (,$(findstring kfreebsd,$(shell dpkg --print-architecture)))
+	# kfreebsd support
+	install -m644 debian/kfreebsd.cfg $C/etc/hobbit/hobbitclient.d/kfreebsd.cfg
+else
+	# no kfreebsd support
+endif
 
 binary: binary-arch binary-indep
 
