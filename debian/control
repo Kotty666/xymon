@@ -15,6 +15,7 @@ Conflicts: hobbit (<< 4.2.2)
 Provides: hobbit
 Replaces: hobbit (<< 4.2.2)
 Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
+Suggests: rrdtool
 Description: monitoring system for systems, networks and applications
  Xymon (previously called Hobbit) is a network- and applications-
  monitoring system designed for use in large-scale networks. But it will

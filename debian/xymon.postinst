@@ -63,10 +63,18 @@ EOF
 	if test -e /etc/init.d/apache2 ; then
 	    invoke-rc.d apache2 reload || :
 	fi
+
+	if [ "$2" ] && dpkg --compare-versions "$2" lt 4.3.0~beta2.dfsg-8~ ; then
+		if [ -x /usr/bin/rrdtool ] ; then
+			echo "Fixing RRD parameters in clock.rrd files found ..."
+			for i in `find /var/lib/hobbit/rrd/ -name clock.rrd` ; do
+				rrdtool tune $i -i la:U
+			done
+		fi
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-
     ;;
 
     *)
