@@ -5,8 +5,8 @@ Maintainer: Christoph Berg <myon@debian.org>
 Build-Depends: debhelper (>= 7), librrd-dev, libssl-dev, libldap2-dev, libpcre3-dev,
  imagemagick, po-debconf, quilt (>= 0.40)
 Standards-Version: 3.8.3
-Vcs-Hg: http://hg.debian.org/hg/collab-maint/hobbit/debian
-Vcs-Browser: http://hg.debian.org/hg/collab-maint/hobbit/debian
+Vcs-Git: git://git.debian.org/collab-maint/xymon.git
+Vcs-Browser: http://git.debian.org/?p=collab-maint/xymon.git
 Homepage: http://hobbitmon.sourceforge.net/
 
 Package: xymon
