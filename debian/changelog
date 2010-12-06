@@ -1,4 +1,4 @@
-xymon (4.3.0~beta2.dfsg-6+lenny1) unstable; urgency=low
+xymon (4.3.0~beta2.dfsg-6+squeeze1) unstable; urgency=low
 
   * Debconf translation: Danish by Joe Hansen, thanks! (Closes: #605324)
   * Repository moved to git.debian.org.
