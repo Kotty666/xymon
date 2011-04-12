@@ -17,3 +17,4 @@ hobbitd-rrdparameters
 580493-negative-timeoffset
 kfreebsd-makefile
 bbcombotest-fix
+622069-sslv2-deprecation

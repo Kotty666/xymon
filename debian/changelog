@@ -1,3 +1,10 @@
+xymon (4.3.0~beta2.dfsg-8) unstable; urgency=low
+
+  * libssl1.0.0 removes SSLv2_client_method(), stop using it and document in
+    bb-hosts(5) that testing "https2" will in fact use v3. (Closes: #621115)
+
+ -- Christoph Berg <myon@debian.org>  Tue, 12 Apr 2011 13:19:22 +0200
+
 xymon (4.3.0~beta2.dfsg-7) experimental; urgency=low
 
   * Allow negative time offset (clock too fast) in clock.rrd. Patch by
