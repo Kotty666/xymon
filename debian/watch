@@ -1,3 +1,3 @@
 version=3
 options="dversionmangle=s/\.dfsg$//,uversionmangle=s/-beta/~beta/" \
-http://sf.net/hobbitmon/xymon-(.*).tar.gz
+http://sf.net/xymon/xymon-(.*).tar.gz
