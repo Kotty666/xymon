@@ -1,14 +1,16 @@
-xymon (4.3.0~beta2.dfsg-9) UNRELEASED; urgency=low
+xymon (4.3.0~beta2.dfsg-9) unstable; urgency=low
 
   [ Axel Beckert ]
   * Change SF project name from hobbitmon to xymon in debian/watch.
 
   [ Christoph Berg ]
+  * Remove transitional packages hobbit and hobbit-client.
   * Add /run to the default tmpfs ignore list in hobbit-clients.cfg.
     (Closes: #633061)
-  * Move hobbit HOME to /var/lib/hobbit. (Closes: #608787)
+  * Move hobbit HOME to /var/lib/hobbit (does not affect existing
+    installations). (Closes: #608787)
 
- -- Axel Beckert <abe@debian.org>  Tue, 19 Apr 2011 21:55:26 +0200
+ -- Christoph Berg <myon@debian.org>  Fri, 08 Jul 2011 10:54:50 +0200
 
 xymon (4.3.0~beta2.dfsg-8) unstable; urgency=low
 

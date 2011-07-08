@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Christoph Berg <myon@debian.org>
 Build-Depends: debhelper (>= 7), librrd-dev, libssl-dev, libldap2-dev, libpcre3-dev,
  imagemagick, po-debconf, quilt (>= 0.40)
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Vcs-Git: git://git.debian.org/collab-maint/xymon.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/xymon.git
 Homepage: http://hobbitmon.sourceforge.net/
@@ -41,15 +41,3 @@ Description: client for the Xymon network monitor
  This gathers statistics and data from a single system and reports it to
  the Xymon monitor. You should run this on all systems if you have a
  Xymon server installed.
-
-Package: hobbit
-Architecture: all
-Depends: xymon
-Description: dummy package for transitioning from Hobbit to Xymon
- This package has been replaced by xymon. You can safely remove it.
-
-Package: hobbit-client
-Architecture: all
-Depends: xymon-client
-Description: dummy package for transitioning from Hobbit to Xymon
- This package has been replaced by xymon-client. You can safely remove it.
