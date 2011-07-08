@@ -23,7 +23,7 @@ case "$1" in
     configure)
 	getent group hobbit > /dev/null || addgroup --system hobbit
 	getent passwd hobbit > /dev/null || adduser --system \
-		--home /var/run/hobbit --no-create-home \
+		--home /var/lib/hobbit --no-create-home \
 		--ingroup hobbit --disabled-password --disabled-login \
 		--gecos "Hobbit System Monitor" hobbit
 

@@ -6,6 +6,7 @@ xymon (4.3.0~beta2.dfsg-9) UNRELEASED; urgency=low
   [ Christoph Berg ]
   * Add /run to the default tmpfs ignore list in hobbit-clients.cfg.
     (Closes: #633061)
+  * Move hobbit HOME to /var/lib/hobbit. (Closes: #608787)
 
  -- Axel Beckert <abe@debian.org>  Tue, 19 Apr 2011 21:55:26 +0200
 
