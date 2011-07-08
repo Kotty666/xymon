@@ -35,7 +35,7 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
  }'
 --- a/hobbitd/etcfiles/hobbit-clients.cfg
 +++ b/hobbitd/etcfiles/hobbit-clients.cfg
-@@ -347,6 +347,10 @@
+@@ -347,6 +347,11 @@
  # be placed at the end of the file.
  
  DEFAULT
@@ -43,6 +43,7 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
 +	DISK    /dev IGNORE
 +	DISK    /dev/shm IGNORE
 +	DISK    /lib/init/rw IGNORE
++	DISK    /run IGNORE
  	# These are the built-in defaults.
  	UP      1h
  	LOAD    5.0 10.0

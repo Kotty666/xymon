@@ -1,6 +1,11 @@
 xymon (4.3.0~beta2.dfsg-9) UNRELEASED; urgency=low
 
+  [ Axel Beckert ]
   * Change SF project name from hobbitmon to xymon in debian/watch.
+
+  [ Christoph Berg ]
+  * Add /run to the default tmpfs ignore list in hobbit-clients.cfg.
+    (Closes: #633061)
 
  -- Axel Beckert <abe@debian.org>  Tue, 19 Apr 2011 21:55:26 +0200
 
