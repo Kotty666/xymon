@@ -1,0 +1,73 @@
+#! /bin/sh
+# postinst script for hobbit
+#
+# see: dh_installdeb(1)
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+#
+
+. /usr/share/debconf/confmodule
+
+set -e
+
+case "$1" in
+    configure)
+	getent group hobbit > /dev/null || addgroup --system hobbit
+	getent passwd hobbit > /dev/null || adduser --system \
+		--home /var/lib/hobbit --no-create-home \
+		--ingroup hobbit --disabled-password --disabled-login \
+		--gecos "Hobbit System Monitor" hobbit
+
+	test -d /var/run/hobbit || mkdir /var/run/hobbit
+	chown hobbit:hobbit /var/run/hobbit
+	test -d /var/lib/hobbit/tmp || mkdir /var/lib/hobbit/tmp
+	chown hobbit:hobbit /var/lib/hobbit/tmp
+	test -d /var/log/hobbit || mkdir /var/log/hobbit
+	chown hobbit:adm /var/log/hobbit ; chmod 2755 /var/log/hobbit
+
+	# Do the debconf stuff
+	db_get hobbit-client/HOBBITSERVERS
+	HOBBITSERVERS="$RET"
+	db_get hobbit-client/CLIENTHOSTNAME
+	CLIENTHOSTNAME="$RET"
+	db_stop
+
+	# Update configuration file
+	CONFIGFILE=/etc/default/hobbit-client
+	test -e $CONFIGFILE || cp /usr/share/hobbit/hobbit-client.default $CONFIGFILE
+	if grep -q "^HOBBITSERVERS=" $CONFIGFILE ; then
+		sed -i -e "s/^HOBBITSERVERS=.*/HOBBITSERVERS=\"$HOBBITSERVERS\"/" \
+			$CONFIGFILE
+	else
+		echo "HOBBITSERVERS=\"$HOBBITSERVERS\"" >> $CONFIGFILE
+	fi
+	if grep -q "^CLIENTHOSTNAME=" $CONFIGFILE ; then
+		sed -i -e "s/^CLIENTHOSTNAME=.*/CLIENTHOSTNAME=\"$CLIENTHOSTNAME\"/" \
+			$CONFIGFILE
+	else
+		echo "CLIENTHOSTNAME=\"$CLIENTHOSTNAME\"" >> $CONFIGFILE
+	fi
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

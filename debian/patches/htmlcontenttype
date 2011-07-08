@@ -1,0 +1,313 @@
+--- a/hobbitd/webfiles/acknowledge_header
++++ b/hobbitd/webfiles/acknowledge_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Acknowledge Alert</TITLE>
+ 
+--- a/hobbitd/webfiles/bb2_header
++++ b/hobbitd/webfiles/bb2_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
+--- a/hobbitd/webfiles/bb_header
++++ b/hobbitd/webfiles/bb_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&BBPAGEPATH; path=/">
+--- a/hobbitd/webfiles/bbnk_header
++++ b/hobbitd/webfiles/bbnk_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
+--- a/hobbitd/webfiles/bbrep_header
++++ b/hobbitd/webfiles/bbrep_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&BBPAGEPATH; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
+ <TITLE>Xymon Availability Report : &BBDATE</TITLE>
+--- a/hobbitd/webfiles/bbsnap2_header
++++ b/hobbitd/webfiles/bbsnap2_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&BBBACKGROUND : Xymon - Snapshot</TITLE>
+ 
+ <!-- Styles for the menu bar -->
+--- a/hobbitd/webfiles/bbsnap_header
++++ b/hobbitd/webfiles/bbsnap_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&BBPAGEPATH; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
+ <TITLE>Xymon Snapshot Report : &BBDATE</TITLE>
+--- a/hobbitd/webfiles/bbsnapnk_header
++++ b/hobbitd/webfiles/bbsnapnk_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&BBBACKGROUND : Xymon - Snapshot @ &BBDATE</TITLE>
+ 
+ <!-- Styles for the menu bar -->
+--- a/hobbitd/webfiles/columndoc_header
++++ b/hobbitd/webfiles/columndoc_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&BBBACKGROUND : Xymon - Documentation</TITLE>
+ 
+ <!-- Styles for the menu bar -->
+--- a/hobbitd/webfiles/confreport_header
++++ b/hobbitd/webfiles/confreport_header
+@@ -1,6 +1,9 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <html>
+-<head><title>Xymon configuration Report</title></head>
++<head>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
++<title>Xymon configuration Report</title>
++</head>
+ 
+ <body>
+ 
+--- a/hobbitd/webfiles/event_header
++++ b/hobbitd/webfiles/event_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Eventlog @ &BBDATE</TITLE>
+ 
+--- a/hobbitd/webfiles/findhost_header
++++ b/hobbitd/webfiles/findhost_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Find Host</TITLE>
+ 
+--- a/hobbitd/webfiles/ghosts_header
++++ b/hobbitd/webfiles/ghosts_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Ghost Clients</TITLE>
+ 
+--- a/hobbitd/webfiles/graphs_header
++++ b/hobbitd/webfiles/graphs_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
+ 
+ <!-- Styles for the menu bar -->
+--- a/hobbitd/webfiles/hist_header
++++ b/hobbitd/webfiles/hist_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&BBHIKEY; path=/">
+ <TITLE>&BBBACKGROUND : Xymon - History @ &BBDATE</TITLE>
+--- a/hobbitd/webfiles/histlog_header
++++ b/hobbitd/webfiles/histlog_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&BBHIKEY; path=/">
+ <TITLE>Xymon Historical Status: &BBHOST - &BBSVC @ &LOGTIME</TITLE>
+--- a/hobbitd/webfiles/hobbitnk_header
++++ b/hobbitd/webfiles/hobbitnk_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
+--- a/hobbitd/webfiles/hostgraphs_header
++++ b/hobbitd/webfiles/hostgraphs_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Metrics Report</TITLE>
+ 
+--- a/hobbitd/webfiles/hostlist_header
++++ b/hobbitd/webfiles/hostlist_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - List of Hosts</TITLE>
+ 
+--- a/hobbitd/webfiles/hostsvc_header
++++ b/hobbitd/webfiles/hostsvc_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="&BBREFRESH">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+--- a/hobbitd/webfiles/info_header
++++ b/hobbitd/webfiles/info_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&BBHIKEY; path=/">
+ <TITLE>Xymon - Host Information</TITLE>
+--- a/hobbitd/webfiles/maint_header
++++ b/hobbitd/webfiles/maint_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Maintenance</TITLE>
+ 
+--- a/hobbitd/webfiles/maintact_header
++++ b/hobbitd/webfiles/maintact_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Maintenance</TITLE>
+ 
+--- a/hobbitd/webfiles/nkedit_header
++++ b/hobbitd/webfiles/nkedit_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Critical Systems editor</TITLE>
+ 
+--- a/hobbitd/webfiles/notify_header
++++ b/hobbitd/webfiles/notify_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Notification Log @ &BBDATE</TITLE>
+ 
+--- a/hobbitd/webfiles/perfdata_header
++++ b/hobbitd/webfiles/perfdata_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Performance data @ &BBDATE</TITLE>
+ 
+--- a/hobbitd/webfiles/replog_header
++++ b/hobbitd/webfiles/replog_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>Xymon Availability Report : &BBHOST - &BBSVC &BBDATE</TITLE>
+ 
+ <!-- Styles for the menu bar -->
+--- a/hobbitd/webfiles/report_header
++++ b/hobbitd/webfiles/report_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Availability Report</TITLE>
+ 
+--- a/hobbitd/webfiles/snapshot_header
++++ b/hobbitd/webfiles/snapshot_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Snapshot Report</TITLE>
+ 
+--- a/hobbitd/webfiles/topchanges_header
++++ b/hobbitd/webfiles/topchanges_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&BBBACKGROUND : Xymon - Top Changes @ &BBDATE</TITLE>
+ 
+--- a/hobbitd/webfiles/useradm_header
++++ b/hobbitd/webfiles/useradm_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Manage Users</TITLE>
+ 

@@ -1,0 +1,22 @@
+Hobbit for Debian
+=================
+
+This Debian package follows pretty closely the original debianization shipped
+by upstream. The main differences are
+
+- 'hobbit' depends on 'hobbit-client' rather than conflicting with it; it uses
+  the client package for monitoring the local host. (The client package's init
+  script/daemon is disabled when the server is installed.)
+
+- Additional tests to run can be plugged into /etc/hobbit/clientlaunch.d/*.cfg.
+  Client and server will read these files on startup. Install the
+  hobbit-plugins package for some pre-packaged modules.
+
+- Access to the monitoring website is restricted to localhost by default.
+  Edit /etc/apache2/conf.d/hobbit to change this.
+
+- The javascript menu has been replaced by a CSS menu; the animated gifs were
+  replaced by static versions in the default install, change BBSKIN for the
+  animated version.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 16 Aug 2007 00:07:40 +0200

@@ -1,0 +1,5 @@
+etc/apache2/conf.d
+etc/hobbit/hobbitlaunch.d
+etc/hobbit/hobbitgraph.d
+etc/hobbit/hobbitserver.d
+usr/share/hobbit

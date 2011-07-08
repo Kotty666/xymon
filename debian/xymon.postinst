@@ -1,0 +1,88 @@
+#! /bin/sh
+# postinst script for hobbit
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+case "$1" in
+    configure)
+        # Setup permissions for the newly created "hobbit" user to write
+	# data where he needs to.
+	# And for the Apache-run CGI's to generate reports.
+	test -d /var/run/hobbit || mkdir /var/run/hobbit
+	chown hobbit:hobbit /var/run/hobbit
+	test -d /var/log/hobbit || mkdir /var/log/hobbit
+	chown hobbit:adm /var/log/hobbit ; chmod 2755 /var/log/hobbit
+
+	cd /var/lib/hobbit; chown hobbit:hobbit . acks data disabled hist histlogs hostdata logs rrd tmp www
+	cd /var/lib/hobbit/www; chown hobbit:hobbit html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
+	cd /etc/hobbit; chgrp www-data hobbit-nkview.cfg hobbit-nkview.cfg.bak; chmod g+w hobbit-nkview.cfg hobbit-nkview.cfg.bak
+
+	if ! test -e /etc/hobbit/bb-hosts ; then
+		if test -e /etc/default/hobbit-client ; then
+			. /etc/default/hobbit-client || true
+		fi
+		cat > /etc/hobbit/bb-hosts <<EOF
+# Master configuration file for Hobbit
+#
+# This file defines several things:
+#
+# 1) By adding hosts to this file, you define hosts that are monitored by Hobbit
+# 2) By adding "page", "subpage", "group" definitions, you define the layout
+#    of the Hobbit webpages, and how hosts are divided among the various webpages 
+#    that Hobbit generates.
+# 3) Several other definitions can be done for each host, see the bb-hosts(5)
+#    man-page.
+#
+# You need to define at least the Hobbit server itself here.
+
+#0.0.0.0	.default.	# NOPROPRED:+apt,+libs
+
+#group Servers
+127.0.0.1	$CLIENTHOSTNAME	# bbd http://$CLIENTHOSTNAME/
+
+#group Dialup
+#0.0.0.0	notebook.bla.net # noconn dialup
+EOF
+	fi
+
+	test -e /etc/hobbit/hobbitpasswd || touch /etc/hobbit/hobbitpasswd
+	test -e /etc/hobbit/hobbitgroups || touch /etc/hobbit/hobbitgroups
+	if test -e /etc/init.d/apache2 ; then
+	    invoke-rc.d apache2 reload || :
+	fi
+
+	if [ "$2" ] && dpkg --compare-versions "$2" lt 4.3.0~beta2.dfsg-8~ ; then
+		if [ -x /usr/bin/rrdtool ] ; then
+			echo "Fixing RRD parameters in clock.rrd files found ..."
+			for i in `find /var/lib/hobbit/rrd/ -name clock.rrd` ; do
+				rrdtool tune $i -i la:U
+			done
+		fi
+	fi
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

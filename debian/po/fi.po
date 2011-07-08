@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: debconf: hobbit\n"
+"Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
+"POT-Creation-Date: 2009-01-08 15:38+0100\n"
+"PO-Revision-Date: 2007-09-19 17:49+0200\n"
+"Last-Translator: Esko Arajärvi <edu@iki.fi>\n"
+"Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Finnish\n"
+"X-Poedit-Country: FINLAND\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:2001
+msgid "Hobbit server:"
+msgstr "Hobbit-palvelin:"
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:2001
+msgid ""
+"Please enter the network address used to access the Hobbit server(s). If you "
+"use multiple servers, use a space-separated list of addresses."
+msgstr ""
+"Anna Hobbit-palvelimen verkko-osoite. Jos käytössä on useampia palvelimia, "
+"syötä osoitteet välilyönnein eroteltuna."
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:2001
+msgid ""
+"Using host names instead of IP addresses is discouraged in case the network "
+"experiences DNS failures."
+msgstr ""
+"Verkkonimien käyttöä IP-osoitteiden sijaan ei suositella mahdollisten DNS:n "
+"toimintahäiriöiden takia."
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:3001
+msgid "Client hostname:"
+msgstr "Asiakaskoneen verkkonimi:"
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:3001
+msgid ""
+"Please enter the host name used by the Hobbit client when sending reports to "
+"the Hobbit server. This name must match the name used in the bb-hosts file "
+"on the Hobbit server."
+msgstr ""
+"Anna verkkonimi, jota Hobbit-asiakas käyttää lähettäessään raportteja Hobbit-"
+"palvelimelle. Tämän nimen tulee täsmätä Hobbit-serverillä tiedostossa bb-"
+"hosts olevaan nimeen."

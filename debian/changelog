@@ -1,80 +1,287 @@
-hobbit (4.3.0-0.beta2) unstable; urgency=low
+xymon (4.3.0~beta2.dfsg-9) unstable; urgency=low
 
-  * Xymon version 4.3.0 BETA 2
+  [ Axel Beckert ]
+  * Change SF project name from hobbitmon to xymon in debian/watch.
 
-  Core changes:
-  * New API's for loadhosts and sendmessage, in preparation for
-    the full 5.0 changes.
-  * Always use getcurrenttime() instead of time().
-  * Support for defining holidays as non-working days in alerts and
-    SLA calculations.
-  * Hosts which appear on multiple pages in the web display can
-    use any page they are on in the alerting rules and elsewhere.
-  * Worker modules (RRD, client-data parsers etc) can operate on
-    remote hosts from the hobbitd daemon, for load-sharing.
-  * Various bugfixes collected over time.
-  * New client support: z/OS, z/VSE and z/VM.
+  [ Christoph Berg ]
+  * Remove transitional packages hobbit and hobbit-client.
+  * Add /run to the default tmpfs ignore list in hobbit-clients.cfg.
+    (Closes: #633061)
+  * Move hobbit HOME to /var/lib/hobbit (does not affect existing
+    installations). (Closes: #608787)
 
-  Network test changes:
-  * Merged new network tests from trunk: SOAP-over-HTTP,
-    SSL minimum cipher strength
-  * Changed network test code to always report a validity period
-    for network tests, so it it possible to run network tests less
-    often than every 30 minutes (e.g. once an hour).
-  * Make the content-type setting in HTTP POST tests configurable.
-  * Make the source-address used for TCP tests configurable.
-  * Make the acceptable HTTP result codes configurable.
-  * Use and save HTTP session cookies.
+ -- Christoph Berg <myon@debian.org>  Fri, 08 Jul 2011 10:54:50 +0200
 
-  Web changes
-  * Support generic drop-down lists in templates.
-  * "NOCOLUMNS" changed to work for all columns.
-  * New "group-sorted" definition to auto-sort hosts in a group
-  * Use browser tooltips for host comments
-  * "Compact" status allows several statuses to appear as a single
-    status on the overview webpages.
-  * Trends page can select the time period to show. Buttons provided
-    for the common selections.
-  * Ghost list report now lists possible candidates for a ghost,
-    based on IP-address or unqualified hostname.
-  * Enhanced eventlog and top-changing hosts webpage
+xymon (4.3.0~beta2.dfsg-8) unstable; urgency=low
 
-  Report changes
-  * Number of outages as SLA parameter
+  * libssl1.0.0 removes SSLv2_client_method(), stop using it and document in
+    bb-hosts(5) that testing "https2" will in fact use v3. (Closes: #621115)
 
-  Miscellaneous
-  * hobbitlaunch support for running tasks only on certain hosts,
-    and for a maximum time.
+ -- Christoph Berg <myon@debian.org>  Tue, 12 Apr 2011 13:19:22 +0200
 
- -- Henrik Stoerner <henrik@hswn.dk>  Fri, 24 May 2009 10:39:00 +0200
+xymon (4.3.0~beta2.dfsg-7) experimental; urgency=low
 
-hobbit (4.2.3-1) unstable; urgency=low
+  * Allow negative time offset (clock too fast) in clock.rrd. Patch by
+    Roland Rosenfeld. (Closes: #580493)
+  * Add postinst code to fix old clock.rrd files using rrdtool.
+  * Fix bbcombotest: "Could not access hobbitd board, error 0".
+  * Debconf translation: Danish by Joe Hansen, thanks! (Closes: #605324)
 
-  * Xymon version 4.2.3 release
-  * Time-out code changed to use clock_gettime() with CLOCK_MONOTONIC
-  * Bugfix for hobbitd/hobbitd_worker communication going out-of-sync
-    resulting in "garbled data" being logged and worker modules 
-    stopping.
-  * NCV module now works with negative numbers.
-  * Several bugfixes in DNS lookup code - could lead to crashes when
-    performing DNS tests.
-  * Switch to C-ARES 1.6.0 - drop support for older versions.
-  * Run more TCP tests in parallel by not waiting for very slow
-    connections to complete before starting new ones.
-  * Added "hostlist" web utility for spreadsheet-reporting of the
-    hosts in Hobbit.
+ -- Christoph Berg <myon@debian.org>  Sun, 05 Dec 2010 12:21:01 +0100
 
- -- Henrik Stoerner <henrik@hswn.dk>  Mon, 09 Feb 2009 10:46:00 +0100
+xymon (4.3.0~beta2.dfsg-6) unstable; urgency=low
 
-hobbit (4.2.2-1) unstable; urgency=low
+  * Support GNU/kFreeBSD by adding a Makefile and a config snippet that
+    pretends we are running on Linux. (Closes: #458417)
+  * Tweak hobbitclient-linux.sh to report 'df' data without /proc/filesystems
+    mounted.
 
-  * Xymon version 4.2.2: 4.2.0 plus all-in-one patch
-  * BBWin support added
-  * Project renamed to "Xymon" - preliminary changes in
-    documents and web templates, but no filename changes.
+ -- Christoph Berg <myon@debian.org>  Fri, 09 Apr 2010 00:17:03 +0200
 
- -- Henrik Stoerner <henrik@hswn.dk>  Thu, 28 Sep 2008 14:52:00 +0100
+xymon (4.3.0~beta2.dfsg-5) unstable; urgency=low
 
+  * Add HTMLCHARSET headers to all html pages generated.
+
+ -- Christoph Berg <myon@debian.org>  Tue, 19 Jan 2010 12:08:47 +0100
+
+xymon (4.3.0~beta2.dfsg-4) unstable; urgency=low
+
+  * Japanese debconf translation, thanks Hideki Yamane. (Closes: #558065)
+  * Fix bashism in hobbitclient-linux.sh, thanks Raphael Geissert.
+    (Closes: #530227)
+  * Ignore apache2 reload errors in postinst. Suggested by Giacomo Catenazzi.
+    (Closes: #528195)
+
+ -- Christoph Berg <myon@debian.org>  Wed, 02 Dec 2009 14:18:48 +0100
+
+xymon (4.3.0~beta2.dfsg-3) unstable; urgency=low
+
+  * Fix SPLITNCV rrd generation.
+  * Czech debconf translation added, thanks Martin Šín. (Closes: #535029)
+  * Update Build-Depends to librrd-dev, dropping Sarge support.
+  * Bump Standards-Version and DH compat level.
+
+ -- Christoph Berg <myon@debian.org>  Sun, 16 Aug 2009 14:32:56 +0200
+
+xymon (4.3.0~beta2.dfsg-2) unstable; urgency=low
+
+  * Mangle upstream version number in watch file.
+  * Really fix librrd dependency. Thanks to Achim Schaefer for spotting.
+    (Again Closes: #521045)
+  * Once again a patch for using LDAP_DEPRECATED from dann frazier, now
+    for the build/ directory. Thanks! (Closes: #526176)
+  * Removing Martin from Uploaders.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 30 Apr 2009 16:22:10 +0200
+
+xymon (4.3.0~beta2.dfsg-1) unstable; urgency=low
+
+  * New upstream release candidate. (Closes: #497819, #511560)
+  * Rebuilding fixes librrd dependency. (Closes: #521045)
+  * Forbid parallel building.
+  * init scripts create /var/run/hobbit if missing. By Axel Beckert.
+  * init scripts properly support 'status'. By Peter Eisentraut.
+    (Closes: #525347)
+  * Uploading to unstable, and adding transitional packages replacing hobbit
+    and hobbit-client.
+
+ -- Christoph Berg <myon@debian.org>  Tue, 28 Apr 2009 12:49:05 +0200
+
+xymon (4.2.3~rc1.dfsg-1) experimental; urgency=low
+
+  * New upstream release candidate.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 12 Feb 2009 16:25:24 +0100
+
+xymon (4.2.2.dfsg-2) experimental; urgency=low
+
+  * Add "IFEXIST" patch to hobbit-clients.cfg/files test. By Bernd Zeimetz.
+
+ -- Christoph Berg <myon@debian.org>  Mon, 19 Jan 2009 17:11:51 +0100
+
+xymon (4.2.2.dfsg-1) experimental; urgency=low
+
+  * Hobbit was renamed to Xymon (pronounced 'simon'). We only rename the
+    packages for now, most of the filenames stay the same.
+    http://www.hswn.dk/hobbiton/2008/11/msg00123.html
+  * New upstream version mostly consisting of the "all-in-one" patch and
+    support for BBWin clients.
+  * Remove patches that went upstream: bbgen_ASN1_UTCTIME, disk-linecount,
+    http-proxy-url, ldap-deprecated, ncv-ignoretext.patch.
+  * Known issue: only the first dns test for a host works.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 15 Jan 2009 09:55:18 +0100
+
+hobbit (4.2.0.dfsg-16) unstable; urgency=low
+
+  * Spanish debconf translation, thanks Enrique Monge. (Closes: #505206)
+
+ -- Christoph Berg <myon@debian.org>  Mon, 10 Nov 2008 17:31:58 +0100
+
+hobbit (4.2.0.dfsg-15) unstable; urgency=medium
+
+  * bbnet/contest.c: Do not crash on long-living SSL certs. (Closes: #503111)
+
+ -- Christoph Berg <myon@debian.org>  Sat, 25 Oct 2008 14:04:35 +0200
+
+hobbit (4.2.0.dfsg-14) unstable; urgency=low
+
+  * Swedish debconf translation, thanks Martin Ågren. (Closes: #491368)
+
+ -- Christoph Berg <myon@debian.org>  Sat, 19 Jul 2008 01:24:50 +0200
+
+hobbit (4.2.0.dfsg-13) unstable; urgency=low
+
+  * Use lsb init functions.
+  * ncv-ignoretext.patch uses -p1. (Closes: #484950)
+  * Do not ignore tmpfs mountpoints in hobbitclient-linux.sh, but add
+    /dev, /dev/shm, and /lib/init/rw to the default IGNORE list in
+    /etc/hobbit/hobbit-clients.cfg. (Closes: #487157)
+  * Add README.source.
+
+ -- Christoph Berg <myon@debian.org>  Sat, 05 Jul 2008 14:57:16 +0200
+
+hobbit (4.2.0.dfsg-12) unstable; urgency=low
+
+  * Debconf was broken for the initial install, thanks to Peter Eisentraut for
+    spotting. (Closes: #470988)
+  * Actually include /var/run/hobbit/hobbitclient-include.cfg so
+    /etc/hobbit/hobbitclient.d/ works. Also spotted by Peter.
+  * Use dh_lintian.
+
+ -- Christoph Berg <myon@debian.org>  Sat, 10 May 2008 21:31:25 +0200
+
+hobbit (4.2.0.dfsg-11) unstable; urgency=low
+
+  * Make force-reload reload, not restart in init scripts.
+  * Move init scripts to S98 and Should-Start: $all so monitored services have
+    already started. (S98 only effective on new installs.)
+  * Set umask to 022 on for files in /var/run/hobbit/.
+  * Add patch to allow "/http" in URLs (require full "/http[s]://" for proxy
+    requests).
+  * Add /etc/hobbit/hobbitclient.d/.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 09 Apr 2008 13:32:39 +0200
+
+hobbit (4.2.0.dfsg-10) unstable; urgency=low
+
+  * Add patch by dann frazier to define LDAP_DEPRECATED to continue using the
+    deprecated libldap interfaces, thanks. (Closes: #463424)
+
+ -- Christoph Berg <myon@debian.org>  Fri, 15 Feb 2008 12:18:50 +0100
+
+hobbit (4.2.0.dfsg-9) unstable; urgency=low
+
+  * Add splitncv patch by Charles Goyard.
+  * Updated lintian overrides.
+
+ -- Christoph Berg <myon@debian.org>  Sat, 22 Dec 2007 20:22:45 +0100
+
+hobbit (4.2.0.dfsg-8) unstable; urgency=low
+
+  * Set umask to 022 on startup.
+  * Fix mailq regexp in hobbitgraph.cfg, thanks to Roland Rosenfeld for the
+    patch. (Closes: #450830)
+  * Do not assume the first df output line to be a header. (Closes: #450834)
+  * Add librrd0-dev as alternative to build-depends.
+
+ -- Christoph Berg <myon@debian.org>  Sat, 15 Dec 2007 22:37:27 +0100
+
+hobbit (4.2.0.dfsg-7) unstable; urgency=low
+
+  * Add patch by Roland Rosenfeld to adjust description width in the netstat
+    graphs. (Closes: #447484)
+  * Return 0 in init-common.sh, thanks to Jason Cormie for spotting.
+    (Closes: #448482)
+  * Recreate /usr/lib/hobbit/*/tmp/ symlinks, pointing to /var/lib/hobbit/tmp,
+    and properly set permissions. (Closes: #448489)
+  * Make our HOBBITMENU work for the ghost clients report. (Closes: #446095)
+  * Grab patch from upstream to fix slightly broken NCV parsing.
+  * Add /etc/hobbit/hobbitgraph.d/ and /etc/hobbit/hobbitserver.d/.
+  * Improve TCP tests time granularity.
+  * Translations: Dutch, thanks Bart Cornelis. (Closes: #448934)
+
+ -- Christoph Berg <myon@debian.org>  Thu, 01 Nov 2007 20:51:26 +0100
+
+hobbit (4.2.0.dfsg-6) unstable; urgency=low
+
+  * Remove /usr/lib/hobbit/*/tmp/ symlinks, set BBTMP="/var/lib/hobbit/tmp".
+    (Closes: #446982)
+  * Drop "hobbit" binary again, instead bbcmd will set PATH to include
+    the hobbit binaries.
+  * Add /etc/hobbit/hobbitlaunch.d/ directory for server extensions.
+  * When upgrading from a pre-Debian version, move old directories in
+    /var/lib/hobbit/www/ away, we want them to be symlinks.
+  * Add missing "test" in postrm. Thanks to Yukio Shiiya for the patch.
+    (Closes: #446347)
+  * Add COLUMS=200 to the dpkg -l call for Sarge compatibility.
+  * Add some examples to the default bb-hosts file.
+  * Move the config file tweaking from debian/rules to quilt.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 17 Oct 2007 18:06:02 +0200
+
+hobbit (4.2.0.dfsg-5) unstable; urgency=low
+
+  * The Smith inquisition reviewed our templates - thanks Christian Perrier.
+    (Closes: #442953)
+    + Basque, thanks Piarres Beobide (Closes: #443155).
+    + Vietnamese, thanks Clytie Siddall (Closes: #443161).
+    + Portuguese, thanks Américo Monteiro (Closes: #443214).
+    + Finnish, thanks Esko Arajärvi (Closes: #443617).
+    + Czech, thanks Miroslav Kure (Closes: #443667).
+    + Russian, thanks Yuri Kozlov (Closes: #443861).
+    + Tamil, thanks Tirumurti Vasudevan (Closes: #444281).
+    + Italian, thanks Luca Monducci (Closes: #444610).
+    + French, thanks Geoffroy Youri Berret (Closes: #444659).
+    + Galician, thanks Jacobo Tarrio (Closes: #444751).
+    + Brazilian Portuguese, thanks Felipe Augusto van de Wiel.
+      (Closes: #445339)
+  * Use $BBSERVERWWWURL and friends in menu.cfg.
+  * Fix reading of /etc/default/hobbit-client in config script.
+    (Closes: #445828)
+
+ -- Christoph Berg <myon@debian.org>  Mon, 08 Oct 2007 22:40:39 +0200
+
+hobbit (4.2.0.dfsg-4) unstable; urgency=low
+
+  * Instead of conflicting with bb, rename our 'bb' binary to 'hobbit'.
+    Move bb.1 to bb.8 (Closes: #441030 again).
+  * Send (reformatted) dpkg -l output with client message.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 19 Sep 2007 00:36:23 +0200
+
+hobbit (4.2.0.dfsg-3) unstable; urgency=low
+
+  * Debconf translations:
+    Portuguese, thanks Américo Monteiro (Closes: #439693).
+    French, thanks Geoffroy Youri Berret (Closes: #440504).
+  * Actually install README.Debian and fix paths in html docs
+    (Closes: #440949).
+  * Quiltize source.
+  * hobbit-client:
+    + Conflict with bb (<= 1.3rc1-8), it ships bb.1 (Closes: #441030).
+    + Set missing environment variables (Closes: #441199, thanks Jason
+      Cormie).
+
+ -- Christoph Berg <myon@debian.org>  Fri, 07 Sep 2007 19:13:22 +0200
+
+hobbit (4.2.0.dfsg-2) unstable; urgency=low
+
+  * Install /usr/bin/bb and bbcmd.
+  * Use HOBBITSERVERS in /etc/default/hobbit-client (again).
+  * Consistently use start-stop-daemon for daemon handling.
+  * Priority: extra.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 23 Aug 2007 17:24:10 +0200
+
+hobbit (4.2.0.dfsg-1) unstable; urgency=low
+
+  * Preparing for Debian upload.
+  * Repackaged the source:
+    + Removed non-free tigra menu files from hobbitd/wwwfiles/menu/.
+    + Removed upstream's debian/ dir.
+
+ -- Christoph Berg <myon@debian.org>  Sat, 18 Aug 2007 22:05:09 +0200
 
 hobbit (4.2.0-1) unstable; urgency=low
 

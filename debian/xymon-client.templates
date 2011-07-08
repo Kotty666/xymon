@@ -1,0 +1,29 @@
+# These templates have been reviewed by the debian-l10n-english
+# team
+#
+# If modifications/additions/rewording are needed, please ask
+# debian-l10n-english@lists.debian.org for advice.
+#
+# Even minor modifications require translation updates and such
+# changes should be coordinated with translators and reviewers.
+
+Template: hobbit-client/HOBBITSERVERS
+Type: string
+Default: 127.0.0.1
+_Description: Hobbit server:
+ Please enter the network address used to access the Hobbit
+ server(s). If you use multiple servers, use a space-separated list of
+ addresses.
+ .
+ Using host names instead of IP addresses is discouraged in case the
+ network experiences DNS failures.
+
+Template: hobbit-client/CLIENTHOSTNAME
+Type: string
+Default:
+_Description: Client hostname:
+ Please enter the host name used by the Hobbit client when sending
+ reports to the Hobbit server. This name must match
+ the name used in the bb-hosts file on the Hobbit
+ server.
+

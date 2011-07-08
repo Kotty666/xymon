@@ -1,0 +1,110 @@
+#!/bin/sh
+
+# Startup script for the Hobbit monitor
+#
+# This starts the "hobbitlaunch" tool, which in turn starts
+# all of the other Hobbit server programs.
+
+### BEGIN INIT INFO
+# Provides:          hobbit
+# Required-Start:    $remote_fs $network
+# Should-Start:      $all
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Hobbit system monitor server
+# Description:       Hobbit system monitor, server part.
+#                    (Also monitors the local host.)
+### END INIT INFO
+
+PIDFILE=/var/run/hobbit/hobbitlaunch.pid
+DAEMON=/usr/lib/hobbit/server/bin/hobbitlaunch
+NAME="hobbitd"
+DESC="Hobbit Server"
+
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+. /usr/share/hobbit/init-common.sh
+
+# Include hobbitclient defaults if available
+if [ -f /etc/default/hobbit-client ] ; then
+	. /etc/default/hobbit-client
+fi
+
+case "$1" in
+   "start")
+	create_includefiles
+
+	log_daemon_msg "Starting $DESC" "$NAME"
+	start-stop-daemon --exec $DAEMON --chuid hobbit --umask 022 --start \
+		-- \
+		--config=/etc/hobbit/hobbitlaunch.cfg \
+		--env=/etc/hobbit/hobbitserver.cfg \
+		--log=/var/log/hobbit/hobbitlaunch.log \
+		--pidfile=$PIDFILE
+	log_end_msg $?
+	;;
+
+   "stop")
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --exec $DAEMON --pidfile $PIDFILE --stop --retry 5
+	log_end_msg $?
+	;;
+
+   "status")
+	if test -s $PIDFILE
+	then
+		kill -0 `cat $PIDFILE`
+		if test $? -eq 0
+		then
+			echo "Hobbit (hobbitlaunch) running with PID `cat $PIDFILE`"
+			exit 0
+		else
+			echo "Hobbit not running, removing stale PID file"
+			rm -f $PIDFILE
+			exit 1
+		fi
+	else
+		echo "Hobbit (hobbitlaunch) does not appear to be running"
+		exit 3
+	fi
+	;;
+
+   "restart")
+	if test -s $PIDFILE
+	then
+		$0 stop
+		sleep 1
+		$0 start
+	else
+		log_action_msg "hobbitlaunch does not appear to be running, starting it"
+		$0 start
+	fi
+	;;
+
+   "reload"|"force-reload")
+	if test -s $PIDFILE
+	then
+		create_includefiles
+		log_action_msg "Reloading hobbitd config"
+		kill -HUP `cat /var/run/hobbit/hobbitd.pid`
+	else
+		log_action_msg "hobbitd not running (no PID file)"
+	fi
+	;;
+
+   "rotate")
+	for PIDFILE in /var/run/hobbit/*.pid
+	do
+		test -e $PIDFILE && kill -HUP `cat $PIDFILE`
+	done
+	;;
+
+   *)
+   	echo "Usage: $0 start|stop|restart|force-reload|reload|status|rotate"
+	break;
+esac
+
+exit 0
+

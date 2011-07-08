@@ -1,0 +1,6 @@
+hobbit (4.2.0.dfsg-9) unstable; urgency=low
+
+  This release adds Charles Goyard's splitncv patch. See hobbitd_rrd(8) and
+  http://www.hswn.dk/hobbiton/2007/03/msg00368.html for more information.
+
+ -- Christoph Berg <myon@debian.org>  Mon, 31 Dec 2007 10:47:56 +0100

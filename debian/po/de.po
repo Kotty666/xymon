@@ -1,0 +1,61 @@
+# hobbit
+# Copyright (C) 2007
+# This file is distributed under the same license as the hobbit package.
+# Christoph Berg <myon@debian.org>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: hobbit\n"
+"Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
+"POT-Creation-Date: 2009-01-08 15:38+0100\n"
+"PO-Revision-Date: 2007-10-08 22:50+0200\n"
+"Last-Translator: Christoph Berg <myon@debian.org>\n"
+"Language-Team: debian-l10n-german <debian-l10n-german@lists.debian.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:2001
+msgid "Hobbit server:"
+msgstr "Hobbit-Server:"
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:2001
+msgid ""
+"Please enter the network address used to access the Hobbit server(s). If you "
+"use multiple servers, use a space-separated list of addresses."
+msgstr ""
+"Geben Sie die Adresse zum Zugriff auf den Hobbit-Server ein. Wenn Sie "
+"mehrere Server benutzen, trennen Sie die Adressen mit Leerzeichen."
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:2001
+msgid ""
+"Using host names instead of IP addresses is discouraged in case the network "
+"experiences DNS failures."
+msgstr ""
+"Es wird empfohlen im Falle von DNS-Ausfällen statt Hostnamen IP-Adressen zu "
+"benutzen."
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:3001
+msgid "Client hostname:"
+msgstr "Client-Hostname:"
+
+#. Type: string
+#. Description
+#: ../xymon-client.templates:3001
+msgid ""
+"Please enter the host name used by the Hobbit client when sending reports to "
+"the Hobbit server. This name must match the name used in the bb-hosts file "
+"on the Hobbit server."
+msgstr ""
+"Geben Sie den Hostnamen ein den der Hobbit-Client benutzt um Reports and den "
+"Hobbit-Server zu senden. Der Name muss mit dem in der Datei bb-hosts auf dem "
+"Server übereinstimmen."

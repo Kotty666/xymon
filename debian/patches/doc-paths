@@ -1,0 +1,59 @@
+--- a/docs/hobbit-apacheconf.txt
++++ b/docs/hobbit-apacheconf.txt
+@@ -9,35 +9,35 @@
+ #     the Hobbit webfiles as the root URL. In that case,
+ #     you should instead set this:
+ #
+-#          DocumentRoot /usr/local/hobbit/server/www/
++#          DocumentRoot /usr/lib/hobbit/server/www/
+ 
+-Alias /hobbit/  "/usr/local/hobbit/server/www/"
+-<Directory "/usr/local/hobbit/server/www/">
++Alias /hobbit/  "/usr/lib/hobbit/server/www/"
++<Directory "/usr/lib/hobbit/server/www/">
+     Options Indexes FollowSymLinks Includes MultiViews
+     Order allow,deny
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias /hobbit-cgi/ "/usr/local/hobbit/cgi-bin/"
+-<Directory "/usr/local/hobbit/cgi-bin">
++ScriptAlias /hobbit-cgi/ "/usr/lib/hobbit/cgi-bin/"
++<Directory "/usr/lib/hobbit/cgi-bin">
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias /hobbit-seccgi/ "/usr/local/hobbit/cgi-secure/"
+-<Directory "/usr/local/hobbit/cgi-secure">
++ScriptAlias /hobbit-seccgi/ "/usr/lib/hobbit/cgi-secure/"
++<Directory "/usr/lib/hobbit/cgi-secure">
+     AllowOverride None
+     Options ExecCGI Includes
+     Order allow,deny
+     Allow from all
+ 
+     # Password file where users with access to these scripts are kept.
+-    # Create it with "htpasswd -c /usr/local/hobbit/server/etc/hobbitpasswd USERNAME"
+-    # Add more users / change passwords with "htpasswd /usr/local/hobbit/server/etc/hobbitpasswd USERNAME"
++    # Create it with "htpasswd -c /usr/lib/hobbit/server/etc/hobbitpasswd USERNAME"
++    # Add more users / change passwords with "htpasswd /usr/lib/hobbit/server/etc/hobbitpasswd USERNAME"
+ 
+-    AuthUserFile /usr/local/hobbit/server/etc/hobbitpasswd
++    AuthUserFile /usr/lib/hobbit/server/etc/hobbitpasswd
+     AuthType Basic
+     AuthName "Hobbit Administration"
+     Require valid-user
+--- a/docs/install.html
++++ b/docs/install.html
+@@ -163,7 +163,7 @@ directory (recommended for better securi
+ password-file that controls access to this directory. Use the <tt>htpasswd</tt>
+ command both to create the password file and to add or delete users:<br>
+ <pre><tt>
+-	# /usr/sbin/htpasswd -c /usr/local/hobbit/server/etc/hobbitpasswd admin
++	# /usr/sbin/htpasswd -c /usr/lib/hobbit/server/etc/hobbitpasswd admin
+ 	New password:
+ 	Re-type new password:
+ 	Adding password for user admin
