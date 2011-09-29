@@ -1,6 +1,7 @@
 xymon (4.3.0~beta2.dfsg-10) unstable; urgency=low
 
   * Add myself to Uploaders
+  * Recommend a CGI-capable web server, defaulting to apache2
 
  -- Axel Beckert <abe@debian.org>  Fri, 16 Sep 2011 14:39:06 +0200
 
