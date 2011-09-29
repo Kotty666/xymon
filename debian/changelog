@@ -1,11 +1,12 @@
-xymon (4.3.0~beta2.dfsg-10) unstable; urgency=low
+xymon (4.3.5-1) unstable; urgency=low
 
   * Add myself to Uploaders
   * Recommend a CGI-capable web server, defaulting to apache2
   * Make git repo git-buildpackage capable
     + Ignore upstream's debian directory when importing upstream sources
+  * Remove debian/patches/new-menu (applied upstream in 4.3.0)
 
- -- Axel Beckert <abe@debian.org>  Fri, 16 Sep 2011 14:39:06 +0200
+ -- Axel Beckert <abe@debian.org>  Thu, 29 Sep 2011 22:46:53 +0200
 
 xymon (4.3.0~beta2.dfsg-9) unstable; urgency=low
 
