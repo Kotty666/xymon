@@ -1,6 +1,10 @@
---- a/bbnet/contest.c
-+++ b/bbnet/contest.c
-@@ -478,8 +478,10 @@ static void setup_ssl(tcptest_t *item)
+libssl 1.0.0 in Debian deprecates the use of SSLv2, disable it.
+
+Index: xymon/xymonnet/contest.c
+===================================================================
+--- xymon.orig/xymonnet/contest.c	2011-09-30 01:10:26.000000000 +0200
++++ xymon/xymonnet/contest.c	2011-09-30 01:10:36.000000000 +0200
+@@ -478,8 +478,10 @@
  
  	if (item->sslctx == NULL) {
  		switch (item->ssloptions->sslversion) {
@@ -11,9 +15,11 @@
  		  case SSLVERSION_V3:
  			item->sslctx = SSL_CTX_new(SSLv3_client_method()); break;
  		  case SSLVERSION_TLS1:
---- a/common/bb-hosts.5
-+++ b/common/bb-hosts.5
-@@ -928,6 +928,9 @@ one or more "dialect names" to the URL s
+Index: xymon/common/hosts.cfg.5
+===================================================================
+--- xymon.orig/common/hosts.cfg.5	2011-09-30 01:10:26.000000000 +0200
++++ xymon/common/hosts.cfg.5	2011-09-30 01:10:36.000000000 +0200
+@@ -971,6 +971,9 @@
  These can be combined where it makes sense, e.g to force
  SSLv2 and HTTP 1.0 you would use "https210".
  
@@ -21,16 +27,18 @@
 +fall back to testing SSLv3.
 +
  .IP "Testing sites by IP-address"
- bbtest-net ignores the "testip" tag normally used to force a 
- test to use the IP-address from the bb-hosts file instead of
---- a/docs/manpages/man5/bb-hosts.5.html
-+++ b/docs/manpages/man5/bb-hosts.5.html
-@@ -993,6 +993,8 @@ one or more &quot;dialect names&quot; to
+ xymonnet ignores the "testip" tag normally used to force a 
+ test to use the IP-address from the hosts.cfg file instead of
+Index: xymon/docs/manpages/man5/hosts.cfg.5.html
+===================================================================
+--- xymon.orig/docs/manpages/man5/hosts.cfg.5.html	2011-09-30 01:10:26.000000000 +0200
++++ xymon/docs/manpages/man5/hosts.cfg.5.html	2011-09-30 01:10:36.000000000 +0200
+@@ -1091,6 +1091,8 @@
  These can be combined where it makes sense, e.g to force
  SSLv2 and HTTP 1.0 you would use &quot;https210&quot;.
  <P>
 +Note: libssl 1.0.0 in Debian deprecates the use of SSLv2 and hence https2 will
 +fall back to testing SSLv3.
  <DT>Testing sites by IP-address<DD>
- bbtest-net ignores the &quot;testip&quot; tag normally used to force a 
- test to use the IP-address from the bb-hosts file instead of
+ xymonnet ignores the &quot;testip&quot; tag normally used to force a 
+ test to use the IP-address from the hosts.cfg file instead of
