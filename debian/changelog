@@ -4,7 +4,9 @@ xymon (4.3.5-1) unstable; urgency=low
   * Recommend a CGI-capable web server, defaulting to apache2
   * Make git repo git-buildpackage capable
     + Ignore upstream's debian directory when importing upstream sources
-  * Remove debian/patches/new-menu (applied upstream in 4.3.0)
+  * Remove the following patches (applied upstream):
+    + new-menu
+    + hobbitd-rrdparameters
   * Refreshed the following patches and partially added one-liner comments
     to make lintian happy:
     + htmlcontenttype
