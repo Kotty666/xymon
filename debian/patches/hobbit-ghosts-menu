@@ -1,12 +1,12 @@
---- a/web/hobbit-ghosts.sh.DIST
-+++ b/web/hobbit-ghosts.sh.DIST
+--- a/web/ghostlist.sh.DIST
++++ b/web/ghostlist.sh.DIST
 @@ -2,6 +2,9 @@
  
- # This is the Hobbit wrapper for the ghosts CGI
+ # This is the Xymon wrapper for the ghostlist CGI
  
 +include () { . $1 ; }
- . @BBHOME@/etc/hobbitcgi.cfg
-+. @BBHOME@/etc/hobbitserver.cfg
+ . @XYMONHOME@/etc/cgioptions.cfg
++. @XYMONHOME@/etc/xymonserver.cfg
 +export HOBBITMENU
- @RUNTIMEDEFS@ exec @BBHOME@/bin/hobbit-ghosts.cgi $CGI_GHOSTS_OPTS
+ @RUNTIMEDEFS@ exec @XYMONHOME@/bin/ghostlist.cgi $CGI_GHOSTS_OPTS
  
