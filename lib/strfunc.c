@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains string handling routines.                                      */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: strfunc.c 6165 2009-02-26 10:14:12Z storner $";
+static char rcsid[] = "$Id: strfunc.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include "config.h"
 
@@ -19,7 +19,7 @@ static char rcsid[] = "$Id: strfunc.c 6165 2009-02-26 10:14:12Z storner $";
 #include <string.h>
 #include <stdlib.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 #include "version.h"
 
 #define BUFSZINCREMENT 4096
@@ -175,5 +175,37 @@ void strbufferuse(strbuffer_t *buf, int bytes)
 			  buf->sz, buf->used, bytes);
 	}
 	*(buf->s+buf->used) = '\0';
+}
+
+char *htmlquoted(char *s)
+{
+	/*
+	 * This routine converts a plain string into an html-quoted string
+	 */
+
+	static strbuffer_t *result = NULL;
+	char *inp, *endp;
+	char c;
+
+	if (!result) result = newstrbuffer(4096);
+	clearstrbuffer(result);
+
+	inp = s;
+	do {
+		endp = inp + strcspn(inp, "\"&<> ");
+		c = *endp;
+		if (endp > inp) addtobufferraw(result, inp, endp-inp);
+		switch (c) {
+		  case '"': addtobuffer(result, "&quot;"); break;
+		  case '&': addtobuffer(result, "&amp;"); break;
+		  case '<': addtobuffer(result, "&lt;"); break;
+		  case '>': addtobuffer(result, "&gt;"); break;
+		  case ' ': addtobuffer(result, "&nbsp;"); break;
+		  default: break;
+		}
+		inp = (c == '\0') ? NULL : endp+1;
+	} while (inp);
+
+	return STRBUF(result);
 }
 

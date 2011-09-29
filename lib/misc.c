@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains miscellaneous routines.                                        */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: misc.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: misc.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include "config.h"
 
@@ -30,58 +30,66 @@ static char rcsid[] = "$Id: misc.c 6125 2009-02-12 13:09:34Z storner $";
 #include <sys/select.h>         /* Someday I'll move to GNU Autoconf for this ... */
 #endif
 #include <fcntl.h>
+#include <sys/statvfs.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 #include "version.h"
 
 enum ostype_t get_ostype(char *osname)
 {
-	char savech;
+	char *nam;
 	enum ostype_t result = OS_UNKNOWN;
+	int n;
 
-	int n = strspn(osname, "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-/_");
-	savech = *(osname+n); *(osname+n) = '\0';
+	if (!osname || (*osname == '\0')) return OS_UNKNOWN;
 
-	if      (strcasecmp(osname, "solaris") == 0)     result = OS_SOLARIS;
-	else if (strcasecmp(osname, "sunos") == 0)       result = OS_SOLARIS;
-	else if (strcasecmp(osname, "hpux") == 0)        result = OS_HPUX;
-	else if (strcasecmp(osname, "hp-ux") == 0)       result = OS_HPUX;
-	else if (strcasecmp(osname, "aix") == 0)         result = OS_AIX;
-	else if (strcasecmp(osname, "osf") == 0)         result = OS_OSF;
-	else if (strcasecmp(osname, "osf1") == 0)        result = OS_OSF;
-	else if (strcasecmp(osname, "win32") == 0)       result = OS_WIN32;
-	else if (strcasecmp(osname, "hmdc") == 0)        result = OS_WIN32_HMDC;
-	else if (strcasecmp(osname, "bbwin") == 0)       result = OS_WIN32_BBWIN;
-	else if (strcasecmp(osname, "freebsd") == 0)     result = OS_FREEBSD;
-	else if (strcasecmp(osname, "netbsd") == 0)      result = OS_NETBSD;
-	else if (strcasecmp(osname, "openbsd") == 0)     result = OS_OPENBSD;
-	else if (strcasecmp(osname, "debian3") == 0)     result = OS_LINUX22;
-	else if (strcasecmp(osname, "linux22") == 0)     result = OS_LINUX22;
-	else if (strcasecmp(osname, "linux") == 0)       result = OS_LINUX;
-	else if (strcasecmp(osname, "redhat") == 0)      result = OS_LINUX;
-	else if (strcasecmp(osname, "debian") == 0)      result = OS_LINUX;
-	else if (strcasecmp(osname, "suse") == 0)        result = OS_LINUX;
-	else if (strcasecmp(osname, "mandrake") == 0)    result = OS_LINUX;
-	else if (strcasecmp(osname, "redhatAS") == 0)    result = OS_LINUX;
-	else if (strcasecmp(osname, "redhatES") == 0)    result = OS_RHEL3;
-	else if (strcasecmp(osname, "rhel3") == 0)       result = OS_RHEL3;
-	else if (strcasecmp(osname, "snmp") == 0)        result = OS_SNMP;
-	else if (strcasecmp(osname, "snmpnetstat") == 0) result = OS_SNMP;
-	else if (strncasecmp(osname, "irix", 4) == 0)    result = OS_IRIX;
-	else if (strcasecmp(osname, "macosx") == 0)      result = OS_DARWIN;
-	else if (strcasecmp(osname, "darwin") == 0)      result = OS_DARWIN;
-	else if (strcasecmp(osname, "sco_sv") == 0)      result = OS_SCO_SV;
-	else if (strcasecmp(osname, "netware_snmp") == 0) result = OS_NETWARE_SNMP;
-	else if (strcasecmp(osname, "zvm") == 0)         result = OS_ZVM;
-	else if (strcasecmp(osname, "zvse") == 0)        result = OS_ZVSE;
-	else if (strcasecmp(osname, "zos") == 0)         result = OS_ZOS;
-	else if (strcasecmp(osname, "snmpcollect") == 0) result = OS_SNMPCOLLECT;
-	else if (strcasecmp(osname, "gnu/kfreebsd") == 0) result = OS_GNUKFREEBSD;
-	else if (strcasecmp(osname, "gnu_kfreebsd") == 0) result = OS_GNUKFREEBSD;
+	n = strspn(osname, "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-/_");
+	nam = (char *)malloc(n+1);
+	strncpy(nam, osname, n);
+	*(nam+n) = '\0';
+
+	if      (strcasecmp(nam, "solaris") == 0)     result = OS_SOLARIS;
+	else if (strcasecmp(nam, "sunos") == 0)       result = OS_SOLARIS;
+	else if (strcasecmp(nam, "hpux") == 0)        result = OS_HPUX;
+	else if (strcasecmp(nam, "hp-ux") == 0)       result = OS_HPUX;
+	else if (strcasecmp(nam, "aix") == 0)         result = OS_AIX;
+	else if (strcasecmp(nam, "osf") == 0)         result = OS_OSF;
+	else if (strcasecmp(nam, "osf1") == 0)        result = OS_OSF;
+	else if (strcasecmp(nam, "win32") == 0)       result = OS_WIN32;
+	else if (strcasecmp(nam, "hmdc") == 0)        result = OS_WIN32_HMDC;
+	else if (strcasecmp(nam, "bbwin") == 0)       result = OS_WIN32_BBWIN;
+	else if (strcasecmp(nam, "powershell") == 0)  result = OS_WIN_POWERSHELL;
+	else if (strcasecmp(nam, "freebsd") == 0)     result = OS_FREEBSD;
+	else if (strcasecmp(nam, "netbsd") == 0)      result = OS_NETBSD;
+	else if (strcasecmp(nam, "openbsd") == 0)     result = OS_OPENBSD;
+	else if (strcasecmp(nam, "debian3") == 0)     result = OS_LINUX22;
+	else if (strcasecmp(nam, "linux22") == 0)     result = OS_LINUX22;
+	else if (strcasecmp(nam, "linux") == 0)       result = OS_LINUX;
+	else if (strcasecmp(nam, "redhat") == 0)      result = OS_LINUX;
+	else if (strcasecmp(nam, "debian") == 0)      result = OS_LINUX;
+	else if (strcasecmp(nam, "suse") == 0)        result = OS_LINUX;
+	else if (strcasecmp(nam, "mandrake") == 0)    result = OS_LINUX;
+	else if (strcasecmp(nam, "redhatAS") == 0)    result = OS_LINUX;
+	else if (strcasecmp(nam, "redhatES") == 0)    result = OS_RHEL3;
+	else if (strcasecmp(nam, "rhel3") == 0)       result = OS_RHEL3;
+	else if (strcasecmp(nam, "snmp") == 0)        result = OS_SNMP;
+	else if (strcasecmp(nam, "snmpnetstat") == 0) result = OS_SNMP;
+	else if (strncasecmp(nam, "irix", 4) == 0)    result = OS_IRIX;
+	else if (strcasecmp(nam, "macosx") == 0)      result = OS_DARWIN;
+	else if (strcasecmp(nam, "darwin") == 0)      result = OS_DARWIN;
+	else if (strcasecmp(nam, "sco_sv") == 0)      result = OS_SCO_SV;
+	else if (strcasecmp(nam, "unixware") == 0)    result = OS_SCO_SV;
+	else if (strcasecmp(nam, "netware_snmp") == 0) result = OS_NETWARE_SNMP;
+	else if (strcasecmp(nam, "zvm") == 0)         result = OS_ZVM;
+	else if (strcasecmp(nam, "zvse") == 0)        result = OS_ZVSE;
+	else if (strcasecmp(nam, "zos") == 0)         result = OS_ZOS;
+	else if (strcasecmp(nam, "snmpcollect") == 0) result = OS_SNMPCOLLECT;
+	else if (strcasecmp(nam, "mqcollect") == 0)    result = OS_MQCOLLECT;
+	else if (strcasecmp(nam, "gnu/kfreebsd") == 0) result = OS_GNUKFREEBSD;
 
 	if (result == OS_UNKNOWN) dbgprintf("Unknown OS: '%s'\n", osname);
 
-	*(osname+n) = savech;
+	xfree(nam);
 	return result;
 }
 
@@ -95,6 +103,7 @@ char *osname(enum ostype_t os)
 		case OS_WIN32: return "win32";
 		case OS_WIN32_HMDC: return "hmdc";
 		case OS_WIN32_BBWIN: return "bbwin";
+		case OS_WIN_POWERSHELL: return "powershell";
 		case OS_FREEBSD: return "freebsd";
 		case OS_NETBSD: return "netbsd";
 		case OS_OPENBSD: return "openbsd";
@@ -110,6 +119,7 @@ char *osname(enum ostype_t os)
 		case OS_ZVSE: return "zvse";
 		case OS_ZOS: return "zos";
 		case OS_SNMPCOLLECT: return "snmpcollect";
+		case OS_MQCOLLECT: return "mqcollect";
 		case OS_GNUKFREEBSD: return "gnu/kfreebsd";
 		case OS_UNKNOWN: return "unknown";
 	}
@@ -427,8 +437,8 @@ int get_fqdn(void)
 
 int generate_static(void)
 {
-	getenv_default("BBLOGSTATUS", "STATIC", NULL);
-	return (strcmp(xgetenv("BBLOGSTATUS"), "STATIC") == 0);
+	getenv_default("XYMONLOGSTATUS", "STATIC", NULL);
+	return (strcmp(xgetenv("XYMONLOGSTATUS"), "STATIC") == 0);
 }
 
 
@@ -556,14 +566,14 @@ int run_command(char *cmd, char *errortext, strbuffer_t *banner, int showcmd, in
 }
 
 
-void do_bbext(FILE *output, char *extenv, char *family)
+void do_extensions(FILE *output, char *extenv, char *family)
 {
 	/*
 	 * Extension scripts. These are ad-hoc, and implemented as a
 	 * simple pipe. So we do a fork here ...
 	 */
 
-	char *bbexts, *p;
+	char *exts, *p;
 	FILE *inpipe;
 	char extfn[PATH_MAX];
 	strbuffer_t *inbuf;
@@ -576,15 +586,15 @@ void do_bbext(FILE *output, char *extenv, char *family)
 
 	MEMDEFINE(extfn);
 
-	bbexts = strdup(p);
-	p = strtok(bbexts, "\t ");
+	exts = strdup(p);
+	p = strtok(exts, "\t ");
 	inbuf = newstrbuffer(0);
 
 	while (p) {
 		/* Dont redo the eventlog or acklog things */
 		if ((strcmp(p, "eventlog.sh") != 0) &&
 		    (strcmp(p, "acklog.sh") != 0)) {
-			sprintf(extfn, "%s/ext/%s/%s", xgetenv("BBHOME"), family, p);
+			sprintf(extfn, "%s/ext/%s/%s", xgetenv("XYMONHOME"), family, p);
 			inpipe = popen(extfn, "r");
 			if (inpipe) {
 				initfgets(inpipe);
@@ -596,7 +606,7 @@ void do_bbext(FILE *output, char *extenv, char *family)
 		p = strtok(NULL, "\t ");
 	}
 
-	xfree(bbexts);
+	xfree(exts);
 
 	MEMUNDEFINE(extfn);
 	MEMUNDEFINE(buf);
@@ -605,7 +615,7 @@ void do_bbext(FILE *output, char *extenv, char *family)
 static void clean_cmdarg(char *l)
 {
 	/*
-	 * This routine sanitizes commandline argument, stripping off whitespace,
+	 * This routine sanitizes command-line argument, stripping off whitespace,
 	 * removing comments and un-escaping \-escapes and quotes.
 	 */
 	char *p, *outp;
@@ -646,7 +656,7 @@ char **setup_commandargs(char *cmdline, char **cmd)
 	 * Good grief - argument parsing is complex!
 	 *
 	 * This routine takes a command-line, picks out any environment settings
-	 * that are in the commandline, and splits up the remainder into the
+	 * that are in the command line, and splits up the remainder into the
 	 * actual command to run, and the arguments.
 	 *
 	 * It handles quotes, hyphens and escapes.
@@ -783,5 +793,28 @@ char *getcolumn(char *s, int wanted)
 	for (i=0, result=nextcolumn(s); (i < wanted); i++, result = nextcolumn(NULL));
 
 	return result;
+}
+
+
+int chkfreespace(char *path, int minblks, int mininodes)
+{
+	/* Check there is least 'minblks' % free space on filesystem 'path' */
+	struct statvfs fs;
+	int n;
+	int avlblk, avlnod;
+
+	n = statvfs(path, &fs);
+	if (n == -1) {
+		errprintf("Cannot stat filesystem %s: %s", path, strerror(errno));
+		return 0;
+	}
+
+	/* Not all filesystems report i-node data, so play it safe */
+	avlblk = ((fs.f_bavail > 0) && (fs.f_blocks > 0)) ? fs.f_bavail / (fs.f_blocks / 100) : 100;
+	avlnod = ((fs.f_favail > 0) && (fs.f_files > 0))   ? fs.f_favail / (fs.f_files / 100)  : 100;
+
+	if ((avlblk >= minblks) && (avlnod >= mininodes)) return 0;
+
+	return 1;
 }
 

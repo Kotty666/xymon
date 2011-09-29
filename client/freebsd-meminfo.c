@@ -1,15 +1,15 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit memory information tool for FreeBSD.                                */
+/* Xymon memory information tool for FreeBSD.                                 */
 /* This tool retrieves information about the total and free RAM.              */
 /*                                                                            */
-/* Copyright (C) 2005-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2005-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: freebsd-meminfo.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: freebsd-meminfo.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <sys/types.h>
 #include <sys/sysctl.h>

@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for handling CGI requests.                            */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: cgi.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: cgi.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <ctype.h>
 #include <string.h>
@@ -21,7 +21,7 @@ static char rcsid[] = "$Id: cgi.c 6125 2009-02-12 13:09:34Z storner $";
 #include <limits.h>
 #include <errno.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 #define MAX_REQ_SIZE (1024*1024)
 
@@ -244,7 +244,7 @@ cgidata_t *cgi_request(void)
 		/* Raw data - return a single record to caller */
 		head = (cgidata_t *)calloc(1, sizeof(cgidata_t));
 		head->name = strdup("");
-		head->value = strdup(reqdata);
+		head->value = reqdata ? strdup(reqdata) : NULL;
 	}
 
 	if (reqdata) xfree(reqdata);

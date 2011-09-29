@@ -1,26 +1,26 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module for Hobbit, responsible for loading the           */
+/* This is a library module for Xymon, responsible for loading the            */
 /* client-local.cfg file into memory and finding the proper host entry.       */
 /*                                                                            */
-/* Copyright (C) 2006-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2006-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: clientlocal.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: clientlocal.c 6745 2011-09-04 06:01:06Z storner $";
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 static strbuffer_t *clientconfigs = NULL;
-static RbtHandle rbconfigs;
+static void * rbconfigs;
 
 void load_clientconfig(void)
 {
@@ -31,8 +31,8 @@ void load_clientconfig(void)
 	char *sectstart;
 
 	if (!configfn) {
-		configfn = (char *)malloc(strlen(xgetenv("BBHOME"))+ strlen("/etc/client-local.cfg") + 1);
-		sprintf(configfn, "%s/etc/client-local.cfg", xgetenv("BBHOME"));
+		configfn = (char *)malloc(strlen(xgetenv("XYMONHOME"))+ strlen("/etc/client-local.cfg") + 1);
+		sprintf(configfn, "%s/etc/client-local.cfg", xgetenv("XYMONHOME"));
 	}
 
 	/* First check if there were no modifications at all */
@@ -51,11 +51,11 @@ void load_clientconfig(void)
 		clientconfigs = newstrbuffer(0);
 	}
 	else {
-		rbtDelete(rbconfigs);
+		xtreeDestroy(rbconfigs);
 		clearstrbuffer(clientconfigs);
 	}
 
-	rbconfigs = rbtNew(name_compare);
+	rbconfigs = xtreeNew(strcasecmp);
 	addtobuffer(clientconfigs, "\n");
 	buf = newstrbuffer(0);
 
@@ -79,7 +79,7 @@ void load_clientconfig(void)
 		nextsect = strstr(sectstart, "\n[");
 		if (nextsect) *(nextsect+1) = '\0';
 
-		rbtInsert(rbconfigs, key, sectstart+1);
+		xtreeAdd(rbconfigs, key, sectstart+1);
 		sectstart = nextsect;
 	}
 
@@ -88,7 +88,7 @@ void load_clientconfig(void)
 
 char *get_clientconfig(char *hostname, char *hostclass, char *hostos)
 {
-	RbtIterator handle;
+	xtreePos_t handle;
 	char *result = NULL;
 
 	if (!clientconfigs) return NULL;
@@ -97,13 +97,13 @@ char *get_clientconfig(char *hostname, char *hostclass, char *hostos)
 	 * Find the client config.  Search for a HOSTNAME entry first, 
 	 * then the CLIENTCLASS, then CLIENTOS.
 	 */
-	handle = rbtFind(rbconfigs, hostname);
-	if ((handle == rbtEnd(rbconfigs)) && hostclass && *hostclass)
-		handle = rbtFind(rbconfigs, hostclass);
-	if ((handle == rbtEnd(rbconfigs)) && hostos && *hostos)
-		handle = rbtFind(rbconfigs, hostos);
+	handle = xtreeFind(rbconfigs, hostname);
+	if ((handle == xtreeEnd(rbconfigs)) && hostclass && *hostclass)
+		handle = xtreeFind(rbconfigs, hostclass);
+	if ((handle == xtreeEnd(rbconfigs)) && hostos && *hostos)
+		handle = xtreeFind(rbconfigs, hostos);
 
-	if (handle != rbtEnd(rbconfigs)) result = (char *)gettreeitem(rbconfigs, handle);
+	if (handle != xtreeEnd(rbconfigs)) result = (char *)xtreeData(rbconfigs, handle);
 
 	return result;
 }

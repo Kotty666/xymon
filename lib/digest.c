@@ -1,23 +1,23 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
 /* This is used to implement message digest functions (MD5, SHA1 etc.)        */
 /*                                                                            */
-/* Copyright (C) 2003-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2003-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: digest.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: digest.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <sys/types.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 char *md5hash(char *input)
 {

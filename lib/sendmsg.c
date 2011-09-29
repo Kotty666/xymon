@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
-/* It contains routines for sending and receiving data to/from the BB daemon  */
+/* This is a library module, part of libxymon.                                */
+/* It contains routines for communicating with the Xymon daemon               */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sendmsg.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: sendmsg.c 6744 2011-09-03 16:06:19Z storner $";
 
 #include "config.h"
 
@@ -32,29 +32,30 @@ static char rcsid[] = "$Id: sendmsg.c 6125 2009-02-12 13:09:34Z storner $";
 #include <fcntl.h>
 #include <stdio.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
-#define BBSENDRETRIES 2
+#define SENDRETRIES 2
 
-/* These commands go to BBDISPLAYS */
+/* These commands go to all Xymon servers */
 static char *multircptcmds[] = { "status", "combo", "meta", "data", "notify", "enable", "disable", "drop", "rename", "client", NULL };
+static char errordetails[1024];
 
 /* Stuff for combo message handling */
-int		bbmsgcount = 0;		/* Number of messages transmitted */
-int		bbstatuscount = 0;	/* Number of status items reported */
-int		bbnocombocount = 0;	/* Number of status items reported outside combo msgs */
-static int	bbmsgqueued;		/* Anything in the buffer ? */
-static strbuffer_t *bbmsg = NULL;	/* Complete combo message buffer */
+int		xymonmsgcount = 0;	/* Number of messages transmitted */
+int		xymonstatuscount = 0;	/* Number of status items reported */
+int		xymonnocombocount = 0;	/* Number of status items reported outside combo msgs */
+static int	xymonmsgqueued;		/* Anything in the buffer ? */
+static strbuffer_t *xymonmsg = NULL;	/* Complete combo message buffer */
 static strbuffer_t *msgbuf = NULL;	/* message buffer for one status message */
 static int	msgcolor;		/* color of status message in msgbuf */
 static int      maxmsgspercombo = 100;	/* 0 = no limit. 100 is a reasonable default. */
 static int      sleepbetweenmsgs = 0;
-static int      bbdportnumber = 0;
-static char     *bbdispproxyhost = NULL;
-static int      bbdispproxyport = 0;
+static int      xymondportnumber = 0;
+static char     *xymonproxyhost = NULL;
+static int      xymonproxyport = 0;
 static char	*proxysetting = NULL;
 
-static int	bbmetaqueued;		/* Anything in the buffer ? */
+static int	xymonmetaqueued;		/* Anything in the buffer ? */
 static strbuffer_t *metamsg = NULL;	/* Complete meta message buffer */
 static strbuffer_t *metabuf = NULL;	/* message buffer for one meta message */
 
@@ -86,51 +87,51 @@ static void setup_transport(char *recipient)
 		if (proxysetting) {
 			char *p;
 
-			bbdispproxyhost = strdup(proxysetting);
-			if (strncmp(bbdispproxyhost, "http://", 7) == 0) bbdispproxyhost += strlen("http://");
+			xymonproxyhost = strdup(proxysetting);
+			if (strncmp(xymonproxyhost, "http://", 7) == 0) xymonproxyhost += strlen("http://");
  
-			p = strchr(bbdispproxyhost, ':');
+			p = strchr(xymonproxyhost, ':');
 			if (p) {
 				*p = '\0';
 				p++;
-				bbdispproxyport = atoi(p);
+				xymonproxyport = atoi(p);
 			}
 			else {
-				bbdispproxyport = 8080;
+				xymonproxyport = 8080;
 			}
 		}
 	}
 	else {
 		/* 
-		 * Non-HTTP transport - lookup portnumber in both BBPORT env.
-		 * and the "bbd" entry from /etc/services.
+		 * Non-HTTP transport - lookup portnumber in both XYMONDPORT env.
+		 * and the "xymond" entry from /etc/services.
 		 */
 		default_port = 1984;
 
-		if (xgetenv("BBPORT")) bbdportnumber = atoi(xgetenv("BBPORT"));
+		if (xgetenv("XYMONDPORT")) xymondportnumber = atoi(xgetenv("XYMONDPORT"));
 	
 	
 		/* Next is /etc/services "bbd" entry */
-		if ((bbdportnumber <= 0) || (bbdportnumber > 65535)) {
+		if ((xymondportnumber <= 0) || (xymondportnumber > 65535)) {
 			struct servent *svcinfo;
 
 			svcinfo = getservbyname("bbd", NULL);
-			if (svcinfo) bbdportnumber = ntohs(svcinfo->s_port);
+			if (svcinfo) xymondportnumber = ntohs(svcinfo->s_port);
 		}
 	}
 
 	/* Last resort: The default value */
-	if ((bbdportnumber <= 0) || (bbdportnumber > 65535)) {
-		bbdportnumber = default_port;
+	if ((xymondportnumber <= 0) || (xymondportnumber > 65535)) {
+		xymondportnumber = default_port;
 	}
 
 	dbgprintf("Transport setup is:\n");
-	dbgprintf("bbdportnumber = %d\n", bbdportnumber),
-	dbgprintf("bbdispproxyhost = %s\n", (bbdispproxyhost ? bbdispproxyhost : "NONE"));
-	dbgprintf("bbdispproxyport = %d\n", bbdispproxyport);
+	dbgprintf("xymondportnumber = %d\n", xymondportnumber),
+	dbgprintf("xymonproxyhost = %s\n", (xymonproxyhost ? xymonproxyhost : "NONE"));
+	dbgprintf("xymonproxyport = %d\n", xymonproxyport);
 }
 
-static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respstr, int fullresponse, int timeout)
+static int sendtoxymond(char *recipient, char *message, FILE *respfd, char **respstr, int fullresponse, int timeout)
 {
 	struct in_addr addr;
 	struct sockaddr_in saddr;
@@ -143,16 +144,17 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 	char *p;
 	char *rcptip = NULL;
 	int rcptport = 0;
-	int connretries = BBSENDRETRIES;
+	int connretries = SENDRETRIES;
 	char *httpmessage = NULL;
 	char recvbuf[32768];
 	int haveseenhttphdrs = 1;
 	int respstrsz = 0;
 	int respstrlen = 0;
+	int result = XYMONSEND_OK;
 
 	if (dontsendmessages && !respfd && !respstr) {
 		printf("%s\n", message);
-		return BB_OK;
+		return XYMONSEND_OK;
 	}
 
 	setup_transport(recipient);
@@ -160,21 +162,21 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 	dbgprintf("Recipient listed as '%s'\n", recipient);
 
 	if (strncmp(recipient, "http://", strlen("http://")) != 0) {
-		/* Standard BB communications, directly to bbd */
+		/* Standard communications, directly to Xymon daemon */
 		rcptip = strdup(recipient);
-		rcptport = bbdportnumber;
+		rcptport = xymondportnumber;
 		p = strchr(rcptip, ':');
 		if (p) {
 			*p = '\0'; p++; rcptport = atoi(p);
 		}
-		dbgprintf("Standard BB protocol on port %d\n", rcptport);
+		dbgprintf("Standard protocol on port %d\n", rcptport);
 	}
 	else {
 		char *bufp;
 		char *posturl = NULL;
 		char *posthost = NULL;
 
-		if (bbdispproxyhost == NULL) {
+		if (xymonproxyhost == NULL) {
 			char *p;
 
 			/*
@@ -183,7 +185,7 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 			 * If a portnumber is present, strip it off and update rcptport.
 			 */
 			rcptip = strdup(recipient+strlen("http://"));
-			rcptport = bbdportnumber;
+			rcptport = xymondportnumber;
 
 			p = strchr(rcptip, '/');
 			if (p) {
@@ -200,7 +202,7 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 
 			posthost = strdup(rcptip);
 
-			dbgprintf("BB-HTTP protocol directly to host %s\n", posthost);
+			dbgprintf("HTTP protocol directly to host %s\n", posthost);
 		}
 		else {
 			char *p;
@@ -208,8 +210,8 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 			/*
 			 * With proxy. The full "recipient" must be in the POST request.
 			 */
-			rcptip = strdup(bbdispproxyhost);
-			rcptport = bbdispproxyport;
+			rcptip = strdup(xymonproxyhost);
+			rcptport = xymonproxyport;
 
 			posturl = strdup(recipient);
 
@@ -223,19 +225,22 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 				if (p) *p = '\0';
 			}
 
-			dbgprintf("BB-HTTP protocol via proxy to host %s\n", posthost);
+			dbgprintf("HTTP protocol via proxy to host %s\n", posthost);
 		}
 
 		if ((posturl == NULL) || (posthost == NULL)) {
-			errprintf("Unable to parse HTTP recipient\n");
-			return BB_EBADURL;
+			sprintf(errordetails + strlen(errordetails), "Unable to parse HTTP recipient");
+			if (posturl) xfree(posturl);
+			if (posthost) xfree(posthost);
+			if (rcptip) xfree(rcptip);
+			return XYMONSEND_EBADURL;
 		}
 
 		bufp = msgptr = httpmessage = malloc(strlen(message)+1024);
 		bufp += sprintf(httpmessage, "POST %s HTTP/1.0\n", posturl);
 		bufp += sprintf(bufp, "MIME-version: 1.0\n");
 		bufp += sprintf(bufp, "Content-Type: application/octet-stream\n");
-		bufp += sprintf(bufp, "Content-Length: %d\n", strlen(message));
+		bufp += sprintf(bufp, "Content-Length: %d\n", (int)strlen(message));
 		bufp += sprintf(bufp, "Host: %s\n", posthost);
 		bufp += sprintf(bufp, "\n%s", message);
 
@@ -243,7 +248,7 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 		if (posthost) xfree(posthost);
 		haveseenhttphdrs = 0;
 
-		dbgprintf("BB-HTTP message is:\n%s\n", httpmessage);
+		dbgprintf("HTTP message is:\n%s\n", httpmessage);
 	}
 
 	if (inet_aton(rcptip, &addr) == 0) {
@@ -257,11 +262,15 @@ static int sendtobbd(char *recipient, char *message, FILE *respfd, char **respst
 			memcpy(&addr, *(hent->h_addr_list), sizeof(struct in_addr));
 			strcpy(hostip, inet_ntoa(addr));
 
-			if (inet_aton(hostip, &addr) == 0) return BB_EBADIP;
+			if (inet_aton(hostip, &addr) == 0) {
+				result = XYMONSEND_EBADIP;
+				goto done;
+			}
 		}
 		else {
-			errprintf("Cannot determine IP address of message recipient %s\n", rcptip);
-			return BB_EIPUNKNOWN;
+			sprintf(errordetails+strlen(errordetails), "Cannot determine IP address of message recipient %s", rcptip);
+			result = XYMONSEND_EIPUNKNOWN;
+			goto done;
 		}
 	}
 
@@ -275,15 +284,15 @@ retry_connect:
 
 	/* Get a non-blocking socket */
 	sockfd = socket(PF_INET, SOCK_STREAM, 0);
-	if (sockfd == -1) return BB_ENOSOCKET;
+	if (sockfd == -1) { result = XYMONSEND_ENOSOCKET; goto done; }
 	res = fcntl(sockfd, F_SETFL, O_NONBLOCK);
-	if (res != 0) return BB_ECANNOTDONONBLOCK;
+	if (res != 0) { result = XYMONSEND_ECANNOTDONONBLOCK; goto done; }
 
 	res = connect(sockfd, (struct sockaddr *)&saddr, sizeof(saddr));
 	if ((res == -1) && (errno != EINPROGRESS)) {
-		close(sockfd);
-		errprintf("connect to bbd failed - %s\n", strerror(errno));
-		return BB_ECONNFAILED;
+		sprintf(errordetails+strlen(errordetails), "connect to Xymon daemon@%s:%d failed (%s)", rcptip, rcptport, strerror(errno));
+		result = XYMONSEND_ECONNFAILED;
+		goto done;
 	}
 
 	rdone = ((respfd == NULL) && (respstr == NULL));
@@ -296,10 +305,9 @@ retry_connect:
 		tmo.tv_sec = timeout;  tmo.tv_usec = 0;
 		res = select(sockfd+1, &readfds, &writefds, NULL, (timeout ? &tmo : NULL));
 		if (res == -1) {
-			errprintf("Select failure while sending to bbd@%s:%d!\n", rcptip, rcptport);
-			shutdown(sockfd, SHUT_RDWR);
-			close(sockfd);
-			return BB_ESELFAILED;
+			sprintf(errordetails+strlen(errordetails), "Select failure while sending to Xymon daemon@%s:%d", rcptip, rcptport);
+			result = XYMONSEND_ESELFAILED;
+			goto done;
 		}
 		else if (res == 0) {
 			/* Timeout! */
@@ -307,13 +315,14 @@ retry_connect:
 			close(sockfd);
 
 			if (!isconnected && (connretries > 0)) {
-				dbgprintf("Timeout while talking to bbd@%s:%d - retrying\n", rcptip, rcptport);
+				dbgprintf("Timeout while talking to Xymon daemon@%s:%d - retrying\n", rcptip, rcptport);
 				connretries--;
 				sleep(1);
 				goto retry_connect;	/* Yuck! */
 			}
 
-			return BB_ETIMEOUT;
+			result = XYMONSEND_ETIMEOUT;
+			goto done;
 		}
 		else {
 			if (!isconnected) {
@@ -325,11 +334,10 @@ retry_connect:
 				dbgprintf("Connect status is %d\n", connres);
 				isconnected = (connres == 0);
 				if (!isconnected) {
-					shutdown(sockfd, SHUT_RDWR);
-					close(sockfd);
-					errprintf("Could not connect to bbd@%s:%d - %s\n", 
+					sprintf(errordetails+strlen(errordetails), "Could not connect to Xymon daemon@%s:%d (%s)", 
 						  rcptip, rcptport, strerror(connres));
-					return BB_ECONNFAILED;
+					result = XYMONSEND_ECONNFAILED;
+					goto done;
 				}
 			}
 
@@ -345,7 +353,7 @@ retry_connect:
 					/*
 					 * When running over a HTTP transport, we must strip
 					 * off the HTTP headers we get back, so the response
-					 * is consistent with what we get from the normal bbd
+					 * is consistent with what we get from the normal Xymon daemon
 					 * transport.
 					 * (Non-http transport sets "haveseenhttphdrs" to 1)
 					 */
@@ -393,9 +401,9 @@ retry_connect:
 				/* Send some data */
 				res = write(sockfd, msgptr, strlen(msgptr));
 				if (res == -1) {
-					shutdown(sockfd, SHUT_RDWR); close(sockfd);
-					errprintf("Write error while sending message to bbd@%s:%d\n", rcptip, rcptport);
-					return BB_EWRITEERROR;
+					sprintf(errordetails+strlen(errordetails), "Write error while sending message to Xymon daemon@%s:%d", rcptip, rcptport);
+					result = XYMONSEND_EWRITEERROR;
+					goto done;
 				}
 				else {
 					dbgprintf("Sent %d bytes\n", res);
@@ -407,18 +415,19 @@ retry_connect:
 		}
 	}
 
+done:
 	dbgprintf("Closing connection\n");
 	shutdown(sockfd, SHUT_RDWR);
 	close(sockfd);
 	xfree(rcptip);
 	if (httpmessage) xfree(httpmessage);
-	return BB_OK;
+	return result;
 }
 
 static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, sendreturn_t *response)
 {
-	int allservers = 1, first = 1, result = BB_OK;
-	char *bbdlist, *rcpt;
+	int allservers = 1, first = 1, result = XYMONSEND_OK;
+	char *xymondlist, *rcpt;
 
 	/*
 	 * Even though this is the "sendtomany" routine, we need to decide if the
@@ -428,7 +437,7 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 	 *
 	 * "schedule" is special - when scheduling an action there is no response, but 
 	 * when it is the blank "schedule" command there will be a response. So a 
-	 * schedule action goes to all BBDISPLAYS, the blank "schedule" goes to a single
+	 * schedule action goes to all Xymon servers, the blank "schedule" goes to a single
 	 * server.
 	 */
 
@@ -452,17 +461,17 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 	}
 
 	if (allservers && !morercpts) {
-		errprintf("No recipients listed! BBDISP was %s, BBDISPLAYS %s\n",
+		sprintf(errordetails+strlen(errordetails), "No recipients listed! XYMSRV was %s, XYMSERVERS %s",
 			  onercpt, textornull(morercpts));
-		return BB_EBADIP;
+		return XYMONSEND_EBADIP;
 	}
 
 	if (strcmp(onercpt, "0.0.0.0") != 0) 
-		bbdlist = strdup(onercpt);
+		xymondlist = strdup(onercpt);
 	else
-		bbdlist = strdup(morercpts);
+		xymondlist = strdup(morercpts);
 
-	rcpt = strtok(bbdlist, " \t");
+	rcpt = strtok(xymondlist, " \t");
 	while (rcpt) {
 		int oneres;
 
@@ -471,17 +480,17 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 			char *respstr = NULL;
 
 			if (response) {
-				oneres =  sendtobbd(rcpt, msg,
+				oneres =  sendtoxymond(rcpt, msg,
 						    response->respfd,
 						    (response->respstr ? &respstr : NULL),
 						    (response->respfd || response->respstr),
 						    timeout);
 			}
 			else {
-				oneres =  sendtobbd(rcpt, msg, NULL, NULL, 0, timeout);
+				oneres =  sendtoxymond(rcpt, msg, NULL, NULL, 0, timeout);
 			}
 
-			if (oneres == BB_OK) {
+			if (oneres == XYMONSEND_OK) {
 				if (respstr && response && response->respstr) {
 					addtobuffer(response->respstr, respstr);
 					xfree(respstr);
@@ -491,11 +500,11 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 		}
 		else {
 			/* Secondary servers do not yield a response */
-			oneres =  sendtobbd(rcpt, msg, NULL, NULL, 0, timeout);
+			oneres =  sendtoxymond(rcpt, msg, NULL, NULL, 0, timeout);
 		}
 
 		/* Save any error results */
-		if (result == BB_OK) result = oneres;
+		if (result == XYMONSEND_OK) result = oneres;
 
 		/*
 		 * Handle more servers IF we're doing all servers, OR
@@ -508,7 +517,7 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 			rcpt = NULL;
 	}
 
-	xfree(bbdlist);
+	xfree(xymondlist);
 
 	return result;
 }
@@ -561,42 +570,51 @@ char *getsendreturnstr(sendreturn_t *s, int takeover)
 
 sendresult_t sendmessage(char *msg, char *recipient, int timeout, sendreturn_t *response)
 {
-	static char *bbdisp = NULL;
+	static char *xymsrv = NULL;
 	int res = 0;
 
- 	if ((bbdisp == NULL) && xgetenv("BBDISP")) bbdisp = strdup(xgetenv("BBDISP"));
-	if (recipient == NULL) recipient = bbdisp;
+	*errordetails = '\0';
+
+ 	if ((xymsrv == NULL) && xgetenv("XYMSRV")) xymsrv = strdup(xgetenv("XYMSRV"));
+	if (recipient == NULL) recipient = xymsrv;
 	if (recipient == NULL) {
 		errprintf("No recipient for message\n");
-		return BB_EBADIP;
+		return XYMONSEND_EBADIP;
 	}
 
-	res = sendtomany((recipient ? recipient : bbdisp), xgetenv("BBDISPLAYS"), msg, timeout, response);
+	res = sendtomany(recipient, xgetenv("XYMSERVERS"), msg, timeout, response);
 
-	if (res != BB_OK) {
+	if (res != XYMONSEND_OK) {
 		char *statustext = "";
+		char *eoln;
 
 		switch (res) {
-		  case BB_OK            : statustext = "OK"; break;
-		  case BB_EBADIP        : statustext = "Bad IP address"; break;
-		  case BB_EIPUNKNOWN    : statustext = "Cannot resolve hostname"; break;
-		  case BB_ENOSOCKET     : statustext = "Cannot get a socket"; break;
-		  case BB_ECANNOTDONONBLOCK   : statustext = "Non-blocking I/O failed"; break;
-		  case BB_ECONNFAILED   : statustext = "Connection failed"; break;
-		  case BB_ESELFAILED    : statustext = "select(2) failed"; break;
-		  case BB_ETIMEOUT      : statustext = "timeout"; break;
-		  case BB_EWRITEERROR   : statustext = "write error"; break;
-		  case BB_EREADERROR    : statustext = "read error"; break;
-		  case BB_EBADURL       : statustext = "Bad URL"; break;
+		  case XYMONSEND_OK            : statustext = "OK"; break;
+		  case XYMONSEND_EBADIP        : statustext = "Bad IP address"; break;
+		  case XYMONSEND_EIPUNKNOWN    : statustext = "Cannot resolve hostname"; break;
+		  case XYMONSEND_ENOSOCKET     : statustext = "Cannot get a socket"; break;
+		  case XYMONSEND_ECANNOTDONONBLOCK   : statustext = "Non-blocking I/O failed"; break;
+		  case XYMONSEND_ECONNFAILED   : statustext = "Connection failed"; break;
+		  case XYMONSEND_ESELFAILED    : statustext = "select(2) failed"; break;
+		  case XYMONSEND_ETIMEOUT      : statustext = "timeout"; break;
+		  case XYMONSEND_EWRITEERROR   : statustext = "write error"; break;
+		  case XYMONSEND_EREADERROR    : statustext = "read error"; break;
+		  case XYMONSEND_EBADURL       : statustext = "Bad URL"; break;
 		  default:                statustext = "Unknown error"; break;
 		};
 
-		errprintf("Whoops ! bb failed to send message - %s\n", statustext, res);
+		eoln = strchr(msg, '\n'); if (eoln) *eoln = '\0';
+		if (strcmp(recipient, "0.0.0.0") == 0) recipient = xgetenv("XYMSERVERS");
+		errprintf("Whoops ! Failed to send message (%s)\n", statustext);
+		errprintf("->  %s\n", errordetails);
+		errprintf("->  Recipient '%s', timeout %d\n", recipient, timeout);
+		errprintf("->  1st line: '%s'\n", msg);
+		if (eoln) *eoln = '\n';
 	}
 
 	/* Give it a break */
 	if (sleepbetweenmsgs) usleep(sleepbetweenmsgs);
-	bbmsgcount++;
+	xymonmsgcount++;
 	return res;
 }
 
@@ -610,38 +628,38 @@ static void combo_params(void)
 
 	issetup = 1;
 
-	if (xgetenv("BBMAXMSGSPERCOMBO")) maxmsgspercombo = atoi(xgetenv("BBMAXMSGSPERCOMBO"));
+	if (xgetenv("MAXMSGSPERCOMBO")) maxmsgspercombo = atoi(xgetenv("MAXMSGSPERCOMBO"));
 	if (maxmsgspercombo == 0) {
 		/* Force it to 100 */
-		dbgprintf("BBMAXMSGSPERCOMBO is 0, setting it to 100\n");
+		dbgprintf("MAXMSGSPERCOMBO is 0, setting it to 100\n");
 		maxmsgspercombo = 100;
 	}
 
-	if (xgetenv("BBSLEEPBETWEENMSGS")) sleepbetweenmsgs = atoi(xgetenv("BBSLEEPBETWEENMSGS"));
+	if (xgetenv("SLEEPBETWEENMSGS")) sleepbetweenmsgs = atoi(xgetenv("SLEEPBETWEENMSGS"));
 }
 
 void combo_start(void)
 {
 	combo_params();
 
-	if (bbmsg == NULL) bbmsg = newstrbuffer(0);
-	clearstrbuffer(bbmsg);
-	addtobuffer(bbmsg, "combo\n");
-	bbmsgqueued = 0;
+	if (xymonmsg == NULL) xymonmsg = newstrbuffer(0);
+	clearstrbuffer(xymonmsg);
+	addtobuffer(xymonmsg, "combo\n");
+	xymonmsgqueued = 0;
 }
 
 void meta_start(void)
 {
 	if (metamsg == NULL) metamsg = newstrbuffer(0);
 	clearstrbuffer(metamsg);
-	bbmetaqueued = 0;
+	xymonmetaqueued = 0;
 }
 
 static void combo_flush(void)
 {
 
-	if (!bbmsgqueued) {
-		dbgprintf("Flush, but bbmsg is empty\n");
+	if (!xymonmsgqueued) {
+		dbgprintf("Flush, but xymonmsg is empty\n");
 		return;
 	}
 
@@ -649,7 +667,7 @@ static void combo_flush(void)
 		char *p1, *p2;
 
 		dbgprintf("Flushing combo message\n");
-		p1 = p2 = STRBUF(bbmsg);
+		p1 = p2 = STRBUF(xymonmsg);
 
 		do {
 			p2++;
@@ -664,57 +682,57 @@ static void combo_flush(void)
 		} while (p1 && p2);
 	}
 
-	sendmessage(STRBUF(bbmsg), NULL, BBTALK_TIMEOUT, NULL);
+	sendmessage(STRBUF(xymonmsg), NULL, XYMON_TIMEOUT, NULL);
 	combo_start();	/* Get ready for the next */
 }
 
 static void meta_flush(void)
 {
-	if (!bbmetaqueued) {
-		dbgprintf("Flush, but bbmeta is empty\n");
+	if (!xymonmetaqueued) {
+		dbgprintf("Flush, but xymonmeta is empty\n");
 		return;
 	}
 
-	sendmessage(STRBUF(metamsg), NULL, BBTALK_TIMEOUT, NULL);
+	sendmessage(STRBUF(metamsg), NULL, XYMON_TIMEOUT, NULL);
 	meta_start();	/* Get ready for the next */
 }
 
 static void combo_add(strbuffer_t *buf)
 {
 	/* Check if there is room for the message + 2 newlines */
-	if (maxmsgspercombo && (bbmsgqueued >= maxmsgspercombo)) {
+	if (maxmsgspercombo && (xymonmsgqueued >= maxmsgspercombo)) {
 		/* Nope ... flush buffer */
 		combo_flush();
 	}
 	else {
 		/* Yep ... add delimiter before new status (but not before the first!) */
-		if (bbmsgqueued) addtobuffer(bbmsg, "\n\n");
+		if (xymonmsgqueued) addtobuffer(xymonmsg, "\n\n");
 	}
 
-	addtostrbuffer(bbmsg, buf);
-	bbmsgqueued++;
+	addtostrbuffer(xymonmsg, buf);
+	xymonmsgqueued++;
 }
 
 static void meta_add(strbuffer_t *buf)
 {
 	/* Check if there is room for the message + 2 newlines */
-	if (maxmsgspercombo && (bbmetaqueued >= maxmsgspercombo)) {
+	if (maxmsgspercombo && (xymonmetaqueued >= maxmsgspercombo)) {
 		/* Nope ... flush buffer */
 		meta_flush();
 	}
 	else {
 		/* Yep ... add delimiter before new status (but not before the first!) */
-		if (bbmetaqueued) addtobuffer(metamsg, "\n\n");
+		if (xymonmetaqueued) addtobuffer(metamsg, "\n\n");
 	}
 
 	addtostrbuffer(metamsg, buf);
-	bbmetaqueued++;
+	xymonmetaqueued++;
 }
 
 void combo_end(void)
 {
 	combo_flush();
-	dbgprintf("%d status messages merged into %d transmissions\n", bbstatuscount, bbmsgcount);
+	dbgprintf("%d status messages merged into %d transmissions\n", xymonstatuscount, xymonmsgcount);
 }
 
 void meta_end(void)
@@ -727,7 +745,7 @@ void init_status(int color)
 	if (msgbuf == NULL) msgbuf = newstrbuffer(0);
 	clearstrbuffer(msgbuf);
 	msgcolor = color;
-	bbstatuscount++;
+	xymonstatuscount++;
 }
 
 void init_meta(char *metaname)

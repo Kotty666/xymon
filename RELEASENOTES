@@ -1,16 +1,44 @@
           <<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>
-           * * *   Release notes for Xymon 4.3.0    * * *
+           * * *   Release notes for Xymon 4.3.5    * * *
           <<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+Changes for 4.3.5, 4.3.4, 4.3.3, 4.3.2
+======================================
+See the Changes file for a list of significant changes.
+These releases are mostly to fix bugs.
+
+
+Changes for 4.3.1
+==================
+This is a SECURITY BUG FIX release, resolving a number of 
+potential cross-site scripting vulnerabilities in the Xymon 
+web interface.
+
+Thanks to David Ferrest who reported these to me.
+
 
 Changes for 4.3.0
 ==================
+IMPORTANT: Most files and internals in Xymon have been renamed
+with the 4.3.0-beta3 release. If you are upgrading from a
+version prior to 4.3.0-beta3, you MUST read the file 
+docs/upgrade-to-430.txt and make sure you follow the steps
+outlined here. That also applies if you are upgrading from
+4.3.0-beta2.
+
 Xymon 4.3.0 is the first release with new features after 
 the 4.2.0 release. Several large changes have been made
 throughout the entire codebase. Some highlights (see
 the Changes file for a longer list):
 
+* Data going into graphs can now be used to alter a status,
+  e.g. to trigger an alert from the response time of a network
+  service.
+* Tasks in xymonlaunch can be be configured to run at specific
+  time of day using a cron-style syntax for when they must run.
 * Worker modules (RRD, client-data parsers etc) can operate on
-  remote hosts from the hobbitd daemon, for load-sharing.
+  remote hosts from the xymond daemon, for load-sharing.
 * Support for defining holidays as non-working days in alerts and
   SLA calculations.
 * Hosts which appear on multiple pages in the web display can
@@ -24,19 +52,17 @@ the Changes file for a longer list):
   different data (e.g. MAX/MIN values)
 * SLA calculations now include the number of outages in addition
   to the down-time.
+* Solaris client now uses "swap -l" to determine swap-space
+  usage, which gives very different results from the previous
+  "swap -s" data. So your Solaris hosts will appear to change
+  swap-utilisation when the Xymon client is upgraded.
 
-Several other changes for Xymon are planned in the coming months.
-
-If you are upgrading from Xymon 4.2.x, you can copy the "Makefile"
-from your old setup and use that to build Xymon 4.3.0. You must make
-one change in the top-level Makefile: The "SSLFLAGS" setting must
-be changed from "-DBBGEN_SSL" to "-DHAVE_OPENSSL=1".
-
-
-NOTE: For users of the TRACKMAX feature present in 4.2.2 and
+TRACKMAX feature removed
+------------------------
+For users of the TRACKMAX feature present in 4.2.2 and
 later 4.2.x releases: This feature has been dropped. Instead,
 you should add a definition for the tests that you want to track
-max-values for to the hobbit-rrddefinitions.cfg file. E.g. to
+max-values for to the rrddefinitions.cfg file. E.g. to
 track max-values for the "mytest" status column:
 
 [mytest]
@@ -45,6 +71,44 @@ track max-values for the "mytest" status column:
 	RRA:MAX:0.5:24:576
 	RRA:MAX:0.5:288:576
 
+
+Changed behaviour of http testing via proxy
+-------------------------------------------
+The Big Brother behaviour of allowing you to specify an http 
+(web) proxy as part of the URL in a test has been disabled
+by default, since it interferes with URL's that contain
+another URL as part of the URL path. If you need the Big Brother
+behaviour, add "--bb-proxy-syntax" to your invocations of 
+bbtest-net.
+
+BBGHOSTS setting removed
+------------------------
+Setting BBGHOSTS in the xymonserver.cfg file no longer has any
+effect. Instead, you must use the "--ghosts" option for hobbitd.
+The default ghost handling has also been changed from "ignore"
+to "log".
+
+xymonproxy: Alert support for Big Brother servers removed
+---------------------------------------------------------
+The xymonproxy tool no longer supports forwarding "page"
+messages. This means that if you are forwarding messages
+from an old Big Brother client to a Big Brother server
+that is sending out alerts, then these alerts will be
+dropped. Status updates will be forwarded, only alerts
+triggered from the Big Brother server are affected.
+
+Webpage menu: New menu code
+---------------------------
+The Javascript-based menu code ("Tigra") has been replaced
+with a menu based on CSS/HTML4. This means that any menu
+customization will have to be manually transferred to the
+new menu definition file, ~xymon/server/etc/xymonmenu.cfg.
+The new menu-system is known NOT to work with Internet
+Explorer 6 (IE 7 and newer are fine). If you must have a
+menu system that works with the ancient browsers, then the
+old Tigra menu can be downloaded from
+http://xymon.svn.sourceforge.net/viewvc/xymon/sandbox/tigramenu/?view=tar
+together with instructions for using it with Xymon 4.3.0.
 
 
 Changes from 4.2.2 -> 4.2.3
@@ -186,7 +250,7 @@ configuration files, in order to make full use of these enhance-
 ments. These notes describe what changes to perform.
 
 
-hobbitserver.cfg
+xymonserver.cfg
 ----------------
 Several new status columns are being reported by the Xymon client,
 and these have associated graphs. In order for them to show up
@@ -203,7 +267,7 @@ hobbitping utility is still somewhat experimental, so if you
 run into problems with the connectivity tests, it is advised that
 you use fping instead.
 
-The following settings in hobbitserver.cfg are no longer used
+The following settings in xymonserver.cfg are no longer used
 and may be deleted: BBPAGE, BBPAGERS, USEHOBBITD, PAGELEVELS,
 PURPLEDELAY, BBREL, BBRELDATE, CLIENTSVCS.
 
@@ -219,15 +283,15 @@ Five new CGI programs have been added in Xymon 4.2. To ensure
 they are invoked correctly, add these lines to your hobbitcgi.cfg file:
 
 # hobbitgraph.cgi options
-CGI_HOSTGRAPHS_OPTS="--env=/home/hobbit/server/etc/hobbitserver.cfg"
+CGI_HOSTGRAPHS_OPTS="--env=/home/hobbit/server/etc/xymonserver.cfg"
 # hobbit-nkview.cgi options
-CGI_NKVIEW_OPTS="--env=/home/hobbit/server/etc/hobbitserver.cfg"
+CGI_NKVIEW_OPTS="--env=/home/hobbit/server/etc/xymonserver.cfg"
 # hobbit-nkedit.cgi options
-CGI_NKEDIT_OPTS="--env=/home/hobbit/server/etc/hobbitserver.cfg"
+CGI_NKEDIT_OPTS="--env=/home/hobbit/server/etc/xymonserver.cfg"
 # hobbit-ackinfo.cgi options
-CGI_ACKINFO_OPTS="--env=/home/hobbit/server/etc/hobbitserver.cfg"
+CGI_ACKINFO_OPTS="--env=/home/hobbit/server/etc/xymonserver.cfg"
 #hobbit-ghosts.cgi options
-CGI_GHOSTS_OPT="--env=/home/hobbit/etc/hobbitserver.cfg"
+CGI_GHOSTS_OPT="--env=/home/hobbit/etc/xymonserver.cfg"
 
 (Replace "/home/hobbit" with the top-level directory of your
 Xymon server installation).
@@ -268,7 +332,7 @@ changes are needed:
   # Note: The --store-clientlogs option for the [hobbitd] provides control over
   #       which status-changes will cause a client message to be stored.
   [hostdata]
-         ENVFILE $BBHOME/etc/hobbitserver.cfg
+         ENVFILE $BBHOME/etc/xymonserver.cfg
          NEEDS hobbitd
          CMD hobbitd_channel --channel=clichg --log=$BBSERVERLOGS/hostdata.log hobbitd_hostdata
 
@@ -285,7 +349,7 @@ Add this to your hobbitlaunch.cfg file:
   # NOTE: On the clients you must enable the "msgcache" task, since this is what
   #       hobbitfetch is talking to.
   [hobbitfetch]
-         ENVFILE $BBHOME/etc/hobbitserver.cfg
+         ENVFILE $BBHOME/etc/xymonserver.cfg
          CMD $BBHOME/bin/hobbitfetch --server=YOUR.HOBBIT.SERVER.IP --no-daemon --pidfile=$BBSERVERLOGS/hobbitfetch.pid
          LOGFILE $BBSERVERLOGS/hobbitfetch.log
 

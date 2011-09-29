@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for reading configuration files with "include"s.      */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: stackio.c 6177 2009-04-24 09:10:16Z storner $";
+static char rcsid[] = "$Id: stackio.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -22,7 +22,7 @@ static char rcsid[] = "$Id: stackio.c 6177 2009-04-24 09:10:16Z storner $";
 #include <limits.h>
 #include <dirent.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 typedef struct filelist_t {
 	char *filename;
@@ -417,12 +417,14 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 	result = unlimfgets(buffer, fdhead->fd);
 
 	if (result) {
-		if ( (strncmp(STRBUF(buffer), "include ", 8) == 0) ||
-		     (extraincl && (strncmp(STRBUF(buffer), extraincl, strlen(extraincl)) == 0)) ) {
-			char *newfn, *eol;
+		char *bufpastwhitespace = STRBUF(buffer) + strspn(STRBUF(buffer), " \t");
 
-			eol = strchr(STRBUF(buffer), '\n'); if (eol) *eol = '\0';
-			newfn = STRBUF(buffer) + strcspn(STRBUF(buffer), " \t");
+		if ( (strncmp(bufpastwhitespace, "include ", 8) == 0) ||
+		     (extraincl && (strncmp(bufpastwhitespace, extraincl, strlen(extraincl)) == 0)) ) {
+			char *newfn, *eol, eolchar;
+
+			eol = bufpastwhitespace + strcspn(bufpastwhitespace, "\r\n"); if (eol) { eolchar = *eol; *eol = '\0'; }
+			newfn = bufpastwhitespace + strcspn(bufpastwhitespace, " \t");
 			newfn += strspn(newfn, " \t");
 		
 			if (*newfn && (stackfopen(newfn, "r", (void **)fdhead->listhead) != NULL))
@@ -430,15 +432,15 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 			else {
 				errprintf("WARNING: Cannot open include file '%s', line was:%s\n", 
 					  newfn, STRBUF(buffer));
-				if (eol) *eol = '\n';
+				if (eol) *eol = eolchar;
 				return result;
 			}
 		}
-		else if (strncmp(STRBUF(buffer), "directory ", 10) == 0) {
-			char *dirfn, *eol;
+		else if (strncmp(bufpastwhitespace, "directory ", 10) == 0) {
+			char *dirfn, *eol, eolchar;
 
-			eol = strchr(STRBUF(buffer), '\n'); if (eol) *eol = '\0';
-			dirfn = STRBUF(buffer) + 9;
+			eol = bufpastwhitespace + strcspn(bufpastwhitespace, "\r\n"); if (eol) { eolchar = *eol; *eol = '\0'; }
+			dirfn = bufpastwhitespace + 9;
 			dirfn += strspn(dirfn, " \t");
 
 			if (*dirfn) addtofnlist(dirfn, (void **)fdhead->listhead);
@@ -455,7 +457,7 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 				errprintf("WARNING: Cannot open include file '%s', line was:%s\n", fnlist->name, buffer);
 				fnlist = fnlist->next;
 				xfree(tmp->name); xfree(tmp);
-				if (eol) *eol = '\n';
+				if (eol) *eol = eolchar;
 				return result;
 			}
 			else {

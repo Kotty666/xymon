@@ -1,18 +1,18 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module for Hobbit, responsible for loading the           */
-/* hobbit-alerts.cfg file which holds information about the Hobbit alert      */
+/* This is a library module for Xymon, responsible for loading the            */
+/* alerts.cfg file which holds information about the Xymon alert       */
 /* configuration.                                                             */
 /*                                                                            */
-/* Copyright (C) 2004-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2004-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadalerts.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: loadalerts.c 6725 2011-08-07 11:25:56Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -27,7 +27,7 @@ static char rcsid[] = "$Id: loadalerts.c 6125 2009-02-12 13:09:34Z storner $";
 
 #include <pcre.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 
 /* token's are the pre-processor macros we expand while parsing the config file */
@@ -101,35 +101,28 @@ static criteria_t *setup_criteria(rule_t **currule, recip_t **currcp)
 static char *preprocess(char *buf)
 {
 	/* Expands config-file macros */
-	static char *result = NULL;
-	static int reslen = 0;
-	int n;
-	char *inp, *outp, *p;
+	static strbuffer_t *result = NULL;
+	char *inp;
 
-	if (result == NULL) {
-		reslen = 8192;
-		result = (char *)malloc(reslen);
-	}
+	if (result == NULL) result = newstrbuffer(8192);
+	clearstrbuffer(result);
+
 	inp = buf;
-	outp = result;
-	*outp = '\0';
-
 	while (inp) {
+		char *p;
+
 		p = strchr(inp, '$');
 		if (p == NULL) {
-			n = strlen(inp);
-			strcat(outp, inp);
-			outp += n;
+			addtobuffer(result, inp);
 			inp = NULL;
 		}
 		else {
 			token_t *twalk;
 			char savech;
+			int n;
 
 			*p = '\0';
-			n = strlen(inp);
-			strcat(outp, inp);
-			outp += n;
+			addtobuffer(result, inp);
 			p = (p+1);
 
 			n = strcspn(p, "\t $.,|%!()[]{}+?/&@:;*");
@@ -138,16 +131,12 @@ static char *preprocess(char *buf)
 			for (twalk = tokhead; (twalk && strcmp(p, twalk->name)); twalk = twalk->next) ;
 			*(p+n) = savech;
 
-			if (twalk) {
-				strcat(outp, twalk->value);
-				outp += strlen(twalk->value);
-			}
+			if (twalk) addtobuffer(result, twalk->value);
 			inp = p+n;
 		}
 	}
-	*outp = '\0';
 
-	return result;
+	return STRBUF(result);
 }
 
 static void flush_rule(rule_t *currule)
@@ -172,6 +161,10 @@ static void free_criteria(criteria_t *crit)
 	if (crit->pagespecre)    pcre_free(crit->pagespecre);
 	if (crit->expagespec)    xfree(crit->expagespec);
 	if (crit->expagespecre)  pcre_free(crit->expagespecre);
+	if (crit->dgspec)        xfree(crit->dgspec);
+	if (crit->dgspecre)      pcre_free(crit->dgspecre);
+	if (crit->exdgspec)      xfree(crit->exdgspec);
+	if (crit->exdgspecre)    pcre_free(crit->exdgspecre);
 	if (crit->hostspec)      xfree(crit->hostspec);
 	if (crit->hostspecre)    pcre_free(crit->hostspecre);
 	if (crit->exhostspec)    xfree(crit->exhostspec);
@@ -204,7 +197,7 @@ int load_alertconfig(char *configfn, int defcolors, int defaultinterval)
 
 	MEMDEFINE(fn);
 
-	if (configfn) strcpy(fn, configfn); else sprintf(fn, "%s/etc/hobbit-alerts.cfg", xgetenv("BBHOME"));
+	if (configfn) strcpy(fn, configfn); else sprintf(fn, "%s/etc/alerts.cfg", xgetenv("XYMONHOME"));
 
 	/* First check if there were no modifications at all */
 	if (configfiles) {
@@ -327,6 +320,28 @@ int load_alertconfig(char *configfn, int defcolors, int defaultinterval)
 				crit = setup_criteria(&currule, &currcp);
 				crit->expagespec = strdup(val);
 				if (*(crit->expagespec) == '%') crit->expagespecre = compileregex(crit->expagespec+1);
+				firsttoken = 0;
+			}
+			else if ((strncasecmp(p, "DISPLAYGROUP=", 13) == 0) || (strncasecmp(p, "DISPLAYGROUPS=", 14) == 0)) {
+				char *val;
+				criteria_t *crit;
+
+				if (firsttoken) { flush_rule(currule); currule = NULL; currcp = NULL; pstate = P_NONE; }
+				val = strchr(p, '=')+1;
+				crit = setup_criteria(&currule, &currcp);
+				crit->dgspec = strdup(val);
+				if (*(crit->dgspec) == '%') crit->dgspecre = compileregex(crit->dgspec+1);
+				firsttoken = 0;
+			}
+			else if ((strncasecmp(p, "EXDISPLAYGROUP=", 15) == 0) || (strncasecmp(p, "EXDISPLAYGROUPS=", 16) == 0)) {
+				char *val;
+				criteria_t *crit;
+
+				if (firsttoken) { flush_rule(currule); currule = NULL; currcp = NULL; pstate = P_NONE; }
+				val = strchr(p, '=')+1;
+				crit = setup_criteria(&currule, &currcp);
+				crit->exdgspec = strdup(val);
+				if (*(crit->exdgspec) == '%') crit->exdgspecre = compileregex(crit->exdgspec+1);
 				firsttoken = 0;
 			}
 			else if ((strncasecmp(p, "HOST=", 5) == 0) || (strncasecmp(p, "HOSTS=", 6) == 0)) {
@@ -679,6 +694,8 @@ static void dump_criteria(criteria_t *crit, int isrecip)
 {
 	if (crit->pagespec) printf("PAGE=%s ", crit->pagespec);
 	if (crit->expagespec) printf("EXPAGE=%s ", crit->expagespec);
+	if (crit->dgspec) printf("DISPLAYGROUP=%s ", crit->dgspec);
+	if (crit->exdgspec) printf("EXDISPLAYGROUP=%s ", crit->exdgspec);
 	if (crit->hostspec) printf("HOST=%s ", crit->hostspec);
 	if (crit->exhostspec) printf("EXHOST=%s ", crit->exhostspec);
 	if (crit->svcspec) printf("SERVICE=%s ", crit->svcspec);
@@ -718,12 +735,14 @@ static void dump_criteria(criteria_t *crit, int isrecip)
 	}
 }
 
-void dump_alertconfig(void)
+void dump_alertconfig(int showlines)
 {
 	rule_t *rulewalk;
 	recip_t *recipwalk;
 
 	for (rulewalk = rulehead; (rulewalk); rulewalk = rulewalk->next) {
+		if (showlines) printf("%5d\t", rulewalk->cfid);
+
 		dump_criteria(rulewalk->criteria, 0);
 		printf("\n");
 
@@ -759,7 +778,7 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 {
 	/*
 	 * See if the "crit" matches the "alert".
-	 * Match on pagespec, hostspec, svcspec, classspec, groupspec, colors, timespec, minduration, maxduration, sendrecovered
+	 * Match on pagespec, dgspec, hostspec, svcspec, classspec, groupspec, colors, timespec, minduration, maxduration, sendrecovered
 	 */
 
 	static char *pgnames = NULL;
@@ -778,8 +797,8 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	if (!cfline && rulecrit) cfline = rulecrit->cfline;
 	if (!cfline) cfline = "<undefined>";
 
-	traceprintf("Matching host:service:page '%s:%s:%s' against rule line %d\n",
-			alert->hostname, alert->testname, alert->location, cfid);
+	traceprintf("Matching host:service:dgroup:page '%s:%s:%s:%s' against rule line %d\n",
+			alert->hostname, alert->testname, xmh_item(hinfo, XMH_DGNAME), alert->location, cfid);
 
 	if (alert->state == A_PAGING) {
 		/* Check max-duration now - it's fast and easy. */
@@ -799,7 +818,13 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	}
 
 	/* alert->groups is a comma-separated list of groups, so it needs some special handling */
-	if (crit && (crit->groupspec || crit->exgroupspec)) {
+	/* 
+	 * NB: Dont check groups when RECOVERED - the group list for recovery messages is always empty.
+	 * It doesn't matter if we match a recipient who was not in the group that originally
+	 * got the alert - we will later check who has received the alert, and only those that
+	 * have will get the recovery message.
+	 */
+	if (crit && (crit->groupspec || crit->exgroupspec) && (alert->state != A_RECOVERED)) {
 		char *grouplist;
 		char *tokptr;
 
@@ -859,7 +884,6 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 			pgexclres = (namematch(pgtok, crit->expagespec, crit->expagespecre) ? 1 : 0);
 
 		pgtok = strtok(NULL, ",");
-
 	}
 	if (pgexclres == 1) {
 		traceprintf("Failed '%s' (pagename excluded)\n", cfline);
@@ -868,6 +892,15 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	if (pgmatchres == 0) {
 		traceprintf("Failed '%s' (pagename not in include list)\n", cfline);
 		return 0;
+	}
+
+	if (crit && crit->dgspec && !namematch(xmh_item(hinfo, XMH_DGNAME), crit->dgspec, crit->dgspecre)) { 
+		traceprintf("Failed '%s' (displaygroup not in include list)\n", cfline);
+		return 0; 
+	}
+	if (crit && crit->exdgspec && namematch(xmh_item(hinfo, XMH_DGNAME), crit->exdgspec, crit->exdgspecre)) { 
+		traceprintf("Failed '%s' (displaygroup excluded)\n", cfline);
+		return 0; 
 	}
 
 	if (crit && crit->hostspec && !namematch(alert->hostname, crit->hostspec, crit->hostspecre)) { 
@@ -937,7 +970,7 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	 * some random system recovered ... not good. So apply
 	 * this check to all messages.
 	 */
-	if (crit && crit->timespec && !timematch(bbh_item(hinfo, BBH_HOLIDAYS), crit->timespec)) {
+	if (crit && crit->timespec && !timematch(xmh_item(hinfo, XMH_HOLIDAYS), crit->timespec)) {
 		traceprintf("Failed '%s' (time criteria)\n", cfline);
 		if (!printmode) return 0; 
 	}
@@ -956,7 +989,7 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 		return result;
 	}
 
-	if (alert->state == A_RECOVERED) {
+	if ((alert->state == A_RECOVERED) || (alert->state == A_DISABLED)) {
 		/*
 		 * Dont do the check until we are checking individual recipients (rulecrit is set).
 		 * You dont need to have RECOVERED on the top-level rule, it's enough if a recipient
@@ -1069,7 +1102,7 @@ void print_alert_recipients(activealerts_t *alert, strbuffer_t *buf)
 	MEMDEFINE(codes);
 
 	if (printmode == 2) {
-		/* For print-out usage - e.g. hobbit-confreport.cgi */
+		/* For print-out usage - e.g. confreport.cgi */
 		normalfont = "COLOR=\"#000000\" FACE=\"Tahoma, Arial, Helvetica\"";
 		stopfont = "COLOR=\"#FF0000\" FACE=\"Tahoma, Arial, Helvetica\"";
 	}

@@ -1,18 +1,18 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for handling holidays.                                */
 /*                                                                            */
 /* Copyright (C) 2006-2008 Michael Nagel                                      */
-/* Modifications for Hobbit (C) 2007-2009 Henrik Storner <henrik@hswn.dk>     */
+/* Modifications for Xymon (C) 2007-2011 Henrik Storner <henrik@hswn.dk>      */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: holidays.c 6144 2009-02-19 10:36:40Z storner $";
+static char rcsid[] = "$Id: holidays.c 6745 2011-09-04 06:01:06Z storner $";
 
 #include <time.h>
 #include <sys/time.h>
@@ -22,7 +22,7 @@ static char rcsid[] = "$Id: holidays.c 6144 2009-02-19 10:36:40Z storner $";
 #include <stdio.h>
 #include <limits.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 
 static int holidays_like_weekday = -1;
@@ -33,7 +33,7 @@ typedef struct holidayset_t {
 	holiday_t *tail;
 } holidayset_t;
 
-static RbtHandle holidays;
+static void * holidays;
 static int current_year = 0;
 
 static time_t mkday(int year, int month, int day)
@@ -153,13 +153,13 @@ static int getweekdayafter(int wkday, int daynum, int month, int year)
 static void reset_holidays(void)
 {
 	static int firsttime = 1;
-	RbtIterator handle;
+	xtreePos_t handle;
 	holidayset_t *hset;
 	holiday_t *walk, *zombie;
 
 	if (!firsttime) {
-		for (handle = rbtBegin(holidays); (handle != rbtEnd(holidays)); handle = rbtNext(holidays, handle)) {
-			hset = (holidayset_t *)gettreeitem(holidays, handle);
+		for (handle = xtreeFirst(holidays); (handle != xtreeEnd(holidays)); handle = xtreeNext(holidays, handle)) {
+			hset = (holidayset_t *)xtreeData(holidays, handle);
 			xfree(hset->key);
 
 			walk = hset->head;
@@ -171,12 +171,12 @@ static void reset_holidays(void)
 			}
 		}
 
-		rbtDelete(holidays);
+		xtreeDestroy(holidays);
 	}
 
 	holidays_like_weekday = -1;
 	firsttime = 0;
-	holidays = rbtNew(name_compare);
+	holidays = xtreeNew(strcasecmp);
 }
 
 
@@ -186,7 +186,7 @@ static void add_holiday(char *key, int year, holiday_t *newhol)
 	struct tm *t;
 	time_t day;
 	holiday_t *newitem;
-	RbtIterator handle;
+	xtreePos_t handle;
 	holidayset_t *hset;
 
 	switch (newhol->holtype) {
@@ -310,14 +310,14 @@ static void add_holiday(char *key, int year, holiday_t *newhol)
 	newitem->desc = strdup(newhol->desc);
 	newitem->yday = newhol->yday;
 
-	handle = rbtFind(holidays, key);
-	if (handle == rbtEnd(holidays)) {
+	handle = xtreeFind(holidays, key);
+	if (handle == xtreeEnd(holidays)) {
 		hset = (holidayset_t *)calloc(1, sizeof(holidayset_t));
 		hset->key = strdup(key);
-		rbtInsert(holidays, hset->key, hset);
+		xtreeAdd(holidays, hset->key, hset);
 	}
 	else {
-		hset = (holidayset_t *)gettreeitem(holidays, handle);
+		hset = (holidayset_t *)xtreeData(holidays, handle);
 	}
 
 	if (hset->head == NULL) {
@@ -355,7 +355,7 @@ int load_holidays(int year)
 	FILE *fd;
 	strbuffer_t *inbuf;
 	holiday_t newholiday;
-	RbtIterator handle, commonhandle;
+	xtreePos_t handle, commonhandle;
 	char *setname = NULL;
 	holidayset_t *commonhols;
 
@@ -372,7 +372,7 @@ int load_holidays(int year)
 		year -= 1900;
 	}
 
-	sprintf(fn, "%s/etc/hobbit-holidays.cfg", xgetenv("BBHOME"));
+	sprintf(fn, "%s/etc/holidays.cfg", xgetenv("XYMONHOME"));
 
 	/* First check if there were no modifications at all */
 	if (configholidays) {
@@ -487,11 +487,11 @@ int load_holidays(int year)
 	stackfclose(fd);
 	freestrbuffer(inbuf);
 
-	commonhandle = rbtFind(holidays, "");
-	commonhols = (commonhandle != rbtEnd(holidays)) ? (holidayset_t *)gettreeitem(holidays, commonhandle) : NULL;
+	commonhandle = xtreeFind(holidays, "");
+	commonhols = (commonhandle != xtreeEnd(holidays)) ? (holidayset_t *)xtreeData(holidays, commonhandle) : NULL;
 
-	for (handle = rbtBegin(holidays); (handle != rbtEnd(holidays)); handle = rbtNext(holidays, handle)) {
-		holidayset_t *oneset = (holidayset_t *)gettreeitem(holidays, handle);
+	for (handle = xtreeFirst(holidays); (handle != xtreeEnd(holidays)); handle = xtreeNext(holidays, handle)) {
+		holidayset_t *oneset = (holidayset_t *)xtreeData(holidays, handle);
 		if (commonhols && (oneset != commonhols)) {
 			/* Add the common holidays to this set */
 			holiday_t *walk;
@@ -511,24 +511,24 @@ int load_holidays(int year)
 
 static holiday_t *findholiday(char *key, int dayinyear)
 {
-	RbtIterator handle;
+	xtreePos_t handle;
 	holidayset_t *hset;
 	holiday_t *p;
 
 	if (key && *key) {
-		handle = rbtFind(holidays, key);
-		if (handle == rbtEnd(holidays)) {
+		handle = xtreeFind(holidays, key);
+		if (handle == xtreeEnd(holidays)) {
 			key = NULL;
-			handle = rbtFind(holidays, "");
+			handle = xtreeFind(holidays, "");
 		}
 	}
 	else {
 		key = NULL;
-		handle = rbtFind(holidays, "");
+		handle = xtreeFind(holidays, "");
 	}
 
-	if (handle != rbtEnd(holidays)) 
-		hset = (holidayset_t *)gettreeitem(holidays, handle);
+	if (handle != xtreeEnd(holidays)) 
+		hset = (holidayset_t *)xtreeData(holidays, handle);
 	else
 		return NULL;
 
@@ -567,7 +567,7 @@ char *isholiday(char *key, int dayinyear)
 }
 
 
-void printholidays(char *key, strbuffer_t *buf)
+void printholidays(char *key, strbuffer_t *buf, int mfirst, int mlast)
 {
 	int day;
 	char *fmt;
@@ -595,9 +595,11 @@ void printholidays(char *key, strbuffer_t *buf)
 			tm.tm_hour = 12; tm.tm_min = 0; tm.tm_sec = 0;
 			tm.tm_isdst = -1;
 			t = mktime(&tm);
-			strftime(dstr, sizeof(dstr), fmt, localtime(&t));
-			sprintf(oneh, "<tr><td>%s</td><td>%s</td>\n", desc, dstr);
-			addtobuffer(buf, oneh);
+			if ((tm.tm_mon >= mfirst) && (tm.tm_mon <= mlast)) {
+				strftime(dstr, sizeof(dstr), fmt, localtime(&t));
+				sprintf(oneh, "<tr><td>%s</td><td>%s</td>\n", desc, dstr);
+				addtobuffer(buf, oneh);
+			}
 		}
 	}
 }

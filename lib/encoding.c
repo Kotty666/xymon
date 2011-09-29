@@ -1,23 +1,23 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                      */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for Base64 encoding and decoding.                     */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: encoding.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: encoding.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 static char b64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

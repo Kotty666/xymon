@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for timing program execution.                         */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: timing.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: timing.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +19,7 @@ static char rcsid[] = "$Id: timing.c 6125 2009-02-12 13:09:34Z storner $";
 #include <sys/time.h>
 #include <stdio.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 int timing = 0;
 
@@ -68,7 +68,7 @@ void show_timestamps(char **buffer)
 
 	strcpy(outbuf, "\n\nTIME SPENT\n");
 	strcat(outbuf, "Event                                   ");
-	strcat(outbuf, "         Starttime");
+	strcat(outbuf, "        Start time");
 	strcat(outbuf, "          Duration\n");
 
 	for (s=stamphead; (s); s=s->next) {

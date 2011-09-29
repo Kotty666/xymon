@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
@@ -24,6 +24,7 @@ extern void strbufferchop(strbuffer_t *buf, int count);
 extern void strbufferrecalc(strbuffer_t *buf);
 extern void strbuffergrow(strbuffer_t *buf, int bytes);
 extern void strbufferuse(strbuffer_t *buf, int bytes);
+extern char *htmlquoted(char *s);
 
 #endif
 
