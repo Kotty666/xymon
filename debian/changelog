@@ -5,8 +5,10 @@ xymon (4.3.5-1) unstable; urgency=low
   * Make git repo git-buildpackage capable
     + Ignore upstream's debian directory when importing upstream sources
   * Remove debian/patches/new-menu (applied upstream in 4.3.0)
-  * Refreshed the following patches:
+  * Refreshed the following patches and added one-liner comments to make
+    lintian happy:
     + htmlcontenttype
+    + doc-paths
 
  -- Axel Beckert <abe@debian.org>  Thu, 29 Sep 2011 22:46:53 +0200
 
