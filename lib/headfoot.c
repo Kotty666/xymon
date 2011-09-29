@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for handling header- and footer-files.                */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: headfoot.c 6140 2009-02-17 16:05:46Z storner $";
+static char rcsid[] = "$Id: headfoot.c 6745 2011-09-04 06:01:06Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -24,7 +24,7 @@ static char rcsid[] = "$Id: headfoot.c 6140 2009-02-17 16:05:46Z storner $";
 #include <fcntl.h>
 #include <pcre.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 #include "version.h"
 
 /* Stuff for headfoot - variables we can set dynamically */
@@ -55,8 +55,8 @@ static char *pagepattern_text = NULL;
 static pcre *pagepattern = NULL;
 static char *ippattern_text = NULL;
 static pcre *ippattern = NULL;
-static RbtHandle hostnames;
-static RbtHandle testnames;
+static void * hostnames;
+static void * testnames;
 
 typedef struct treerec_t {
 	char *name;
@@ -79,16 +79,21 @@ typedef struct listpool_t {
 } listpool_t;
 static listpool_t *listpoolhead = NULL;
 
+typedef struct bodystorage_t {
+	char *id;
+	strbuffer_t *txt;
+} bodystorage_t;
 
-static void clearflags(RbtHandle tree)
+
+static void clearflags(void * tree)
 {
-	RbtIterator handle;
+	xtreePos_t handle;
 	treerec_t *rec;
 
 	if (!tree) return;
 
-	for (handle = rbtBegin(tree); (handle != rbtEnd(tree)); handle = rbtNext(tree, handle)) {
-		rec = (treerec_t *)gettreeitem(tree, handle);
+	for (handle = xtreeFirst(tree); (handle != xtreeEnd(tree)); handle = xtreeNext(tree, handle)) {
+		rec = (treerec_t *)xtreeData(tree, handle);
 		rec->flag = 0;
 	}
 }
@@ -101,10 +106,10 @@ void sethostenv(char *host, char *ip, char *svc, char *color, char *hikey)
 	if (hostenv_svc)   xfree(hostenv_svc);
 	if (hostenv_color) xfree(hostenv_color);
 
-	hostenv_hikey = (hikey ? strdup(hikey) : NULL);
-	hostenv_host = strdup(host);
-	hostenv_ip = strdup(ip);
-	hostenv_svc = strdup(svc);
+	hostenv_hikey = (hikey ? strdup(htmlquoted(hikey)) : NULL);
+	hostenv_host = strdup(htmlquoted(host));
+	hostenv_ip = strdup(htmlquoted(ip));
+	hostenv_svc = strdup(htmlquoted(svc));
 	hostenv_color = strdup(color);
 }
 
@@ -226,95 +231,95 @@ void sethostenv_addtolist(char *listname, char *name, char *val, char *extra, in
 	}
 }
 
-static int nkackttprio = 0;
-static char *nkackttgroup = NULL;
-static char *nkackttextra = NULL;
-static char *nkackinfourl = NULL;
-static char *nkackdocurl = NULL;
+static int critackttprio = 0;
+static char *critackttgroup = NULL;
+static char *critackttextra = NULL;
+static char *ackinfourl = NULL;
+static char *critackdocurl = NULL;
 
-void sethostenv_nkack(int nkprio, char *nkttgroup, char *nkttextra, char *infourl, char *docurl)
+void sethostenv_critack(int prio, char *ttgroup, char *ttextra, char *infourl, char *docurl)
 {
-	nkackttprio = nkprio;
-	if (nkackttgroup) xfree(nkackttgroup); nkackttgroup = strdup((nkttgroup && *nkttgroup) ? nkttgroup : "&nbsp;");
-	if (nkackttextra) xfree(nkackttextra); nkackttextra = strdup((nkttextra && *nkttextra) ? nkttextra : "&nbsp;");
-	if (nkackinfourl) xfree(nkackinfourl); nkackinfourl = strdup(infourl);
-	if (nkackdocurl) xfree(nkackdocurl); nkackdocurl = strdup((docurl && *docurl) ? docurl : "");
+	critackttprio = prio;
+	if (critackttgroup) xfree(critackttgroup); critackttgroup = strdup((ttgroup && *ttgroup) ? ttgroup : "&nbsp;");
+	if (critackttextra) xfree(critackttextra); critackttextra = strdup((ttextra && *ttextra) ? ttextra : "&nbsp;");
+	if (ackinfourl) xfree(ackinfourl); ackinfourl = strdup(infourl);
+	if (critackdocurl) xfree(critackdocurl); critackdocurl = strdup((docurl && *docurl) ? docurl : "");
 }
 
-static char *nkeditupdinfo = NULL;
-static int nkeditprio = -1;
-static char *nkeditgroup = NULL;
-static time_t nkeditstarttime = 0;
-static time_t nkeditendtime = 0;
-static char *nkeditextra = NULL;
-static char *nkeditslawkdays = NULL;
-static char *nkeditslastart = NULL;
-static char *nkeditslaend = NULL;
-static char **nkeditclonelist = NULL;
-static int nkeditclonesize = 0;
+static char *criteditupdinfo = NULL;
+static int criteditprio = -1;
+static char *criteditgroup = NULL;
+static time_t criteditstarttime = 0;
+static time_t criteditendtime = 0;
+static char *criteditextra = NULL;
+static char *criteditslawkdays = NULL;
+static char *criteditslastart = NULL;
+static char *criteditslaend = NULL;
+static char **criteditclonelist = NULL;
+static int criteditclonesize = 0;
 
-void sethostenv_nkedit(char *updinfo, int prio, char *group, time_t starttime, time_t endtime, char *nktime, char *extra)
+void sethostenv_critedit(char *updinfo, int prio, char *group, time_t starttime, time_t endtime, char *crittime, char *extra)
 {
 	char *p;
 
-	if (nkeditupdinfo) xfree(nkeditupdinfo);
-	nkeditupdinfo = strdup(updinfo);
+	if (criteditupdinfo) xfree(criteditupdinfo);
+	criteditupdinfo = strdup(updinfo);
 
-	nkeditprio = prio;
-	nkeditstarttime = starttime;
-	nkeditendtime = endtime;
+	criteditprio = prio;
+	criteditstarttime = starttime;
+	criteditendtime = endtime;
 
-	if (nkeditgroup) xfree(nkeditgroup);
-	nkeditgroup = strdup(group ? group : "");
+	if (criteditgroup) xfree(criteditgroup);
+	criteditgroup = strdup(group ? group : "");
 
-	if (nkeditextra) xfree(nkeditextra);
-	nkeditextra = strdup(extra ? extra : "");
+	if (criteditextra) xfree(criteditextra);
+	criteditextra = strdup(extra ? extra : "");
 
-	if (nkeditslawkdays) xfree(nkeditslawkdays);
-	nkeditslawkdays = nkeditslastart = nkeditslaend = NULL;
+	if (criteditslawkdays) xfree(criteditslawkdays);
+	criteditslawkdays = criteditslastart = criteditslaend = NULL;
 
-	if (nktime) {
-		nkeditslawkdays = strdup(nktime);
-		p = strchr(nkeditslawkdays, ':');
+	if (crittime) {
+		criteditslawkdays = strdup(crittime);
+		p = strchr(criteditslawkdays, ':');
 		if (p) {
 			*p = '\0';
-			nkeditslastart = p+1;
+			criteditslastart = p+1;
 
-			p = strchr(nkeditslastart, ':');
+			p = strchr(criteditslastart, ':');
 			if (p) {
 				*p = '\0';
-				nkeditslaend = p+1;
+				criteditslaend = p+1;
 			}
 		}
 
-		if (nkeditslawkdays && (!nkeditslastart || !nkeditslaend)) {
-			xfree(nkeditslawkdays);
-			nkeditslawkdays = nkeditslastart = nkeditslaend = NULL;
+		if (criteditslawkdays && (!criteditslastart || !criteditslaend)) {
+			xfree(criteditslawkdays);
+			criteditslawkdays = criteditslastart = criteditslaend = NULL;
 		}
 	}
 }
 
-void sethostenv_nkclonelist_clear(void)
+void sethostenv_critclonelist_clear(void)
 {
 	int i;
 
-	if (nkeditclonelist) {
-		for (i=0; (nkeditclonelist[i]); i++) xfree(nkeditclonelist[i]);
-		xfree(nkeditclonelist);
+	if (criteditclonelist) {
+		for (i=0; (criteditclonelist[i]); i++) xfree(criteditclonelist[i]);
+		xfree(criteditclonelist);
 	}
-	nkeditclonelist = malloc(sizeof(char *));
-	nkeditclonelist[0] = NULL;
-	nkeditclonesize = 0;
+	criteditclonelist = malloc(sizeof(char *));
+	criteditclonelist[0] = NULL;
+	criteditclonesize = 0;
 }
 
-void sethostenv_nkclonelist_add(char *hostname)
+void sethostenv_critclonelist_add(char *hostname)
 {
 	char *p;
 
-	nkeditclonelist = (char **)realloc(nkeditclonelist, (nkeditclonesize + 2)*sizeof(char *));
-	nkeditclonelist[nkeditclonesize] = strdup(hostname);
-	p = nkeditclonelist[nkeditclonesize];
-	nkeditclonelist[++nkeditclonesize] = NULL;
+	criteditclonelist = (char **)realloc(criteditclonelist, (criteditclonesize + 2)*sizeof(char *));
+	criteditclonelist[criteditclonesize] = strdup(hostname);
+	p = criteditclonelist[criteditclonesize];
+	criteditclonelist[++criteditclonesize] = NULL;
 
 	p += (strlen(p) - 1);
 	if (*p == '=') *p = '\0';
@@ -341,12 +346,12 @@ char *wkdayselect(char wkday, char *valtxt, int isdefault)
 	static char result[100];
 	char *selstr;
 
-	if (!nkeditslawkdays) {
+	if (!criteditslawkdays) {
 		if (isdefault) selstr = "SELECTED";
 		else selstr = "";
 	}
 	else {
-		if (strchr(nkeditslawkdays, wkday)) selstr = "SELECTED";
+		if (strchr(criteditslawkdays, wkday)) selstr = "SELECTED";
 		else selstr = "";
 	}
 
@@ -370,14 +375,14 @@ static void *wanted_host(char *hostname)
 	}
 
 	if (pagepattern && hinfo) {
-		char *pname = bbh_item(hinfo, BBH_PAGEPATH);
+		char *pname = xmh_item(hinfo, XMH_PAGEPATH);
 		result = pcre_exec(pagepattern, NULL, pname, strlen(pname), 0, 0,
 				ovector, (sizeof(ovector)/sizeof(int)));
 		if (result < 0) return NULL;
 	}
 
 	if (ippattern && hinfo) {
-		char *hostip = bbh_item(hinfo, BBH_IP);
+		char *hostip = xmh_item(hinfo, XMH_IP);
 		result = pcre_exec(ippattern, NULL, hostip, strlen(hostip), 0, 0,
 				ovector, (sizeof(ovector)/sizeof(int)));
 		if (result < 0) return NULL;
@@ -396,8 +401,8 @@ static void fetch_board(void)
 	if (haveboard) return;
 
 	sres = newsendreturnbuf(1, NULL);
-	if (sendmessage("hobbitdboard fields=hostname,testname,disabletime,dismsg", 
-			NULL, BBTALK_TIMEOUT, sres) != BB_OK) {
+	if (sendmessage("xymondboard fields=hostname,testname,disabletime,dismsg", 
+			NULL, XYMON_TIMEOUT, sres) != XYMONSEND_OK) {
 		freesendreturnbuf(sres);
 		return;
 	}
@@ -406,8 +411,8 @@ static void fetch_board(void)
 	statusboard = getsendreturnstr(sres, 1);
 	freesendreturnbuf(sres);
 
-	hostnames = rbtNew(name_compare);
-	testnames = rbtNew(name_compare);
+	hostnames = xtreeNew(strcasecmp);
+	testnames = xtreeNew(strcasecmp);
 	walk = statusboard;
 	while (walk) {
 		eoln = strchr(walk, '\n'); if (eoln) *eoln = '\0';
@@ -423,14 +428,14 @@ static void fetch_board(void)
 				newrec = (treerec_t *)malloc(sizeof(treerec_t));
 				newrec->name = strdup(hname);
 				newrec->flag = 0;
-				rbtInsert(hostnames, newrec->name, newrec);
+				xtreeAdd(hostnames, newrec->name, newrec);
 
 				tname = gettok(NULL, "|");
 				if (tname) {
 					newrec = (treerec_t *)malloc(sizeof(treerec_t));
 					newrec->name = strdup(tname);
 					newrec->flag = 0;
-					rbtInsert(testnames, strdup(tname), newrec);
+					xtreeAdd(testnames, strdup(tname), newrec);
 				}
 			}
 
@@ -446,7 +451,7 @@ static void fetch_board(void)
 	}
 
 	sres = newsendreturnbuf(1, NULL);
-	if (sendmessage("schedule", NULL, BBTALK_TIMEOUT, sres) != BB_OK) {
+	if (sendmessage("schedule", NULL, XYMON_TIMEOUT, sres) != XYMONSEND_OK) {
 		freesendreturnbuf(sres);
 		return;
 	}
@@ -465,33 +470,122 @@ static char *eventreport_timestring(time_t timestamp)
 
 static void build_pagepath_dropdown(FILE *output)
 {
-	RbtHandle ptree;
+	void * ptree;
 	void *hwalk;
-	RbtIterator handle;
+	xtreePos_t handle;
 
-	ptree = rbtNew(string_compare);
+	ptree = xtreeNew(strcmp);
 
 	for (hwalk = first_host(); (hwalk); hwalk = next_host(hwalk, 0)) {
-		char *path = bbh_item(hwalk, BBH_PAGEPATH);
+		char *path = xmh_item(hwalk, XMH_PAGEPATH);
 		char *ptext;
 
-		handle = rbtFind(ptree, path);
-		if (handle != rbtEnd(ptree)) continue;
+		handle = xtreeFind(ptree, path);
+		if (handle != xtreeEnd(ptree)) continue;
 
-		ptext = bbh_item(hwalk, BBH_PAGEPATHTITLE);
-		rbtInsert(ptree, ptext, path);
+		ptext = xmh_item(hwalk, XMH_PAGEPATHTITLE);
+		xtreeAdd(ptree, ptext, path);
 	}
 
-	for (handle = rbtBegin(ptree); (handle != rbtEnd(ptree)); handle = rbtNext(ptree, handle)) {
-		char *path, *ptext;
-
-		rbtKeyValue(ptree, handle, (void **)&ptext, (void **)&path);
-		fprintf(output, "<option value=\"%s\">%s</option>\n", path, ptext);
+	for (handle = xtreeFirst(ptree); (handle != xtreeEnd(ptree)); handle = xtreeNext(ptree, handle)) {
+		fprintf(output, "<option value=\"%s\">%s</option>\n", (char *)xtreeData(ptree, handle), xtreeKey(ptree, handle));
 	}
 
-	rbtDelete(ptree);
+	xtreeDestroy(ptree);
 }
 
+char *xymonbody(char *id)
+{
+	static void * bodystorage;
+	static int firsttime = 1;
+	xtreePos_t handle;
+	bodystorage_t *bodyelement;
+
+	strbuffer_t *rawdata, *parseddata;
+	char *envstart, *envend, *outpos;
+	char *idtag, *idval;
+	int idtaglen;
+
+	if (firsttime) {
+		bodystorage = xtreeNew(strcmp);
+		firsttime = 0;
+	}
+
+	idtaglen = strspn(id, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	idtag = (char *)malloc(idtaglen + 1);
+	strncpy(idtag, id, idtaglen);
+	*(idtag+idtaglen) = '\0';
+
+	handle = xtreeFind(bodystorage, idtag);
+	if (handle != xtreeEnd(bodystorage)) {
+		bodyelement = (bodystorage_t *)xtreeData(bodystorage, handle);
+		xfree(idtag);
+		return STRBUF(bodyelement->txt);
+	}
+
+	rawdata = newstrbuffer(0);
+	idval = xgetenv(idtag);
+	if (idval == NULL) return "";
+
+	if (strncmp(idval, "file:", 5) == 0) {
+		FILE *fd;
+		strbuffer_t *inbuf = newstrbuffer(0);
+
+		fd = stackfopen(idval+5, "r", NULL);
+		if (fd != NULL) {
+			while (stackfgets(inbuf, NULL)) addtostrbuffer(rawdata, inbuf);
+			stackfclose(fd);
+		}
+
+		freestrbuffer(inbuf);
+	}
+	else {
+		addtobuffer(rawdata, idval);
+	}
+
+	/* Output the body data, but expand any environment variables along the way */
+	parseddata = newstrbuffer(0);
+	outpos = STRBUF(rawdata);
+	while (*outpos) {
+		envstart = strchr(outpos, '$');
+		if (envstart) {
+			char savechar;
+			char *envval = NULL;
+
+			*envstart = '\0';
+			addtobuffer(parseddata, outpos);
+
+			envstart++;
+			envend = envstart + strspn(envstart, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			savechar = *envend; *envend = '\0';
+			if (*envstart) envval = xgetenv(envstart);
+
+			*envend = savechar;
+			outpos = envend;
+
+			if (envval) {
+				addtobuffer(parseddata, envval);
+			}
+			else {
+				addtobuffer(parseddata, "$");
+				addtobuffer(parseddata, envstart);
+			}
+		}
+		else {
+			addtobuffer(parseddata, outpos);
+			outpos += strlen(outpos);
+		}
+	}
+
+	freestrbuffer(rawdata);
+
+	bodyelement = (bodystorage_t *)calloc(1, sizeof(bodystorage_t));
+	bodyelement->id = idtag;
+	bodyelement->txt = parseddata;
+	xtreeAdd(bodystorage, bodyelement->id, bodyelement);
+
+	return STRBUF(bodyelement->txt);
+}
 
 typedef struct distest_t {
 	char *name;
@@ -525,17 +619,17 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 		t_next += strspn(t_next, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_");
 		savechar = *t_next; *t_next = '\0';
 
-		if (strcmp(t_start, "BBDATE") == 0) {
-			char *bbdatefmt = xgetenv("BBDATEFORMAT");
+		if ((strcmp(t_start, "XYMWEBDATE") == 0) || (strcmp(t_start, "BBDATE") == 0)) {
+			char *datefmt = xgetenv("XYMONDATEFORMAT");
 			char datestr[100];
 
 			MEMDEFINE(datestr);
 
 			/*
-			 * If no BBDATEFORMAT setting, use a format string that
+			 * If no XYMONDATEFORMAT setting, use a format string that
 			 * produces output similar to that from ctime()
 			 */
-			if (bbdatefmt == NULL) bbdatefmt = "%a %b %d %H:%M:%S %Y\n";
+			if (datefmt == NULL) datefmt = "%a %b %d %H:%M:%S %Y\n";
 
 			if (hostenv_reportstart != 0) {
 				char starttime[20], endtime[20];
@@ -552,34 +646,43 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 				MEMUNDEFINE(starttime); MEMUNDEFINE(endtime);
 			}
 			else if (hostenv_snapshot != 0) {
-				strftime(datestr, sizeof(datestr), bbdatefmt, localtime(&hostenv_snapshot));
+				strftime(datestr, sizeof(datestr), datefmt, localtime(&hostenv_snapshot));
 				fprintf(output, "%s", datestr);
 			}
 			else {
-				strftime(datestr, sizeof(datestr), bbdatefmt, localtime(&now));
+				strftime(datestr, sizeof(datestr), datefmt, localtime(&now));
 				fprintf(output, "%s", datestr);
 			}
 
 			MEMUNDEFINE(datestr);
 		}
 
-		else if (strcmp(t_start, "BBBACKGROUND") == 0)  {
+		else if ((strcmp(t_start, "XYMWEBBACKGROUND") == 0) || (strcmp(t_start, "BBBACKGROUND") == 0)) {
 			fprintf(output, "%s", colorname(bgcolor));
 		}
-		else if (strcmp(t_start, "BBCOLOR") == 0)       fprintf(output, "%s", hostenv_color);
-		else if (strcmp(t_start, "BBSVC") == 0)         fprintf(output, "%s", hostenv_svc);
-		else if (strcmp(t_start, "BBHOST") == 0)        fprintf(output, "%s", hostenv_host);
-		else if (strcmp(t_start, "BBHIKEY") == 0)       fprintf(output, "%s", (hostenv_hikey ? hostenv_hikey : hostenv_host));
-		else if (strcmp(t_start, "BBIP") == 0)          fprintf(output, "%s", hostenv_ip);
-		else if (strcmp(t_start, "BBIPNAME") == 0) {
-			if (strcmp(hostenv_ip, "0.0.0.0") == 0) fprintf(output, "%s", hostenv_host);
+		else if ((strcmp(t_start, "XYMWEBCOLOR") == 0) || (strcmp(t_start, "BBCOLOR") == 0))
+			fprintf(output, "%s", hostenv_color);
+		else if ((strcmp(t_start, "XYMWEBSVC") == 0) || (strcmp(t_start, "BBSVC") == 0))
+			fprintf(output, "%s", hostenv_svc);
+		else if ((strcmp(t_start, "XYMWEBHOST") == 0) || (strcmp(t_start, "BBHOST") == 0))
+			fprintf(output, "%s", hostenv_host);
+		else if ((strcmp(t_start, "XYMWEBHIKEY") == 0) || (strcmp(t_start, "BBHIKEY") == 0))
+			fprintf(output, "%s", (hostenv_hikey ? hostenv_hikey : hostenv_host));
+		else if ((strcmp(t_start, "XYMWEBIP") == 0) || (strcmp(t_start, "BBIP") == 0))
+			fprintf(output, "%s", hostenv_ip);
+		else if ((strcmp(t_start, "XYMWEBIPNAME") == 0) || (strcmp(t_start, "BBIPNAME") == 0)) {
+			if (strcmp(hostenv_ip, "0.0.0.0") == 0)  fprintf(output, "%s", hostenv_host);
 			else fprintf(output, "%s", hostenv_ip);
 		}
-		else if (strcmp(t_start, "BBREPWARN") == 0)     fprintf(output, "%s", hostenv_repwarn);
-		else if (strcmp(t_start, "BBREPPANIC") == 0)    fprintf(output, "%s", hostenv_reppanic);
-		else if (strcmp(t_start, "LOGTIME") == 0) 	fprintf(output, "%s", (hostenv_logtime ? hostenv_logtime : ""));
-		else if (strcmp(t_start, "BBREFRESH") == 0)     fprintf(output, "%d", hostenv_refresh);
-		else if (strcmp(t_start, "BBPAGEPATH") == 0)    fprintf(output, "%s", (hostenv_pagepath ? hostenv_pagepath : ""));
+		else if ((strcmp(t_start, "XYMONREPWARN") == 0) || (strcmp(t_start, "BBREPWARN") == 0))
+			fprintf(output, "%s", hostenv_repwarn);
+		else if ((strcmp(t_start, "XYMONREPPANIC") == 0) || (strcmp(t_start, "BBREPPANIC") == 0))
+			fprintf(output, "%s", hostenv_reppanic);
+		else if (strcmp(t_start, "LOGTIME") == 0) 	 fprintf(output, "%s", (hostenv_logtime ? hostenv_logtime : ""));
+		else if ((strcmp(t_start, "XYMWEBREFRESH") == 0) || (strcmp(t_start, "BBREFRESH") == 0))
+			fprintf(output, "%d", hostenv_refresh);
+		else if ((strcmp(t_start, "XYMWEBPAGEPATH") == 0) || (strcmp(t_start, "BBPAGEPATH") == 0))
+			fprintf(output, "%s", (hostenv_pagepath ? hostenv_pagepath : ""));
 
 		else if (strcmp(t_start, "REPMONLIST") == 0) {
 			int i;
@@ -741,13 +844,13 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			if (ippattern_text) fprintf(output, "%s", ippattern_text);
 		}
 		else if (strcmp(t_start, "HOSTLIST") == 0) {
-			RbtIterator handle;
+			xtreePos_t handle;
 			treerec_t *rec;
 
 			fetch_board();
 
-			for (handle = rbtBegin(hostnames); (handle != rbtEnd(hostnames)); handle = rbtNext(hostnames, handle)) {
-				rec = (treerec_t *)gettreeitem(hostnames, handle);
+			for (handle = xtreeFirst(hostnames); (handle != xtreeEnd(hostnames)); handle = xtreeNext(hostnames, handle)) {
+				rec = (treerec_t *)xtreeData(hostnames, handle);
 
 				if (wanted_host(rec->name)) {
 					fprintf(output, "<OPTION VALUE=\"%s\">%s</OPTION>\n", rec->name, rec->name);
@@ -755,23 +858,23 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			}
 		}
 		else if (strcmp(t_start, "JSHOSTLIST") == 0) {
-			RbtIterator handle;
+			xtreePos_t handle;
 
 			fetch_board();
 			clearflags(testnames);
 
 			fprintf(output, "var hosts = new Array();\n");
 			fprintf(output, "hosts[\"ALL\"] = [ \"ALL\"");
-			for (handle = rbtBegin(testnames); (handle != rbtEnd(testnames)); handle = rbtNext(testnames, handle)) {
-				treerec_t *rec = gettreeitem(testnames, handle);
+			for (handle = xtreeFirst(testnames); (handle != xtreeEnd(testnames)); handle = xtreeNext(testnames, handle)) {
+				treerec_t *rec = xtreeData(testnames, handle);
 				fprintf(output, ", \"%s\"", rec->name);
 			}
 			fprintf(output, " ];\n");
 
-			for (handle = rbtBegin(hostnames); (handle != rbtEnd(hostnames)); handle = rbtNext(hostnames, handle)) {
-				treerec_t *hrec = gettreeitem(hostnames, handle);
+			for (handle = xtreeFirst(hostnames); (handle != xtreeEnd(hostnames)); handle = xtreeNext(hostnames, handle)) {
+				treerec_t *hrec = xtreeData(hostnames, handle);
 				if (wanted_host(hrec->name)) {
-					RbtIterator thandle;
+					xtreePos_t thandle;
 					treerec_t *trec;
 					char *bwalk, *tname, *p;
 					char *key = (char *)malloc(strlen(hrec->name) + 3);
@@ -790,9 +893,9 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 						p = strchr(tname, '|'); if (p) *p = '\0';
 						if ( (strcmp(tname, xgetenv("INFOCOLUMN")) != 0) &&
 						     (strcmp(tname, xgetenv("TRENDSCOLUMN")) != 0) ) {
-							thandle = rbtFind(testnames, tname);
-							if (thandle != rbtEnd(testnames)) {
-								trec = (treerec_t *)gettreeitem(testnames, thandle);
+							thandle = xtreeFind(testnames, tname);
+							if (thandle != xtreeEnd(testnames)) {
+								trec = (treerec_t *)xtreeData(testnames, thandle);
 								trec->flag = 1;
 							}
 						}
@@ -802,8 +905,8 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 					}
 
 					fprintf(output, "hosts[\"%s\"] = [ \"ALL\"", hrec->name);
-					for (thandle = rbtBegin(testnames); (thandle != rbtEnd(testnames)); thandle = rbtNext(testnames, thandle)) {
-						trec = (treerec_t *)gettreeitem(testnames, thandle);
+					for (thandle = xtreeFirst(testnames); (thandle != xtreeEnd(testnames)); thandle = xtreeNext(testnames, thandle)) {
+						trec = (treerec_t *)xtreeData(testnames, thandle);
 						if (trec->flag == 0) continue;
 
 						trec->flag = 0;
@@ -814,13 +917,13 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			}
 		}
 		else if (strcmp(t_start, "TESTLIST") == 0) {
-			RbtIterator handle;
+			xtreePos_t handle;
 			treerec_t *rec;
 
 			fetch_board();
 
-			for (handle = rbtBegin(testnames); (handle != rbtEnd(testnames)); handle = rbtNext(testnames, handle)) {
-				rec = (treerec_t *)gettreeitem(testnames, handle);
+			for (handle = xtreeFirst(testnames); (handle != xtreeEnd(testnames)); handle = xtreeNext(testnames, handle)) {
+				rec = (treerec_t *)xtreeData(testnames, handle);
 				fprintf(output, "<OPTION VALUE=\"%s\">%s</OPTION>\n", rec->name, rec->name);
 			}
 		}
@@ -838,7 +941,7 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 				if (*walk) {
 					char *buf, *hname, *tname, *dismsg, *p;
 					time_t distime;
-					RbtIterator thandle;
+					xtreePos_t thandle;
 					treerec_t *rec;
 
 					buf = strdup(walk);
@@ -874,9 +977,9 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 						twalk->next = hwalk->tests;
 						hwalk->tests = twalk;
 
-						thandle = rbtFind(testnames, tname);
-						if (thandle != rbtEnd(testnames)) {
-							rec = gettreeitem(testnames, thandle);
+						thandle = xtreeFind(testnames, tname);
+						if (thandle != xtreeEnd(testnames)) {
+							rec = xtreeData(testnames, thandle);
 							rec->flag = 1;
 						}
 					}
@@ -902,7 +1005,7 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 				for (hwalk = dhosts; (hwalk); hwalk = hwalk->next) {
 					fprintf(output, "<TR>");
 					fprintf(output, "<TD>");
-					fprintf(output,"<form method=\"post\" action=\"%s/hobbit-enadis.sh\">\n",
+					fprintf(output,"<form method=\"post\" action=\"%s/enadis.sh\">\n",
 						xgetenv("SECURECGIBINURL"));
 
 					fprintf(output, "<table summary=\"%s disabled tests\" width=\"100%%\">\n", 
@@ -951,11 +1054,11 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 						}
 					}
 					else {
-						RbtIterator tidx;
+						xtreePos_t tidx;
 						treerec_t *rec;
 
-						for (tidx = rbtBegin(testnames); (tidx != rbtEnd(testnames)); tidx = rbtNext(testnames, tidx)) {
-							rec = gettreeitem(testnames, tidx);
+						for (tidx = xtreeFirst(testnames); (tidx != xtreeEnd(testnames)); tidx = xtreeNext(testnames, tidx)) {
+							rec = xtreeData(testnames, tidx);
 							if (rec->flag == 0) continue;
 
 							fprintf(output, "<option value=\"%s\">%s</option>\n",
@@ -1019,7 +1122,7 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 						fprintf(output, "</TD>\n");
 
 						fprintf(output, "<td>\n");
-						fprintf(output, "<form method=\"post\" action=\"%s/hobbit-enadis.sh\">\n",
+						fprintf(output, "<form method=\"post\" action=\"%s/enadis.sh\">\n",
 							xgetenv("SECURECGIBINURL"));
 						fprintf(output, "<input name=canceljob type=hidden value=\"%d\">\n", 
 							id);
@@ -1055,42 +1158,42 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 					walk->name);
 		}
 
-		else if (strcmp(t_start, "NKACKTTPRIO") == 0) fprintf(output, "%d", nkackttprio);
-		else if (strcmp(t_start, "NKACKTTGROUP") == 0) fprintf(output, "%s", nkackttgroup);
-		else if (strcmp(t_start, "NKACKTTEXTRA") == 0) fprintf(output, "%s", nkackttextra);
-		else if (strcmp(t_start, "NKACKINFOURL") == 0) fprintf(output, "%s", nkackinfourl);
-		else if (strcmp(t_start, "NKACKDOCURL") == 0) fprintf(output, "%s", nkackdocurl);
+		else if (strcmp(t_start, "CRITACKTTPRIO") == 0) fprintf(output, "%d", critackttprio);
+		else if (strcmp(t_start, "CRITACKTTGROUP") == 0) fprintf(output, "%s", critackttgroup);
+		else if (strcmp(t_start, "CRITACKTTEXTRA") == 0) fprintf(output, "%s", critackttextra);
+		else if (strcmp(t_start, "CRITACKINFOURL") == 0) fprintf(output, "%s", ackinfourl);
+		else if (strcmp(t_start, "CRITACKDOCURL") == 0) fprintf(output, "%s", critackdocurl);
 
-		else if (strcmp(t_start, "NKEDITUPDINFO") == 0) {
-			fprintf(output, "%s", nkeditupdinfo);
+		else if (strcmp(t_start, "CRITEDITUPDINFO") == 0) {
+			fprintf(output, "%s", criteditupdinfo);
 		}
 
-		else if (strcmp(t_start, "NKEDITPRIOLIST") == 0) {
+		else if (strcmp(t_start, "CRITEDITPRIOLIST") == 0) {
 			int i;
 			char *selstr;
 
 			for (i=1; (i <= 3); i++) {
-				selstr = ((i == nkeditprio) ? "SELECTED" : "");
+				selstr = ((i == criteditprio) ? "SELECTED" : "");
 				fprintf(output, "<option value=\"%d\" %s>%d</option>\n", i, selstr, i);
 			}
 		}
 
-		else if (strcmp(t_start, "NKEDITCLONELIST") == 0) {
+		else if (strcmp(t_start, "CRITEDITCLONELIST") == 0) {
 			int i;
-			for (i=0; (nkeditclonelist[i]); i++) 
+			for (i=0; (criteditclonelist[i]); i++) 
 				fprintf(output, "<option value=\"%s\">%s</option>\n", 
-					nkeditclonelist[i], nkeditclonelist[i]);
+					criteditclonelist[i], criteditclonelist[i]);
 		}
 
-		else if (strcmp(t_start, "NKEDITGROUP") == 0) {
-			fprintf(output, "%s", nkeditgroup);
+		else if (strcmp(t_start, "CRITEDITGROUP") == 0) {
+			fprintf(output, "%s", criteditgroup);
 		}
 
-		else if (strcmp(t_start, "NKEDITEXTRA") == 0) {
-			fprintf(output, "%s", nkeditextra);
+		else if (strcmp(t_start, "CRITEDITEXTRA") == 0) {
+			fprintf(output, "%s", criteditextra);
 		}
 
-		else if (strcmp(t_start, "NKEDITWKDAYS") == 0) {
+		else if (strcmp(t_start, "CRITEDITWKDAYS") == 0) {
 			fprintf(output, "%s", wkdayselect('*', "All days", 1));
 			fprintf(output, "%s", wkdayselect('W', "Mon-Fri", 0));
 			fprintf(output, "%s", wkdayselect('1', "Monday", 0));
@@ -1102,30 +1205,30 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			fprintf(output, "%s", wkdayselect('0', "Sunday", 0));
 		}
 
-		else if (strcmp(t_start, "NKEDITSTART") == 0) {
+		else if (strcmp(t_start, "CRITEDITSTART") == 0) {
 			int i, curr;
 			char *selstr;
 
-			curr = (nkeditslastart ? (atoi(nkeditslastart) / 100) : 0);
+			curr = (criteditslastart ? (atoi(criteditslastart) / 100) : 0);
 			for (i=0; (i <= 23); i++) {
 				selstr = ((i == curr) ? "SELECTED" : "");
 				fprintf(output, "<option value=\"%02i00\" %s>%02i:00</option>\n", i, selstr, i);
 			}
 		}
 
-		else if (strcmp(t_start, "NKEDITEND") == 0) {
+		else if (strcmp(t_start, "CRITEDITEND") == 0) {
 			int i, curr;
 			char *selstr;
 
-			curr = (nkeditslaend ? (atoi(nkeditslaend) / 100) : 24);
+			curr = (criteditslaend ? (atoi(criteditslaend) / 100) : 24);
 			for (i=1; (i <= 24); i++) {
 				selstr = ((i == curr) ? "SELECTED" : "");
 				fprintf(output, "<option value=\"%02i00\" %s>%02i:00</option>\n", i, selstr, i);
 			}
 		}
 
-		else if (strncmp(t_start, "NKEDITDAYLIST", 13) == 0) {
-			time_t t = ((*(t_start+13) == '1') ? nkeditstarttime : nkeditendtime);
+		else if (strncmp(t_start, "CRITEDITDAYLIST", 13) == 0) {
+			time_t t = ((*(t_start+13) == '1') ? criteditstarttime : criteditendtime);
 			char *defstr = ((*(t_start+13) == '1') ? "Now" : "Never");
 			int i;
 			char *selstr;
@@ -1142,8 +1245,8 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			}
 		}
 
-		else if (strncmp(t_start, "NKEDITMONLIST", 13) == 0) {
-			time_t t = ((*(t_start+13) == '1') ? nkeditstarttime : nkeditendtime);
+		else if (strncmp(t_start, "CRITEDITMONLIST", 13) == 0) {
+			time_t t = ((*(t_start+13) == '1') ? criteditstarttime : criteditendtime);
 			char *defstr = ((*(t_start+13) == '1') ? "Now" : "Never");
 			int i;
 			char *selstr;
@@ -1170,8 +1273,8 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			}
 		}
 
-		else if (strncmp(t_start, "NKEDITYEARLIST", 14) == 0) {
-			time_t t = ((*(t_start+14) == '1') ? nkeditstarttime : nkeditendtime);
+		else if (strncmp(t_start, "CRITEDITYEARLIST", 14) == 0) {
+			time_t t = ((*(t_start+14) == '1') ? criteditstarttime : criteditendtime);
 			char *defstr = ((*(t_start+14) == '1') ? "Now" : "Never");
 			int i;
 			char *selstr;
@@ -1197,10 +1300,13 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			}
 		}
 
-		else if (hostenv_hikey && (strncmp(t_start, "BBH_", 4) == 0)) {
+		else if (hostenv_hikey && ( (strncmp(t_start, "XMH_", 4) == 0) || (strncmp(t_start, "BBH_", 4) == 0) )) {
 			void *hinfo = hostinfo(hostenv_hikey);
 			if (hinfo) {
-				char *s = bbh_item_byname(hinfo, t_start);
+				char *s;
+
+				if (strncmp(t_start, "BBH_", 4) == 0) memmove(t_start, "XMH_", 4); /* For compatibility */
+				s = xmh_item_byname(hinfo, t_start);
 
 				if (!s) {
 					fprintf(output, "&%s", t_start);
@@ -1335,6 +1441,11 @@ void output_parsed(FILE *output, char *templatedata, int bgcolor, time_t selecte
 			fprintf(output, "%s", hostenv_eventtimeend);
 		}
 
+		else if (strncmp(t_start, "XYMONBODY", 9) == 0) {
+			char *bodytext = xymonbody(t_start);
+			fprintf(output, "%s", bodytext);
+		}
+
 		else if (*t_start && (savechar == ';')) {
 			/* A "&xxx;" is probably an HTML escape - output unchanged. */
 			fprintf(output, "&%s", t_start);
@@ -1377,21 +1488,21 @@ void headfoot(FILE *output, char *template, char *pagepath, char *head_or_foot, 
 
 	MEMDEFINE(filename);
 
-	if (xgetenv("HOBBITDREL") == NULL) {
-		char *hobbitdrel = (char *)malloc(12+strlen(VERSION));
-		sprintf(hobbitdrel, "HOBBITDREL=%s", VERSION);
-		putenv(hobbitdrel);
+	if (xgetenv("XYMONDREL") == NULL) {
+		char *xymondrel = (char *)malloc(12+strlen(VERSION));
+		sprintf(xymondrel, "XYMONDREL=%s", VERSION);
+		putenv(xymondrel);
 	}
 
 	/*
 	 * "pagepath" is the relative path for this page, e.g. 
-	 * - for "bb.html" it is ""
+	 * - for the top-level page it is ""
 	 * - for a page, it is "pagename/"
 	 * - for a subpage, it is "pagename/subpagename/"
 	 *
-	 * BB allows header/footer files named bb_PAGE_header or bb_PAGE_SUBPAGE_header
+	 * We allow header/footer files named template_PAGE_header or template_PAGE_SUBPAGE_header
 	 * so we need to scan for an existing file - starting with the
-	 * most detailed one, and working up towards the standard "web/bb_TYPE" file.
+	 * most detailed one, and working up towards the standard "web/template_TYPE" file.
 	 */
 
 	hfpath = strdup(pagepath); 
@@ -1411,7 +1522,7 @@ void headfoot(FILE *output, char *template, char *pagepath, char *head_or_foot, 
 			sprintf(filename, "%s/", hostenv_templatedir);
 		}
 		else {
-			sprintf(filename, "%s/web/", xgetenv("BBHOME"));
+			sprintf(filename, "%s/web/", xgetenv("XYMONHOME"));
 		}
 
 		p = strchr(hfpath, '/'); elemstart = hfpath;
@@ -1444,7 +1555,7 @@ void headfoot(FILE *output, char *template, char *pagepath, char *head_or_foot, 
 			sprintf(filename, "%s/%s_%s", hostenv_templatedir, template, head_or_foot);
 		}
 		else {
-			sprintf(filename, "%s/web/%s_%s", xgetenv("BBHOME"), template, head_or_foot);
+			sprintf(filename, "%s/web/%s_%s", xgetenv("XYMONHOME"), template, head_or_foot);
 		}
 
 		dbgprintf("Trying header/footer file '%s'\n", filename);
@@ -1463,12 +1574,12 @@ void headfoot(FILE *output, char *template, char *pagepath, char *head_or_foot, 
 		xfree(templatedata);
 	}
 	else {
-		fprintf(output, "<HTML><BODY> \n <HR size=4> \n <BR>%s is either missing or invalid, please create this file with your custom header<BR> \n<HR size=4>", filename);
+		fprintf(output, "<HTML><BODY> \n <HR size=4> \n <BR>%s is either missing or invalid, please create this file with your custom header<BR> \n<HR size=4>", htmlquoted(filename));
 	}
 
 	/* Check for bulletin files */
-	bulletinfile = (char *)malloc(strlen(xgetenv("BBHOME")) + strlen("/web/bulletin_") + strlen(head_or_foot)+1);
-	sprintf(bulletinfile, "%s/web/bulletin_%s", xgetenv("BBHOME"), head_or_foot);
+	bulletinfile = (char *)malloc(strlen(xgetenv("XYMONHOME")) + strlen("/web/bulletin_") + strlen(head_or_foot)+1);
+	sprintf(bulletinfile, "%s/web/bulletin_%s", xgetenv("XYMONHOME"), head_or_foot);
 	fd = open(bulletinfile, O_RDONLY);
 	if (fd != -1) {
 		fstat(fd, &st);
@@ -1496,7 +1607,7 @@ void showform(FILE *output, char *headertemplate, char *formtemplate, int color,
 	int formfile;
 	char formfn[PATH_MAX];
 
-	sprintf(formfn, "%s/web/%s", xgetenv("BBHOME"), formtemplate);
+	sprintf(formfn, "%s/web/%s", xgetenv("XYMONHOME"), formtemplate);
 	formfile = open(formfn, O_RDONLY);
 
 	if (formfile >= 0) {

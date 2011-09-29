@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
 /* This displays the "notification" log.                                      */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /* Host/test/color/start/end filtering code by Eric Schwimmer 2005            */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: notifylog.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: notifylog.c 6744 2011-09-03 16:06:19Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -28,7 +28,7 @@ static char rcsid[] = "$Id: notifylog.c 6125 2009-02-12 13:09:34Z storner $";
 
 #include <pcre.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 typedef struct notification_t {
 	void *host;
@@ -120,7 +120,7 @@ void do_notifylog(FILE *output,
 	if (fromtime) {
 		firstevent = convert_time(fromtime);
 		if(firstevent < 0) {
-			fprintf(output,"<B>Invalid 'from' time: %s</B>", fromtime);
+			fprintf(output,"<B>Invalid 'from' time: %s</B>", htmlquoted(fromtime));
 			return;
 		}
 	}
@@ -134,7 +134,7 @@ void do_notifylog(FILE *output,
 	if (totime) {
 		lastevent = convert_time(totime);
 		if (lastevent < 0) {
-			fprintf(output,"<B>Invalid 'to' time: %s</B>", totime);
+			fprintf(output,"<B>Invalid 'to' time: %s</B>", htmlquoted(totime));
 			return;
 		}
 		if (lastevent < firstevent) {
@@ -154,7 +154,7 @@ void do_notifylog(FILE *output,
 	if (rcptregex && *rcptregex) rcptregexp = pcre_compile(rcptregex, PCRE_CASELESS, &errmsg, &errofs, NULL);
 	if (exrcptregex && *exrcptregex) exrcptregexp = pcre_compile(exrcptregex, PCRE_CASELESS, &errmsg, &errofs, NULL);
 
-	sprintf(notifylogfilename, "%s/notifications.log", xgetenv("BBSERVERLOGS"));
+	sprintf(notifylogfilename, "%s/notifications.log", xgetenv("XYMONSERVERLOGS"));
 	notifylog = fopen(notifylogfilename, "r");
 
 	if (notifylog && (stat(notifylogfilename, &st) == 0)) {
@@ -186,6 +186,7 @@ void do_notifylog(FILE *output,
 
 	while (notifylog && (fgets(l, sizeof(l), notifylog))) {
 
+		unsigned int etim;
 		time_t eventtime;
 		char hostsvc[MAX_LINE_LEN];
 		char recipient[MAX_LINE_LEN];
@@ -196,7 +197,8 @@ void do_notifylog(FILE *output,
 		struct htnames_t *eventcolumn;
 		int ovector[30];
 
-		itemsfound = sscanf(l, "%*s %*s %*u %*u:%*u:%*u %*u %s %*s %s %u %*d", hostsvc, recipient, &eventtime);
+		itemsfound = sscanf(l, "%*s %*s %*u %*u:%*u:%*u %*u %s %*s %s %u %*d", hostsvc, recipient, &etim);
+		eventtime = etim;
 		if (itemsfound != 3) continue;
 		if (eventtime < firstevent) continue;
 		if (eventtime > lastevent) break;
@@ -211,12 +213,12 @@ void do_notifylog(FILE *output,
 		if (pageregexp) {
 			char *pagename;
 
-			pagename = bbh_item_multi(eventhost, BBH_PAGEPATH);
+			pagename = xmh_item_multi(eventhost, XMH_PAGEPATH);
 			pagematch = 0;
 			while (!pagematch && pagename) {
 			pagematch = (pcre_exec(pageregexp, NULL, pagename, strlen(pagename), 0, 0, 
 					ovector, (sizeof(ovector)/sizeof(int))) >= 0);
-				pagename = bbh_item_multi(NULL, BBH_PAGEPATH);
+				pagename = xmh_item_multi(NULL, XMH_PAGEPATH);
 			}
 		}
 		else
@@ -226,12 +228,12 @@ void do_notifylog(FILE *output,
 		if (expageregexp) {
 			char *pagename;
 
-			pagename = bbh_item_multi(eventhost, BBH_PAGEPATH);
+			pagename = xmh_item_multi(eventhost, XMH_PAGEPATH);
 			pagematch = 0;
 			while (!pagematch && pagename) {
 			pagematch = (pcre_exec(expageregexp, NULL, pagename, strlen(pagename), 0, 0, 
 					ovector, (sizeof(ovector)/sizeof(int))) >= 0);
-				pagename = bbh_item_multi(NULL, BBH_PAGEPATH);
+				pagename = xmh_item_multi(NULL, XMH_PAGEPATH);
 			}
 		}
 		else
@@ -314,11 +316,11 @@ void do_notifylog(FILE *output,
 		fprintf(output, "<BR><BR>\n");
 		fprintf(output, "<TABLE SUMMARY=\"Notification log\" BORDER=0>\n");
 		fprintf(output, "<TR BGCOLOR=\"#333333\">\n");
-		fprintf(output, "<TD ALIGN=CENTER COLSPAN=4><FONT SIZE=-1 COLOR=\"#33ebf4\">%s</FONT></TD></TR>\n", title);
+		fprintf(output, "<TD ALIGN=CENTER COLSPAN=4><FONT SIZE=-1 COLOR=\"#33ebf4\">%s</FONT></TD></TR>\n", htmlquoted(title));
 		fprintf(output, "<TR BGCOLOR=\"#333333\"><TH>Time</TH><TH>Host</TH><TH>Service</TH><TH>Recipient</TH></TR>\n");
 
 		for (walk=head; (walk != lasttoshow->next); walk=walk->next) {
-			char *hostname = bbh_item(walk->host, BBH_HOSTNAME);
+			char *hostname = xmh_item(walk->host, XMH_HOSTNAME);
 
 			fprintf(output, "<TR BGCOLOR=%s>\n", bgcolors[bgcolor]);
 			bgcolor = ((bgcolor + 1) % 2);
@@ -352,7 +354,7 @@ void do_notifylog(FILE *output,
 		fprintf(output, "<CENTER><BR>\n");
 		fprintf(output, "<TABLE SUMMARY=\"%s\" BORDER=0>\n", title);
 		fprintf(output, "<TR BGCOLOR=\"#333333\">\n");
-		fprintf(output, "<TD ALIGN=CENTER COLSPAN=6><FONT SIZE=-1 COLOR=\"#33ebf4\">%s</FONT></TD>\n", title);
+		fprintf(output, "<TD ALIGN=CENTER COLSPAN=6><FONT SIZE=-1 COLOR=\"#33ebf4\">%s</FONT></TD>\n", htmlquoted(title));
 		fprintf(output, "</TR>\n");
 		fprintf(output, "</TABLE>\n");
 		fprintf(output, "</CENTER>\n");

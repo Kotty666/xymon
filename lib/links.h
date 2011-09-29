@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* Copyright (C) 2004-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2004-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
@@ -15,6 +15,5 @@ extern char *link_docext(char *fn);
 extern void load_all_links(void);
 extern char *columnlink(char *colname);
 extern char *hostlink(char *hostname);
-extern char *hostlink_filename(char *hostname);
 
 #endif

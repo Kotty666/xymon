@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                    */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for file- and directory manipulation.                 */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: files.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: files.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -22,7 +22,7 @@ static char rcsid[] = "$Id: files.c 6125 2009-02-12 13:09:34Z storner $";
 #include <limits.h>
 #include <stdlib.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 void dropdirectory(char *dirfn, int background)
 {

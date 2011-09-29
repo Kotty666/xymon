@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
@@ -22,10 +22,10 @@ extern void sethostenv_refresh(int n);
 extern void sethostenv_filter(char *hostptn, char *pageptn, char *ipptn);
 extern void sethostenv_clearlist(char *listname);
 extern void sethostenv_addtolist(char *listname, char *name, char *val, char *extra, int selected);
-extern void sethostenv_nkack(int nkprio, char *nkttgroup, char *nkttextra, char *infourl, char *docurl);
-extern void sethostenv_nkedit(char *updinfo, int prio, char *group, time_t starttime, time_t endtime, char *nktime, char *extra);
-extern void sethostenv_nkclonelist_clear(void);
-extern void sethostenv_nkclonelist_add(char *hostname);
+extern void sethostenv_critack(int prio, char *ttgroup, char *ttextra, char *infourl, char *docurl);
+extern void sethostenv_critedit(char *updinfo, int prio, char *group, time_t starttime, time_t endtime, char *crittime, char *extra);
+extern void sethostenv_critclonelist_clear(void);
+extern void sethostenv_critclonelist_add(char *hostname);
 extern void sethostenv_pagepath(char *s);
 extern void sethostenv_backsecs(int seconds);
 extern void sethostenv_eventtime(time_t starttime, time_t endtime);

@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module for Hobbit, responsible for loading the host-,    */
-/* page-, and column-links defined in the BB directory structure.             */
+/* This is a library module for Xymon, responsible for loading the host-,     */
+/* page-, and column-links present in www/notes and www/help.                 */
 /*                                                                            */
-/* Copyright (C) 2004-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2004-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: links.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: links.c 6745 2011-09-04 06:01:06Z storner $";
 
 #include <unistd.h>
 #include <string.h>
@@ -21,7 +21,7 @@ static char rcsid[] = "$Id: links.c 6125 2009-02-12 13:09:34Z storner $";
 #include <limits.h>
 #include <dirent.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 /* Info-link definitions. */
 typedef struct link_t {
@@ -31,10 +31,11 @@ typedef struct link_t {
 } link_t;
 
 static int linksloaded = 0;
-static RbtHandle linkstree;
+static void * linkstree;
 static char *notesskin = NULL;
 static char *helpskin = NULL;
 static char *columndocurl = NULL;
+static char *hostdocurl = NULL;
 
 char *link_docext(char *fn)
 {
@@ -76,30 +77,30 @@ static link_t *init_link(char *filename, char *urlprefix)
 
 static void load_links(char *directory, char *urlprefix)
 {
-	DIR		*bblinks;
+	DIR		*linkdir;
 	struct dirent 	*d;
 	char		fn[PATH_MAX];
 
 	dbgprintf("load_links(%s, %s)\n", textornull(directory), textornull(urlprefix));
 
-	bblinks = opendir(directory);
-	if (!bblinks) {
+	linkdir = opendir(directory);
+	if (!linkdir) {
 		errprintf("Cannot read links in directory %s\n", directory);
 		return;
 	}
 
 	MEMDEFINE(fn);
 
-	while ((d = readdir(bblinks))) {
+	while ((d = readdir(linkdir))) {
 		link_t *newlink;
 
 		if (*(d->d_name) == '.') continue;
 
 		strcpy(fn, d->d_name);
 		newlink = init_link(fn, urlprefix);
-		rbtInsert(linkstree, newlink->key, newlink);
+		xtreeAdd(linkstree, newlink->key, newlink);
 	}
-	closedir(bblinks);
+	closedir(linkdir);
 
 	MEMUNDEFINE(fn);
 }
@@ -113,30 +114,35 @@ void load_all_links(void)
 
 	dbgprintf("load_all_links()\n");
 
-	linkstree = rbtNew(name_compare);
+	linkstree = xtreeNew(strcasecmp);
 
 	if (notesskin) { xfree(notesskin); notesskin = NULL; }
 	if (helpskin) { xfree(helpskin); helpskin = NULL; }
 	if (columndocurl) { xfree(columndocurl); columndocurl = NULL; }
+	if (hostdocurl) { xfree(hostdocurl); hostdocurl = NULL; }
 
-	if (xgetenv("BBNOTESSKIN")) notesskin = strdup(xgetenv("BBNOTESSKIN"));
+	if (xgetenv("XYMONNOTESSKIN")) notesskin = strdup(xgetenv("XYMONNOTESSKIN"));
 	else { 
-		notesskin = (char *) malloc(strlen(xgetenv("BBWEB")) + strlen("/notes") + 1);
-		sprintf(notesskin, "%s/notes", xgetenv("BBWEB"));
+		notesskin = (char *) malloc(strlen(xgetenv("XYMONWEB")) + strlen("/notes") + 1);
+		sprintf(notesskin, "%s/notes", xgetenv("XYMONWEB"));
 	}
 
-	if (xgetenv("BBHELPSKIN")) helpskin = strdup(xgetenv("BBHELPSKIN"));
+	if (xgetenv("XYMONHELPSKIN")) helpskin = strdup(xgetenv("XYMONHELPSKIN"));
 	else { 
-		helpskin = (char *) malloc(strlen(xgetenv("BBWEB")) + strlen("/help") + 1);
-		sprintf(helpskin, "%s/help", xgetenv("BBWEB"));
+		helpskin = (char *) malloc(strlen(xgetenv("XYMONWEB")) + strlen("/help") + 1);
+		sprintf(helpskin, "%s/help", xgetenv("XYMONWEB"));
 	}
 
 	if (xgetenv("COLUMNDOCURL")) columndocurl = strdup(xgetenv("COLUMNDOCURL"));
+	if (xgetenv("HOSTDOCURL")) hostdocurl = strdup(xgetenv("HOSTDOCURL"));
 
-	strcpy(dirname, xgetenv("BBNOTES"));
-	load_links(dirname, notesskin);
+	if (!hostdocurl || (strlen(hostdocurl) == 0)) {
+		strcpy(dirname, xgetenv("XYMONNOTESDIR"));
+		load_links(dirname, notesskin);
+	}
 
 	/* Change xxx/xxx/xxx/notes into xxx/xxx/xxx/help */
+	strcpy(dirname, xgetenv("XYMONNOTESDIR"));
 	p = strrchr(dirname, '/'); *p = '\0'; strcat(dirname, "/help");
 	load_links(dirname, helpskin);
 
@@ -149,10 +155,10 @@ void load_all_links(void)
 static link_t *find_link(char *key)
 {
 	link_t *l = NULL;
-	RbtIterator handle;
+	xtreePos_t handle;
 
-	handle = rbtFind(linkstree, key);
-	if (handle != rbtEnd(linkstree)) l = (link_t *)gettreeitem(linkstree, handle);
+	handle = xtreeFind(linkstree, key);
+	if (handle != xtreeEnd(linkstree)) l = (link_t *)xtreeData(linkstree, handle);
 
 	return l;
 }
@@ -189,24 +195,19 @@ char *hostlink(char *hostname)
 	if (linkurl == NULL) linkurl = (char *)malloc(PATH_MAX);
 	if (!linksloaded) load_all_links();
 
-	link = find_link(hostname);
-
-	if (link) {
-		sprintf(linkurl, "%s/%s", link->urlprefix, link->filename);
+	if (hostdocurl && *hostdocurl) {
+		snprintf(linkurl, PATH_MAX-1, hostdocurl, hostname);
 		return linkurl;
+	}
+	else {
+		link = find_link(hostname);
+
+		if (link) {
+			sprintf(linkurl, "%s/%s", link->urlprefix, link->filename);
+			return linkurl;
+		}
 	}
 
 	return NULL;
-}
-
-char *hostlink_filename(char *hostname)
-{
-	link_t *link;
-
-	if (!linksloaded) load_all_links();
-
-	link = find_link(hostname);
-
-	return (link ? link->filename : NULL);
 }
 

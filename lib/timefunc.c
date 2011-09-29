@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains routines for timehandling.                                     */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: timefunc.c 6129 2009-02-16 12:16:03Z storner $";
+static char rcsid[] = "$Id: timefunc.c 6744 2011-09-03 16:06:19Z storner $";
 
 #include <time.h>
 #include <sys/time.h>
@@ -21,7 +21,7 @@ static char rcsid[] = "$Id: timefunc.c 6129 2009-02-16 12:16:03Z storner $";
 #include <stdio.h>
 #include <unistd.h>
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 #ifdef time
 #undef time
@@ -96,7 +96,7 @@ char *timespec_text(char *spec)
 	static char *wkdays = NULL;
 	static strbuffer_t *result = NULL;
 	char *sCopy;
-	char *sItem;
+	char *p;
 
 	if (result == NULL) result = newstrbuffer(0);
 	clearstrbuffer(result);
@@ -119,12 +119,36 @@ char *timespec_text(char *spec)
 		sprintf(wkdays, "%s-%s", daynames[1], daynames[5]);
 	}
 
-	sCopy = strdup(spec);
-	sItem = strtok(sCopy, ",");
-	while (sItem) {
+
+	p = sCopy = strdup(spec);
+	do {
+		char *s1, *s2, *s3, *s4, *s5;
+		char *days, *starttime, *endtime, *columns;
+		unsigned char *cause;
 		char *oneday, *dtext;
-		int daysdone = 0, firstday = 1;
-		oneday = sItem;
+		int daysdone = 0, firstday = 1, ecount, causelen;
+
+		/* Its either DAYS:START:END or SERVICE:DAYS:START:END:CAUSE */
+
+		s1 = p; p += strcspn(p, ":"); if (*p != '\0') { *p = '\0'; p++; }
+		s2 = p; p += strcspn(p, ":"); if (*p != '\0') { *p = '\0'; p++; }
+		s3 = p; p += strcspn(p, ":;,"); 
+		if ((*p == ',') || (*p == ';') || (*p == '\0')) { 
+			if (*p != '\0') { *p = '\0'; p++; }
+			days = s1; starttime = s2; endtime = s3;
+			columns = "*";
+			cause = strdup("Planned downtime");
+		}
+		else if (*p == ':') {
+			*p = '\0'; p++; 
+			s4 = p; p += strcspn(p, ":"); if (*p != '\0') { *p = '\0'; p++; }
+			s5 = p; p += strcspn(p, ",;"); if (*p != '\0') { *p = '\0'; p++; }
+			days = s2; starttime = s3; endtime = s4;
+			columns = s1;
+			getescapestring(s5, &cause, &causelen);
+		}
+
+		oneday = days;
 
 		while (!daysdone) {
 			switch (*oneday) {
@@ -141,14 +165,31 @@ char *timespec_text(char *spec)
 			}
 
 			if (!firstday) addtobuffer(result, "/");
+
 			addtobuffer(result, dtext);
 			oneday++;
 			firstday = 0;
 		}
 
-		sItem = strtok(NULL, ",");
-		if (sItem) addtobuffer(result, ", ");
-	}
+		addtobuffer(result, ":"); addtobuffer(result, starttime);
+
+		addtobuffer(result, ":"); addtobuffer(result, endtime);
+
+		addtobuffer(result, " (status:"); 
+		if (strcmp(columns, "*") == 0)
+			addtobuffer(result, "All");
+		else
+			addtobuffer(result, columns); 
+		addtobuffer(result, ")");
+
+		if (cause) { 
+			addtobuffer(result, " (cause:"); 
+			addtobuffer(result, cause); 
+			addtobuffer(result, ")");
+			xfree(cause);
+		}
+	} while (*p);
+
 	xfree(sCopy);
 
 	return STRBUF(result);
@@ -287,8 +328,8 @@ char *check_downtime(char *hostname, char *testname)
 
 	if (hinfo == NULL) return NULL;
 
-	dtag = bbh_item(hinfo, BBH_DOWNTIME);
-	holkey = bbh_item(hinfo, BBH_HOLIDAYS);
+	dtag = xmh_item(hinfo, XMH_DOWNTIME);
+	holkey = xmh_item(hinfo, XMH_HOLIDAYS);
 	if (dtag && *dtag) {
 		static char *downtag = NULL;
 		static unsigned char *cause = NULL;
@@ -330,6 +371,9 @@ char *check_downtime(char *hostname, char *testname)
 					if (strcmp(onesvc, testname) == 0) return cause;
 					onesvc = strtok_r(NULL, ",", &buf);
 				}
+
+				/* If we didn't use the "cause" we just created, it must be freed */
+				if (cause) xfree(cause);
 			}
 		} while (*p);
 	}
@@ -453,6 +497,13 @@ int durationvalue(char *dur)
 
 	int result = 0;
 	char *startofval;
+	char *endpos;
+	char savedelim;
+
+	/* Make sure we only process the first token, dont go past whitespace or some other delimiter */
+	endpos = dur + strspn(dur, "01234567890mhdw");
+	savedelim = *endpos;
+	*endpos = '\0';
 
 	startofval = dur;
 
@@ -468,15 +519,19 @@ int durationvalue(char *dur)
 		*p = modifier;
 
 		switch (modifier) {
-		  case 'm': break;			/* minutes */
-		  case 'h': oneval *= 60; break;	/* hours */
-		  case 'd': oneval *= 1440; break;	/* days */
-		  case 'w': oneval *= 10080; break;	/* weeks */
+		  case '\0': break;			/* No delimiter = minutes */
+		  case 'm' : break;			/* minutes */
+		  case 'h' : oneval *= 60; break;	/* hours */
+		  case 'd' : oneval *= 1440; break;	/* days */
+		  case 'w' : oneval *= 10080; break;	/* weeks */
 		}
 
 		result += oneval;
 		startofval = ((*p) ? p+1 : NULL);
 	}
+
+	/* Restore the saved delimiter */
+	*endpos = savedelim;
 
 	return result;
 }
@@ -564,7 +619,7 @@ time_t timestr2timet(char *s)
 	struct tm tm;
 
 	if (strlen(s) != 12) {
-		errprintf("Invalid timestring in bb-hosts: '%s'\n", s);
+		errprintf("Invalid timestring: '%s'\n", s);
 		return -1;
 	}
 

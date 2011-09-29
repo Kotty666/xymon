@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit client message cache.                                               */
+/* Xymon client message cache.                                                */
 /*                                                                            */
 /* This acts as a local network daemon which saves incoming messages in a     */
 /* memory cache.                                                              */
@@ -8,14 +8,14 @@
 /* Any data provided in the "pullclient" request is saved, and passed as      */
 /* response to the first "client" command seen afterwards.                    */
 /*                                                                            */
-/* Copyright (C) 2006-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2006-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: msgcache.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: msgcache.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include "config.h"
 
@@ -41,7 +41,7 @@ static char rcsid[] = "$Id: msgcache.c 6125 2009-02-12 13:09:34Z storner $";
 #include <time.h>
 
 #include "version.h"
-#include "libbbgen.h"
+#include "libxymon.h"
 
 volatile int keeprunning = 1;
 char *client_response = NULL;		/* The latest response to a "client" message */
@@ -97,7 +97,7 @@ void grabdata(conn_t *conn)
 	int pollid = 0;
 
 	/* Get data from the connection socket - we know there is some */
-	n = read(conn->sockfd, buf, sizeof(buf));
+	n = read(conn->sockfd, buf, sizeof(buf)-1);
 	if (n <= -1) {
 		/* Read failure */
 		errprintf("Connection lost during read: %s\n", strerror(errno));
@@ -140,7 +140,7 @@ void grabdata(conn_t *conn)
 		dbgprintf("Got pullclient request: %s\n", STRBUF(conn->msgbuf));
 
 		/*
-		 * The pollid is unique for each Hobbit server. It is to allow
+		 * The pollid is unique for each Xymon server. It is to allow
 		 * multiple servers to pick up the same message, for resiliance.
 		 */
 		idnum = atoi(STRBUF(conn->msgbuf) + 10);
@@ -180,7 +180,7 @@ void grabdata(conn_t *conn)
 	/*
 	 * Messages we receive from clients are stored on our outbound queue.
 	 * If it's a local "client" message, respond with the queued response
-	 * from the Hobbit server. Other client messages get no response.
+	 * from the Xymon server. Other client messages get no response.
 	 *
 	 * Server messages get our outbound queue back in response.
 	 */
@@ -340,7 +340,7 @@ int main(int argc, char *argv[])
 			debug = 1;
 		}
 		else if (strcmp(argv[opt], "--version") == 0) {
-			printf("bbproxy version %s\n", VERSION);
+			printf("xymonproxy version %s\n", VERSION);
 			return 0;
 		}
 	}
@@ -370,7 +370,7 @@ int main(int argc, char *argv[])
 		freopen(logfile, "a", stderr);
 	}
 
-	errprintf("Hobbit msgcache version %s starting\n", VERSION);
+	errprintf("Xymon msgcache version %s starting\n", VERSION);
 	errprintf("Listening on %s:%d\n", inet_ntoa(laddr.sin_addr), ntohs(laddr.sin_port));
 
 	if (daemonize) {

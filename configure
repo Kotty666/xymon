@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configuration script for Xymon.
-# $Id: configure 6125 2009-02-12 13:09:34Z storner $
+# $Id: configure 6650 2011-03-08 17:20:28Z storner $
 
 BASEDIR="`dirname $0`"
 TARGET="$1"

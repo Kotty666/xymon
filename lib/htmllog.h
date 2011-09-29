@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
@@ -18,9 +18,9 @@ enum histbutton_t { HIST_TOP, HIST_BOTTOM, HIST_NONE };
 extern enum histbutton_t histlocation;
 
 extern void generate_html_log(char *hostname, char *displayname, char *service, char *ip, 
-		       int color, char *sender, char *flags, 
+		       int color, int flapping, char *sender, char *flags, 
 		       time_t logtime, char *timesincechange, 
-		       char *firstline, char *restofmsg, 
+		       char *firstline, char *restofmsg, char *modifiers,
 		       time_t acktime, char *ackmsg, char *acklist,
 		       time_t disabletime, char *dismsg,
 		       int is_history, int wantserviceid, int htmlfmt, int locatorbased,

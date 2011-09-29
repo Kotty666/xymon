@@ -1,17 +1,17 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* This is a library module, part of libbbgen.                                */
+/* This is a library module, part of libxymon.                                */
 /* It contains memory management routines.                                    */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@storner.dk>                 */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@storner.dk>                 */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: memory.c 6125 2009-02-12 13:09:34Z storner $";
+static char rcsid[] = "$Id: memory.c 6712 2011-07-31 21:01:52Z storner $";
 
 #include <ctype.h>
 #include <string.h>
@@ -20,7 +20,7 @@ static char rcsid[] = "$Id: memory.c 6125 2009-02-12 13:09:34Z storner $";
 
 #define LIB_MEMORY_C_COMPILE 1
 
-#include "libbbgen.h"
+#include "libxymon.h"
 
 #ifdef MEMORY_DEBUG
 static xmemory_t *mhead = NULL;

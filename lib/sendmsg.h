@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
-/* Hobbit monitor library.                                                    */
+/* Xymon monitor library.                                                     */
 /*                                                                            */
-/* Copyright (C) 2002-2009 Henrik Storner <henrik@hswn.dk>                    */
+/* Copyright (C) 2002-2011 Henrik Storner <henrik@hswn.dk>                    */
 /*                                                                            */
 /* This program is released under the GNU General Public License (GPL),       */
 /* version 2. See the file "COPYING" for details.                             */
@@ -11,21 +11,21 @@
 #ifndef __SENDMSG_H_
 #define __SENDMSG_H_
 
-#define BBTALK_TIMEOUT 15  /* Default timeout for a request going to bbd */
+#define XYMON_TIMEOUT 15  /* Default timeout for a request going to Xymon server */
 #define PAGELEVELSDEFAULT "red purple"
 
 typedef enum {
-	BB_OK,
-	BB_EBADIP,
-	BB_EIPUNKNOWN,
-	BB_ENOSOCKET,
-	BB_ECANNOTDONONBLOCK,
-	BB_ECONNFAILED,
-	BB_ESELFAILED,
-	BB_ETIMEOUT,
-	BB_EWRITEERROR,
-	BB_EREADERROR,
-	BB_EBADURL 
+	XYMONSEND_OK,
+	XYMONSEND_EBADIP,
+	XYMONSEND_EIPUNKNOWN,
+	XYMONSEND_ENOSOCKET,
+	XYMONSEND_ECANNOTDONONBLOCK,
+	XYMONSEND_ECONNFAILED,
+	XYMONSEND_ESELFAILED,
+	XYMONSEND_ETIMEOUT,
+	XYMONSEND_EWRITEERROR,
+	XYMONSEND_EREADERROR,
+	XYMONSEND_EBADURL 
 } sendresult_t;
 
 typedef struct sendreturn_t {
@@ -35,9 +35,9 @@ typedef struct sendreturn_t {
 	int haveseenhttphdrs;
 } sendreturn_t;
 
-extern int bbmsgcount;
-extern int bbstatuscount;
-extern int bbnocombocount;
+extern int xymonmsgcount;
+extern int xymonstatuscount;
+extern int xymonnocombocount;
 extern int dontsendmessages;
 
 extern void setproxy(char *proxy);
