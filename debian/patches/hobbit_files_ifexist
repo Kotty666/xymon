@@ -1,5 +1,7 @@
---- a/client/localclient.cfg
-+++ b/client/localclient.cfg
+Index: xymon/client/localclient.cfg
+===================================================================
+--- xymon.orig/client/localclient.cfg	2011-09-29 20:22:32.000000000 +0200
++++ xymon/client/localclient.cfg	2011-09-30 00:48:21.000000000 +0200
 @@ -191,6 +191,8 @@
  #             - "NOEXIST" triggers a warning if the file exists. By default,
  #               a warning is triggered for files that have a FILE entry, but
@@ -9,9 +11,11 @@
  #             - "TYPE=type" where "type" is one of "file", "dir", "char", "block", 
  #               "fifo", or "socket". Triggers warning if the file is not of the
  #               specified type.
---- a/hobbitd/client_config.c
-+++ b/hobbitd/client_config.c
-@@ -102,6 +102,7 @@ typedef struct c_log_t {
+Index: xymon/xymond/client_config.c
+===================================================================
+--- xymon.orig/xymond/client_config.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/client_config.c	2011-09-30 00:48:21.000000000 +0200
+@@ -141,6 +141,7 @@
  #define FCHK_MD5      (1 << 25)
  #define FCHK_SHA1     (1 << 26)
  #define FCHK_RMD160   (1 << 27)
@@ -19,7 +23,7 @@
  
  #define CHK_OPTIONAL  (1 << 30)
  #define CHK_TRACKIT   (1 << 31)
-@@ -788,6 +789,9 @@ curtime, curtext, curgroup, cfid);
+@@ -1042,6 +1043,9 @@
  					if (strcasecmp(tok, "noexist") == 0) {
  						currule->flags |= FCHK_NOEXIST;
  					}
@@ -29,7 +33,7 @@
  					else if (strncasecmp(tok, "type=", 5) == 0) {
  						currule->flags |= FCHK_TYPE;
  						if (strcasecmp(tok+5, "socket") == 0) currule->rule.fcheck.ftype = S_IFSOCK;
-@@ -1103,6 +1107,8 @@ void dump_client_config(void)
+@@ -1679,6 +1683,8 @@
  
  			if (rwalk->flags & FCHK_NOEXIST) 
  				printf(" noexist");
@@ -38,7 +42,7 @@
  			if (rwalk->flags & FCHK_TYPE)
  				printf(" type=%s", ftypestr(rwalk->rule.fcheck.ftype));
  			if (rwalk->flags & FCHK_MODE) 
-@@ -1556,6 +1562,7 @@ int check_file(namelist_t *hinfo, char *
+@@ -2688,6 +2694,7 @@
  		*anyrules = 1;
  		if (!exists) {
  			if (rwalk->flags & CHK_OPTIONAL) goto nextcheck;
@@ -46,8 +50,10 @@
  
  			if (!(rwalk->flags & FCHK_NOEXIST)) {
  				/* Required file does not exist */
---- a/hobbitd/etcfiles/hobbit-clients.cfg
-+++ b/hobbitd/etcfiles/hobbit-clients.cfg
+Index: xymon/xymond/etcfiles/analysis.cfg
+===================================================================
+--- xymon.orig/xymond/etcfiles/analysis.cfg	2011-09-30 00:45:27.000000000 +0200
++++ xymon/xymond/etcfiles/analysis.cfg	2011-09-30 00:48:21.000000000 +0200
 @@ -189,6 +189,8 @@
  #             - "NOEXIST" triggers a warning if the file exists. By default,
  #               a warning is triggered for files that have a FILE entry, but
@@ -57,9 +63,11 @@
  #             - "TYPE=type" where "type" is one of "file", "dir", "char", "block", 
  #               "fifo", or "socket". Triggers warning if the file is not of the
  #               specified type.
---- a/hobbitd/hobbit-clients.cfg.5
-+++ b/hobbitd/hobbit-clients.cfg.5
-@@ -273,6 +273,9 @@ For files, you can check one or more of 
+Index: xymon/xymond/analysis.cfg.5
+===================================================================
+--- xymon.orig/xymond/analysis.cfg.5	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/analysis.cfg.5	2011-09-30 00:48:21.000000000 +0200
+@@ -285,6 +285,9 @@
  triggers a warning if the file exists. By default,
  a warning is triggered for files that have a FILE entry, but
  which do not exist.
