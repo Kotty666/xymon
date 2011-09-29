@@ -1,6 +1,8 @@
---- a/hobbitd/etcfiles/hobbitgraph.cfg.org	2007-10-13 12:58:50.000000000 +0200
-+++ b/hobbitd/etcfiles/hobbitgraph.cfg	2007-10-21 15:52:31.000000000 +0200
-@@ -1081,15 +1081,15 @@
+Index: xymon/xymond/etcfiles/graphs.cfg
+===================================================================
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2011-09-30 00:26:01.000000000 +0200
++++ xymon/xymond/etcfiles/graphs.cfg	2011-09-30 00:29:04.000000000 +0200
+@@ -1152,15 +1152,15 @@
  	DEF:outbytes@RRDIDX@=@RRDFN@:bytesSent:AVERAGE
  	CDEF:out@RRDIDX@=outbytes@RRDIDX@,8,*
  	LINE2:in@RRDIDX@#@COLOR@:@RRDPARAM@  inbound
@@ -23,4 +25,4 @@
 +	GPRINT:out@RRDIDX@:AVERAGE: \: %5.1lf%s (avg)\n
  
  [files]
- 	FNPATTERN filesizes.(.+).rrd
+ 	FNPATTERN ^filesizes.(.+).rrd

@@ -11,6 +11,7 @@ xymon (4.3.5-1) unstable; urgency=low
     + doc-paths
     + hobbitclient-debian
     + hobbitvars
+    + hobbitgraph.netstat
 
  -- Axel Beckert <abe@debian.org>  Thu, 29 Sep 2011 22:46:53 +0200
 
