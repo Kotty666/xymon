@@ -13,6 +13,7 @@ xymon (4.3.5-1) unstable; urgency=low
     + hobbitvars
     + hobbitgraph.netstat
     + hobbit-ghosts-menu
+    + rrd_net_granularity
 
  -- Axel Beckert <abe@debian.org>  Thu, 29 Sep 2011 22:46:53 +0200
 

@@ -1,17 +1,21 @@
---- a/hobbitd/rrd/do_net.c
-+++ b/hobbitd/rrd/do_net.c
-@@ -85,7 +85,7 @@ int do_net_rrd(char *hostname, char *tes
+Index: xymon/xymond/rrd/do_net.c
+===================================================================
+--- xymon.orig/xymond/rrd/do_net.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/rrd/do_net.c	2011-09-30 00:36:35.000000000 +0200
+@@ -143,7 +143,7 @@
  		p = strstr(msg, "\nSeconds:");
  		if (p && (sscanf(p+1, "Seconds: %f", &seconds) == 1)) {
  			setupfn2("%s.%s.rrd", "tcp", testname);
 -			sprintf(rrdvalues, "%d:%.2f", (int)tstamp, seconds);
 +			sprintf(rrdvalues, "%d:%f", (int)tstamp, seconds);
- 			return create_and_update_rrd(hostname, testname, classname, pagepaths, bbnet_params, bbnet_tpl);
+ 			return create_and_update_rrd(hostname, testname, classname, pagepaths, xymonnet_params, xymonnet_tpl);
  		}
  	}
---- a/bbnet/bbtest-net.c
-+++ b/bbnet/bbtest-net.c
-@@ -1656,8 +1656,8 @@ void send_results(service_t *service, in
+Index: xymon/xymonnet/xymonnet.c
+===================================================================
+--- xymon.orig/xymonnet/xymonnet.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymonnet/xymonnet.c	2011-09-30 00:36:35.000000000 +0200
+@@ -1742,8 +1742,8 @@
  		}
  
  		if (t->duration.tv_sec != -1) {
@@ -22,9 +26,11 @@
  			addtostatus(msgtext);
  		}
  		addtostatus("\n\n");
---- a/bbnet/dns.c
-+++ b/bbnet/dns.c
-@@ -349,7 +349,7 @@ int dns_test_server(char *serverip, char
+Index: xymon/xymonnet/dns.c
+===================================================================
+--- xymon.orig/xymonnet/dns.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymonnet/dns.c	2011-09-30 00:36:35.000000000 +0200
+@@ -349,7 +349,7 @@
  		tst = strtok(NULL, ",");
  	}
  	xfree(tspec);
@@ -33,9 +39,11 @@
  	addtobuffer(banner, msg);
  
  	ares_destroy(channel);
---- a/bbnet/httpresult.c
-+++ b/bbnet/httpresult.c
-@@ -295,9 +295,9 @@ void send_http_results(service_t *httpte
+Index: xymon/xymonnet/httpresult.c
+===================================================================
+--- xymon.orig/xymonnet/httpresult.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymonnet/httpresult.c	2011-09-30 00:36:35.000000000 +0200
+@@ -295,9 +295,9 @@
  			}
  			if (req->faileddeps) addtostatus(req->faileddeps);
  
@@ -48,9 +56,11 @@
  			addtostatus(urlmsg);
  			xfree(urlmsg);
  		}
---- a/bbnet/ldaptest.c
-+++ b/bbnet/ldaptest.c
-@@ -443,8 +443,8 @@ void send_ldap_results(service_t *ldapte
+Index: xymon/xymonnet/ldaptest.c
+===================================================================
+--- xymon.orig/xymonnet/ldaptest.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymonnet/ldaptest.c	2011-09-30 00:36:35.000000000 +0200
+@@ -476,8 +476,8 @@
  		}
  		if (req->faileddeps) addtostatus(req->faileddeps);
  
@@ -61,7 +71,7 @@
  
  		addtostatus(msgline);
  	}
-@@ -463,9 +463,9 @@ void show_ldap_test_results(service_t *l
+@@ -496,9 +496,9 @@
  		req = (ldap_data_t *) t->privdata;
  
  		printf("URL        : %s\n", t->testspec);
@@ -74,9 +84,11 @@
  		printf("LDAP output:\n%s\n", textornull(req->output));
  		printf("------------------------------------------------------\n");
  	}
---- a/bbnet/hobbitping.c
-+++ b/bbnet/hobbitping.c
-@@ -357,11 +357,11 @@ void show_results(void)
+Index: xymon/xymonnet/xymonping.c
+===================================================================
+--- xymon.orig/xymonnet/xymonping.c	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymonnet/xymonping.c	2011-09-30 00:36:35.000000000 +0200
+@@ -357,11 +357,11 @@
  		if (hosts[idx]->received > 0) {
  			printf("%s is alive", inet_ntoa(hosts[idx]->addr.sin_addr));
  			rtt_usecs = (hosts[idx]->rtt_total.tv_sec*1000000 + (hosts[idx]->rtt_total.tv_nsec / 1000)) / hosts[idx]->received;
