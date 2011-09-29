@@ -11,7 +11,6 @@ hobbit_files_ifexist
 
 # bug fixes
 526176-ldap
-530227-hobbitclient-bashism
 580493-negative-timeoffset
 kfreebsd-makefile
 bbcombotest-fix
