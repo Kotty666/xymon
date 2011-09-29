@@ -1,11 +1,13 @@
---- a/hobbitd/etcfiles/hobbitgraph.cfg
-+++ b/hobbitd/etcfiles/hobbitgraph.cfg
-@@ -923,7 +923,7 @@
+Index: xymon/xymond/etcfiles/graphs.cfg
+===================================================================
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2011-09-30 00:29:04.000000000 +0200
++++ xymon/xymond/etcfiles/graphs.cfg	2011-09-30 00:41:47.000000000 +0200
+@@ -928,7 +928,7 @@
  
  [mailq]
  	# This handles "mailq.rrd", "mailqin.rrd" and "mailqout.rrd"
--	FNPATTERN mailq(.+).rrd
-+	FNPATTERN mailq(.*).rrd
+-	FNPATTERN ^mailq(.+).rrd
++	FNPATTERN ^mailq(.*).rrd
  	TITLE Mail Queue Length
  	YAXIS Queue Length
  	DEF:mailq@RRDIDX@=@RRDFN@:mailq:AVERAGE
