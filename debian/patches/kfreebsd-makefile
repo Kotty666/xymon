@@ -1,5 +1,7 @@
---- /dev/null
-+++ b/build/Makefile.GNU_kFreeBSD
+Index: xymon/build/Makefile.GNU_kFreeBSD
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ xymon/build/Makefile.GNU_kFreeBSD	2011-09-30 00:58:45.000000000 +0200
 @@ -0,0 +1,27 @@
 +# bbgen compile-time settings for GNU/kFreeBSD systems
 +
@@ -28,9 +30,11 @@
 +# Typically, this will be "mail" or "mailx"
 +MAILPROGRAM="mail"
 +
---- a/configure.server
-+++ b/configure.server
-@@ -471,16 +471,17 @@ echo "# Large File Support settings"
+Index: xymon/configure.server
+===================================================================
+--- xymon.orig/configure.server	2011-09-29 20:22:32.000000000 +0200
++++ xymon/configure.server	2011-09-30 00:58:45.000000000 +0200
+@@ -483,16 +483,17 @@
  echo "LFSDEF = $LFS"                     >>Makefile
  
  echo "" >>Makefile
