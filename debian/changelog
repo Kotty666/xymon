@@ -6,7 +6,8 @@ xymon (4.3.5-1) unstable; urgency=low
     + Ignore upstream's debian directory when importing upstream sources
     + No more have upstream sources listed in .gitignore
   * Remove the following patches (applied upstream):
-    + new-menu
+    + new-menu (also remove note about rebuilt upstream tarball from
+      debian/copyright)
     + hobbitd-rrdparameters
     + 530227-hobbitclient-bashism
   * Refreshed the following patches and partially added one-liner comments

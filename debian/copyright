@@ -5,9 +5,6 @@ The current debianization is based on Henrik's and was done by Christoph Berg
 <myon@debian.org> on Wed, 15 Aug 2007 21:09:40 +0200.
 
 It was downloaded from http://sourceforge.net/projects/hobbitmon/
-The tarball was rebuild to remove a non-free javascript menu and the debian/
-directory. The new menu was written by Christoph Berg but is sufficiently
-trivial such that it is copyright-free.
 
 Upstream author: Henrik Stoerner <henrik@hswn.dk>
 
