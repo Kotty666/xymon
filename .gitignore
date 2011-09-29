@@ -10,6 +10,7 @@ debian/*.substvars
 build-stamp
 stamp-patched
 .pc
+*~
 
 # upstream
 COPYING
