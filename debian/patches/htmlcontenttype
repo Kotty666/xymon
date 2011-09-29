@@ -1,95 +1,33 @@
---- a/hobbitd/webfiles/acknowledge_header
-+++ b/hobbitd/webfiles/acknowledge_header
+Support configurable content type
+
+Index: xymon/xymond/webfiles/acknowledge_header
+===================================================================
+--- xymon.orig/xymond/webfiles/acknowledge_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/acknowledge_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Acknowledge Alert</TITLE>
  
---- a/hobbitd/webfiles/bb2_header
-+++ b/hobbitd/webfiles/bb2_header
+Index: xymon/xymond/webfiles/columndoc_header
+===================================================================
+--- xymon.orig/xymond/webfiles/columndoc_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/columndoc_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="REFRESH" CONTENT="60">
- <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
---- a/hobbitd/webfiles/bb_header
-+++ b/hobbitd/webfiles/bb_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="REFRESH" CONTENT="60">
- <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&BBPAGEPATH; path=/">
---- a/hobbitd/webfiles/bbnk_header
-+++ b/hobbitd/webfiles/bbnk_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="REFRESH" CONTENT="60">
- <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
---- a/hobbitd/webfiles/bbrep_header
-+++ b/hobbitd/webfiles/bbrep_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&BBPAGEPATH; path=/">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
- <TITLE>Xymon Availability Report : &BBDATE</TITLE>
---- a/hobbitd/webfiles/bbsnap2_header
-+++ b/hobbitd/webfiles/bbsnap2_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <TITLE>&BBBACKGROUND : Xymon - Snapshot</TITLE>
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Documentation</TITLE>
  
- <!-- Styles for the menu bar -->
---- a/hobbitd/webfiles/bbsnap_header
-+++ b/hobbitd/webfiles/bbsnap_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&BBPAGEPATH; path=/">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
- <TITLE>Xymon Snapshot Report : &BBDATE</TITLE>
---- a/hobbitd/webfiles/bbsnapnk_header
-+++ b/hobbitd/webfiles/bbsnapnk_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <TITLE>&BBBACKGROUND : Xymon - Snapshot @ &BBDATE</TITLE>
- 
- <!-- Styles for the menu bar -->
---- a/hobbitd/webfiles/columndoc_header
-+++ b/hobbitd/webfiles/columndoc_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <TITLE>&BBBACKGROUND : Xymon - Documentation</TITLE>
- 
- <!-- Styles for the menu bar -->
---- a/hobbitd/webfiles/confreport_header
-+++ b/hobbitd/webfiles/confreport_header
+ <!-- Styles for the Xymon body  -->
+Index: xymon/xymond/webfiles/confreport_header
+===================================================================
+--- xymon.orig/xymond/webfiles/confreport_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/confreport_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,9 @@
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
  <html>
@@ -101,213 +39,351 @@
  
  <body>
  
---- a/hobbitd/webfiles/event_header
-+++ b/hobbitd/webfiles/event_header
+Index: xymon/xymond/webfiles/event_header
+===================================================================
+--- xymon.orig/xymond/webfiles/event_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/event_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Eventlog @ &BBDATE</TITLE>
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Eventlog @ &XYMWEBDATE</TITLE>
  
---- a/hobbitd/webfiles/findhost_header
-+++ b/hobbitd/webfiles/findhost_header
+Index: xymon/xymond/webfiles/findhost_header
+===================================================================
+--- xymon.orig/xymond/webfiles/findhost_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/findhost_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Find Host</TITLE>
  
---- a/hobbitd/webfiles/ghosts_header
-+++ b/hobbitd/webfiles/ghosts_header
+Index: xymon/xymond/webfiles/ghosts_header
+===================================================================
+--- xymon.orig/xymond/webfiles/ghosts_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/ghosts_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Ghost Clients</TITLE>
  
---- a/hobbitd/webfiles/graphs_header
-+++ b/hobbitd/webfiles/graphs_header
+Index: xymon/xymond/webfiles/graphs_header
+===================================================================
+--- xymon.orig/xymond/webfiles/graphs_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/graphs_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
  
- <!-- Styles for the menu bar -->
---- a/hobbitd/webfiles/hist_header
-+++ b/hobbitd/webfiles/hist_header
+ <!-- Styles for the Xymon body  -->
+Index: xymon/xymond/webfiles/hist_header
+===================================================================
+--- xymon.orig/xymond/webfiles/hist_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/hist_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&BBHIKEY; path=/">
- <TITLE>&BBBACKGROUND : Xymon - History @ &BBDATE</TITLE>
---- a/hobbitd/webfiles/histlog_header
-+++ b/hobbitd/webfiles/histlog_header
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&XYMWEBHIKEY; path=/">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - History @ &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/histlog_header
+===================================================================
+--- xymon.orig/xymond/webfiles/histlog_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/histlog_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&BBHIKEY; path=/">
- <TITLE>Xymon Historical Status: &BBHOST - &BBSVC @ &LOGTIME</TITLE>
---- a/hobbitd/webfiles/hobbitnk_header
-+++ b/hobbitd/webfiles/hobbitnk_header
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&XYMWEBHIKEY; path=/">
+ <TITLE>Xymon Historical Status: &XYMWEBHOST - &XYMWEBSVC @ &LOGTIME</TITLE>
+Index: xymon/xymond/webfiles/hostgraphs_header
+===================================================================
+--- xymon.orig/xymond/webfiles/hostgraphs_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/hostgraphs_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="REFRESH" CONTENT="60">
- <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Status @ &BBDATE</TITLE>
---- a/hobbitd/webfiles/hostgraphs_header
-+++ b/hobbitd/webfiles/hostgraphs_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Metrics Report</TITLE>
  
---- a/hobbitd/webfiles/hostlist_header
-+++ b/hobbitd/webfiles/hostlist_header
+Index: xymon/xymond/webfiles/hostlist_header
+===================================================================
+--- xymon.orig/xymond/webfiles/hostlist_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/hostlist_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - List of Hosts</TITLE>
  
---- a/hobbitd/webfiles/hostsvc_header
-+++ b/hobbitd/webfiles/hostsvc_header
+Index: xymon/xymond/webfiles/hostsvc_header
+===================================================================
+--- xymon.orig/xymond/webfiles/hostsvc_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/hostsvc_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <META HTTP-EQUIV="REFRESH" CONTENT="&BBREFRESH">
+ <META HTTP-EQUIV="REFRESH" CONTENT="&XYMWEBREFRESH">
  <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
  <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
---- a/hobbitd/webfiles/info_header
-+++ b/hobbitd/webfiles/info_header
+Index: xymon/xymond/webfiles/info_header
+===================================================================
+--- xymon.orig/xymond/webfiles/info_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/info_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
- <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&BBHIKEY; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&XYMWEBHIKEY; path=/">
  <TITLE>Xymon - Host Information</TITLE>
---- a/hobbitd/webfiles/maint_header
-+++ b/hobbitd/webfiles/maint_header
+Index: xymon/xymond/webfiles/maint_header
+===================================================================
+--- xymon.orig/xymond/webfiles/maint_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/maint_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Maintenance</TITLE>
  
---- a/hobbitd/webfiles/maintact_header
-+++ b/hobbitd/webfiles/maintact_header
+Index: xymon/xymond/webfiles/maintact_header
+===================================================================
+--- xymon.orig/xymond/webfiles/maintact_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/maintact_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Maintenance</TITLE>
  
---- a/hobbitd/webfiles/nkedit_header
-+++ b/hobbitd/webfiles/nkedit_header
+Index: xymon/xymond/webfiles/notify_header
+===================================================================
+--- xymon.orig/xymond/webfiles/notify_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/notify_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
- <HTML>
- <HEAD>
-+<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- 
- <TITLE>Xymon - Critical Systems editor</TITLE>
- 
---- a/hobbitd/webfiles/notify_header
-+++ b/hobbitd/webfiles/notify_header
-@@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Notification Log @ &BBDATE</TITLE>
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Notification Log @ &XYMWEBDATE</TITLE>
  
---- a/hobbitd/webfiles/perfdata_header
-+++ b/hobbitd/webfiles/perfdata_header
+Index: xymon/xymond/webfiles/perfdata_header
+===================================================================
+--- xymon.orig/xymond/webfiles/perfdata_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/perfdata_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Performance data @ &BBDATE</TITLE>
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Performance data @ &XYMWEBDATE</TITLE>
  
---- a/hobbitd/webfiles/replog_header
-+++ b/hobbitd/webfiles/replog_header
+Index: xymon/xymond/webfiles/replog_header
+===================================================================
+--- xymon.orig/xymond/webfiles/replog_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/replog_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
- <TITLE>Xymon Availability Report : &BBHOST - &BBSVC &BBDATE</TITLE>
+ <TITLE>Xymon Availability Report : &XYMWEBHOST - &XYMWEBSVC &XYMWEBDATE</TITLE>
  
- <!-- Styles for the menu bar -->
---- a/hobbitd/webfiles/report_header
-+++ b/hobbitd/webfiles/report_header
+ <!-- Styles for the Xymon body  -->
+Index: xymon/xymond/webfiles/report_header
+===================================================================
+--- xymon.orig/xymond/webfiles/report_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/report_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Availability Report</TITLE>
  
---- a/hobbitd/webfiles/snapshot_header
-+++ b/hobbitd/webfiles/snapshot_header
+Index: xymon/xymond/webfiles/snapshot_header
+===================================================================
+--- xymon.orig/xymond/webfiles/snapshot_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/snapshot_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Snapshot Report</TITLE>
  
---- a/hobbitd/webfiles/topchanges_header
-+++ b/hobbitd/webfiles/topchanges_header
+Index: xymon/xymond/webfiles/topchanges_header
+===================================================================
+--- xymon.orig/xymond/webfiles/topchanges_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/topchanges_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
- <TITLE>&BBBACKGROUND : Xymon - Top Changes @ &BBDATE</TITLE>
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Top Changes @ &XYMWEBDATE</TITLE>
  
---- a/hobbitd/webfiles/useradm_header
-+++ b/hobbitd/webfiles/useradm_header
+Index: xymon/xymond/webfiles/useradm_header
+===================================================================
+--- xymon.orig/xymond/webfiles/useradm_header	2011-09-29 22:59:40.000000000 +0200
++++ xymon/xymond/webfiles/useradm_header	2011-09-29 23:00:32.000000000 +0200
 @@ -1,6 +1,7 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
  <HTML>
  <HEAD>
 +<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
  
  <TITLE>Xymon - Manage Users</TITLE>
  
+Index: xymon/xymond/webfiles/critedit_header
+===================================================================
+--- xymon.orig/xymond/webfiles/critedit_header	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/webfiles/critedit_header	2011-09-29 23:04:31.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Critical Systems editor</TITLE>
+ 
+Index: xymon/xymond/webfiles/critical_header
+===================================================================
+--- xymon.orig/xymond/webfiles/critical_header	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/webfiles/critical_header	2011-09-29 23:04:48.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/critmulti_header
+===================================================================
+--- xymon.orig/xymond/webfiles/critmulti_header	2011-09-29 20:22:32.000000000 +0200
++++ xymon/xymond/webfiles/critmulti_header	2011-09-29 23:04:56.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/repnormal_header
+===================================================================
+--- xymon.orig/xymond/webfiles/repnormal_header	2011-09-29 20:22:32.000000000 +0200
++++ xymon/xymond/webfiles/repnormal_header	2011-09-29 23:05:07.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&XYMWEBPAGEPATH; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
+ <TITLE>Xymon Availability Report : &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/snapcritical_header
+===================================================================
+--- xymon.orig/xymond/webfiles/snapcritical_header	2011-09-29 20:22:32.000000000 +0200
++++ xymon/xymond/webfiles/snapcritical_header	2011-09-29 23:05:13.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Snapshot @ &XYMWEBDATE</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+Index: xymon/xymond/webfiles/snapnongreen_header
+===================================================================
+--- xymon.orig/xymond/webfiles/snapnongreen_header	2011-09-29 20:22:32.000000000 +0200
++++ xymon/xymond/webfiles/snapnongreen_header	2011-09-29 23:05:19.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Snapshot</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+Index: xymon/xymond/webfiles/snapnormal_header
+===================================================================
+--- xymon.orig/xymond/webfiles/snapnormal_header	2011-09-29 20:22:32.000000000 +0200
++++ xymon/xymond/webfiles/snapnormal_header	2011-09-29 23:05:24.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&XYMWEBPAGEPATH; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
+ <TITLE>Xymon Snapshot Report : &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/stdcritical_header
+===================================================================
+--- xymon.orig/xymond/webfiles/stdcritical_header	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/webfiles/stdcritical_header	2011-09-29 23:05:29.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/stdnongreen_header
+===================================================================
+--- xymon.orig/xymond/webfiles/stdnongreen_header	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/webfiles/stdnongreen_header	2011-09-29 23:05:36.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+Index: xymon/xymond/webfiles/stdnormal_header
+===================================================================
+--- xymon.orig/xymond/webfiles/stdnormal_header	2011-09-29 20:22:33.000000000 +0200
++++ xymon/xymond/webfiles/stdnormal_header	2011-09-29 23:05:42.000000000 +0200
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&XYMWEBPAGEPATH; path=/">
