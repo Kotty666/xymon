@@ -1,5 +1,6 @@
 xymon (4.3.5-1) unstable; urgency=low
 
+  * New upstream release (Closes: #622574)
   * Add myself to Uploaders
   * Recommend a CGI-capable web server, defaulting to apache2
   * Update Homepage header to point to http://xymon.sourceforge.net/
