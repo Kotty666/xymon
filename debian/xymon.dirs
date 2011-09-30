@@ -1,5 +1,5 @@
 etc/apache2/conf.d
-etc/hobbit/hobbitlaunch.d
-etc/hobbit/hobbitgraph.d
-etc/hobbit/hobbitserver.d
-usr/share/hobbit
+etc/xymon/xymonlaunch.d
+etc/xymon/xymongraph.d
+etc/xymon/xymonserver.d
+usr/share/xymon
