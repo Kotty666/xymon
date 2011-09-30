@@ -15,3 +15,4 @@ hobbit_files_ifexist
 kfreebsd-makefile
 bbcombotest-fix
 622069-sslv2-deprecation
+fix-configure-for-multiarch

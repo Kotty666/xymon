@@ -1,0 +1,20 @@
+Fix FTBFS due to multiarch (Closes: http://bugs.debian.org/639080)
+
+Index: xymon/build/pcre.sh
+===================================================================
+--- xymon.orig/build/pcre.sh	2011-09-30 02:06:35.000000000 +0200
++++ xymon/build/pcre.sh	2011-09-30 02:07:37.000000000 +0200
+@@ -21,11 +21,11 @@
+ 		then
+ 			PCRELIB=$DIR/lib
+ 		fi
+-		if test -f $DIR/lib64/libpcre.so
++		if test -f $DIR/lib/`dpkg-architecture -qDEB_BUILD_MULTIARCH`/libpcre.so
+ 		then
+ 			PCRELIB=$DIR/lib64
+ 		fi
+-		if test -f $DIR/lib64/libpcre.a
++		if test -f $DIR/lib/`dpkg-architecture -qDEB_BUILD_MULTIARCH`/libpcre.a
+ 		then
+ 			PCRELIB=$DIR/lib64
+ 		fi
