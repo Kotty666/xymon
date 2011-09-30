@@ -26,6 +26,7 @@ xymon (4.3.5-1) unstable; urgency=low
     + kfreebsd-makefile
     + bbcombotest-fix
     + 622069-sslv2-deprecation
+  * Adapt paths changed upstream in debian/* accordingly
 
  -- Axel Beckert <abe@debian.org>  Thu, 29 Sep 2011 22:46:53 +0200
 
