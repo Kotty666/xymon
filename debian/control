@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 7), librrd-dev, libssl-dev, libldap2-dev, libpcre3-
 Standards-Version: 3.9.2
 Vcs-Git: git://git.debian.org/collab-maint/xymon.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/xymon.git
-Homepage: http://hobbitmon.sourceforge.net/
+Homepage: http://xymon.sourceforge.net/
 
 Package: xymon
 Architecture: any
