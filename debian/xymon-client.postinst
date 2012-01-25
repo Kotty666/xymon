@@ -43,7 +43,7 @@ case "$1" in
 
 	# Update configuration file
 	CONFIGFILE=/etc/default/hobbit-client
-	test -e $CONFIGFILE || cp /usr/share/hobbit/hobbit-client.default $CONFIGFILE
+	test -e $CONFIGFILE || cp /usr/share/xymon/xymon-client.default.template $CONFIGFILE
 	if grep -q "^HOBBITSERVERS=" $CONFIGFILE ; then
 		sed -i -e "s/^HOBBITSERVERS=.*/HOBBITSERVERS=\"$HOBBITSERVERS\"/" \
 			$CONFIGFILE

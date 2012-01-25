@@ -108,7 +108,7 @@ install-client: build install-clean
 	cd $C/usr/lib/xymon/client && rmdir tmp && ln -s ../../../../var/lib/xymon/tmp
 	# the only command needed in /usr/bin is bbcmd, its PATH includes our private .../bin
 	cd $C/usr/bin && ln -s ../lib/xymon/client/bin/bbcmd bbcmd
-	cp debian/xymon-client.default.dist $C/usr/share/xymon/xymon-client.default
+	cp debian/xymon-client.default.template $C/usr/share/xymon/xymon-client.default.template
 	# dynamic list of installed client extensions
 	echo "include /var/run/xymon/clientlaunch-include.cfg" >> \
 		$C/etc/xymon/clientlaunch.cfg
@@ -155,8 +155,8 @@ binary-arch: build install-server install-client
 	dh_installinit --name=xymon -p'xymon' -- defaults 98 02
 	dh_installinit --name=xymon-client -p'xymon-client' -- defaults 98 02
 	dh_installman -a
-	cd $C/usr/share/man/man1 && mv bb.1 xymon.1
-	cd $C/usr/share/man/man8 && ln -s ../man1/xymon.1 bb.8
+	#cd $C/usr/share/man/man1 && mv bb.1 xymon.1
+	#cd $C/usr/share/man/man8 && ln -s ../man1/xymon.1 bb.8
 	dh_link -a
 	dh_strip -a
 	dh_compress -a
