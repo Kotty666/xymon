@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char snmpmib_rcsid[] = "$Id: do_snmpmib.c 6745 2011-09-04 06:01:06Z storner $";
+static char snmpmib_rcsid[] = "$Id: do_snmpmib.c 6768 2011-11-03 10:03:59Z storner $";
 
 static time_t snmp_nextreload = 0;
 
@@ -115,6 +115,7 @@ int is_snmpmib_rrd(char *testname)
 			}
 		}
 
+		newitem->valnames[newitem->valcount] = NULL;
 		newitem->dsdefs[newitem->valcount] = NULL;
 		newitem->tpl = setup_template(newitem->dsdefs);
 		xtreeAdd(snmpmib_paramtree, newitem->name, newitem);

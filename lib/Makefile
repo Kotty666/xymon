@@ -1,7 +1,7 @@
 # Xymon library Makefile
 #
 
-XYMONLIBOBJS = osdefs.o acklog.o availability.o calc.o cgi.o cgiurls.o clientlocal.o color.o crondate.o digest.o encoding.o environ.o errormsg.o eventlog.o files.o headfoot.o xymonrrd.o holidays.o htmllog.o ipaccess.o loadalerts.o loadhosts.o loadcriticalconf.o locator.o links.o matching.o md5.o memory.o misc.o msort.o netservices.o notifylog.o readmib.o reportlog.o rmd160c.o sendmsg.o sha1.o sha2.o sig.o stackio.o strfunc.o suid.o timefunc.o timing.o tree.o url.o
+XYMONLIBOBJS = osdefs.o acklog.o availability.o calc.o cgi.o cgiurls.o clientlocal.o color.o crondate.o digest.o encoding.o environ.o errormsg.o eventlog.o files.o headfoot.o xymonrrd.o holidays.o htmllog.o ipaccess.o loadalerts.o loadhosts.o loadcriticalconf.o locator.o links.o matching.o md5.o memory.o misc.o msort.o netservices.o notifylog.o readmib.o reportlog.o rmd160c.o sendmsg.o sha1.o sha2.o sig.o stackio.o strfunc.o suid.o timefunc.o timing.o tree.o url.o webaccess.o
 
 CLIENTLIBOBJS = osdefs.o cgiurls.o color-client.o crondate.o digest.o encoding.o environ-client.o errormsg.o holidays.o ipaccess.o loadhosts.o md5.o memory.o misc.o msort.o rmd160c.o sendmsg.o sha1.o sha2.o sig.o stackio.o strfunc.o suid.o timefunc-client.o tree.o
 ifeq ($(LOCALCLIENT),yes)
@@ -63,13 +63,13 @@ timefunc-client.o: timefunc.c
 	$(CC) $(CFLAGS) -DCLIENTONLY -c -o $@ $<
 
 loadhosts: loadhosts.c libxymon.a
-	$(CC) $(CFLAGS) -DSTANDALONE -o $@ loadhosts.c ./libxymon.a $(LIBRTDEF)
+	$(CC) $(CFLAGS) -DSTANDALONE -o $@ loadhosts.c ./libxymon.a $(NETLIBS) $(LIBRTDEF)
 
 stackio: stackio.c libxymon.a
-	$(CC) $(CFLAGS) -DSTANDALONE -o $@ stackio.c ./libxymon.a $(LIBRTDEF)
+	$(CC) $(CFLAGS) -DSTANDALONE -o $@ stackio.c ./libxymon.a $(NETLIBS) $(LIBRTDEF)
 
 availability: availability.c libxymon.a
-	$(CC) $(CFLAGS) -DSTANDALONE -o $@ availability.c ./libxymon.a $(LIBRTDEF)
+	$(CC) $(CFLAGS) -DSTANDALONE -o $@ availability.c ./libxymon.a $(NETLIBS) $(LIBRTDEF)
 
 md5: md5.c
 	$(CC) $(CFLAGS) -DSTANDALONE `./test-endianness` -o $@ md5.c

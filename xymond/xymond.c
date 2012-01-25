@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 6750 2011-09-04 17:49:33Z storner $";
+static char rcsid[] = "$Id: xymond.c 6787 2011-12-03 08:10:28Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -176,6 +176,7 @@ int      ignoretraced = 0;
 int      clientsavemem = 1;	/* In memory */
 int      clientsavedisk = 0;	/* On disk via the CLICHG channel */
 int      allow_downloads = 1;
+int	 defaultvalidity = 30;	/* Minutes */
 
 
 #define NOTALK 0
@@ -807,13 +808,18 @@ void posttochannel(xymond_channel_t *channel, char *channelmarker,
 			break;
 
 		  case C_ENADIS:
-			n = snprintf(channel->channelbuf, (bufsz-5),
-				"@@%s#%u/%s|%d.%06d|%s|%s|%s|%d",
-				channelmarker, channel->seq, hostname, (int) tstamp.tv_sec, (int)tstamp.tv_usec,
-				sender, hostname, log->test->name, (int) log->enabletime);
-			if (n > (bufsz-5)) {
-				errprintf("Oversize enadis msg from %s for %s:%s truncated (n=%d, limit=%d)\n", 
-					sender, hostname, log->test->name, n, bufsz);
+			{
+				char *dism = "";
+
+				if (log->dismsg) dism = nlencode(log->dismsg);
+				n = snprintf(channel->channelbuf, (bufsz-5),
+						"@@%s#%u/%s|%d.%06d|%s|%s|%s|%d|%s",
+						channelmarker, channel->seq, hostname, (int) tstamp.tv_sec, (int)tstamp.tv_usec,
+						sender, hostname, log->test->name, (int) log->enabletime, dism);
+				if (n > (bufsz-5)) {
+					errprintf("Oversize enadis msg from %s for %s:%s truncated (n=%d, limit=%d)\n", 
+							sender, hostname, log->test->name, n, bufsz);
+				}
 			}
 			*(channel->channelbuf + bufsz - 5) = '\0';
 			break;
@@ -850,6 +856,19 @@ void posttochannel(xymond_channel_t *channel, char *channelmarker,
 	dbgprintf("<- posttochannel\n");
 
 	return;
+}
+
+void posttoall(char *msg)
+{
+	posttochannel(statuschn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(stachgchn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(pagechn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(datachn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(noteschn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(enadischn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(clientchn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(clichgchn, msg, NULL, "xymond", NULL, NULL, "");
+	posttochannel(userchn, msg, NULL, "xymond", NULL, NULL, "");
 }
 
 
@@ -1207,7 +1226,7 @@ static int changedelay(void *hinfo, int newcolor, char *testname, int currcolor)
 void handle_status(unsigned char *msg, char *sender, char *hostname, char *testname, char *grouplist, 
 		   xymond_log_t *log, int newcolor, char *downcause, int modifyonly)
 {
-	int validity = 30;	/* validity is counted in minutes */
+	int validity = defaultvalidity;
 	time_t now = getcurrenttime(NULL);
 	int msglen, issummary;
 	enum alertstate_t oldalertstatus, newalertstatus;
@@ -1468,9 +1487,11 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 		ackinfo_t *awalk;
 
 		if ((oldalertstatus != A_OK) && (newalertstatus == A_OK)) {
-			/* The status recovered. Set the "clearack" timer */
-			time_t cleartime = now + ACKCLEARDELAY;
-			for (awalk = log->acklist; (awalk); awalk = awalk->next) awalk->cleartime = cleartime;
+			/* The status recovered. Set the "clearack" timer, unless it is just because we are in a DOWNTIME period */
+			if (!log->downtimeactive) {
+				time_t cleartime = now + ACKCLEARDELAY;
+				for (awalk = log->acklist; (awalk); awalk = awalk->next) awalk->cleartime = cleartime;
+			}
 		}
 		else if ((oldalertstatus == A_OK) && (newalertstatus != A_OK)) {
 			/* The status went into a failure-mode. Any acks are revived */
@@ -3239,6 +3260,9 @@ void do_message(conn_t *msg, char *origin)
 	else if (strncmp(msg->buf, "flush filecache", 15) == 0) {
 		flush_filecache();
 	}
+	else if ( (strcmp(msg->buf, "reload") == 0) || (strcmp(msg->buf, "rotate") == 0) ) {
+		posttoall(msg->buf);
+	}
 	else if (strncmp(msg->buf, "query ", 6) == 0) {
 		get_hts(msg->buf, sender, origin, &h, &t, NULL, &log, &color, NULL, NULL, 0, 0);
 		if (!oksender(statussenders, (h ? h->ip : NULL), msg->addr.sin_addr, msg->buf)) goto done;
@@ -4824,9 +4848,14 @@ int main(int argc, char *argv[])
 		hostsfn = strdup(xgetenv("HOSTSCFG"));
 	}
 
+	if (xgetenv("STATUSLIFETIME")) {
+		int n = atoi(xgetenv("STATUSLIFETIME"));
+		if (n > 0) defaultvalidity = n;
+	}
+
 	/* Make sure we load hosts.cfg file, and not via the network from ourselves */
 	hostsfn = (char *)realloc(hostsfn, strlen(hostsfn) + 2);
-	memmove(hostsfn+1, hostsfn, strlen(hostsfn));
+	memmove(hostsfn+1, hostsfn, strlen(hostsfn)+1);
 	*hostsfn = '!';
 
 	if (listenport == 0) {
@@ -5006,13 +5035,7 @@ int main(int argc, char *argv[])
 			freopen(logfn, "a", stderr);
 			if (ackinfologfd) freopen(ackinfologfn, "a", ackinfologfd);
 			dologswitch = 0;
-			posttochannel(statuschn, "logrotate", NULL, "xymond", NULL, NULL, "");
-			posttochannel(stachgchn, "logrotate", NULL, "xymond", NULL, NULL, "");
-			posttochannel(pagechn, "logrotate", NULL, "xymond", NULL, NULL, "");
-			posttochannel(datachn, "logrotate", NULL, "xymond", NULL, NULL, "");
-			posttochannel(noteschn, "logrotate", NULL, "xymond", NULL, NULL, "");
-			posttochannel(enadischn, "logrotate", NULL, "xymond", NULL, NULL, "");
-			posttochannel(clientchn, "logrotate", NULL, "xymond", NULL, NULL, "");
+			posttoall("logrotate");
 		}
 
 		if (reloadconfig && hostsfn) {
@@ -5046,13 +5069,7 @@ int main(int argc, char *argv[])
 					}
 				}
 
-				posttochannel(statuschn, "reload", NULL, "xymond", NULL, NULL, "");
-				posttochannel(stachgchn, "reload", NULL, "xymond", NULL, NULL, "");
-				posttochannel(pagechn, "reload", NULL, "xymond", NULL, NULL, "");
-				posttochannel(datachn, "reload", NULL, "xymond", NULL, NULL, "");
-				posttochannel(noteschn, "reload", NULL, "xymond", NULL, NULL, "");
-				posttochannel(enadischn, "reload", NULL, "xymond", NULL, NULL, "");
-				posttochannel(clientchn, "reload", NULL, "xymond", NULL, NULL, "");
+				posttoall("reload");
 			}
 
 			load_clientconfig();
@@ -5348,15 +5365,7 @@ int main(int argc, char *argv[])
 
 	/* Tell the workers we to shutdown also */
 	running = 1;   /* Kludge, but it's the only way to get posttochannel to do something. */
-	posttochannel(statuschn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(stachgchn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(pagechn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(datachn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(noteschn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(enadischn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(clientchn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(clichgchn, "shutdown", NULL, "xymond", NULL, NULL, "");
-	posttochannel(userchn, "shutdown", NULL, "xymond", NULL, NULL, "");
+	posttoall("shutdown");
 	running = 0;
 
 	/* Close the channels */

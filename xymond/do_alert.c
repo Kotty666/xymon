@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_alert.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: do_alert.c 6796 2011-12-07 21:47:56Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -209,25 +209,25 @@ static char *message_subject(activealerts_t *alert, recip_t *recip)
 	  case A_PAGING:
 	  case A_ACKED:
 		subjfmt = (include_configid ? "Xymon [%d] %s:%s %s [cfid:%d]" :  "Xymon [%d] %s:%s %s");
-		snprintf(subj, sizeof(subj)-1, subjfmt, 
+		snprintf(subj, sizeof(subj), subjfmt, 
 			 alert->cookie, alert->hostname, alert->testname, sev, recip->cfid);
 		break;
 
 	  case A_NOTIFY:
 		subjfmt = (include_configid ? "Xymon %s:%s NOTICE [cfid:%d]" :  "Xymon %s:%s NOTICE");
-		snprintf(subj, sizeof(subj)-1, subjfmt, 
+		snprintf(subj, sizeof(subj), subjfmt, 
 			 alert->hostname, alert->testname, recip->cfid);
 		break;
 
 	  case A_RECOVERED:
 		subjfmt = (include_configid ? "Xymon %s:%s recovered [cfid:%d]" :  "Xymon %s:%s recovered");
-		snprintf(subj, sizeof(subj)-1, subjfmt, 
+		snprintf(subj, sizeof(subj), subjfmt, 
 			 alert->hostname, alert->testname, recip->cfid);
 		break;
 
 	  case A_DISABLED:
 		subjfmt = (include_configid ? "Xymon %s:%s disabled [cfid:%d]" :  "Xymon %s:%s disabled");
-		snprintf(subj, sizeof(subj)-1, subjfmt, 
+		snprintf(subj, sizeof(subj), subjfmt, 
 			 alert->hostname, alert->testname, recip->cfid);
 		break;
 
@@ -338,7 +338,7 @@ static char *message_text(activealerts_t *alert, recip_t *recip)
 			bom = eoln;
 			while ((bom = strstr(bom, "\n&")) != NULL) {
 				eoln = strchr(bom+1, '\n'); if (eoln) *eoln = '\0';
-				if ((strncmp(bom, "&red", 4) == 0) || (strncmp(bom, "&yellow", 7) == 0)) 
+				if ((strncmp(bom+1, "&red", 4) == 0) || (strncmp(bom+1, "&yellow", 7) == 0)) 
 					addtobuffer(buf, bom);
 				if (eoln) *eoln = '\n';
 				bom = (eoln ? eoln+1 : "");
@@ -524,7 +524,7 @@ void send_alert(activealerts_t *alert, FILE *logfd)
 					}
 					msglen += strlen("BBALPHAMSG=");
 					bbalphamsg = (char *)malloc(msglen + 1);
-					snprintf(bbalphamsg, msglen, "BBALPHAMSG=%s", p);
+					snprintf(bbalphamsg, msglen+1, "BBALPHAMSG=%s", p);
 					putenv(bbalphamsg);
 
 					ackcode = (char *)malloc(strlen("ACKCODE=") + 10);

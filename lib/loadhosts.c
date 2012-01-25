@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 
 
-static char rcsid[] = "$Id: loadhosts.c 6747 2011-09-04 11:26:49Z storner $";
+static char rcsid[] = "$Id: loadhosts.c 6782 2011-11-30 11:53:42Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -182,6 +182,8 @@ static void xmh_item_list_setup(void)
 	xmh_item_name[XMH_NOTAFTER]            = "XMH_NOTAFTER";
 	xmh_item_key[XMH_COMPACT]              = "COMPACT:";
 	xmh_item_name[XMH_COMPACT]             = "XMH_COMPACT";
+	xmh_item_key[XMH_INTERFACES]           = "INTERFACES:";
+	xmh_item_name[XMH_INTERFACES]          = "XMH_INTERFACES";
 
 	xmh_item_name[XMH_IP]                  = "XMH_IP";
 	xmh_item_name[XMH_CLIENTALIAS]         = "XMH_CLIENTALIAS";

@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: combostatus.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: combostatus.c 6780 2011-11-30 11:48:03Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -132,7 +132,7 @@ static void loadtests(void)
 	if ((stat(fn, &st) == 0) && (st.st_mtime == lastupdate)) return;
 	lastupdate = st.st_mtime;
 
-	fd = fopen(fn, "r");
+	fd = stackfopen(fn, "r", NULL);
 	if (fd == NULL) {
 		errprintf("Cannot open %s/combo.cfg\n", xgetenv("XYMONHOME"));
 		*fn = '\0';
@@ -141,9 +141,8 @@ static void loadtests(void)
 
 	flush_testlist();
 
-	initfgets(fd);
 	inbuf = newstrbuffer(0);
-	while (unlimfgets(inbuf, fd)) {
+	while (stackfgets(inbuf, NULL)) {
 		char *p, *comment;
 		char *inp, *outp;
 
@@ -191,7 +190,7 @@ static void loadtests(void)
 		}
 	}
 
-	fclose(fd);
+	stackfclose(fd);
 	freestrbuffer(inbuf);
 }
 
