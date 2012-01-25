@@ -34,6 +34,23 @@ xymon (4.3.5-1) unstable; urgency=low
 
  -- Axel Beckert <abe@debian.org>  Thu, 29 Sep 2011 22:46:53 +0200
 
+xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix "FTBFS: PCRE not found": patch from Ubuntu / Steve Langasek:
+    - debian/rules: pass --pcrelib to find libpcre in the multiarch dir
+      LP: #749190.
+    Additionally build-depend on dpkg-dev (>= 1.16.0) and
+    libpcre3-dev (>= 8.12-4~). (Closes: #651231)
+  * Since this Ubuntu patch, SSL and LDAP also went multiarch, so:
+    - also pass --ssllib and --ldaplib to configure in debian/rules
+    - build-depend on libssl-dev (>= 1.0.0e-1~) and libldap2-dev (>= 2.4.25-2~)
+  * libpng also went multiarch, so build/rrd.sh doesn't find it, and there's
+    no option for configure. Add patch png-multiarch that changes build/rrd.sh
+    to use libpng12-config instead of guessing.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 26 Dec 2011 23:40:38 +0100
+
 xymon (4.3.0~beta2.dfsg-9) unstable; urgency=low
 
   [ Axel Beckert ]

@@ -4,6 +4,8 @@ include /usr/share/quilt/quilt.make
 
 CFLAGS = -Wall -g
 
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
@@ -36,7 +38,10 @@ Makefile: configure $(QUILT_STAMPFN)
 	INSTALLEXTDIR=/usr/lib/xymon/server/ext \
 	INSTALLTMPDIR=/var/lib/xymon/tmp \
 	INSTALLWWWDIR=/var/lib/xymon/www \
-	./configure
+	./configure --server \
+	--pcrelib $(shell pcre-config --libs) \
+	--ssllib /usr/lib/$(DEB_HOST_MULTIARCH) \
+	--ldaplib /usr/lib/$(DEB_HOST_MULTIARCH)
 
 build: build-stamp
 build-stamp: Makefile
