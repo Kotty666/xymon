@@ -1,3 +1,9 @@
+xymon (4.3.7-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Christoph Berg <myon@debian.org>  Wed, 25 Jan 2012 13:59:43 +0100
+
 xymon (4.3.5-1) unstable; urgency=low
 
   * New upstream release (Closes: #622574)
