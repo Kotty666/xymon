@@ -1,4 +1,4 @@
-PROGRAMS = xymon.sh xymond xymond_channel xymond_locator xymond_filestore xymond_history xymond_alert xymond_rrd xymond_sample xymond_client xymond_hostdata xymond_capture xymonfetch xymon-mailack trimhistory combostatus xymonreports.sh moverrd.sh convertnk rrdcachectl
+PROGRAMS = xymon.sh xymond xymond_channel xymond_locator xymond_filestore xymond_history xymond_alert xymond_rrd xymond_sample xymond_client xymond_hostdata xymond_capture xymond_distribute xymonfetch xymon-mailack trimhistory combostatus xymonreports.sh moverrd.sh convertnk rrdcachectl
 CLIENTPROGRAMS = ../client/xymond_client
 
 LIBOBJS = ../lib/libxymon.a
@@ -14,6 +14,7 @@ RRDOBJS       = xymond_rrd.o       xymond_worker.o xymond_buffer.o do_rrd.o clie
 HOSTDATAOBJS  = xymond_hostdata.o  xymond_worker.o xymond_buffer.o
 CAPTUREOBJS   = xymond_capture.o   xymond_worker.o xymond_buffer.o
 CLIENTOBJS    = xymond_client.o    xymond_worker.o xymond_buffer.o client_config.o
+DISTRIBUTEOBJS= xymond_distribute.o xymond_worker.o xymond_buffer.o
 COMBOTESTOBJS = combostatus.o
 MAILACKOBJS   = xymon-mailack.o
 TRIMHISTOBJS  = trimhistory.o
@@ -65,6 +66,9 @@ xymond_sample: $(SAMPLEOBJS) $(LIBOBJS)
 
 xymond_capture: $(CAPTUREOBJS) $(LIBOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(RPATHOPT) $(CAPTUREOBJS) $(LIBOBJS) $(PCRELIBS) $(NETLIBS) $(LIBRTDEF)
+
+xymond_distribute: $(DISTRIBUTEOBJS) $(LIBOBJS)
+	$(CC) $(LDFLAGS) -o $@ $(RPATHOPT) $(DISTRIBUTEOBJS) $(LIBOBJS) $(PCRELIBS) $(NETLIBS) $(LIBRTDEF)
 
 xymond_hostdata: $(HOSTDATAOBJS) $(LIBOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(RPATHOPT) $(HOSTDATAOBJS) $(LIBOBJS) $(NETLIBS) $(LIBRTDEF)
@@ -155,8 +159,7 @@ install-cfg:
 	cd etcfiles; ../../build/merge-sects client-local.cfg $(INSTALLROOT)$(INSTALLETCDIR)/client-local.cfg
 	cd etcfiles; ../../build/merge-sects graphs.cfg $(INSTALLROOT)$(INSTALLETCDIR)/graphs.cfg
 	cd etcfiles; ../../build/merge-lines columndoc.csv $(INSTALLROOT)$(INSTALLETCDIR)/columndoc.csv
-	cd etcfiles; (echo "hosts.cfg"; echo "alerts.cfg"; echo "analysis.cfg"; echo "combo.cfg"; echo "client-local.cfg"; echo "holidays.cfg"; echo "rrddefinitions.cfg"; echo snmpmibs.cfg; echo xymonmenu.cfg) | ../../build/setup-newfiles $(INSTALLROOT)$(INSTALLETCDIR)/
-	cd etcfiles; cp -fp xymon-apache.conf $(INSTALLROOT)$(INSTALLETCDIR)/xymon-apache.conf
+	cd etcfiles; (echo "hosts.cfg"; echo "alerts.cfg"; echo "analysis.cfg"; echo "combo.cfg"; echo "client-local.cfg"; echo "holidays.cfg"; echo "rrddefinitions.cfg"; echo snmpmibs.cfg; echo xymonmenu.cfg; echo xymon-apache.conf) | ../../build/setup-newfiles $(INSTALLROOT)$(INSTALLETCDIR)/
 	cd $(INSTALLROOT)$(XYMONHOME); rm -f xymon.sh; ln -sf bin/xymon.sh .
 	cd wwwfiles; find . | grep -v RCS | grep -v ".svn" | grep -v DIST | ../../build/setup-newfiles $(INSTALLROOT)$(INSTALLWWWDIR)/ ../../build/md5.dat
 	cd webfiles; find . | grep -v RCS | grep -v ".svn" | grep -v DIST | ../../build/setup-newfiles $(INSTALLROOT)$(INSTALLWEBDIR)/ ../../build/md5.dat
@@ -171,6 +174,4 @@ ifndef PKGBUILD
 	chown root $(INSTALLROOT)$(INSTALLBINDIR)/xymonping || echo "Could not make xymonping owned by root, continuing"
 	chmod 4755 $(INSTALLROOT)$(INSTALLBINDIR)/xymonping || echo "Could not make xymonping suid-root, continuing"
 endif
-
-
 

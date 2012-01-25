@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus.c 6749 2011-09-04 17:26:31Z storner $";
+static char rcsid[] = "$Id: svcstatus.c 6776 2011-11-27 21:32:18Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -34,6 +34,7 @@ static int wantserviceid = 1;
 static char *multigraphs = ",disk,inode,qtree,quotas,snapshot,TblSpace,if_load,";
 static int locatorbased = 0;
 static char *critconfigfn = NULL;
+static char *accessfn = NULL;
 
 /* CGI params */
 static char *hostname = NULL;
@@ -162,12 +163,12 @@ int loadhostdata(char *hostname, char **ip, char **displayname, char **compacts,
 		loadres = load_hostinfo(hostname);
 	}
 
-	if (loadres != 0) {
+	if ((loadres != 0) && (loadres != -2)) {
 		errormsg("Cannot load host configuration");
 		return 1;
 	}
 
-	if ((hinfo = hostinfo(hostname)) == NULL) {
+	if ((loadres == -2) || (hinfo = hostinfo(hostname)) == NULL) {
 		errormsg("No such host");
 		return 1;
 	}
@@ -192,6 +193,16 @@ int do_request(void)
 	char *ip, *displayname, *compacts;
 
 	if (parse_query() != 0) return 1;
+
+	/* Load the host data (for access control) */
+	if (accessfn) {
+		load_hostinfo(hostname);
+		load_web_access_config(accessfn);
+		if (!web_access_allowed(getenv("REMOTE_USER"), hostname, service, WEB_ACCESS_VIEW)) {
+			errormsg("Not available (restricted).");
+			return 1;
+		}
+	}
 
 	{
 		char *s;
@@ -717,6 +728,10 @@ int main(int argc, char *argv[])
 		else if (argnmatch(argv[argi], "--critical-config=")) {
 			char *p = strchr(argv[argi], '=');
 			critconfigfn = strdup(p+1);
+		}
+		else if (argnmatch(argv[argi], "--access=")) {
+			char *p = strchr(argv[argi], '=');
+			accessfn = strdup(p+1);
 		}
 	}
 

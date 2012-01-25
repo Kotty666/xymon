@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_rrd.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: do_rrd.c 6779 2011-11-30 10:07:02Z storner $";
 
 #include <sys/types.h>
 #include <sys/time.h>
@@ -120,9 +120,14 @@ void setup_extprocessor(char *cmd)
 		}
 		else if (childpid == 0) {
 			/* The channel handler child */
+			char *argv[2];
+
+			argv[0] = strdup(cmd);
+			argv[1] = NULL;
+
 			n = dup2(pfd[0], STDIN_FILENO);
 			close(pfd[0]); close(pfd[1]);
-			n = execvp(cmd, NULL);
+			n = execvp(cmd, argv);
 
 			/* We should never go here */
 			errprintf("exec() failed for child command %s: %s\n", cmd, strerror(errno));
@@ -248,7 +253,7 @@ static int flush_cached_updates(updcacheitem_t *cacheitem, char *newdata)
 	for (i=0; (i < cacheitem->valcount); i++) {
 		cacheitem->updseq[i] = 0;
 		cacheitem->updtime[i] = 0;
-		xfree(cacheitem->vals[i]);
+		if (cacheitem->vals[i]) xfree(cacheitem->vals[i]);
 	}
 	cacheitem->valcount = 0;
 

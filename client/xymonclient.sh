@@ -12,7 +12,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient.sh 6712 2011-07-31 21:01:52Z storner $
+# $Id: xymonclient.sh 6800 2011-12-12 22:15:39Z storner $
 
 # Must make sure the commands return standard (english) texts.
 LANG=C
@@ -58,6 +58,19 @@ fi
 # Client version
 echo "[clientversion]"  >>$MSGTMPFILE
 echo "$CLIENTVERSION"   >> $MSGTMPFILE
+
+# See if there are any local add-ons (must do this before checking the clock)
+if test -d $XYMONHOME/local; then
+	for MODULE in $XYMONHOME/local/*
+	do
+		if test -x $MODULE
+		then
+			echo "[local:`basename $MODULE`]" >>$MSGTMPFILE
+			$MODULE >>$MSGTMPFILE
+		fi
+	done
+fi
+
 # System clock
 echo "[clock]"          >> $MSGTMPFILE
 $XYMONHOME/bin/logfetch --clock >> $MSGTMPFILE
