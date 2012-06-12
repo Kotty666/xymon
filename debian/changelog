@@ -49,10 +49,9 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Fixed lintian warnings:
     + copyright-refers-to-symlink-license
     + conflicts-with-version
-    + quilt-patch-missing-description (one of many)
     + unused-override possibly-insecure-handling-of-tmp-files-in-maintainer-script
 
- -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 17:18:45 +0200
+ -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 23:46:09 +0200
 
 xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
 
