@@ -37,6 +37,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Adapt paths, variable names, etc. which changed upstream in debian/*
     accordingly.
   * Add new patch fix-configure-for-multiarch (Closes: #639080)
+  * Bump Standards-Version to 3.9.3 (no changes)
 
  -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 17:18:45 +0200
 
