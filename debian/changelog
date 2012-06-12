@@ -34,6 +34,8 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + kfreebsd-makefile
     + bbcombotest-fix
     + 622069-sslv2-deprecation
+  * Enabled hardening build flags
+    + Bump dpkg-dev build dependency to >= 1.16.1~
   * Adapt paths, variable names, etc. which changed upstream in debian/*
     accordingly.
   * Add new patch fix-configure-for-multiarch (Closes: #639080)

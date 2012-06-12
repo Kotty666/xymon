@@ -2,15 +2,10 @@
 
 include /usr/share/quilt/quilt.make
 
-CFLAGS = -Wall -g
-
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
 
 Makefile: configure $(QUILT_STAMPFN)
 	dh_testdir

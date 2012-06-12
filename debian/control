@@ -5,7 +5,7 @@ Maintainer: Christoph Berg <myon@debian.org>
 Uploaders: Axel Beckert <abe@debian.org>
 Build-Depends: debhelper (>= 7), librrd-dev,
  libssl-dev (>= 1.0.0e-1~), libldap2-dev (>= 2.4.25-2~), libpcre3-dev (>= 8.12-4~),
- imagemagick, po-debconf, quilt (>= 0.40), dpkg-dev (>= 1.16.0)
+ imagemagick, po-debconf, quilt (>= 0.40), dpkg-dev (>= 1.16.1~)
 Standards-Version: 3.9.3
 Vcs-Git: git://git.debian.org/collab-maint/xymon.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/xymon.git
