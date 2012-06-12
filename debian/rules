@@ -1,13 +1,11 @@
 #!/usr/bin/make -f
 
-include /usr/share/quilt/quilt.make
-
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
-Makefile: configure $(QUILT_STAMPFN)
+Makefile: configure
 	dh_testdir
 	# Add here commands to configure the package.
 	USEXYMONPING=y \
@@ -49,7 +47,7 @@ build-stamp: Makefile
 
 	touch build-stamp
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
