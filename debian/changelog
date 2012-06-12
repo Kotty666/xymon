@@ -40,6 +40,8 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     accordingly.
   * Add new patch fix-configure-for-multiarch (Closes: #639080)
   * Bump Standards-Version to 3.9.3 (no changes)
+  * Fixed lintian warnings:
+    + copyright-refers-to-symlink-license
 
  -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 17:18:45 +0200
 
