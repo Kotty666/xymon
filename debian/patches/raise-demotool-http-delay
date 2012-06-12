@@ -1,0 +1,8 @@
+Patch which was in the .diff.gz despite using quilt for patch
+management.
+
+--- xymon-4.3.7.orig/demotool/data/democonf/http/delay
++++ xymon-4.3.7/demotool/data/democonf/http/delay
+@@ -1 +1 @@
+-4
++7
