@@ -1,1 +1,1 @@
-xymon-client: package-contains-empty-directory usr/lib/hobbit/client/ext/
+xymon-client: package-contains-empty-directory usr/lib/xymon/client/ext/
