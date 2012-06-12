@@ -43,6 +43,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Fixed lintian warnings:
     + copyright-refers-to-symlink-license
     + conflicts-with-version
+    + quilt-patch-missing-description (one of many)
 
  -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 17:18:45 +0200
 
