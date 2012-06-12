@@ -43,6 +43,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Mention OpenSSL linkage exception from upstream's README file in
     debian/copyright (fixes lintian error
     possible-gpl-code-linked-with-openssl)
+  * Update copyright years in debian/copyright
   * Switch to source format "3.0 (quilt)"
     + Remove traces of explicit quilt usage.
   * Fixed lintian warnings:
