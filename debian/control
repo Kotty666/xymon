@@ -13,7 +13,7 @@ Homepage: http://xymon.sourceforge.net/
 
 Package: xymon
 Architecture: any
-Conflicts: hobbit (<< 4.2.2)
+Breaks: hobbit (<< 4.2.2)
 Provides: hobbit
 Replaces: hobbit (<< 4.2.2)
 Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
@@ -34,7 +34,7 @@ Description: monitoring system for systems, networks and applications
 
 Package: xymon-client
 Architecture: any
-Conflicts: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2)
+Breaks: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2)
 Provides: hobbit-client
 Replaces: hobbit-client (<< 4.2.2)
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base

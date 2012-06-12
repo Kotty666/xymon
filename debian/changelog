@@ -42,6 +42,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.9.3 (no changes)
   * Fixed lintian warnings:
     + copyright-refers-to-symlink-license
+    + conflicts-with-version
 
  -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 17:18:45 +0200
 
