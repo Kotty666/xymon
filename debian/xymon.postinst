@@ -1,5 +1,5 @@
 #! /bin/sh
-# postinst script for hobbit
+# postinst script for xymon
 #
 # see: dh_installdeb(1)
 
@@ -82,6 +82,9 @@ EOF
         exit 1
     ;;
 esac
+
+# Fix accidentially included .bak file in older xymon packages
+dpkg-maintscript-helper rm_conffile /etc/xymon/critical.cfg.bak 4.3.0~beta2.dfsg-9.1 xymon -- "$@"
 
 #DEBHELPER#
 
