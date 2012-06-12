@@ -50,6 +50,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + copyright-refers-to-symlink-license
     + conflicts-with-version
     + unused-override possibly-insecure-handling-of-tmp-files-in-maintainer-script
+  * Take care that no *.bak files end up in the binary packages
 
  -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 23:46:09 +0200
 
