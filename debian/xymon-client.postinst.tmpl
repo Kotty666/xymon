@@ -21,18 +21,34 @@ set -e
 
 case "$1" in
     configure)
-	getent group hobbit > /dev/null || addgroup --system hobbit
-	getent passwd hobbit > /dev/null || adduser --system \
-		--home /var/lib/hobbit --no-create-home \
-		--ingroup hobbit --disabled-password --disabled-login \
-		--gecos "Xymon System Monitor" hobbit
+	# Create or migrate group
+	getent group xymon > /dev/null || addgroup --system xymon
+	if getent group hobbit > /dev/null; then
+	    find /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon \
+		-group hobbit -exec chgrp -c xymon '{}' +;
+	fi
 
-	test -d /var/run/hobbit || mkdir /var/run/hobbit
-	chown hobbit:hobbit /var/run/hobbit
-	test -d /var/lib/hobbit/tmp || mkdir /var/lib/hobbit/tmp
-	chown hobbit:hobbit /var/lib/hobbit/tmp
-	test -d /var/log/hobbit || mkdir /var/log/hobbit
-	chown hobbit:adm /var/log/hobbit ; chmod 2755 /var/log/hobbit
+	# Create or migrate user
+	getent passwd xymon > /dev/null || adduser --system \
+		--home /var/lib/xymon --no-create-home \
+		--ingroup xymon --disabled-password --disabled-login \
+		--gecos "Xymon System Monitor" xymon
+	if getent passwd hobbit > /dev/null; then
+	    find /etc/hobbit /etc/xymon /var/lib/hobbit /var/lib/xymon \
+		-user hobbit -exec chown -c xymon '{}' +;
+	fi
+
+	# Create or migrate directories
+	test -d /var/run/hobbit || mv -v /var/run/hobbit /var/run/xymon
+	test -d /var/run/xymon || mkdir /var/run/xymon
+	chown xymon:xymon /var/run/xymon
+
+	test -d /var/lib/xymon/tmp || mkdir /var/lib/xymon/tmp
+	chown xymon:xymon /var/lib/xymon/tmp
+
+	test -d /var/log/hobbit || mv -v /var/log/hobbit /var/log/xymon
+	test -d /var/log/xymon || mkdir /var/log/xymon
+	chown xymon:adm /var/log/xymon ; chmod 2755 /var/log/xymon
 
 	# Do the debconf stuff
 	db_get hobbit-client/HOBBITSERVERS
@@ -42,13 +58,13 @@ case "$1" in
 	db_stop
 
 	# Update configuration file
-	CONFIGFILE=/etc/default/hobbit-client
+	CONFIGFILE=/etc/default/xymon-client
 	test -e $CONFIGFILE || cp /usr/share/xymon/xymon-client.default.template $CONFIGFILE
-	if grep -q "^HOBBITSERVERS=" $CONFIGFILE ; then
-		sed -i -e "s/^HOBBITSERVERS=.*/HOBBITSERVERS=\"$HOBBITSERVERS\"/" \
+	if grep -Eq "^(HOBBIT|XYMON)SERVERS=" $CONFIGFILE ; then
+		sed -i -e "s/^\(HOBBIT\|XYMON\)SERVERS=.*/XYMONSERVERS=\"$HOBBITSERVERS\"/" \
 			$CONFIGFILE
 	else
-		echo "HOBBITSERVERS=\"$HOBBITSERVERS\"" >> $CONFIGFILE
+		echo "XYMONSERVERS=\"$HOBBITSERVERS\"" >> $CONFIGFILE
 	fi
 	if grep -q "^CLIENTHOSTNAME=" $CONFIGFILE ; then
 		sed -i -e "s/^CLIENTHOSTNAME=.*/CLIENTHOSTNAME=\"$CLIENTHOSTNAME\"/" \

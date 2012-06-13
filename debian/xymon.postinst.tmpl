@@ -18,23 +18,31 @@ set -e
 
 case "$1" in
     configure)
-        # Setup permissions for the newly created "hobbit" user to write
+        # Setup permissions for the newly created "xymon" user to write
 	# data where he needs to.
 	# And for the Apache-run CGI's to generate reports.
-	test -d /var/run/hobbit || mkdir /var/run/hobbit
-	chown hobbit:hobbit /var/run/hobbit
-	test -d /var/log/hobbit || mkdir /var/log/hobbit
-	chown hobbit:adm /var/log/hobbit ; chmod 2755 /var/log/hobbit
 
-	cd /var/lib/hobbit; chown hobbit:hobbit . acks data disabled hist histlogs hostdata logs rrd tmp www
-	cd /var/lib/hobbit/www; chown hobbit:hobbit html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
-	cd /etc/hobbit; chgrp www-data hobbit-nkview.cfg hobbit-nkview.cfg.bak; chmod g+w hobbit-nkview.cfg hobbit-nkview.cfg.bak
+	# Create or migrate directories
+	test -d /var/run/hobbit || mv -v /var/run/hobbit /var/run/xymon
+	test -d /var/run/xymon || mkdir /var/run/xymon
+	chown xymon:xymon /var/run/xymon
 
-	if ! test -e /etc/hobbit/bb-hosts ; then
-		if test -e /etc/default/hobbit-client ; then
-			. /etc/default/hobbit-client || true
+	test -d /var/log/hobbit || mv -v /var/log/hobbit /var/log/xymon
+	test -d /var/log/xymon || mkdir /var/log/xymon
+	chown xymon:adm /var/log/xymon ; chmod 2755 /var/log/xymon
+
+	cd /var/lib/xymon; chown xymon:xymon . acks data disabled hist histlogs hostdata logs rrd tmp www
+	cd /var/lib/xymon/www; chown xymon:xymon html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
+	cd /etc/xymon; chgrp www-data critical.cfg critical.cfg.bak; chmod g+w critical.cfg critical.cfg.bak
+
+	if test -e /etc/hobbit/bb-hosts ; then
+	    mv -v /etc/hobbit/bb-hosts /etc/xymon/hosts.cfg
+	fi
+	if ! test -e /etc/xymon/hosts.cfg ; then
+		if test -e /etc/default/xymon-client ; then
+			. /etc/default/xymon-client || true
 		fi
-		cat > /etc/hobbit/bb-hosts <<EOF
+		cat > /etc/xymon/hosts.cfg <<EOF
 #
 # Master configuration file for Xymon
 #
@@ -59,8 +67,10 @@ case "$1" in
 EOF
 	fi
 
-	test -e /etc/hobbit/hobbitpasswd || touch /etc/hobbit/hobbitpasswd
-	test -e /etc/hobbit/hobbitgroups || touch /etc/hobbit/hobbitgroups
+	test -e /etc/hobbit/hobbitpasswd || mv -v /etc/hobbit/hobbitpasswd /etc/xymon/xymonpasswd
+	test -e /etc/xymon/xymonpasswd   || touch /etc/xymon/xymonpasswd
+	test -e /etc/hobbit/hobbitgroups || mv -v  /etc/hobbit/hobbitgroups /etc/xymon/xymongroups
+	test -e /etc/xymon/xymongroups   || touch /etc/xymon/xymongroups
 	if test -e /etc/init.d/apache2 ; then
 	    invoke-rc.d apache2 reload || :
 	fi
