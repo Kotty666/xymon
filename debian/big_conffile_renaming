@@ -9,6 +9,7 @@ if [ "$DPKG_MAINTSCRIPT_PACKAGE" = "xymon" ]; then
     # 1:1 renamings from hobbit to xymon
     for ocf in \
 	/etc/apache2/conf.d/hobbit \
+	/etc/init.d/hobbit \
 	/etc/hobbit/client-local.cfg \
 	/etc/hobbit/columndoc.csv \
 	/etc/hobbit/hobbitserver.cfg \
@@ -100,6 +101,8 @@ if [ "$DPKG_MAINTSCRIPT_PACKAGE" = "xymon-client" ]; then
 
     # 1:1 renamings from hobbit to xymon
     for ocf in \
+	/etc/init.d/hobbit-client \
+	/etc/logrotate.d/hobbit-client \
 	/etc/hobbit/localclient.cfg \
 	/etc/hobbit/hobbitclient.cfg \
 	/etc/hobbit/clientlaunch.cfg \

@@ -1,17 +1,4 @@
-CLIENT:
-
-Not yet shown up in /etc/xymon and friends:
-
-***/etc/logrotate.d/hobbit-client***
-***/etc/init.d/hobbit-client***
-
-
 SERVER:
-
-Not yet shown up in /etc/xymon and friends:
-
-****/etc/hobbit/web/notify_footer****
-****/etc/init.d/hobbit****
 
 Seem to be new (or must not be included but are):
 
