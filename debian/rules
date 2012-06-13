@@ -50,12 +50,9 @@ build-stamp: Makefile
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
 	[ ! -f Makefile ] || $(MAKE) distclean
 	dh_clean 
 	debconf-updatepo
-	# Clean up generated maintainer scripts
-	rm -f debian/xymon.postinst debian/xymon.postrm debian/xymon.preinst debian/xymon-client.postinst debian/xymon-client.postrm
 
 S=$(CURDIR)/debian/xymon
 C=$(CURDIR)/debian/xymon-client

@@ -1,0 +1,5 @@
+debian/xymon.postinst
+debian/xymon.postrm
+debian/xymon.preinst
+debian/xymon-client.postinst
+debian/xymon-client.postrm
