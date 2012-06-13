@@ -55,7 +55,7 @@ clean:
 	dh_clean 
 	debconf-updatepo
 	# Clean up generated maintainer scripts
-	rm -f debian/xymon.postinst debian/xymon.postrm debian/xymon.preinst
+	rm -f debian/xymon.postinst debian/xymon.postrm debian/xymon.preinst debian/xymon-client.postinst debian/xymon-client.postrm
 
 S=$(CURDIR)/debian/xymon
 C=$(CURDIR)/debian/xymon-client
@@ -122,7 +122,7 @@ endif
 %: %.tmpl debian/big_conffile_renaming.sed debian/big_conffile_renaming
 	sed -f debian/big_conffile_renaming.sed < $< > $@
 
-maintainer-scripts: debian/xymon.postinst debian/xymon.postrm debian/xymon.preinst
+maintainer-scripts: debian/xymon.postinst debian/xymon.postrm debian/xymon.preinst debian/xymon-client.postinst debian/xymon-client.postrm
 
 binary-indep:
 
