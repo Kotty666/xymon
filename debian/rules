@@ -142,10 +142,8 @@ binary binary-arch: build install-server install-client maintainer-scripts
 		done
 	rmdir $S/usr/share/man/man7
 	dh_installdebconf -a
-	# use the old file names for now
-	dh_installlogrotate --name=xymon-client -a
-	dh_installinit --name=xymon -p'xymon' -- defaults 98 02
-	dh_installinit --name=xymon-client -p'xymon-client' -- defaults 98 02
+	dh_installlogrotate -a
+	dh_installinit -a -- defaults 98 02
 	dh_installman -a
 	#cd $C/usr/share/man/man1 && mv bb.1 xymon.1
 	#cd $C/usr/share/man/man8 && ln -s ../man1/xymon.1 bb.8
