@@ -71,8 +71,7 @@ install-server: build install-clean
 	# Static content in /usr/share
 	cd $S/var/lib/xymon/www && \
 		mv gifs ../../../../usr/share/xymon && ln -s ../../../../usr/share/xymon/gifs . && \
-		mv help ../../../../usr/share/xymon && ln -s ../../../../usr/share/xymon/help . && \
-		rm -rf menu && ln -s ../../../../usr/share/xymon/menu .
+		mv help ../../../../usr/share/xymon && ln -s ../../../../usr/share/xymon/help .
 	# Create static gifs
 	cd $S/usr/share/xymon/gifs && mkdir static && \
 		for gif in *.gif ; do \

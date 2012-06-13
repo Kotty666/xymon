@@ -18,6 +18,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
       debian/copyright and installation of the menu from debian/rules)
     + hobbitd-rrdparameters
     + 530227-hobbitclient-bashism
+  * Also remove remaining files of the debian-specific menu.
   * Refreshed the following patches and partially added one-liner comments
     to make lintian happy:
     + htmlcontenttype
