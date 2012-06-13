@@ -25,7 +25,7 @@ case "$1" in
 	getent passwd hobbit > /dev/null || adduser --system \
 		--home /var/lib/hobbit --no-create-home \
 		--ingroup hobbit --disabled-password --disabled-login \
-		--gecos "Hobbit System Monitor" hobbit
+		--gecos "Xymon System Monitor" hobbit
 
 	test -d /var/run/hobbit || mkdir /var/run/hobbit
 	chown hobbit:hobbit /var/run/hobbit
