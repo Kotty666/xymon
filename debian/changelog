@@ -37,6 +37,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + 622069-sslv2-deprecation
   * Enabled hardening build flags
     + Bump dpkg-dev build dependency to >= 1.16.1~
+  * Update debconf po templates for Hobbit → Xymon rename
   * Move from /etc/hobbit/ to /etc/xymon/. Add NEWS entry.
     + Adapt paths, variable names, etc. in debian/* accordingly.
     + Make maintainer scripts template based so that the list of all
