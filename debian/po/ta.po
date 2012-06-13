@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hobbit\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2009-01-08 15:38+0100\n"
+"POT-Creation-Date: 2012-06-13 12:45+0200\n"
 "PO-Revision-Date: 2007-09-19 14:53+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: TAMIL <ubuntu-l10n-tam@lists.ubuntu.com>\n"
@@ -20,14 +20,20 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
-msgid "Hobbit server:"
+#, fuzzy
+#| msgid "Hobbit server:"
+msgid "Xymon server:"
 msgstr "ஹாபிட் சேவையகம்:"
 
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
+#, fuzzy
+#| msgid ""
+#| "Please enter the network address used to access the Hobbit server(s). If "
+#| "you use multiple servers, use a space-separated list of addresses."
 msgid ""
-"Please enter the network address used to access the Hobbit server(s). If you "
+"Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
 msgstr ""
 "தயவு செய்து ஹாபிட் சேவையக வலைப்பின்னல் முகவரியை உள்ளிடவும். நீங்கள் பல சேவையக கணினிகளை "
@@ -52,10 +58,15 @@ msgstr "சார்ந்தோன் புரவன் பெயர்:"
 #. Type: string
 #. Description
 #: ../xymon-client.templates:3001
+#, fuzzy
+#| msgid ""
+#| "Please enter the host name used by the Hobbit client when sending reports "
+#| "to the Hobbit server. This name must match the name used in the bb-hosts "
+#| "file on the Hobbit server."
 msgid ""
-"Please enter the host name used by the Hobbit client when sending reports to "
-"the Hobbit server. This name must match the name used in the bb-hosts file "
-"on the Hobbit server."
+"Please enter the host name used by the Xymon client when sending reports to "
+"the Xymon server. This name must match the name used in the hosts.cfg file "
+"on the Xymon server."
 msgstr ""
 "ஹாபிட் சார்ந்தோன் ஹாபிட் சேவையகத்துக்கு அறிக்கைகள் அனுப்பும் போது பயன்படும் புரவன் பெயரை "
 "தயவு செய்து உள்ளிடுக. இந்த  பெயர் ஹாபிட் சேவையகத்தில் உள்ள bb-hosts  கோப்பில் உள்ள "

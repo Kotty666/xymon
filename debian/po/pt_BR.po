@@ -1,15 +1,15 @@
-# hobbit Brazilian Portuguese translation
-# Copyright (C) 2007 THE hobbit'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the hobbit package.
+# xymon Brazilian Portuguese translation
+# Copyright (C) 2007 THE xymon'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the xymon package.
 # Felipe Augusto van de Wiel (faw) <faw@debian.org>, 2007.
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: hobbit (20071005)\n"
+"Project-Id-Version: xymon (20071005)\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2009-01-08 15:38+0100\n"
-"PO-Revision-Date: 2007-10-05 02:10-0300\n"
+"POT-Creation-Date: 2012-06-13 12:45+0200\n"
+"PO-Revision-Date: 2012-06-13 13:36+0200\n"
 "Last-Translator: Felipe Augusto van de Wiel (faw) <faw@debian.org>\n"
 "Language-Team: l10n portuguese <debian-l10n-portuguese@lists.debian.org>\n"
 "Language: \n"
@@ -21,18 +21,18 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
-msgid "Hobbit server:"
-msgstr "Servidor Hobbit:"
+msgid "Xymon server:"
+msgstr "Servidor Xymon:"
 
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
 msgid ""
-"Please enter the network address used to access the Hobbit server(s). If you "
+"Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
 msgstr ""
 "Por favor, informe o endereço de rede usado para acessar o(s) servidor(es) "
-"Hobbit. Se você usa múltiplos servidores, use uma lista de endereços "
+"Xymon. Se você usa múltiplos servidores, use uma lista de endereços "
 "separada por espaços."
 
 #. Type: string
@@ -55,10 +55,10 @@ msgstr "Nome da máquina cliente:"
 #. Description
 #: ../xymon-client.templates:3001
 msgid ""
-"Please enter the host name used by the Hobbit client when sending reports to "
-"the Hobbit server. This name must match the name used in the bb-hosts file "
-"on the Hobbit server."
+"Please enter the host name used by the Xymon client when sending reports to "
+"the Xymon server. This name must match the name used in the hosts.cfg file "
+"on the Xymon server."
 msgstr ""
-"Por favor, informe o nome da máquina cliente usado pelo cliente Hobbit "
-"quando envia relatórios para o servidor Hobbit. Este nome precisa bater com "
-"o nome usado no arquivo bb-hosts no servidor Hobbit."
+"Por favor, informe o nome da máquina cliente usado pelo cliente Xymon "
+"quando envia relatórios para o servidor Xymon. Este nome precisa bater com "
+"o nome usado no arquivo hosts.cfg no servidor Xymon."

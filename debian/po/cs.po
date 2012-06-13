@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xymon 4.3.0~beta2.dfsg-2\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2009-01-08 15:38+0100\n"
-"PO-Revision-Date: 2009-06-29 07:18+0200\n"
+"POT-Creation-Date: 2012-06-13 12:45+0200\n"
+"PO-Revision-Date: 2012-06-13 12:56+0200\n"
 "Last-Translator: Martin Sin <martin.sin@zshk.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "Language: cs\n"
@@ -19,17 +19,17 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
-msgid "Hobbit server:"
-msgstr "Server Hobbit:"
+msgid "Xymon server:"
+msgstr "Server Xymon:"
 
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
 msgid ""
-"Please enter the network address used to access the Hobbit server(s). If you "
+"Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
 msgstr ""
-"Zadejte prosím síťovou adresu serveru/serverů Hobbit. Pokud chcete použít "
+"Zadejte prosím síťovou adresu serveru/serverů Xymon. Pokud chcete použít "
 "více serverů, oddělte je pomocí mezery."
 
 #. Type: string
@@ -52,10 +52,10 @@ msgstr "Jméno klienta:"
 #. Description
 #: ../xymon-client.templates:3001
 msgid ""
-"Please enter the host name used by the Hobbit client when sending reports to "
-"the Hobbit server. This name must match the name used in the bb-hosts file "
-"on the Hobbit server."
+"Please enter the host name used by the Xymon client when sending reports to "
+"the Xymon server. This name must match the name used in the hosts.cfg file "
+"on the Xymon server."
 msgstr ""
-"Zadejte prosím jméno klienta Hobbit, které bude použito při zasílání zpráv "
-"na server Hobbit. Jméno musí odpovídat tomu, které je použito v souboru bb-"
-"hosts na serveru Hobbit."
+"Zadejte prosím jméno klienta Xymon, které bude použito při zasílání zpráv "
+"na server Xymon. Jméno musí odpovídat tomu, které je použito v souboru "
+"hosts.cfg na serveru Xymon."

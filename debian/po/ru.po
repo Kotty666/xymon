@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2.0.dfsg-4\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2009-01-08 15:38+0100\n"
-"PO-Revision-Date: 2007-09-24 20:46+0400\n"
+"POT-Creation-Date: 2012-06-13 12:45+0200\n"
+"PO-Revision-Date: 2012-06-13 13:40+0200\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "Language: ru\n"
@@ -22,18 +22,18 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
-msgid "Hobbit server:"
-msgstr "Сервер Hobbit:"
+msgid "Xymon server:"
+msgstr "Сервер Xymon:"
 
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
 msgid ""
-"Please enter the network address used to access the Hobbit server(s). If you "
+"Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
 msgstr ""
 "Введите сетевой адрес, который нужно использовать для доступа к серверу(ам) "
-"Hobbit. Если у вас используются несколько серверов, укажите все адреса через "
+"Xymon. Если у вас используются несколько серверов, укажите все адреса через "
 "пробел."
 
 #. Type: string
@@ -56,10 +56,10 @@ msgstr "Имя клиента:"
 #. Description
 #: ../xymon-client.templates:3001
 msgid ""
-"Please enter the host name used by the Hobbit client when sending reports to "
-"the Hobbit server. This name must match the name used in the bb-hosts file "
-"on the Hobbit server."
+"Please enter the host name used by the Xymon client when sending reports to "
+"the Xymon server. This name must match the name used in the hosts.cfg file "
+"on the Xymon server."
 msgstr ""
-"Введите имя клиентской машины, которое будет использовано клиентом Hobbit "
-"при отправке отчётов на сервер Hobbit. Это имя должно совпадать с именем в "
-"файле bb-hosts на сервере Hobbit."
+"Введите имя клиентской машины, которое будет использовано клиентом Xymon "
+"при отправке отчётов на сервер Xymon. Это имя должно совпадать с именем в "
+"файле hosts.cfg на сервере Xymon."

@@ -1,13 +1,13 @@
-# Vietnamese translation for Hobbit.
+# Vietnamese translation for Xymon.
 # Copyright © 2007 Free Software Foundation, Inc.
 # Clytie Siddall <clytie@riverland.net.au>, 2007
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: hobbit\n"
+"Project-Id-Version: xymon\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2009-01-08 15:38+0100\n"
-"PO-Revision-Date: 2007-09-19 18:20+0930\n"
+"POT-Creation-Date: 2012-06-13 12:45+0200\n"
+"PO-Revision-Date: 2012-06-13 13:44+0200\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -20,17 +20,17 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
-msgid "Hobbit server:"
-msgstr "Máy phục vụ Hobbit:"
+msgid "Xymon server:"
+msgstr "Máy phục vụ Xymon:"
 
 #. Type: string
 #. Description
 #: ../xymon-client.templates:2001
 msgid ""
-"Please enter the network address used to access the Hobbit server(s). If you "
+"Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
 msgstr ""
-"Hãy gõ địa chỉ mạng được dùng để truy cập (các) máy phục vụ Hobbit. Định "
+"Hãy gõ địa chỉ mạng được dùng để truy cập (các) máy phục vụ Xymon. Định "
 "giới nhiều máy phục vụ bằng dấu cách."
 
 #. Type: string
@@ -53,10 +53,10 @@ msgstr "Tên máy khách:"
 #. Description
 #: ../xymon-client.templates:3001
 msgid ""
-"Please enter the host name used by the Hobbit client when sending reports to "
-"the Hobbit server. This name must match the name used in the bb-hosts file "
-"on the Hobbit server."
+"Please enter the host name used by the Xymon client when sending reports to "
+"the Xymon server. This name must match the name used in the hosts.cfg file "
+"on the Xymon server."
 msgstr ""
-"Hãy gõ tên máy được ứng dụng khách Hobbit dùng khi gửi thông báo cho máy "
-"phục vụ Hobbit. Tên này phải tương ứng với tên nằm trong tập tin « bb-hosts "
-"» trên máy phục vụ Hobbit."
+"Hãy gõ tên máy được ứng dụng khách Xymon dùng khi gửi thông báo cho máy "
+"phục vụ Xymon. Tên này phải tương ứng với tên nằm trong tập tin « hosts.cfg "
+"» trên máy phục vụ Xymon."
