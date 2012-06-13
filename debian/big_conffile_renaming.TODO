@@ -15,7 +15,6 @@ Not yet shown up in /etc/xymon and friends:
 
 Seem to be new (or must not be included but are):
 
-****/etc/xymon/critical.cfg.bak****
 /etc/xymon/holidays.cfg
 /etc/xymon/rrddefinitions.cfg
 /etc/xymon/snmpmibs.cfg
