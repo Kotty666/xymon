@@ -18,6 +18,3 @@ bbcombotest-fix
 fix-configure-for-multiarch
 png-multiarch
 hardening-buildflags
-
-# state unknown
-raise-demotool-http-delay
