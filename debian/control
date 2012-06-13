@@ -16,6 +16,7 @@ Architecture: any
 Breaks: hobbit (<< 4.2.2)
 Provides: hobbit
 Replaces: hobbit (<< 4.2.2)
+Pre-Depends: dpkg (>= 1.15.7.2~)
 Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
 Recommends: apache2 | httpd-cgi
 Suggests: rrdtool

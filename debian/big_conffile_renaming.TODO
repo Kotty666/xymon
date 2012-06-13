@@ -1,0 +1,15 @@
+Not yet shown up in /etc/xymon and friends:
+
+****/etc/hobbit/web/notify_footer****
+****/etc/init.d/hobbit****
+
+Seem to be new (or must not be included but are):
+
+****/etc/xymon/critical.cfg.bak****
+/etc/xymon/holidays.cfg
+/etc/xymon/rrddefinitions.cfg
+/etc/xymon/snmpmibs.cfg
+/etc/xymon/web/critmulti_header
+/etc/xymon/web/divider_footer
+/etc/xymon/web/divider_header
+****/etc/hobbit/web/menu.cfg****

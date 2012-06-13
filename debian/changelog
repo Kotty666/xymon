@@ -38,6 +38,12 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + Bump dpkg-dev build dependency to >= 1.16.1~
   * Adapt paths, variable names, etc. which changed upstream in debian/*
     accordingly.
+  * Make maintainer scripts template based so that the list of all
+    conffile necessary to rename can be maintained in one single file
+    (debian/big_conffile_renaming)
+    + Add pre-dependency on dpkg (>= 1.15.7.2~)
+  * Take care that no *.bak files end up in the binary packages and *.bak
+    files which came with previous versions of this package are removed.
   * Add new patch fix-configure-for-multiarch (Closes: #639080)
   * Bump Standards-Version to 3.9.3 (no changes)
   * Mention OpenSSL linkage exception from upstream's README file in
@@ -50,8 +56,6 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + copyright-refers-to-symlink-license
     + conflicts-with-version
     + unused-override possibly-insecure-handling-of-tmp-files-in-maintainer-script
-  * Take care that no *.bak files end up in the binary packages and *.bak
-    files which came with previous versions of this package are removed.
 
  -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 23:46:09 +0200
 

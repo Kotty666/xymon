@@ -1,0 +1,92 @@
+# Begin of big_conffile_renaming (included in maintainer scripts via sed) -*- sh -*-
+
+# Fix accidentially included .bak file in older xymon packages
+dpkg-maintscript-helper rm_conffile /etc/xymon/critical.cfg.bak 4.3.7-1~~ -- "$@"
+
+# 1:1 renamings from hobbit to xymon
+for ocf in \
+    /etc/apache2/conf.d/hobbit \
+    /etc/hobbit/client-local.cfg \
+    /etc/hobbit/columndoc.csv \
+    /etc/hobbit/hobbitserver.cfg \
+    /etc/hobbit/web/acknowledge_header \
+    /etc/hobbit/web/acknowledge_form \
+    /etc/hobbit/web/columndoc_header \
+    /etc/hobbit/web/confreport_back \
+    /etc/hobbit/web/confreport_footer \
+    /etc/hobbit/web/confreport_front \
+    /etc/hobbit/web/confreport_header \
+    /etc/hobbit/web/event_form \
+    /etc/hobbit/web/event_header \
+    /etc/hobbit/web/findhost_form \
+    /etc/hobbit/web/findhost_header \
+    /etc/hobbit/web/ghosts_header \
+    /etc/hobbit/web/graphs_header \
+    /etc/hobbit/web/hist_header \
+    /etc/hobbit/web/histlog_header \
+    /etc/hobbit/web/hostgraphs_form \
+    /etc/hobbit/web/hostgraphs_header \
+    /etc/hobbit/web/hostlist_form \
+    /etc/hobbit/web/hostlist_header \
+    /etc/hobbit/web/hostsvc_header \
+    /etc/hobbit/web/info_header \
+    /etc/hobbit/web/maint_form \
+    /etc/hobbit/web/maint_header \
+    /etc/hobbit/web/maintact_header \
+    /etc/hobbit/web/notify_form \
+    /etc/hobbit/web/notify_header \
+    /etc/hobbit/web/perfdata_form \
+    /etc/hobbit/web/perfdata_header \
+    /etc/hobbit/web/replog_header \
+    /etc/hobbit/web/report_form \
+    /etc/hobbit/web/report_form_daily \
+    /etc/hobbit/web/report_form_monthly \
+    /etc/hobbit/web/report_form_weekly \
+    /etc/hobbit/web/report_header \
+    /etc/hobbit/web/snapshot_form \
+    /etc/hobbit/web/snapshot_header \
+    /etc/hobbit/web/topchanges_form \
+    /etc/hobbit/web/topchanges_header \
+    /etc/hobbit/web/trends_form \
+    /etc/hobbit/web/useradm_form \
+    /etc/hobbit/web/useradm_header \
+    /etc/hobbit/web/zoom.js \
+; do
+    dpkg-maintscript-helper mv_conffile \
+	${ocf} "`echo ${ocf} | sed -e s/hobbit/xymon/g`" \
+	4.3.7-1~~ -- "$@"
+done
+
+# Renamings where the old config file is rather BB or early Hobbit
+# based and the new one fits the new Xymon config scheme (nk -> crit,
+# 2 -> nongreen, bb -> std, etc.)
+echo \
+"/etc/hobbit/hobbit-alerts.cfg	/etc/xymon/alerts.cfg
+/etc/hobbit/hobbit-nkview.cfg	/etc/xymon/critical.cfg
+/etc/hobbit/hobbitcgi.cfg	/etc/xymon/cgioptions.cfg
+/etc/hobbit/hobbitgraph.cfg	/etc/xymon/graphs.cfg
+/etc/hobbit/bbcombotest.cfg	/etc/xymon/combo.cfg
+/etc/hobbit/web/hobbitnk_footer	/etc/xymon/web/critical_footer
+/etc/hobbit/web/hobbitnk_header	/etc/xymon/web/critical_header
+/etc/hobbit/web/menu.cfg	/etc/xymon/xymonmenu.cfg
+/etc/hobbit/hobbitlaunch.cfg	/etc/xymon/tasks.cfg
+/etc/hobbit/bb-services		/etc/xymon/protocols.cfg
+/etc/hobbit/hobbit-clients.cfg	/etc/xymon/analysis.cfg
+/etc/hobbit/web/bb_footer	/etc/xymon/web/stdnormal_footer
+/etc/hobbit/web/bb_header	/etc/xymon/web/stdnormal_header
+/etc/hobbit/web/bb2_header	/etc/xymon/web/stdnongreen_header
+/etc/hobbit/web/bbnk_header	/etc/xymon/web/stdcritical_header
+/etc/hobbit/web/bbsnap_header	/etc/xymon/web/snapnormal_header
+/etc/hobbit/web/bbsnap2_header	/etc/xymon/web/snapnongreen_header
+/etc/hobbit/web/bbsnapnk_header	/etc/xymon/web/snapcritical_header
+/etc/hobbit/web/bbrep_header	/etc/xymon/web/repnormal_header
+/etc/hobbit/web/nkack_form	/etc/xymon/web/critack_form
+/etc/hobbit/web/nkedit_form	/etc/xymon/web/critedit_form
+/etc/hobbit/web/nkedit_header	/etc/xymon/web/critedit_header
+" | while read ocf ncf ; do
+    dpkg-maintscript-helper mv_conffile \
+	${ocf} ${ncf} \
+	4.3.7-1~~ -- "$@"
+done
+
+# End of big_conffile_renaming (included in maintainer scripts via sed)

@@ -83,8 +83,7 @@ EOF
     ;;
 esac
 
-# Fix accidentially included .bak file in older xymon packages
-dpkg-maintscript-helper rm_conffile /etc/xymon/critical.cfg.bak 4.3.0~beta2.dfsg-9.1 xymon -- "$@"
+#BIG_CONFFILE_RENAMING#
 
 #DEBHELPER#
 
