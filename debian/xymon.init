@@ -6,7 +6,7 @@
 # all of the other Hobbit server programs.
 
 ### BEGIN INIT INFO
-# Provides:          hobbit
+# Provides:          xymon hobbit
 # Required-Start:    $remote_fs $network
 # Should-Start:      $all
 # Required-Stop:     $remote_fs

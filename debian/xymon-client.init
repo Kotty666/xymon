@@ -4,7 +4,7 @@
 #                 the hobbit client.
 
 ### BEGIN INIT INFO
-# Provides:          hobbit-client
+# Provides:          xymon-client hobbit-client
 # Required-Start:    $remote_fs $network
 # Should-Start:      $all
 # Required-Stop:     $remote_fs
