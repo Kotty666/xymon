@@ -127,7 +127,7 @@ binary binary-arch: build install-server install-client maintainer-scripts
 	#################### Building .deb files ########################
 	dh_testdir -a
 	dh_testroot -a
-	dh_installchangelogs -a Changes
+	dh_installchangelogs -a
 	dh_installdocs -a
 	dh_installexamples -a
 	# ignore missing dh_lintian for older dh versions
