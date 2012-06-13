@@ -1,3 +1,9 @@
+hobbit (4.3.7-1) unstable; urgency=low
+
+  This release moves Xymon's configuration from /etc/hobbit/ to /etc/xymon/.
+
+ -- Axel Beckert <abe@debian.org>  Wed, 13 Jun 2012 03:28:10 +0200
+
 hobbit (4.2.0.dfsg-9) unstable; urgency=low
 
   This release adds Charles Goyard's splitncv patch. See hobbitd_rrd(8) and

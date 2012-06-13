@@ -36,11 +36,11 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + 622069-sslv2-deprecation
   * Enabled hardening build flags
     + Bump dpkg-dev build dependency to >= 1.16.1~
-  * Adapt paths, variable names, etc. which changed upstream in debian/*
-    accordingly.
-  * Make maintainer scripts template based so that the list of all
-    conffile necessary to rename can be maintained in one single file
-    (debian/big_conffile_renaming)
+  * Move from /etc/hobbit/ to /etc/xymon/. Add NEWS entry.
+    + Adapt paths, variable names, etc. in debian/* accordingly.
+    + Make maintainer scripts template based so that the list of all
+      conffile necessary to rename can be maintained in one single file
+      (debian/big_conffile_renaming)
     + Add pre-dependency on dpkg (>= 1.15.7.2~)
   * Take care that no *.bak files end up in the binary packages and *.bak
     files which came with previous versions of this package are removed.
