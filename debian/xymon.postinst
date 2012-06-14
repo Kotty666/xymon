@@ -71,9 +71,6 @@ EOF
 	test -e /etc/xymon/xymonpasswd   || touch /etc/xymon/xymonpasswd
 	test -e /etc/hobbit/hobbitgroups || mv -v  /etc/hobbit/hobbitgroups /etc/xymon/xymongroups
 	test -e /etc/xymon/xymongroups   || touch /etc/xymon/xymongroups
-	if test -e /etc/init.d/apache2 ; then
-	    invoke-rc.d apache2 reload || :
-	fi
 
 	if [ "$2" ] && dpkg --compare-versions "$2" lt 4.3.0~beta2.dfsg-8~ ; then
 		if [ -x /usr/bin/rrdtool ] ; then
@@ -95,5 +92,13 @@ EOF
 esac
 
 #DEBHELPER#
+
+case "$1" in
+    configure)
+	if test -e /etc/init.d/apache2 ; then
+	    invoke-rc.d apache2 reload || :
+	fi
+    ;;
+esac
 
 exit 0
