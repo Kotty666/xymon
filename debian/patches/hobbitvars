@@ -25,7 +25,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  FQDN="TRUE"			# Use fully-qualified hostnames internally. Keep it TRUE unless you know better.
  XYMONLOGSTATUS="DYNAMIC"	# Are HTML status logs statically or dynamically generated?
  				# Use DYNAMIC with Xymon, unless you run xymond_filestore --status --html
-@@ -61,9 +60,10 @@
+@@ -61,9 +60,9 @@
  XYMONWEBHOSTURL="$XYMONWEBHOST$XYMONSERVERWWWURL"	# Prefix for all static Xymon pages - http://www.foo.com/xymon
  XYMONWEBHTMLLOGS="$XYMONWEBHOSTURL/html"	# Prefix for the Xymon HTML logs (only if XYMONLOGSTATUS=STATIC)
  XYMONWEB="$XYMONSERVERWWWURL"			# Xymon URL prefix without the host part
@@ -33,7 +33,6 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 +XYMONSKIN="$XYMONSERVERWWWURL/gifs/static"	# Xymon URL prefix for the GIF files
  XYMONHELPSKIN="$XYMONSERVERWWWURL/help"         # Xymon URL prefix for the online help files.
  XYMONNOTESSKIN="$XYMONSERVERWWWURL/notes"       # Xymon URL prefix for the online notes-files.
-+include /etc/xymon/web/menu.cfg
  XYMONMENUSKIN="$XYMONSERVERWWWURL/menu"         # Xymon URL prefix for the webpage menu files.
  XYMONREPURL="$XYMONSERVERWWWURL/rep"		# Xymon URL prefix for the Xymon availability reports
  XYMONSNAPURL="$XYMONSERVERWWWURL/snap"		# Xymon URL prefix for the Xymon snapshots
