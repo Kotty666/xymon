@@ -1,54 +1,54 @@
-# common init functions for hobbit and hobbit-client
+# common init functions for xymon and xymon-client
 
 create_includefiles ()
 {
-	if [ "$HOBBITSERVERS" = "" ]; then
-		echo "Please configure HOBBITSERVERS in /etc/default/hobbit-client"
+	if [ "$XYMONSERVERS" = "" ]; then
+		echo "Please configure XYMONSERVERS in /etc/default/xymon-client"
 		exit 0
 	fi
 
 	umask 022
 
-	if ! [ -d /var/run/hobbit ] ; then
-		mkdir /var/run/hobbit
-		chown hobbit:hobbit /var/run/hobbit
+	if ! [ -d /var/run/xymon ] ; then
+		mkdir /var/run/xymon
+		chown xymon:xymon /var/run/xymon
 	fi
 
-	set -- $HOBBITSERVERS
+	set -- $XYMONSERVERS
 	if [ $# -eq 1 ]; then
-		echo "BBDISP=\"$HOBBITSERVERS\""
+		echo "BBDISP=\"$XYMONSERVERS\""
 		echo "BBDISPLAYS=\"\""
 	else
 		echo "BBDISP=\"0.0.0.0\""
-		echo "BBDISPLAYS=\"$HOBBITSERVERS\""
-	fi > /var/run/hobbit/bbdisp-runtime.cfg
+		echo "BBDISPLAYS=\"$XYMONSERVERS\""
+	fi > /var/run/xymon/bbdisp-runtime.cfg
 
-	for cfg in /etc/hobbit/clientlaunch.d/*.cfg ; do
+	for cfg in /etc/xymon/clientlaunch.d/*.cfg ; do
 		test -e $cfg && echo "include $cfg"
-	done > /var/run/hobbit/clientlaunch-include.cfg
+	done > /var/run/xymon/clientlaunch-include.cfg
 
-	if test -d /etc/hobbit/hobbitlaunch.d ; then
-		for cfg in /etc/hobbit/hobbitlaunch.d/*.cfg ; do
+	if test -d /etc/xymon/xymonlaunch.d ; then
+		for cfg in /etc/xymon/xymonlaunch.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
-		done > /var/run/hobbit/hobbitlaunch-include.cfg
+		done > /var/run/xymon/xymonlaunch-include.cfg
 	fi
 
-	if test -d /etc/hobbit/hobbitgraph.d ; then
-		for cfg in /etc/hobbit/hobbitgraph.d/*.cfg ; do
+	if test -d /etc/xymon/xymongraph.d ; then
+		for cfg in /etc/xymon/xymongraph.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
-		done > /var/run/hobbit/hobbitgraph-include.cfg
+		done > /var/run/xymon/xymongraph-include.cfg
 	fi
 
-	if test -d /etc/hobbit/hobbitserver.d ; then
-		for cfg in /etc/hobbit/hobbitserver.d/*.cfg ; do
+	if test -d /etc/xymon/xymonserver.d ; then
+		for cfg in /etc/xymon/xymonserver.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
-		done > /var/run/hobbit/hobbitserver-include.cfg
+		done > /var/run/xymon/xymonserver-include.cfg
 	fi
 
-	if test -d /etc/hobbit/hobbitclient.d ; then
-		for cfg in /etc/hobbit/hobbitclient.d/*.cfg ; do
+	if test -d /etc/xymon/xymonclient.d ; then
+		for cfg in /etc/xymon/xymonclient.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
-		done > /var/run/hobbit/hobbitclient-include.cfg
+		done > /var/run/xymon/xymonclient-include.cfg
 	fi
 
 	return 0
