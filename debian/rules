@@ -77,7 +77,7 @@ install-server: build install-clean
 		for gif in *.gif ; do \
 			convert "$$gif[0]" xpm:- | convert xpm:- static/$$gif || exit 1 ; \
 		done && \
-		cd static && ln -s ../*.ico .
+		cd static && ln -s ../*.ico ../*.css .
 	# We depend on the -client package
 	rm -rf $S/usr/lib/xymon/client
 	# This needs root
