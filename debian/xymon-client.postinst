@@ -24,8 +24,9 @@ case "$1" in
 	# Create or migrate group
 	getent group xymon > /dev/null || addgroup --system xymon
 	if getent group hobbit > /dev/null; then
-	    find /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon \
-		-group hobbit -exec chgrp -c xymon '{}' +;
+	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
+		find $d -group hobbit -exec chgrp -c xymon '{}' +;
+	    done
 	fi
 
 	# Create or migrate user
@@ -34,8 +35,9 @@ case "$1" in
 		--ingroup xymon --disabled-password --disabled-login \
 		--gecos "Xymon System Monitor" xymon
 	if getent passwd hobbit > /dev/null; then
-	    find /etc/hobbit /etc/xymon /var/lib/hobbit /var/lib/xymon \
-		-user hobbit -exec chown -c xymon '{}' +;
+	    for d in  /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
+		find $d -user hobbit -exec chown -c xymon '{}' +;
+	    done
 	fi
 
 	# Create or migrate directories
