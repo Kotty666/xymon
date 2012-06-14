@@ -5,6 +5,10 @@ set -e
 
 case "$1" in
     upgrade)
+	# Stop any previously running old server or client before
+	# migrating directories
+	invoke-rc.d --quiet hobbit-client stop || true
+	invoke-rc.d --quiet hobbit stop || true
 	test -d /var/lib/hobbit || mv -v /var/lib/hobbit /var/lib/xymon
 	test -d /var/lib/xymon || mkdir /var/lib/xymon
 	;;
