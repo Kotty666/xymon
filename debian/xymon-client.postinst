@@ -21,14 +21,8 @@ set -e
 
 case "$1" in
     configure)
-	# Create or migrate group
+	# Create new group
 	getent group xymon > /dev/null || addgroup --system xymon
-	if getent group hobbit > /dev/null; then
-	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
-		find $d -group hobbit -exec chgrp -c xymon '{}' +;
-	    done
-	    delgroup hobbit
-	fi
 
 	# Create or migrate user
 	getent passwd xymon > /dev/null || adduser --system \
@@ -40,6 +34,14 @@ case "$1" in
 		find $d -user hobbit -exec chown -c xymon '{}' +;
 	    done
 	    deluser hobbit
+	fi
+
+	# Migrate old group
+	if getent group hobbit > /dev/null; then
+	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
+		find $d -group hobbit -exec chgrp -c xymon '{}' +;
+	    done
+	    delgroup hobbit
 	fi
 
 	# Create or migrate directories
