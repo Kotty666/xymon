@@ -16,7 +16,7 @@ Architecture: any
 Breaks: hobbit (<< 4.2.2)
 Provides: hobbit
 Replaces: hobbit (<< 4.2.2)
-Pre-Depends: dpkg (>= 1.15.7.2~)
+Pre-Depends: ${misc:Pre-Depends}
 Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
 Recommends: apache2 | httpd-cgi
 Suggests: rrdtool
@@ -38,6 +38,7 @@ Architecture: any
 Breaks: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2)
 Provides: hobbit-client
 Replaces: hobbit-client (<< 4.2.2)
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base
 Suggests: xymon-plugins | hobbit-plugins
 Description: client for the Xymon network monitor

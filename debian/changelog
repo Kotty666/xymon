@@ -40,10 +40,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Update debconf po templates for Hobbit → Xymon rename
   * Move from /etc/hobbit/ to /etc/xymon/. Add NEWS entry.
     + Adapt paths, variable names, etc. in debian/* accordingly.
-    + Make maintainer scripts template based so that the list of all
-      conffile necessary to rename can be maintained in one single file
-      (debian/big_conffile_renaming)
-    + Add pre-dependency on dpkg (>= 1.15.7.2~)
+    + Add pre-dependency on ${misc:Pre-Depends} for *.maintscript
   * Let dh_clean do all the clean up, no more calling rm in clean target
   * Add new patch fix-configure-for-multiarch (Closes: #639080)
   * Bump Standards-Version to 3.9.3 (no changes)
@@ -60,7 +57,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
       possibly-insecure-handling-of-tmp-files-in-maintainer-script
     + duplicate-changelog-files
 
- -- Axel Beckert <abe@debian.org>  Tue, 12 Jun 2012 23:46:09 +0200
+ -- Axel Beckert <abe@debian.org>  Thu, 14 Jun 2012 19:24:28 +0200
 
 xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
 

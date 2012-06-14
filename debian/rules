@@ -113,14 +113,9 @@ else
 	# no kfreebsd support
 endif
 
-%: %.tmpl debian/big_conffile_renaming.sed debian/big_conffile_renaming
-	sed -f debian/big_conffile_renaming.sed < $< > $@
-
-maintainer-scripts: debian/xymon.postinst debian/xymon.postrm debian/xymon.preinst debian/xymon-client.postinst debian/xymon-client.postrm
-
 binary-indep:
 
-binary binary-arch: build install-server install-client maintainer-scripts
+binary binary-arch: build install-server install-client
 	#################### Building .deb files ########################
 	dh_testdir -a
 	dh_testroot -a
