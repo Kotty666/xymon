@@ -43,6 +43,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + Add pre-dependency on ${misc:Pre-Depends} for *.maintscript
     + Install upstream's migration tools to /usr/lib/xymon/server/libexec/
       and upstream's migration documentation to /usr/share/doc/xymon/
+    + Stop old Hobbit daemons earlier, reload Apache later
   * Let dh_clean do all the clean up, no more calling rm in clean target
   * Add new patch fix-configure-for-multiarch (Closes: #639080)
   * Bump Standards-Version to 3.9.3 (no changes)
@@ -59,7 +60,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
       possibly-insecure-handling-of-tmp-files-in-maintainer-script
     + duplicate-changelog-files
 
- -- Axel Beckert <abe@debian.org>  Thu, 14 Jun 2012 19:24:28 +0200
+ -- Axel Beckert <abe@debian.org>  Thu, 14 Jun 2012 23:49:33 +0200
 
 xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
 
