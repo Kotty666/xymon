@@ -6,7 +6,8 @@ set -e
 case "$1" in
     install|upgrade)
 	# stop the client when the server is installed
-	invoke-rc.d hobbit-client stop || true
+	invoke-rc.d --quiet hobbit-client stop || true
+	invoke-rc.d xymon-client stop || true
 	if test "$2" && dpkg --compare-versions "$2" lt 4.2.0.dfsg-2 &&
 			test -d /var/lib/hobbit/www ; then
 		if test -e /etc/logrotate.d/hobbit && ! test -e /etc/logrotate.d/hobbit.dpkg-old ; then

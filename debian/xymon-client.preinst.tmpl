@@ -1,0 +1,17 @@
+#! /bin/sh
+# preinst script for xymon
+
+set -e
+
+case "$1" in
+    upgrade)
+	test -d /var/lib/hobbit || mv -v /var/lib/hobbit /var/lib/xymon
+	test -d /var/lib/xymon || mkdir /var/lib/xymon
+	;;
+esac
+
+#BIG_CONFFILE_RENAMING#
+
+#DEBHELPER#
+
+exit 0
