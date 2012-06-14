@@ -23,11 +23,11 @@ case "$1" in
 	# And for the Apache-run CGI's to generate reports.
 
 	# Create or migrate directories
-	test -d /var/run/hobbit || mv -v /var/run/hobbit /var/run/xymon
+	test -d /var/run/hobbit -a ! -d /var/run/xymon && mv -v /var/run/hobbit /var/run/xymon || true
 	test -d /var/run/xymon || mkdir /var/run/xymon
 	chown xymon:xymon /var/run/xymon
 
-	test -d /var/log/hobbit || mv -v /var/log/hobbit /var/log/xymon
+	test -d /var/log/hobbit -a ! -d /var/log/xymon && mv -v /var/log/hobbit /var/log/xymon || true
 	test -d /var/log/xymon || mkdir /var/log/xymon
 	chown xymon:adm /var/log/xymon ; chmod 2755 /var/log/xymon
 
@@ -67,9 +67,9 @@ case "$1" in
 EOF
 	fi
 
-	test -e /etc/hobbit/hobbitpasswd || mv -v /etc/hobbit/hobbitpasswd /etc/xymon/xymonpasswd
+	test -e /etc/hobbit/hobbitpasswd -a ! -e /etc/xymon/xymonpasswd && mv -v /etc/hobbit/hobbitpasswd /etc/xymon/xymonpasswd || true
 	test -e /etc/xymon/xymonpasswd   || touch /etc/xymon/xymonpasswd
-	test -e /etc/hobbit/hobbitgroups || mv -v  /etc/hobbit/hobbitgroups /etc/xymon/xymongroups
+	test -e /etc/hobbit/hobbitgroups -a ! -e /etc/xymon/xymongroups && mv -v  /etc/hobbit/hobbitgroups /etc/xymon/xymongroups || true
 	test -e /etc/xymon/xymongroups   || touch /etc/xymon/xymongroups
 
 	if [ "$2" ] && dpkg --compare-versions "$2" lt 4.3.0~beta2.dfsg-8~ ; then

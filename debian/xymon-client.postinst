@@ -39,14 +39,14 @@ case "$1" in
 	fi
 
 	# Create or migrate directories
-	test -d /var/run/hobbit || mv -v /var/run/hobbit /var/run/xymon
+	test -d /var/run/hobbit -a ! -d /var/run/xymon && mv -v /var/run/hobbit /var/run/xymon || true
 	test -d /var/run/xymon || mkdir /var/run/xymon
 	chown xymon:xymon /var/run/xymon
 
 	test -d /var/lib/xymon/tmp || mkdir /var/lib/xymon/tmp
 	chown xymon:xymon /var/lib/xymon/tmp
 
-	test -d /var/log/hobbit || mv -v /var/log/hobbit /var/log/xymon
+	test -d /var/log/hobbit -a ! -d /var/log/xymon && mv -v /var/log/hobbit /var/log/xymon || true
 	test -d /var/log/xymon || mkdir /var/log/xymon
 	chown xymon:adm /var/log/xymon ; chmod 2755 /var/log/xymon
 

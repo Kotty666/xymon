@@ -9,7 +9,7 @@ case "$1" in
 	# migrating directories
 	invoke-rc.d --quiet hobbit-client stop || true
 	invoke-rc.d --quiet hobbit stop || true
-	test -d /var/lib/hobbit || mv -v /var/lib/hobbit /var/lib/xymon
+	test -d /var/lib/hobbit -a ! -d /var/lib/xymon && mv -v /var/lib/hobbit /var/lib/xymon || true
 	test -d /var/lib/xymon || mkdir /var/lib/xymon
 	;;
 esac
