@@ -3,9 +3,6 @@
 # xymon Server
 if [ "$DPKG_MAINTSCRIPT_PACKAGE" = "xymon" ]; then
 
-    # Fix accidentially included .bak file in older xymon packages
-    dpkg-maintscript-helper rm_conffile /etc/hobbit/hobbit-nkview.cfg.bak 4.3.7-1~~ -- "$@"
-
     # 1:1 renamings from hobbit to xymon
     for ocf in \
 	/etc/apache2/conf.d/hobbit \

@@ -44,8 +44,6 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
       conffile necessary to rename can be maintained in one single file
       (debian/big_conffile_renaming)
     + Add pre-dependency on dpkg (>= 1.15.7.2~)
-  * Take care that no *.bak files end up in the binary packages and *.bak
-    files which came with previous versions of this package are removed.
   * Let dh_clean do all the clean up, no more calling rm in clean target
   * Add new patch fix-configure-for-multiarch (Closes: #639080)
   * Bump Standards-Version to 3.9.3 (no changes)
