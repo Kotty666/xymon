@@ -3,3 +3,4 @@ etc/xymon/tasks.d
 etc/xymon/xymongraph.d
 etc/xymon/xymonserver.d
 usr/share/xymon
+usr/lib/xymon/server/libexec
