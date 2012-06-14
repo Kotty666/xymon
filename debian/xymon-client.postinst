@@ -27,6 +27,7 @@ case "$1" in
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -group hobbit -exec chgrp -c xymon '{}' +;
 	    done
+	    delgroup hobbit
 	fi
 
 	# Create or migrate user
@@ -38,6 +39,7 @@ case "$1" in
 	    for d in  /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -user hobbit -exec chown -c xymon '{}' +;
 	    done
+	    deluser hobbit
 	fi
 
 	# Create or migrate directories
