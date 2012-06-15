@@ -18,3 +18,4 @@ bbcombotest-fix
 fix-configure-for-multiarch
 png-multiarch
 hardening-buildflags
+fix-spelling-errors
