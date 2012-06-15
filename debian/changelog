@@ -61,6 +61,8 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + unused-override
       possibly-insecure-handling-of-tmp-files-in-maintainer-script
     + duplicate-changelog-files
+    + executable-not-elf-or-script (fix permissions in
+      /var/lib/xymon/www/menu/)
 
  -- Axel Beckert <abe@debian.org>  Fri, 15 Jun 2012 00:18:44 +0200
 
