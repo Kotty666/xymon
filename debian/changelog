@@ -66,6 +66,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Add patches to fix the following lintian warnings:
     + spelling-error-in-binary
     + spelling-error-in-manpage (one overriden)
+    + hyphen-used-as-minus-sign
 
  -- Axel Beckert <abe@debian.org>  Fri, 15 Jun 2012 00:18:44 +0200
 
