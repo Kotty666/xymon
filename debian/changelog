@@ -44,6 +44,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
       and upstream's migration documentation to /usr/share/doc/xymon/
     + Stop old Hobbit daemons earlier, reload Apache later
     + Delete user+group hobbit after chowning+chgrping files to xymon
+    + Bump debhelper build dependency to >= 8.1.0~
   * Enabled hardening build flags
     + Bump dpkg-dev build dependency to >= 1.16.1~
   * Update debconf po templates for Hobbit → Xymon rename
