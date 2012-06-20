@@ -79,6 +79,9 @@ case "$1" in
 	else
 		echo "CLIENTHOSTNAME=\"$CLIENTHOSTNAME\"" >> $CONFIGFILE
 	fi
+
+	# Remove empty directories in /etc/hobbit and possibly /etc/hobbit itself.
+	rmdir --ignore-fail-on-non-empty -pv /etc/hobbit/*/ || true
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

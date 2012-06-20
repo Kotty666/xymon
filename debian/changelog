@@ -45,6 +45,8 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + Stop old Hobbit daemons earlier, reload Apache later
     + Kill remaining vmstat processes and then delete user+group hobbit
       after chowning+chgrping files to xymon. Don't bail out if that fails.
+    + At the end, remove all _empty_ directories in /etc/hobbit/ and
+      possibly /etc/hobbit itself.
     + Bump debhelper build dependency to >= 8.1.0~
     + Breaks hobbit-plugins < 20120619
   * Enabled hardening build flags
