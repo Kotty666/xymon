@@ -43,7 +43,7 @@ build-stamp: Makefile
 	dh_testdir
 
 	# Parallel building does not work as of 4.3.0~beta2
-	PKGBUILD=1 $(MAKE) -j1
+	PKGBUILD=1 $(MAKE) MAKEFLAGS=-j1
 
 	touch build-stamp
 
