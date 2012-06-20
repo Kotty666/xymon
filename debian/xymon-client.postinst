@@ -33,7 +33,8 @@ case "$1" in
 	    for d in  /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -user hobbit -exec chown -c xymon '{}' +;
 	    done
-	    deluser hobbit
+	    pkill -u hobbit vmstat
+	    deluser hobbit || echo "Couldn't delete user hobbit, please remove it manually"
 	fi
 
 	# Migrate old group
@@ -41,7 +42,7 @@ case "$1" in
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -group hobbit -exec chgrp -c xymon '{}' +;
 	    done
-	    delgroup hobbit
+	    delgroup hobbit || echo "Couldn't delete group hobbit, please remove it manually"
 	fi
 
 	# Create or migrate directories
