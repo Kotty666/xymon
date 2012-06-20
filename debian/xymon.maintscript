@@ -28,6 +28,7 @@ mv_conffile /etc/hobbit/web/maint_form          /etc/xymon/web/maint_form       
 mv_conffile /etc/hobbit/web/maint_header        /etc/xymon/web/maint_header        4.3.7-1~~
 mv_conffile /etc/hobbit/web/maintact_header     /etc/xymon/web/maintact_header     4.3.7-1~~
 mv_conffile /etc/hobbit/web/notify_form         /etc/xymon/web/notify_form         4.3.7-1~~
+mv_conffile /etc/hobbit/web/notify_footer       /etc/xymon/web/notify_footer       4.3.7-1~~
 mv_conffile /etc/hobbit/web/notify_header       /etc/xymon/web/notify_header       4.3.7-1~~
 mv_conffile /etc/hobbit/web/perfdata_form       /etc/xymon/web/perfdata_form       4.3.7-1~~
 mv_conffile /etc/hobbit/web/perfdata_header     /etc/xymon/web/perfdata_header     4.3.7-1~~
@@ -48,6 +49,7 @@ mv_conffile /etc/hobbit/web/zoom.js             /etc/xymon/web/zoom.js          
 
 mv_conffile /etc/hobbit/hobbit-alerts.cfg       /etc/xymon/alerts.cfg              4.3.7-1~~
 mv_conffile /etc/hobbit/hobbit-nkview.cfg       /etc/xymon/critical.cfg            4.3.7-1~~
+mv_conffile /etc/hobbit/hobbit-nkview.cfg.bak   /etc/xymon/critical.cfg.bak        4.3.7-1~~
 mv_conffile /etc/hobbit/hobbitcgi.cfg           /etc/xymon/cgioptions.cfg          4.3.7-1~~
 mv_conffile /etc/hobbit/hobbitgraph.cfg         /etc/xymon/graphs.cfg              4.3.7-1~~
 mv_conffile /etc/hobbit/bbcombotest.cfg         /etc/xymon/combo.cfg               4.3.7-1~~
