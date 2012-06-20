@@ -20,6 +20,7 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
 Recommends: apache2 | httpd-cgi
 Suggests: rrdtool
+Breaks: hobbit-plugins (<< 20120619)
 Description: monitoring system for systems, networks and applications
  Xymon (previously called Hobbit) is a network- and applications-
  monitoring system designed for use in large-scale networks. But it will
@@ -41,6 +42,7 @@ Replaces: hobbit-client (<< 4.2.2)
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base
 Suggests: xymon-plugins | hobbit-plugins
+Breaks: hobbit-plugins (<< 20120619)
 Description: client for the Xymon network monitor
  Client data collection package for Xymon (previously known as Hobbit).
  This gathers statistics and data from a single system and reports it to
