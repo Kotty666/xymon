@@ -1,4 +1,4 @@
-xymon (4.3.7-1) UNRELEASED; urgency=low
+xymon (4.3.7-1) experimental; urgency=low
 
   * New upstream release (Closes: #622574)
 
@@ -37,7 +37,8 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Remove remaining traces of the debian-specific menu
     + Remove note about rebuilt upstream tarball from debian/copyright
     + Remove the menu from debian/rules, debian/xymon.install, etc.
-  * Move from /etc/hobbit/ to /etc/xymon/. Add NEWS entry.
+  * Move from /etc/hobbit/ to /etc/xymon/.
+    + Add xymon.NEWS entry and new xymon-client.NEWS file.
     + Adapt paths, variable names, etc. in debian/* accordingly.
     + Add pre-dependency on ${misc:Pre-Depends} for *.maintscript
     + Install upstream's migration tools to /usr/lib/xymon/server/libexec/
@@ -78,7 +79,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
     + spelling-error-in-manpage (one overriden)
     + hyphen-used-as-minus-sign
 
- -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 00:03:45 +0200
+ -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 01:02:40 +0200
 
 xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
 
