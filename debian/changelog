@@ -39,6 +39,7 @@ xymon (4.3.7-1) experimental; urgency=low
     + Remove the menu from debian/rules, debian/xymon.install, etc.
   * Move from /etc/hobbit/ to /etc/xymon/.
     + Add xymon.NEWS entry and new xymon-client.NEWS file.
+    + Install upgrade-to-430.txt and Renaming-430.txt as documentation
     + Adapt paths, variable names, etc. in debian/* accordingly.
     + Add pre-dependency on ${misc:Pre-Depends} for *.maintscript
     + Install upstream's migration tools to /usr/lib/xymon/server/libexec/
