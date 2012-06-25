@@ -88,7 +88,7 @@ case "$1" in
 	then
 		create_includefiles
 		log_action_msg "Reloading xymond config"
-		kill -HUP `cat /var/run/xymon/xymond.pid`
+		kill -HUP `cat $PIDFILE`
 	else
 		log_action_msg "xymond not running (no PID file)"
 	fi

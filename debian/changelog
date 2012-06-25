@@ -55,6 +55,7 @@ xymon (4.3.7-1) UNRELEASED; urgency=low
   * Enabled hardening build flags
     + Bump dpkg-dev build dependency to >= 1.16.1~
   * Update debconf po templates for Hobbit → Xymon rename
+  * Replace last hardcoded occurrence of pid file name in init.d script
   * Fix enforcement of non-parallel builds
   * Let dh_clean do all the clean up, no more calling rm in clean target
   * Bump Standards-Version to 3.9.3 (no changes)
