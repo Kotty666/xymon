@@ -17,7 +17,7 @@ Breaks: hobbit (<< 4.2.2), hobbit-plugins (<< 20120619)
 Provides: hobbit
 Replaces: hobbit (<< 4.2.2)
 Pre-Depends: ${misc:Pre-Depends}
-Depends: xymon-client, ${shlibs:Depends}, ${misc:Depends}
+Depends: xymon-client (>= 4.3.7-1~), ${shlibs:Depends}, ${misc:Depends}
 Recommends: apache2 | httpd-cgi
 Suggests: rrdtool
 Description: monitoring system for systems, networks and applications
@@ -35,7 +35,7 @@ Description: monitoring system for systems, networks and applications
 
 Package: xymon-client
 Architecture: any
-Breaks: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2), hobbit-plugins (<< 20120619)
+Breaks: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2), xymon (<< 4.3.7-1~), hobbit-plugins (<< 20120619)
 Provides: hobbit-client
 Replaces: hobbit-client (<< 4.2.2)
 Pre-Depends: ${misc:Pre-Depends}

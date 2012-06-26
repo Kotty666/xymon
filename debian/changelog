@@ -1,3 +1,10 @@
+xymon (4.3.7-2) UNRELEASED; urgency=low
+
+  * Update dependencies for smooth upgrade: xymon-client breaks earlier
+    versions of xymon and xymon depends on a current xymon-client.
+
+ -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 22:15:12 +0200
+
 xymon (4.3.7-1) experimental; urgency=low
 
   * New upstream release (Closes: #622574, LP: #1017868)
