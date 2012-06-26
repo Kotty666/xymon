@@ -1,17 +1,8 @@
-Care about internally used files. From Renaming-430.txt:
+Install the following files as examples:
 
-Xymon internal statuses
-=======================
-bbgen                           xymongen
-bbtest                          xymonnet
-hobbitd                         xymond
-bbproxy                         xymonproxy
+xymond/etcfiles/xymon-apache-*.DIST
 
-Xymon internal RRD files
-========================
-bbgen.rrd                       xymongen.rrd
-bbtest.rrd                      xymonnet.rrd
-hobbit.rrd                      xymon.rrd
-hobbit2.rrd                     xymon2.rrd
-hobbitd.rrd                     xymond.rrd
-bbproxy.rrd                     xymonproxy.rrd
+Move the following common config files if they exist:
+
+apt_no_repo_accept
+dirty_vcs_dirs
