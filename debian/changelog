@@ -1,6 +1,6 @@
 xymon (4.3.7-1) experimental; urgency=low
 
-  * New upstream release (Closes: #622574)
+  * New upstream release (Closes: #622574, LP: #1017868)
 
   [ Christoph Berg ]
   * Acknowledge and incorporate NMU by gregor herrmann
