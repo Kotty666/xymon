@@ -39,6 +39,16 @@ case "$1" in
 	cd /var/lib/xymon/www; chown xymon:xymon html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
 	cd /etc/xymon; chgrp www-data critical.cfg critical.cfg.bak; chmod g+w critical.cfg critical.cfg.bak
 
+	if [ -x /usr/bin/prename ]; then
+	    find /var/lib/xymon '(' -name '*bbgen*' -o \
+				    -name '*bbtest*'  -o \
+				    -name '*bbproxy*' -o \
+				    -name '*hobbitd*' -o \
+				    -name '*hobbit2*' -o \
+				    -name hobbit.rrd ')' \
+		-exec prename -v 's/bb(gen|proxy)/xymon$1/;s/bbtest/xymonnet/;s/hobbit(d|2|\.rrd)/xymon$1/' '{}' + ;
+	fi
+
 	if test -e /etc/hobbit/bb-hosts ; then
 	    mv -v /etc/hobbit/bb-hosts /etc/xymon/hosts.cfg
 	fi

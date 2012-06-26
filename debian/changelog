@@ -49,6 +49,7 @@ xymon (4.3.7-1) experimental; urgency=low
       after chowning+chgrping files to xymon. Don't bail out if that fails.
     + At the end, remove all _empty_ directories in /etc/hobbit/ and
       possibly /etc/hobbit itself.
+    + Rename data, history and rrd files according to Renaming-430.txt
     + Bump debhelper build dependency to >= 8.1.0~
     + Breaks hobbit-plugins < 20120619
     + Export DPKG_MAINTSCRIPT_PACKAGE and DPKG_MAINTSCRIPT_NAME in all
@@ -80,7 +81,7 @@ xymon (4.3.7-1) experimental; urgency=low
     + spelling-error-in-manpage (one overriden)
     + hyphen-used-as-minus-sign
 
- -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 01:02:40 +0200
+ -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 17:14:12 +0200
 
 xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
 
