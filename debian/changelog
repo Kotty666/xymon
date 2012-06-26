@@ -40,6 +40,7 @@ xymon (4.3.7-1) experimental; urgency=low
   * Move from /etc/hobbit/ to /etc/xymon/.
     + Add xymon.NEWS entry and new xymon-client.NEWS file.
     + Install upgrade-to-430.txt and Renaming-430.txt as documentation
+    + Install some files from xymond/etcfiles as examples
     + Adapt paths, variable names, etc. in debian/* accordingly.
     + Add pre-dependency on ${misc:Pre-Depends} for *.maintscript
     + Install upstream's migration tools to /usr/lib/xymon/server/libexec/
@@ -81,7 +82,7 @@ xymon (4.3.7-1) experimental; urgency=low
     + spelling-error-in-manpage (one overriden)
     + hyphen-used-as-minus-sign
 
- -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 17:14:12 +0200
+ -- Axel Beckert <abe@debian.org>  Tue, 26 Jun 2012 20:16:23 +0200
 
 xymon (4.3.0~beta2.dfsg-9.1) unstable; urgency=low
 

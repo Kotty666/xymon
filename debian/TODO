@@ -1,7 +1,3 @@
-Install the following files as examples:
-
-xymond/etcfiles/xymon-apache-*.DIST
-
 Move the following common config files if they exist:
 
 apt_no_repo_accept
