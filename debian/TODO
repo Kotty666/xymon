@@ -1,4 +1,0 @@
-Move the following common config files if they exist:
-
-apt_no_repo_accept
-dirty_vcs_dirs
