@@ -2,7 +2,7 @@ xymon (4.3.7-2) UNRELEASED; urgency=low
 
   * Update dependencies for smooth upgrade: xymon-client breaks earlier
     versions of xymon and xymon depends on a current xymon-client.
-  * xymon-client: Pre-Depend on procps for pkill in postinst script
+  * xymon-client: Depend on procps for pkill in postinst script
     (Closes: #679706)
 
  -- Axel Beckert <abe@debian.org>  Mon, 02 Jul 2012 16:53:12 +0200
