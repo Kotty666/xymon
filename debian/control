@@ -38,7 +38,7 @@ Architecture: any
 Breaks: hobbit (<= 4.2.0-1), hobbit-client (<< 4.2.2), xymon (<< 4.3.7-1~), hobbit-plugins (<< 20120619)
 Provides: hobbit-client
 Replaces: hobbit-client (<< 4.2.2)
-Pre-Depends: ${misc:Pre-Depends}
+Pre-Depends: ${misc:Pre-Depends}, procps
 Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base
 Suggests: xymon-plugins | hobbit-plugins
 Description: client for the Xymon network monitor
