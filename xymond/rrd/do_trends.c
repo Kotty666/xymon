@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char trends_rcsid[] = "$Id: do_trends.c 6712 2011-07-31 21:01:52Z storner $";
+static char trends_rcsid[] = "$Id: do_trends.c 7026 2012-07-13 14:05:20Z storner $";
 
 /* 
  * This module was inspired by a mail from Stef Coene:
@@ -73,7 +73,7 @@ static int do_trends_rrd(char *hostname, char *testname, char *classname, char *
 			setupfn("%s", boln+1);
 
 			/* And setup the initial rrdvalues string */
-			sprintf(rrdvalues, "%d", (int)tstamp);
+			snprintf(rrdvalues, sizeof(rrdvalues), "%d", (int)tstamp);
 		}
 		else if (strncmp(boln, "DS:", 3) == 0) {
 			char *valptr = boln + strcspn(boln, " \t");
@@ -84,7 +84,7 @@ static int do_trends_rrd(char *hostname, char *testname, char *classname, char *
 				dscount++;
 				creparams = (char **)realloc(creparams, (1+dscount)*sizeof(char **));
 				creparams[dscount] = NULL;
-				sprintf(rrdvalues+strlen(rrdvalues), ":%s", valptr);
+				snprintf(rrdvalues+strlen(rrdvalues), sizeof(rrdvalues)-strlen(rrdvalues), ":%s", valptr);
 			}
 		}
 

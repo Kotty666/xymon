@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sendmsg.c 6744 2011-09-03 16:06:19Z storner $";
+static char rcsid[] = "$Id: sendmsg.c 7067 2012-07-14 20:52:41Z storner $";
 
 #include "config.h"
 
@@ -135,7 +135,7 @@ static int sendtoxymond(char *recipient, char *message, FILE *respfd, char **res
 {
 	struct in_addr addr;
 	struct sockaddr_in saddr;
-	int	sockfd;
+	int	sockfd = -1;
 	fd_set	readfds;
 	fd_set	writefds;
 	int	res, isconnected, wdone, rdone;
@@ -153,7 +153,8 @@ static int sendtoxymond(char *recipient, char *message, FILE *respfd, char **res
 	int result = XYMONSEND_OK;
 
 	if (dontsendmessages && !respfd && !respstr) {
-		printf("%s\n", message);
+		fprintf(stdout, "%s\n", message);
+		fflush(stdout);
 		return XYMONSEND_OK;
 	}
 
@@ -418,7 +419,7 @@ retry_connect:
 done:
 	dbgprintf("Closing connection\n");
 	shutdown(sockfd, SHUT_RDWR);
-	close(sockfd);
+	if (sockfd > 0) close(sockfd);
 	xfree(rcptip);
 	if (httpmessage) xfree(httpmessage);
 	return result;
@@ -577,7 +578,9 @@ sendresult_t sendmessage(char *msg, char *recipient, int timeout, sendreturn_t *
 
  	if ((xymsrv == NULL) && xgetenv("XYMSRV")) xymsrv = strdup(xgetenv("XYMSRV"));
 	if (recipient == NULL) recipient = xymsrv;
-	if (recipient == NULL) {
+	if ((recipient == NULL) && xgetenv("XYMSERVERS")) {
+		*recipient = "0.0.0.0";
+	} else if (recipient == NULL) {
 		errprintf("No recipient for message\n");
 		return XYMONSEND_EBADIP;
 	}

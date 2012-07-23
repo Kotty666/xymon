@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid_file[] = "$Id: loadhosts_file.c 6751 2011-09-04 22:08:43Z storner $";
+static char rcsid_file[] = "$Id: loadhosts_file.c 7060 2012-07-14 16:32:11Z storner $";
 
 static int get_page_name_title(char *buf, char *key, char **name, char **title)
 {
@@ -94,11 +94,13 @@ static int prepare_fromnet(void)
 	sres = newsendreturnbuf(1, NULL);
 	sendstat = sendmessage("config hosts.cfg", NULL, XYMON_TIMEOUT, sres);
 	if (sendstat != XYMONSEND_OK) {
+		freesendreturnbuf(sres);
 		errprintf("Cannot load hosts.cfg from xymond, code %d\n", sendstat);
 		return -1;
 	}
 
 	fdata = getsendreturnstr(sres, 1);
+	freesendreturnbuf(sres);
 	fhash = md5hash(fdata);
 	if (strcmp(contentmd5, fhash) == 0) {
 		/* No changes */
@@ -244,7 +246,7 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 			}
 		}
 		else if (strncmp(inbol, "group", 5) == 0) {
-			char *tok, *inp;
+			char *tok;
 
 			groupid++;
 			if (dgname) xfree(dgname); dgname = NULL;
@@ -292,10 +294,9 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 		else if (sscanf(inbol, "%d.%d.%d.%d %s", &ip1, &ip2, &ip3, &ip4, hostname) == 5) {
 			char *startoftags, *tag, *delim;
 			int elemidx, elemsize;
-			char clientname[4096];
-			char downtime[4096];
 			char groupidstr[10];
 			xtreePos_t handle;
+			namelist_t *newitem, *iwalk, *iprev;
 
 			if ( (ip1 < 0) || (ip1 > 255) ||
 			     (ip2 < 0) || (ip2 > 255) ||
@@ -306,11 +307,7 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 				goto nextline;
 			}
 
-			namelist_t *newitem = calloc(1, sizeof(namelist_t));
-			namelist_t *iwalk, *iprev;
-
-			MEMDEFINE(clientname);
-			MEMDEFINE(downtime);
+			newitem = calloc(1, sizeof(namelist_t));
 
 			/* Hostname beginning with '@' are "no-display" hosts. But we still want them. */
 			if (*hostname == '@') memmove(hostname, hostname+1, strlen(hostname));
@@ -334,7 +331,6 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 			newitem->page = curpage;
 			newitem->defaulthost = defaulthost;
 
-			clientname[0] = downtime[0] = '\0';
 			startoftags = strchr(inbol, '#');
 			if (startoftags == NULL) startoftags = ""; else startoftags++;
 			startoftags += strspn(startoftags, " \t\r\n");
@@ -433,9 +429,6 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 			newitem->clientname = xmh_find_item(newitem, XMH_CLIENTALIAS);
 			if (newitem->clientname == NULL) newitem->clientname = newitem->hostname;
 			newitem->downtime = xmh_find_item(newitem, XMH_DOWNTIME);
-
-			MEMUNDEFINE(clientname);
-			MEMUNDEFINE(downtime);
 		}
 
 

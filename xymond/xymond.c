@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 6787 2011-12-03 08:10:28Z storner $";
+static char rcsid[] = "$Id: xymond.c 7076 2012-07-15 10:49:22Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -433,6 +433,9 @@ char *generate_stats(void)
 	clients = semctl(clichgchn->semid, CLIENTCOUNT, GETVAL);
 	sprintf(msgline, "clichg channel messages: %10ld (%d readers)\n", clichgchn->msgcount, clients);
 	addtobuffer(statsbuf, msgline);
+	clients = semctl(userchn->semid, CLIENTCOUNT, GETVAL);
+	sprintf(msgline, "user   channel messages: %10ld (%d readers)\n", userchn->msgcount, clients);
+	addtobuffer(statsbuf, msgline);
 
 	ghandle = xtreeFirst(rbghosts);
 	if (ghandle != xtreeEnd(rbghosts)) addtobuffer(statsbuf, "\n\nGhost reports:\n");
@@ -498,6 +501,67 @@ enum alertstate_t decide_alertstate(int color)
 	else return A_UNDECIDED;
 }
 
+
+char *check_downtime(char *hostname, char *testname)
+{
+	void *hinfo = hostinfo(hostname);
+	char *dtag;
+	char *holkey;
+
+	if (hinfo == NULL) return NULL;
+
+	dtag = xmh_item(hinfo, XMH_DOWNTIME);
+	holkey = xmh_item(hinfo, XMH_HOLIDAYS);
+	if (dtag && *dtag) {
+		static char *downtag = NULL;
+		static unsigned char *cause = NULL;
+		static int causelen = 0;
+		char *s1, *s2, *s3, *s4, *s5, *p;
+		char timetxt[30];
+
+		if (downtag) xfree(downtag);
+		if (cause) xfree(cause);
+
+		p = downtag = strdup(dtag);
+		do {
+			/* Its either DAYS:START:END or SERVICE:DAYS:START:END:CAUSE */
+
+			s1 = p; p += strcspn(p, ":"); if (*p != '\0') { *p = '\0'; p++; }
+			s2 = p; p += strcspn(p, ":"); if (*p != '\0') { *p = '\0'; p++; }
+			s3 = p; p += strcspn(p, ":;,"); 
+			if ((*p == ',') || (*p == ';') || (*p == '\0')) { 
+				if (*p != '\0') { *p = '\0'; p++; }
+				snprintf(timetxt, sizeof(timetxt), "%s:%s:%s", s1, s2, s3);
+				cause = strdup("Planned downtime");
+				s1 = "*";
+			}
+			else if (*p == ':') {
+				*p = '\0'; p++; 
+				s4 = p; p += strcspn(p, ":"); if (*p != '\0') { *p = '\0'; p++; }
+				s5 = p; p += strcspn(p, ",;"); if (*p != '\0') { *p = '\0'; p++; }
+				snprintf(timetxt, sizeof(timetxt), "%s:%s:%s", s2, s3, s4);
+				getescapestring(s5, &cause, &causelen);
+			}
+
+			if (within_sla(holkey, timetxt, 0)) {
+				char *onesvc, *buf;
+
+				if (strcmp(s1, "*") == 0) return cause;
+
+				onesvc = strtok_r(s1, ",", &buf);
+				while (onesvc) {
+					if (strcmp(onesvc, testname) == 0) return cause;
+					onesvc = strtok_r(NULL, ",", &buf);
+				}
+
+				/* If we didn't use the "cause" we just created, it must be freed */
+				if (cause) xfree(cause);
+			}
+		} while (*p);
+	}
+
+	return NULL;
+}
 
 xymond_hostlist_t *create_hostlist_t(char *hostname, char *ip)
 {
@@ -798,8 +862,6 @@ void posttochannel(xymond_channel_t *channel, char *channelmarker,
 				channelmarker, channel->seq, hostname, (int) tstamp.tv_sec, (int) tstamp.tv_usec,
 				sender, hostname, msg);
 			if (n > (bufsz-5)) {
-				char *source;
-
 				errprintf("Oversize %s msg from %s for %s truncated (n=%d, limit=%d)\n", 
 					((channel->channelid == C_NOTES) ? "notes" : "user"), 
 					sender, hostname, n, bufsz);
@@ -1845,7 +1907,13 @@ void handle_enadis(int enabled, conn_t *msg, char *sender)
 				expires = DISABLED_UNTIL_OK;
 			}
 			else {
+				int expirerounding;
+
 				expires = 60*durationvalue(durstr) + getcurrenttime(NULL);
+
+				/* If "expires" is not on the ":00" seconds, bump expire time to next whole minute */
+				expirerounding = (60 - (expires % 60));
+				if (expirerounding < 60) expires += expirerounding;
 			}
 
 			txtstart = msg->buf + (durstr + strlen(durstr) - firstline);
@@ -2533,6 +2601,7 @@ int get_binary(char *fn, conn_t *msg)
 
 			flen = st.st_size;
 			add_filecache(fullfn, result, flen);
+			close(fd);
 		}
 		else {
 			errprintf("Impossible - cannot fstat() an open file ..\n");
@@ -2740,7 +2809,6 @@ void generate_outbuf(char **outbuf, char **outpos, int *outsz,
 	int needed, used;
 	enum boardfield_t f_type;
 	modifier_t *mwalk;
-	time_t now = getcurrenttime(NULL);
 	time_t timeroffset = (getcurrenttime(NULL) - gettimer());
 
 	buf = *outbuf;
@@ -3227,7 +3295,7 @@ void do_message(conn_t *msg, char *origin)
 	else if (strncmp(msg->buf, "disable", 7) == 0) {
 		handle_enadis(0, msg, sender);
 	}
-	else if (allow_downloads && (strncmp(msg->buf, "config", 6) == 0)) {
+	else if (strncmp(msg->buf, "config", 6) == 0) {
 		char *conffn, *p;
 
 		if (!oksender(statussenders, NULL, msg->addr.sin_addr, msg->buf)) goto done;
@@ -3353,7 +3421,7 @@ void do_message(conn_t *msg, char *origin)
 		get_hts(msg->buf, sender, origin, &h, &t, NULL, &log, &color, NULL, NULL, 0, 0);
 		if (log) {
 			char *buf, *bufp;
-			int bufsz, buflen;
+			int bufsz;
 			xymond_meta_t *mwalk;
 
 			flush_acklist(log, 0);
@@ -3369,7 +3437,6 @@ void do_message(conn_t *msg, char *origin)
 
 			xfree(msg->buf);
 			bufp = buf = (char *)malloc(bufsz);
-			buflen = 0;
 
 			bufp += sprintf(bufp, "<?xml version='1.0' encoding='ISO-8859-1'?>\n");
 			bufp += sprintf(bufp, "<ServerStatus>\n");
@@ -3861,12 +3928,12 @@ void do_message(conn_t *msg, char *origin)
 
 		if (strlen(cmd) == 0) {
 			char *buf, *bufp;
-			int bufsz, buflen;
+			int bufsz;
 			scheduletask_t *swalk;
 
 			bufsz = 4096;
 			bufp = buf = (char *)malloc(bufsz);
-			*buf = '\0'; buflen = 0;
+			*buf = '\0';
 
 			for (swalk = schedulehead; (swalk); swalk = swalk->next) {
 				int needed = 128 + strlen(swalk->command);

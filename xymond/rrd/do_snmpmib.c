@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char snmpmib_rcsid[] = "$Id: do_snmpmib.c 6768 2011-11-03 10:03:59Z storner $";
+static char snmpmib_rcsid[] = "$Id: do_snmpmib.c 7058 2012-07-14 15:01:11Z storner $";
 
 static time_t snmp_nextreload = 0;
 
@@ -174,9 +174,9 @@ static void do_simple_snmpmib(char *hostname, char *testname, char *classname, c
 		if (fnkey) setupfn2("%s.%s.rrd", testname, fnkey); else setupfn("%s.rrd", testname);
 		setupinterval(*pollinterval);
 
-		ptr = rrdvalues + sprintf(rrdvalues, "%d", (int)tstamp);
+		ptr = rrdvalues + snprintf(rrdvalues, sizeof(rrdvalues), "%d", (int)tstamp);
 		for (i = 0; (i < valcount); i++) {
-			ptr += sprintf(ptr, ":%s", values[i]);
+			ptr += snprintf(ptr, sizeof(rrdvalues)-(ptr-rrdvalues), ":%s", values[i]);
 		}
 		create_and_update_rrd(hostname, testname, classname, pagepaths, params->dsdefs, params->tpl);
 	}
@@ -214,7 +214,7 @@ int do_snmpmib_rrd(char *hostname, char *testname, char *classname, char *pagepa
 	xtreePos_t handle;
 	snmpmib_param_t *params;
 	int pollinterval = 0;
-	char *datapart;
+	char *datapart = msg;
 
 	if (now > snmp_nextreload) readmibs(NULL, 0);
 

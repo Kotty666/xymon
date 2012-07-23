@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char ntpstat_rcsid[] = "$Id: do_ntpstat.c 6712 2011-07-31 21:01:52Z storner $";
+static char ntpstat_rcsid[] = "$Id: do_ntpstat.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_ntpstat_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -35,7 +35,7 @@ int do_ntpstat_rrd(char *hostname, char *testname, char *classname, char *pagepa
 
 	if (gotdata) {
 		setupfn("%s.rrd", "ntpstat");
-		sprintf(rrdvalues, "%d:%.6f", (int)tstamp, offset);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%.6f", (int)tstamp, offset);
 		return create_and_update_rrd(hostname, testname, classname, pagepaths, ntpstat_params, ntpstat_tpl);
 	}
 

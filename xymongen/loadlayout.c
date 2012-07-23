@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadlayout.c 6775 2011-11-27 21:28:18Z storner $";
+static char rcsid[] = "$Id: loadlayout.c 6900 2012-01-24 10:32:42Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -437,7 +437,7 @@ xymongen_page_t *load_layout(char *pgset)
 		}
 	}
 	else {
-		if (load_hostnames(xgetenv("HOSTSCFG"), "netinclude", fqdn) != 0) {
+		if (load_hostnames(xgetenv("HOSTSCFG"), "dispinclude", fqdn) != 0) {
 			errprintf("Cannot load host configuration from %s\n", xgetenv("HOSTSCFG"));
 			return NULL;
 		}

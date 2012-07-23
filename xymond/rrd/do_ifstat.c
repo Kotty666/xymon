@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char ifstat_rcsid[] = "$Id: do_ifstat.c 6782 2011-11-30 11:53:42Z storner $";
+static char ifstat_rcsid[] = "$Id: do_ifstat.c 7060 2012-07-14 16:32:11Z storner $";
 
 static char *ifstat_params[] = { "DS:bytesSent:DERIVE:600:0:U", 
 	                         "DS:bytesReceived:DERIVE:600:0:U", 
@@ -130,7 +130,6 @@ int do_ifstat_rrd(char *hostname, char *testname, char *classname, char *pagepat
 
 	enum ostype_t ostype;
 	char *datapart = msg;
-	char *outp;
 	char *bol, *eoln, *ifname, *rxstr, *txstr, *dummy;
 	int dmatch;
 
@@ -188,9 +187,6 @@ int do_ifstat_rrd(char *hostname, char *testname, char *classname, char *pagepat
 		errprintf("Too few lines in ifstat report from %s\n", hostname);
 		return -1;
 	}
-
-	/* Setup the update string */
-	outp = rrdvalues + sprintf(rrdvalues, "%d", (int)tstamp);
 
 	dmatch = 0;
 	ifname = rxstr = txstr = dummy = NULL;
@@ -305,7 +301,7 @@ int do_ifstat_rrd(char *hostname, char *testname, char *classname, char *pagepat
 		if ((dmatch == 7) && ifname && rxstr && txstr) {
 			if (!ifname_filter_pcre || matchregex(ifname, ifname_filter_pcre)) {
 				setupfn2("%s.%s.rrd", "ifstat", ifname);
-				sprintf(rrdvalues, "%d:%s:%s", (int)tstamp, txstr, rxstr);
+				snprintf(rrdvalues, sizeof(rrdvalues), "%d:%s:%s", (int)tstamp, txstr, rxstr);
 				create_and_update_rrd(hostname, testname, classname, pagepaths, ifstat_params, ifstat_tpl);
 			}
 

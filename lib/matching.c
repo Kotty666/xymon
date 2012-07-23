@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: matching.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: matching.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -70,7 +70,6 @@ int namematch(char *needle, char *haystack, pcre *pcrecode)
 {
 	char *xhay;
 	char *tokbuf, *tok;
-	char *match;
 	int found = 0;
 	int result = 0;
 	int allneg = 1;

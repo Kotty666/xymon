@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: errormsg.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: errormsg.c 7068 2012-07-14 20:55:50Z storner $";
 
 #include <sys/types.h>
 #include <string.h>
@@ -160,17 +160,25 @@ void redirect_cgilog(char *cginame)
 {
 	char logfn[PATH_MAX];
 	char *cgilogdir;
+	FILE *fd;
 	
 	cgilogdir = getenv("XYMONCGILOGDIR");
-	if (cgilogdir == NULL) cgilogdir = xgetenv("XYMONSERVERLOGS");
+	if (!cgilogdir) return;
 
 	if (cginame) errappname = strdup(cginame);
-	sprintf(logfn, "%s/cgierror.err", cgilogdir);
-	freopen(logfn, "a", stderr);
+	sprintf(logfn, "%s/cgierror.log", cgilogdir);
+	if (fd = fopen(logfn, "a")) {
+		fclose(fd);
+		fd = freopen(logfn, "a", stderr);
+		/* If freopen fails, stderr is now silently invalid. Print a warning to stdout to at least prevent mysterious HTTP 500 errors */
+		if (!fd) fprintf(stdout, "Content-type: text/plain\n\nError redirecting CGI stderr to %s\n", logfn);
+	} else {
+		fprintf(stderr, "Cannot redirect CGI errors to %s\n", logfn);
+	}
 
 	/* If debugging, setup the debug logfile */
 	if (debug) {
-		sprintf(logfn, "%s/%s.dbg", cginame, (errappname ? errappname : "cgi"));
+		sprintf(logfn, "%s/%s.dbg", cgilogdir, (errappname ? errappname : "cgi"));
 		set_debugfile(logfn, 1);
 	}
 }

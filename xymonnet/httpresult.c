@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httpresult.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: httpresult.c 7062 2012-07-14 20:44:42Z storner $";
 
 #include <sys/types.h>
 #include <stdlib.h>
@@ -218,7 +218,7 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 				m1[sizeof(m1)-1] = '\0';
 
 				/* Only show the first line of the HTTP status description */
-				p = strchr(m1, '\n'); if (p) *p = '\0';
+				p = m1 + strcspn(m1, "\n\r"); *p = '\0';
 			}
 			else {
 				sprintf(m1, "Connected, but got empty response (code:%ld)", req->httpstatus);

@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char xymonnet_rcsid[] = "$Id: do_xymonnet.c 6712 2011-07-31 21:01:52Z storner $";
+static char xymonnet_rcsid[] = "$Id: do_xymonnet.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_xymonnet_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 { 
@@ -28,7 +28,7 @@ int do_xymonnet_rrd(char *hostname, char *testname, char *classname, char *pagep
 		else {
 			setupfn("%s.rrd", "xymonnet");
 		}
-		sprintf(rrdvalues, "%d:%.2f", (int) tstamp, runtime);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%.2f", (int) tstamp, runtime);
 		return create_and_update_rrd(hostname, testname, classname, pagepaths, xymonnet_params, xymonnet_tpl);
 	}
 

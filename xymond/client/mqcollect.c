@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char mqcollect_rcsid[] = "$Id: mqcollect.c 6712 2011-07-31 21:01:52Z storner $";
+static char mqcollect_rcsid[] = "$Id: mqcollect.c 7060 2012-07-14 16:32:11Z storner $";
 
 void mqcollect_flush_status(int color, char *fromline, time_t timestamp, 
 			    char *hostname, char *qmid,
@@ -55,7 +55,7 @@ void handle_mqcollect_client(char *hostname, char *clienttype, enum ostype_t os,
 	strbuffer_t *redsummary = newstrbuffer(0);
 	strbuffer_t *yellowsummary = newstrbuffer(0);
 	strbuffer_t *greensummary = newstrbuffer(0);
-	char *chngroup, *bol, *eoln, *clienttext;
+	char *bol, *eoln, *clienttext;
 	int color = COL_GREEN;
 	char fromline[1024], msgline[1024];
 	char *qmid = NULL, *qnam = NULL; int qlen = -1, qage = -1; char *chnnam = NULL, *chnstatus = NULL;

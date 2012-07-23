@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: readmib.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: readmib.c 7058 2012-07-14 15:01:11Z storner $";
 
 #include <string.h>
 #include <stdlib.h>
@@ -175,8 +175,10 @@ int readmibs(char *cfgfn, int verbose)
 			char *tok, *name, *oid = NULL;
 
 			name = strtok(bot, " \t");
-			if (name) tok = strtok(NULL, " \t");
-			if (tok && (*tok == '=')) oid = strtok(NULL, " \t"); else oid = tok;
+			if (name) {
+				tok = strtok(NULL, " \t");
+				if (tok && (*tok == '=')) oid = strtok(NULL, " \t"); else oid = tok;
+			}
 
 			if (name && oid) {
 				mib->oidlisttail->oidcount++;

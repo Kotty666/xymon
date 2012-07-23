@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char irix_rcsid[] = "$Id: irix.c 6712 2011-07-31 21:01:52Z storner $";
+static char irix_rcsid[] = "$Id: irix.c 7060 2012-07-14 16:32:11Z storner $";
 
 void handle_irix_client(char *hostname, char *clienttype, enum ostype_t os, 
 			void *hinfo, char *sender, time_t timestamp,
@@ -25,10 +25,9 @@ void handle_irix_client(char *hostname, char *clienttype, enum ostype_t os,
 	char *psstr;
 	char *topstr;
 	char *dfstr;
-	char *swapstr;
 	char *msgsstr;
 	char *netstatstr;
-	char *sarstr;
+	// char *sarstr;
 	char *ifstatstr;
 	char *portsstr;
 
@@ -46,11 +45,10 @@ void handle_irix_client(char *hostname, char *clienttype, enum ostype_t os,
 	psstr = getdata("ps");
 	topstr = getdata("top");
 	dfstr = getdata("df");
-	swapstr = getdata("swap");
 	msgsstr = getdata("msgs");
 	netstatstr = getdata("netstat");
 	ifstatstr = getdata("ifstat");
-	sarstr = getdata("sar");
+	// sarstr = getdata("sar");
 	portsstr = getdata("ports");
 
 	unix_cpu_report(hostname, clienttype, os, hinfo, fromline, timestr, uptimestr, clockstr, msgcachestr, 

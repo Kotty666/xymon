@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: htmllog.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: htmllog.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -71,7 +71,6 @@ static void hostpopup_setup(void)
 static void hostsvc_setup(void)
 {
 	static int setup_done = 0;
-	char *dac;
 
 	if (setup_done) return;
 

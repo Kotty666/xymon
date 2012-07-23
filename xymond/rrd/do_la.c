@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char la_rcsid[] = "$Id: do_la.c 6745 2011-09-04 06:01:06Z storner $";
+static char la_rcsid[] = "$Id: do_la.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_la_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -187,25 +187,25 @@ done_parsing:
 
 	if (gotload) {
 		setupfn("%s.rrd", "la");
-		sprintf(rrdvalues, "%d:%d", (int)tstamp, load);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, load);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, la_params, la_tpl);
 	}
 
 	if (gotprocs) {
 		setupfn("%s.rrd", "procs");
-		sprintf(rrdvalues, "%d:%d", (int)tstamp, procs);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, procs);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, la_params, la_tpl);
 	}
 
 	if (gotusers) {
 		setupfn("%s.rrd", "users");
-		sprintf(rrdvalues, "%d:%d", (int)tstamp, users);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, users);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, la_params, la_tpl);
 	}
 
 	if (gotclock) {
 		setupfn("%s.rrd", "clock");
-		sprintf(rrdvalues, "%d:%d", (int)tstamp, clockdiff);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, clockdiff);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, clock_params, clock_tpl);
 	}
 

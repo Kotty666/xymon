@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char filesize_rcsid[] = "$Id: do_filesizes.c 6712 2011-07-31 21:01:52Z storner $";
+static char filesize_rcsid[] = "$Id: do_filesizes.c 7026 2012-07-13 14:05:20Z storner $";
 
 static char *filesize_params[] = { "DS:size:GAUGE:600:0:U", NULL };
 static void *filesize_tpl      = NULL;
@@ -34,7 +34,7 @@ int do_filesizes_rrd(char *hostname, char *testname, char *classname, char *page
 			for (p=strchr(fn, '/'); (p); p = strchr(p, '/')) *p = ',';
 			setupfn2("%s.%s.rrd", "filesizes", fn);
 
-			sprintf(rrdvalues, "%d:%s", (int)tstamp, szstr);
+			snprintf(rrdvalues, sizeof(rrdvalues), "%d:%s", (int)tstamp, szstr);
 			create_and_update_rrd(hostname, testname, classname, pagepaths, filesize_params, filesize_tpl);
 		}
 

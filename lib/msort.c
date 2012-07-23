@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: msort.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: msort.c 7058 2012-07-14 15:01:11Z storner $";
 
 #include <stdlib.h>
 #include <sys/time.h>
@@ -116,7 +116,8 @@ void *msort(void *head, msortcompare_fn_t comparefn, msortgetnext_fn_t getnext, 
 	for (walk = head, i=0; (walk); walk = getnext(walk)) plist[i++] = walk;
 	plist[len] = NULL;
 
-	qsort(plist, len, sizeof(plist[0]), comparefn);
+	/* This bizarre cast is to quelch compiler warnings */
+	qsort(plist, len, sizeof(plist[0]), (int(*)(const void *, const void *))comparefn);
 
 	for (i=0, head = plist[0]; (i < len); i++) setnext(plist[i], plist[i+1]);
 	xfree(plist);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus.c 6776 2011-11-27 21:32:18Z storner $";
+static char rcsid[] = "$Id: svcstatus.c 7066 2012-07-14 20:50:51Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -53,7 +53,7 @@ static char *hostdatadir = NULL;
 static void errormsg(char *msg)
 {
 	snprintf(errortxt, sizeof(errortxt),
-		 "Content-type: %s\n\n<html><head><title>Invalid request</title></head>\n<body>%s</body></html>\n", 
+		 "Refresh: 30\nContent-type: %s\n\n<html><head><title>Invalid request</title></head>\n<body>%s</body></html>\n", 
 		 xgetenv("HTMLCONTENTTYPE"), msg);
 
 	errortxt[sizeof(errortxt)-1] = '\0';
@@ -417,8 +417,20 @@ int do_request(void)
 			flags = strdup(items[3]);
 			logage = getcurrenttime(NULL) - atoi(items[4]);
 			timesincechange[0] = '\0'; p = timesincechange;
-			if (logage > 86400) p += sprintf(p, "%d days,", (int) (logage / 86400));
-			p += sprintf(p, "%d hours, %d minutes", (int) ((logage % 86400) / 3600), (int) ((logage % 3600) / 60));
+			{
+				int days = (int) (logage / 86400);
+				int hours = (int) ((logage % 86400) / 3600);
+				int minutes = (int) ((logage % 3600) / 60);
+
+				if (days > 1) p += sprintf(p, "%d days, ", days);
+				else if (days == 1) p += sprintf(p, "1 day, ");
+
+				if (hours == 1) p += sprintf(p, "1 hour, ");
+				else p += sprintf(p, "%d hours, ", hours);
+
+				if (minutes == 1) p += sprintf(p, "1 minute");
+				else p += sprintf(p, "%d minutes", minutes);
+			}
 			logtime = atoi(items[5]);
 			if (items[7] && strlen(items[7])) acktime = atoi(items[7]);
 			if (items[8] && strlen(items[8])) disabletime = atoi(items[8]);

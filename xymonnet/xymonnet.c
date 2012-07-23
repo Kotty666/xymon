@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonnet.c 6752 2011-09-09 08:12:02Z storner $";
+static char rcsid[] = "$Id: xymonnet.c 7065 2012-07-14 20:48:42Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -105,6 +105,7 @@ int		extcmdtimeout = 30;
 int		bigfailure = 0;
 char		*defaultsourceip = NULL;
 int		loadhostsfromxymond = 0;
+int		sslminkeysize = 0;
 
 void dump_hostlist(void)
 {
@@ -353,7 +354,9 @@ testitem_t *init_testitem(testedhost_t *host, service_t *service, char *srcip, c
 	newtest->open = 0;
 	newtest->banner = newstrbuffer(0);
 	newtest->certinfo = NULL;
+	newtest->certissuer = NULL;
 	newtest->certexpires = 0;
+	newtest->certkeysz = 0;
 	newtest->mincipherbits = 0;
 	newtest->duration.tv_sec = newtest->duration.tv_nsec = -1;
 	newtest->downcount = 0;
@@ -541,7 +544,7 @@ void load_tests(void)
 					/*
 					 * LDAP test. This uses ':' a lot, so save it here.
 					 */
-#ifdef XYMON_LDAP
+#ifdef HAVE_LDAP
 					s = ldaptest;
 					add_url_to_dns_queue(testspec);
 #else
@@ -1107,6 +1110,36 @@ int start_ping_service(service_t *service)
 	char **cmdargs;
 	int pfd[2];
 	int i;
+	void *iptree;
+	xtreePos_t handle;
+	
+	/* We build a tree of the IP's to test, so we only test each IP once */
+	iptree = xtreeNew(strcmp);
+	for (t=service->items; (t); t = t->next) {
+		char *rec;
+		char ip[IP_ADDR_STRLEN+1];
+
+		if (t->host->dnserror || t->host->noping) continue;
+
+		strcpy(ip, ip_to_test(t->host));
+		handle = xtreeFind(iptree, ip);
+		if (handle == xtreeEnd(iptree)) {
+			rec = strdup(ip);
+			xtreeAdd(iptree, rec, rec);
+		}
+
+		if (t->host->extrapings) {
+			ipping_t *walk;
+
+			for (walk = t->host->extrapings->iplist; (walk); walk = walk->next) {
+				handle = xtreeFind(iptree, walk->ip);
+				if (handle == xtreeEnd(iptree)) {
+					rec = strdup(walk->ip);
+					xtreeAdd(iptree, rec, rec);
+				}
+			}
+		}
+	}
 
 	/*
 	 * The idea here is to run ping in a separate process, in parallel
@@ -1158,7 +1191,7 @@ int start_ping_service(service_t *service)
 			 *    dump it to /dev/null, but it might be useful to see
 			 *    what went wrong.
 			 */
-			int outfile, errfile, status;
+			int outfile, errfile;
 
 			sprintf(pinglog+strlen(pinglog), ".%02d", i);
 			sprintf(pingerrlog+strlen(pingerrlog), ".%02d", i);
@@ -1173,9 +1206,9 @@ int start_ping_service(service_t *service)
 				exit(98);
 			}
 
-			status = dup2(pfd[0], STDIN_FILENO);
-			status = dup2(outfile, STDOUT_FILENO);
-			status = dup2(errfile, STDERR_FILENO);
+			dup2(pfd[0], STDIN_FILENO);
+			dup2(outfile, STDOUT_FILENO);
+			dup2(errfile, STDERR_FILENO);
 			close(pfd[0]); close(pfd[1]); close(outfile); close(errfile);
 
 			execvp(cmd, cmdargs);
@@ -1187,33 +1220,28 @@ int start_ping_service(service_t *service)
 		else {
 			/* parent */
 			char ip[IP_ADDR_STRLEN+1];	/* Must have room for the \n at the end also */
-			int hnum, n;
+			int hnum;
 
 			close(pfd[0]);
 
 			/* Feed the IP's to test to the child */
-			for (t=service->items, hnum = 0; (t); t = t->next, hnum++) {
+			for (handle = xtreeFirst(iptree), hnum = 0; handle != xtreeEnd(iptree); handle = xtreeNext(iptree, handle), hnum++) {
 				if ((hnum % pingchildcount) != i) continue;
 
-				if (!t->host->dnserror && !t->host->noping) {
-					sprintf(ip, "%s\n", ip_to_test(t->host));
-					n = write(pfd[1], ip, strlen(ip));
-					pingcount++;
-					if (t->host->extrapings) {
-						ipping_t *walk;
-
-						for (walk = t->host->extrapings->iplist; (walk); walk = walk->next) {
-							sprintf(ip, "%s\n", walk->ip);
-							n = write(pfd[1], ip, strlen(ip));
-							pingcount++;
-						}
-					}
-				}
+				sprintf(ip, "%s\n", xtreeKey(iptree, handle));
+				write(pfd[1], ip, strlen(ip));
+				pingcount++;
 			}
 
 			close(pfd[1]);	/* This is when ping starts doing tests */
 		}
 	}
+
+	for (handle = xtreeFirst(iptree); handle != xtreeEnd(iptree); handle = xtreeNext(iptree, handle)) {
+		char *rec = xtreeKey(iptree, handle);
+		xfree(rec);
+	}
+	xtreeDestroy(iptree);
 
 	return 0;
 }
@@ -1253,7 +1281,7 @@ int finish_ping_service(service_t *service)
 
 			case 98:
 				failed = 1;
-				errprintf("xymonping child could not create outputfiles in %s\n", xgetenv("$XYMONTMP"));
+				errprintf("xymonping child could not create outputfiles in %s\n", xgetenv("XYMONTMP"));
 				break;
 
 			case 99:
@@ -1878,6 +1906,7 @@ void send_sslcert_status(testedhost_t *host)
 			if ((t->host == host) && t->certinfo && (t->certexpires > 0)) {
 				int sslcolor = COL_GREEN;
 				int ciphercolor = COL_GREEN;
+				int keycolor = COL_GREEN;
 
 				if (s == httptest) certowner = ((http_data_t *)t->privdata)->url;
 				else if (s == ldaptest) certowner = t->testspec;
@@ -1888,6 +1917,11 @@ void send_sslcert_status(testedhost_t *host)
 
 				if (host->mincipherbits && (t->mincipherbits < host->mincipherbits)) ciphercolor = COL_RED;
 				if (ciphercolor > color) color = ciphercolor;
+
+				if (sslminkeysize > 0) {
+					if ((t->certkeysz > 0) && (t->certkeysz < sslminkeysize)) keycolor = COL_YELLOW;
+					if (keycolor > color) color = keycolor;
+				}
 
 				if (t->certexpires > now) {
 					sprintf(msgline, "\n&%s SSL certificate for %s expires in %u days\n\n", 
@@ -1904,6 +1938,11 @@ void send_sslcert_status(testedhost_t *host)
 				if (host->mincipherbits) {
 					sprintf(msgline, "&%s Minimum available SSL encryption is %d bits (should be %d)\n",
 						colorname(ciphercolor), t->mincipherbits, host->mincipherbits);
+					addtobuffer(sslmsg, msgline);
+				}
+
+				if (keycolor != COL_GREEN) {
+					sprintf(msgline, "&%s Certificate public key size is less than %d bits\n", colorname(keycolor), sslminkeysize);
 					addtobuffer(sslmsg, msgline);
 				}
 				addtobuffer(sslmsg, "\n");
@@ -2105,6 +2144,13 @@ int main(int argc, char *argv[])
 		else if (argnmatch(argv[argi], "--validity=")) {
 			char *p = strchr(argv[argi], '=');
 			p++; validity = atoi(p);
+		}
+		else if (argnmatch(argv[argi], "--sslkeysize=")) {
+			char *p = strchr(argv[argi], '=');
+			p++; sslminkeysize = atoi(p);
+		}
+		else if (strcmp(argv[argi], "--no-cipherlist") == 0) {
+			sslincludecipherlist = 0;
 		}
 
 		/* Debugging options */
@@ -2316,7 +2362,9 @@ int main(int argc, char *argv[])
 					t->open = testresult->open;
 					t->banner = dupstrbuffer(testresult->banner);
 					t->certinfo = testresult->certinfo;
+					t->certissuer = testresult->certissuer;
 					t->certexpires = testresult->certexpires;
+					t->certkeysz = testresult->certkeysz;
 					t->mincipherbits = testresult->mincipherbits;
 					t->duration.tv_sec = testresult->duration.tv_sec;
 					t->duration.tv_nsec = testresult->duration.tv_nsec;
@@ -2334,7 +2382,9 @@ int main(int argc, char *argv[])
 			http_data_t *testresult = (http_data_t *)t->privdata;
 
 			t->certinfo = testresult->tcptest->certinfo;
+			t->certissuer = testresult->tcptest->certissuer;
 			t->certexpires = testresult->tcptest->certexpires;
+			t->certkeysz = testresult->tcptest->certkeysz;
 			t->mincipherbits = testresult->tcptest->mincipherbits;
 		}
 	}
@@ -2355,8 +2405,10 @@ int main(int argc, char *argv[])
 			ldap_data_t *testresult = (ldap_data_t *)t->privdata;
 
 			t->certinfo = testresult->certinfo;
+			t->certissuer = testresult->certissuer;
 			t->mincipherbits = testresult->mincipherbits;
 			t->certexpires = testresult->certexpires;
+			t->certkeysz = testresult->certkeysz;
 		}
 	}
 	add_timestamp("LDAP tests result collection completed");
