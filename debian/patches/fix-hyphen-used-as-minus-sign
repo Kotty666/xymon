@@ -1,7 +1,7 @@
 Index: xymon/common/clientupdate.1
 ===================================================================
---- xymon.orig/common/clientupdate.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/common/clientupdate.1	2012-06-15 15:19:56.000000000 +0200
+--- xymon.orig/common/clientupdate.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/common/clientupdate.1	2012-07-24 00:52:08.000000000 +0200
 @@ -11,7 +11,7 @@
  
  When the Xymon client sends a normal client report to the Xymon
@@ -79,8 +79,8 @@ Index: xymon/common/clientupdate.1
  
 Index: xymon/common/hosts.cfg.5
 ===================================================================
---- xymon.orig/common/hosts.cfg.5	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/common/hosts.cfg.5	2012-06-15 15:25:36.000000000 +0200
+--- xymon.orig/common/hosts.cfg.5	2012-07-23 23:41:15.000000000 +0200
++++ xymon/common/hosts.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -70,7 +70,7 @@
  files are ignored: Files that begin with a dot, files that end
  with a tilde, RCS files that end with ",v", RPM package manager
@@ -311,7 +311,7 @@ Index: xymon/common/hosts.cfg.5
  prompted for the "Import Password", provide the temporary
  password you gave when exporting the certificate. Then
  provide a "PEM pass phrase" (twice) when prompted for one.
-@@ -1019,7 +1019,7 @@
+@@ -1016,7 +1016,7 @@
  
  .IP "HTTP Testing via proxy"
  \fBNOTE:\fR This is not enabled by default. You must
@@ -320,7 +320,7 @@ Index: xymon/common/hosts.cfg.5
  .I xymonnet(1)
  if you want to use this.
  
-@@ -1109,7 +1109,7 @@
+@@ -1106,7 +1106,7 @@
  SSLv2 or strong ciphers.
  
  The column name for the result of the content check is by default
@@ -329,7 +329,7 @@ Index: xymon/common/hosts.cfg.5
  option to xymonnet. See 
  .I xymonnet(1)
  for a description of this option.
-@@ -1131,20 +1131,20 @@
+@@ -1128,20 +1128,20 @@
  This syntax is deprecated. You should use the "cont"
  tag instead, see above.
  
@@ -353,7 +353,7 @@ Index: xymon/common/hosts.cfg.5
  .br
       <p>Given name<input type="text" name="givenname"></p>
  .br
-@@ -1163,8 +1163,8 @@
+@@ -1160,8 +1160,8 @@
  Note that any spaces in the input value is replaced with '+'.
  
  If your form-data requires a different content-type, you can specify
@@ -364,7 +364,7 @@ Index: xymon/common/hosts.cfg.5
  that as with normal forms, the POST data should be specified using
  escape-sequences for reserved characters: "space" should be
  entered as "\\x20", double quote as "\\x22", newline as "\\n",
-@@ -1186,7 +1186,7 @@
+@@ -1183,7 +1183,7 @@
  watch for data that should NOT be present in the response,
  e.g. a server error message.
  
@@ -373,7 +373,7 @@ Index: xymon/common/hosts.cfg.5
  This tag works just like "post" tag, but reverses the test. 
  It is green when the "forbidden_data_regexp" is NOT found in
  the response, and red when it IS found. So it can be used to 
-@@ -1196,14 +1196,14 @@
+@@ -1193,14 +1193,14 @@
  .IP type[=COLUMN];URL;expected_content_type
  This is a variant of the content check - instead of checking
  the content data, it checks the type of the data as given by 
@@ -390,7 +390,7 @@ Index: xymon/common/hosts.cfg.5
  a "SOAPAction" header with the URL. SOAPMESSAGE is the SOAP
  message sent to the server. Since SOAP messages are usually
  XML documents, you can store this in a separate file by
-@@ -1239,19 +1239,19 @@
+@@ -1236,19 +1236,19 @@
  webpages.
  
  .IP browser=BROWSERNAME
@@ -414,7 +414,7 @@ Index: xymon/common/hosts.cfg.5
  
  .SH LDAP (DIRECTORY SERVER) TESTS
  .IP ldap
-@@ -1300,24 +1300,24 @@
+@@ -1297,24 +1297,24 @@
  If you are running an Apache web server, adding this tag makes
  .I xymonnet(1)
  collect performance statistics from the Apache web server by
@@ -447,8 +447,8 @@ Index: xymon/common/hosts.cfg.5
  .br
 Index: xymon/common/logfetch.1
 ===================================================================
---- xymon.orig/common/logfetch.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/common/logfetch.1	2012-06-15 15:29:31.000000000 +0200
+--- xymon.orig/common/logfetch.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/common/logfetch.1	2012-07-24 00:52:08.000000000 +0200
 @@ -25,7 +25,7 @@
  logfetch needs read access to the logfiles it should monitor. If you 
  configure monitoring of files or directories through the "file:"
@@ -471,8 +471,8 @@ Index: xymon/common/logfetch.1
  does report directory sizes in kilobytes.
 Index: xymon/common/xymon.1
 ===================================================================
---- xymon.orig/common/xymon.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/common/xymon.1	2012-06-15 15:19:01.000000000 +0200
+--- xymon.orig/common/xymon.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/common/xymon.1	2012-07-24 00:52:08.000000000 +0200
 @@ -16,25 +16,25 @@
  hosts that are down for longer periods of time.
  
@@ -562,7 +562,7 @@ Index: xymon/common/xymon.1
  man-page.
  
  The ackmsg, dismsg and msg fields have certain characters encoded: Newline
-@@ -452,7 +452,7 @@
+@@ -464,7 +464,7 @@
  Send the same status message, but using HTTP protocol via the
  webserver\(aqs xymoncgimsg.cgi script:
  .br
@@ -571,7 +571,7 @@ Index: xymon/common/xymon.1
  
  Use "query" message to determine the color of the "www" test, and
  restart Apache if it is red:
-@@ -466,7 +466,7 @@
+@@ -478,7 +478,7 @@
  .br
  
     $ $XYMON $XYMSRV "config mytest.cfg" >/tmp/mytest.cfg.new
@@ -582,8 +582,8 @@ Index: xymon/common/xymon.1
  
 Index: xymon/common/xymonclient.cfg.5
 ===================================================================
---- xymon.orig/common/xymonclient.cfg.5	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/common/xymonclient.cfg.5	2012-06-15 15:29:55.000000000 +0200
+--- xymon.orig/common/xymonclient.cfg.5	2012-07-23 23:41:15.000000000 +0200
++++ xymon/common/xymonclient.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -50,7 +50,7 @@
  script which launches the Xymon client:
  
@@ -604,8 +604,8 @@ Index: xymon/common/xymonclient.cfg.5
  The top-level directory for the Xymon client. Default: The location
 Index: xymon/common/xymoncmd.1
 ===================================================================
---- xymon.orig/common/xymoncmd.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/common/xymoncmd.1	2012-06-15 15:17:52.000000000 +0200
+--- xymon.orig/common/xymoncmd.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/common/xymoncmd.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymoncmd \- Run a Xymon command with environment set
@@ -638,8 +638,8 @@ Index: xymon/common/xymoncmd.1
  
 Index: xymon/common/xymondigest.1
 ===================================================================
---- xymon.orig/common/xymondigest.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/common/xymondigest.1	2012-06-15 15:29:45.000000000 +0200
+--- xymon.orig/common/xymondigest.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/common/xymondigest.1	2012-07-24 00:52:08.000000000 +0200
 @@ -31,7 +31,7 @@
     $ xymondigest md5 index.html
     md5:88b81b110a85c83db56a939caa2e2cf6
@@ -651,8 +651,8 @@ Index: xymon/common/xymondigest.1
  .SH "SEE ALSO"
 Index: xymon/common/xymongrep.1
 ===================================================================
---- xymon.orig/common/xymongrep.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/common/xymongrep.1	2012-06-15 15:29:08.000000000 +0200
+--- xymon.orig/common/xymongrep.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/common/xymongrep.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,11 +2,11 @@
  .SH NAME
  xymongrep \- pick out lines in hosts.cfg
@@ -716,8 +716,8 @@ Index: xymon/common/xymongrep.1
  
 Index: xymon/common/xymonserver.cfg.5
 ===================================================================
---- xymon.orig/common/xymonserver.cfg.5	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/common/xymonserver.cfg.5	2012-06-15 15:27:59.000000000 +0200
+--- xymon.orig/common/xymonserver.cfg.5	2012-07-23 23:41:15.000000000 +0200
++++ xymon/common/xymonserver.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -28,7 +28,7 @@
    management/XYMSERVERS="10.1.0.5"  # Definition in the "management" area
  .fi
@@ -727,7 +727,7 @@ Index: xymon/common/xymonserver.cfg.5
  ENVAREA setting in the
  .I tasks.cfg(5)
  file.
-@@ -95,11 +95,11 @@
+@@ -101,11 +101,11 @@
  .IP HTMLCONTENTTYPE
  The Content-type reported by the CGI scripts that generate web pages.
  By default, this it "text/html". If you have on-line help texts in
@@ -741,7 +741,7 @@ Index: xymon/common/xymonserver.cfg.5
  .br
  for a Japanese character sets. Note: Some webservers will automatically
  add this, if configured to do so.
-@@ -195,13 +195,13 @@
+@@ -201,13 +201,13 @@
  
  .IP XYMONRAWSTATUSDIR
  Directory for storing the raw status-logs. Not used unless
@@ -757,7 +757,7 @@ Index: xymon/common/xymonserver.cfg.5
  since it increases the load on the Xymon server significantly.
  Default: $XYMONHOME/www/html/
  
-@@ -242,7 +242,7 @@
+@@ -248,7 +248,7 @@
  Directory where debug output from CGI applications are stored. If not
  specified, it defaults to $XYMONSERVERLOGS, but this is often a directory
  that is not writable by the userid running the CGI applications. It
@@ -766,7 +766,7 @@ Index: xymon/common/xymonserver.cfg.5
  you create a separate directory owned by the user running your webserver,
  and point XYMONCGILOGDIR to this directory.
  
-@@ -269,13 +269,13 @@
+@@ -275,13 +275,13 @@
  .IP XYMONSERVERWWWURL
  The root URL for the Xymon webpages, without the hostname. This
  URL must be mapped to the ~/server/www/ directory in your webserver
@@ -783,7 +783,7 @@ Index: xymon/common/xymonserver.cfg.5
  
  .IP XYMONWEBHOST
  Initial part of the Xymon URL, including just the protocol and the
-@@ -470,7 +470,7 @@
+@@ -476,7 +476,7 @@
  
  .IP MAIL
  Command used to send alerts via e-mail, including a "Subject:"
@@ -792,7 +792,7 @@ Index: xymon/common/xymonserver.cfg.5
  
  .IP MAILC
  Command used to send alerts via e-mail in a form that does not
-@@ -572,7 +572,7 @@
+@@ -578,7 +578,7 @@
  requested via the "trace" tag, the TRACEROUTE command
  is executed to try to determine the point in the
  network that is causing the problem. By default the
@@ -801,7 +801,7 @@ Index: xymon/common/xymonserver.cfg.5
  (no DNS lookup, max. 2 probes, wait 2 seconds per hop,
  max 15 hops).
  .sp
-@@ -580,7 +580,7 @@
+@@ -586,7 +586,7 @@
  .I mtr(8)
  tool installed - available from http://www.bitwizard.nl/mtr/ - I
  strongly recommend using this instead. The recommended
@@ -810,7 +810,7 @@ Index: xymon/common/xymonserver.cfg.5
  exact path to the mtr utility may be different on your 
  system).  Note that mtr needs to be installed suid-root 
  on most systems.
-@@ -649,8 +649,8 @@
+@@ -655,8 +655,8 @@
  21:59:47 2004". The XYMONDATEFORMAT controls the format of this
  timestamp - you can define the format using the controls in the 
  .I strftime(3)
@@ -821,7 +821,7 @@ Index: xymon/common/xymonserver.cfg.5
  
  .IP HOLIDAYFORMAT
  How holiday dates are displayed. The default is "%d/%m" which
-@@ -665,7 +665,7 @@
+@@ -671,7 +671,7 @@
  the maximum number of rows before repeating the column headings
  on a webpage. This sets the default value for the 
  .I xymongen(1)
@@ -830,7 +830,7 @@ Index: xymon/common/xymonserver.cfg.5
  then it overrides this environment variable. Note that unlike
  Jeff's patch, xymongen implements this for both the "All non-green" 
  page and all other pages (xymon.html, subpages, critical.html). 
-@@ -691,7 +691,7 @@
+@@ -697,7 +697,7 @@
  .IP XYMONRSSTITLE
  If defined, this is the title of the RSS/RDF documents generated when
  .I xymongen(1)
@@ -839,7 +839,7 @@ Index: xymon/common/xymonserver.cfg.5
  
  .IP WMLMAXCHARS
  Maximum size of a WAP/WML output "card" when generating these.
-@@ -715,7 +715,7 @@
+@@ -721,7 +721,7 @@
  
  .IP XYMONGENREPOPTS
  Default xymongen options used for reports. This will typically include
@@ -850,8 +850,8 @@ Index: xymon/common/xymonserver.cfg.5
  .IP XYMONGENSNAPOPTS
 Index: xymon/web/ackinfo.cgi.1
 ===================================================================
---- xymon.orig/web/ackinfo.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/ackinfo.cgi.1	2012-06-15 14:43:35.000000000 +0200
+--- xymon.orig/web/ackinfo.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/ackinfo.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -22,27 +22,27 @@
  will also be used for acknowledging alerts at other levels.
  
@@ -889,8 +889,8 @@ Index: xymon/web/ackinfo.cgi.1
  .SH "ENVIRONMENT VARIABLES"
 Index: xymon/web/acknowledge.cgi.1
 ===================================================================
---- xymon.orig/web/acknowledge.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/acknowledge.cgi.1	2012-06-15 14:53:37.000000000 +0200
+--- xymon.orig/web/acknowledge.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/acknowledge.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -25,23 +25,23 @@
  is expected to be resolved.
  
@@ -922,8 +922,8 @@ Index: xymon/web/acknowledge.cgi.1
  .SH FILES
 Index: xymon/web/appfeed.cgi.1
 ===================================================================
---- xymon.orig/web/appfeed.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/appfeed.cgi.1	2012-06-15 14:44:54.000000000 +0200
+--- xymon.orig/web/appfeed.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/appfeed.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -20,23 +20,23 @@
  
  If no filter is specified, appfeed.cgi returns data for all red, yellow or purple
@@ -963,8 +963,8 @@ Index: xymon/web/appfeed.cgi.1
  
 Index: xymon/web/cgioptions.cfg.5
 ===================================================================
---- xymon.orig/web/cgioptions.cfg.5	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/cgioptions.cfg.5	2012-06-15 14:47:33.000000000 +0200
+--- xymon.orig/web/cgioptions.cfg.5	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/cgioptions.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -108,7 +108,7 @@
  Options for the
  .I svcstatus.cgi(1)
@@ -976,8 +976,8 @@ Index: xymon/web/cgioptions.cfg.5
  Options for the
 Index: xymon/web/confreport.cgi.1
 ===================================================================
---- xymon.orig/web/confreport.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/confreport.cgi.1	2012-06-15 14:46:50.000000000 +0200
+--- xymon.orig/web/confreport.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/confreport.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -23,25 +23,25 @@
  the Xymon system.
  
@@ -1013,8 +1013,8 @@ Index: xymon/web/confreport.cgi.1
  $XYMONHOME/etc/critical.cfg
 Index: xymon/web/criticaleditor.cgi.1
 ===================================================================
---- xymon.orig/web/criticaleditor.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/criticaleditor.cgi.1	2012-06-15 14:55:43.000000000 +0200
+--- xymon.orig/web/criticaleditor.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/criticaleditor.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -22,18 +22,18 @@
  impact the monitoring of your site.
  
@@ -1041,8 +1041,8 @@ Index: xymon/web/criticaleditor.cgi.1
  .SH "SEE ALSO"
 Index: xymon/web/criticalview.cgi.1
 ===================================================================
---- xymon.orig/web/criticalview.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/criticalview.cgi.1	2012-06-15 14:55:59.000000000 +0200
+--- xymon.orig/web/criticalview.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/criticalview.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -19,38 +19,38 @@
  that You switch to the newer Critical Systems view provided by this CGI.
  
@@ -1093,8 +1093,8 @@ Index: xymon/web/criticalview.cgi.1
  page prior to the critical systems from FILENAME. This option can be
 Index: xymon/web/csvinfo.cgi.1
 ===================================================================
---- xymon.orig/web/csvinfo.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/csvinfo.cgi.1	2012-06-15 14:57:26.000000000 +0200
+--- xymon.orig/web/csvinfo.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/csvinfo.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -32,14 +32,14 @@
  as $XYMONHOME/etc/hostinfo.csv, and the hostname is in the first column
  of the file.
@@ -1115,8 +1115,8 @@ Index: xymon/web/csvinfo.cgi.1
  hosts.cfg(5), xymonserver.cfg(5), xymongen(1)
 Index: xymon/web/datepage.cgi.1
 ===================================================================
---- xymon.orig/web/datepage.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/datepage.cgi.1	2012-06-15 14:58:08.000000000 +0200
+--- xymon.orig/web/datepage.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/datepage.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  datepage.cgi \- Xymon CGI script to view pre-built reports by date
@@ -1155,8 +1155,8 @@ Index: xymon/web/datepage.cgi.1
  .IP "$XYMONHOME/web/report_form_daily"
 Index: xymon/web/enadis.cgi.8
 ===================================================================
---- xymon.orig/web/enadis.cgi.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/enadis.cgi.8	2012-06-15 14:54:16.000000000 +0200
+--- xymon.orig/web/enadis.cgi.8	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/enadis.cgi.8	2012-07-24 00:52:08.000000000 +0200
 @@ -21,19 +21,19 @@
  
  
@@ -1184,8 +1184,8 @@ Index: xymon/web/enadis.cgi.8
  .IP "$XYMONHOME/web/maint_{header,form,footer}"
 Index: xymon/web/graphs.cfg.5
 ===================================================================
---- xymon.orig/web/graphs.cfg.5	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/graphs.cfg.5	2012-06-15 14:54:52.000000000 +0200
+--- xymon.orig/web/graphs.cfg.5	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/graphs.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -82,9 +82,9 @@
  .br
          LINE2:p@RRDIDX@#@COLOR@:@RRDPARAM@
@@ -1209,8 +1209,8 @@ Index: xymon/web/graphs.cfg.5
  xymonserver.cfg(5), rrdtool(1), rrdgraph(1)
 Index: xymon/web/report.cgi.1
 ===================================================================
---- xymon.orig/web/report.cgi.1	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/web/report.cgi.1	2012-06-15 14:48:52.000000000 +0200
+--- xymon.orig/web/report.cgi.1	2012-07-23 23:41:15.000000000 +0200
++++ xymon/web/report.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  report.cgi \- CGI front-end to xymongen reporting
@@ -1267,8 +1267,8 @@ Index: xymon/web/report.cgi.1
  .IP xymongen-options
 Index: xymon/web/showgraph.cgi.1
 ===================================================================
---- xymon.orig/web/showgraph.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/showgraph.cgi.1	2012-06-15 14:55:25.000000000 +0200
+--- xymon.orig/web/showgraph.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/showgraph.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -35,12 +35,12 @@
  .BR upper
  Set the upper limit of the graph. See
@@ -1317,8 +1317,8 @@ Index: xymon/web/showgraph.cgi.1
  .SH ENVIRONMENT
 Index: xymon/web/snapshot.cgi.1
 ===================================================================
---- xymon.orig/web/snapshot.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/snapshot.cgi.1	2012-06-15 14:50:38.000000000 +0200
+--- xymon.orig/web/snapshot.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/snapshot.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -31,14 +31,14 @@
  All of the processing involved in generating the report is done 
  by invoking 
@@ -1339,8 +1339,8 @@ Index: xymon/web/snapshot.cgi.1
  
 Index: xymon/web/statusreport.cgi.1
 ===================================================================
---- xymon.orig/web/statusreport.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/statusreport.cgi.1	2012-06-15 14:56:40.000000000 +0200
+--- xymon.orig/web/statusreport.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/statusreport.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  statusreport.cgi \- CGI program to report a status for a group of servers
@@ -1431,8 +1431,8 @@ Index: xymon/web/statusreport.cgi.1
  xymon(7)
 Index: xymon/web/svcstatus.cgi.1
 ===================================================================
---- xymon.orig/web/svcstatus.cgi.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/svcstatus.cgi.1	2012-06-15 14:51:53.000000000 +0200
+--- xymon.orig/web/svcstatus.cgi.1	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/svcstatus.cgi.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  svcstatus.cgi \- CGI program to view Xymon status logs
@@ -1521,11 +1521,11 @@ Index: xymon/web/svcstatus.cgi.1
  $XYMONHOME/etc/critical.cfg
 Index: xymon/web/xymonwebaccess.5
 ===================================================================
---- xymon.orig/web/xymonwebaccess.5	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/web/xymonwebaccess.5	2012-06-15 14:45:38.000000000 +0200
+--- xymon.orig/web/xymonwebaccess.5	2012-07-23 23:13:25.000000000 +0200
++++ xymon/web/xymonwebaccess.5	2012-07-24 00:52:08.000000000 +0200
 @@ -1,6 +1,6 @@
--.TH XYMON-WEBACCESS 5 "Version 4.3.7: 13 Dec 2011" "Xymon"
-+.TH XYMON\-WEBACCESS 5 "Version 4.3.7: 13 Dec 2011" "Xymon"
+-.TH XYMON-WEBACCESS 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
++.TH XYMON\-WEBACCESS 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
  .SH NAME
 -xymon-webaccess \- Web-based access controls in Xymon
 +xymon\-webaccess \- Web-based access controls in Xymon
@@ -1551,8 +1551,8 @@ Index: xymon/web/xymonwebaccess.5
  .I svcstatus.cgi(1)
 Index: xymon/xymond/analysis.cfg.5
 ===================================================================
---- xymon.orig/xymond/analysis.cfg.5	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymond/analysis.cfg.5	2012-06-15 15:12:41.000000000 +0200
+--- xymon.orig/xymond/analysis.cfg.5	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymond/analysis.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -38,7 +38,7 @@
  minutes, or you can add h/d/w for hours/days/weeks - eg. "2h" for
  two hours, or "4w" for 4 weeks.
@@ -1692,11 +1692,11 @@ Index: xymon/xymond/analysis.cfg.5
  
 Index: xymon/xymond/client-local.cfg.5
 ===================================================================
---- xymon.orig/xymond/client-local.cfg.5	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/client-local.cfg.5	2012-06-15 15:13:33.000000000 +0200
+--- xymon.orig/xymond/client-local.cfg.5	2012-07-23 23:13:25.000000000 +0200
++++ xymon/xymond/client-local.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -1,34 +1,34 @@
--.TH CLIENT-LOCAL.CFG 5 "Version 4.3.7: 13 Dec 2011" "Xymon"
-+.TH CLIENT\-LOCAL.CFG 5 "Version 4.3.7: 13 Dec 2011" "Xymon"
+-.TH CLIENT-LOCAL.CFG 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
++.TH CLIENT\-LOCAL.CFG 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
  .SH NAME
 -client-local.cfg \- Local configuration settings for Xymon clients
 +client\-local.cfg \- Local configuration settings for Xymon clients
@@ -1766,8 +1766,8 @@ Index: xymon/xymond/client-local.cfg.5
  
 Index: xymon/xymond/combostatus.1
 ===================================================================
---- xymon.orig/xymond/combostatus.1	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymond/combostatus.1	2012-06-15 15:06:03.000000000 +0200
+--- xymon.orig/xymond/combostatus.1	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymond/combostatus.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,11 +2,11 @@
  .SH NAME
  combostatus \- Xymon combination test tool
@@ -1814,8 +1814,8 @@ Index: xymon/xymond/combostatus.1
  
 Index: xymon/xymond/trimhistory.8
 ===================================================================
---- xymon.orig/xymond/trimhistory.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/trimhistory.8	2012-06-15 15:08:57.000000000 +0200
+--- xymon.orig/xymond/trimhistory.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/trimhistory.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  trimhistory \- Remove old Xymon history-log entries
@@ -1883,11 +1883,11 @@ Index: xymon/xymond/trimhistory.8
  
 Index: xymon/xymond/xymon-mailack.8
 ===================================================================
---- xymon.orig/xymond/xymon-mailack.8	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymond/xymon-mailack.8	2012-06-15 15:09:55.000000000 +0200
+--- xymon.orig/xymond/xymon-mailack.8	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymond/xymon-mailack.8	2012-07-24 00:52:08.000000000 +0200
 @@ -1,14 +1,14 @@
--.TH XYMON-MAILACK 8 "Version 4.3.7: 13 Dec 2011" "Xymon"
-+.TH XYMON\-MAILACK 8 "Version 4.3.7: 13 Dec 2011" "Xymon"
+-.TH XYMON-MAILACK 8 "Version 4.3.8: 15 Jul 2012" "Xymon"
++.TH XYMON\-MAILACK 8 "Version 4.3.8: 15 Jul 2012" "Xymon"
  .SH NAME
 -xymon-mailack \- permit acknowledging alerts via e-mail
 +xymon\-mailack \- permit acknowledging alerts via e-mail
@@ -1943,8 +1943,8 @@ Index: xymon/xymond/xymon-mailack.8
  
 Index: xymon/xymond/xymond.8
 ===================================================================
---- xymon.orig/xymond/xymond.8	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymond/xymond.8	2012-06-15 15:05:29.000000000 +0200
+--- xymon.orig/xymond/xymond.8	2012-07-24 00:21:53.000000000 +0200
++++ xymon/xymond/xymond.8	2012-07-24 00:52:08.000000000 +0200
 @@ -25,29 +25,29 @@
  in the tasks.cfg file.
  
@@ -2125,9 +2125,9 @@ Index: xymon/xymond/xymond.8
  
 -.IP "--no-download"
 +.IP "\-\-no\-download"
- Disable the "download" and "config" commands which can be used by clients
- to pull files from the Xymon server. The use of these may be seen as a 
- security risk since they allow file downloads.
+ Disable the "download" command which can be used by clients to pull files 
+ from the Xymon server. The use of these may be seen as a security risk since 
+ they allow file downloads.
  
 -.IP "--debug"
 +.IP "\-\-debug"
@@ -2158,8 +2158,8 @@ Index: xymon/xymond/xymond.8
  .SH "SEE ALSO"
 Index: xymon/xymond/xymond_alert.8
 ===================================================================
---- xymon.orig/xymond/xymond_alert.8	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymond/xymond_alert.8	2012-06-15 15:17:16.000000000 +0200
+--- xymon.orig/xymond/xymond_alert.8	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymond/xymond_alert.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymond_alert \- xymond worker module for sending out alerts
@@ -2251,8 +2251,8 @@ Index: xymon/xymond/xymond_alert.8
  
 Index: xymon/xymond/xymond_capture.8
 ===================================================================
---- xymon.orig/xymond/xymond_capture.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/xymond_capture.8	2012-06-15 15:08:06.000000000 +0200
+--- xymon.orig/xymond/xymond_capture.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/xymond_capture.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymond_capture \- catch selected messages from a xymond channel
@@ -2315,8 +2315,8 @@ Index: xymon/xymond/xymond_capture.8
  .SH "SEE ALSO"
 Index: xymon/xymond/xymond_client.8
 ===================================================================
---- xymon.orig/xymond/xymond_client.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/xymond_client.8	2012-06-15 15:07:40.000000000 +0200
+--- xymon.orig/xymond/xymond_client.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/xymond_client.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymond_client \- xymond worker module for client data
@@ -2400,8 +2400,8 @@ Index: xymon/xymond/xymond_client.8
  .SH FILES
 Index: xymon/xymond/xymond_filestore.8
 ===================================================================
---- xymon.orig/xymond/xymond_filestore.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/xymond_filestore.8	2012-06-15 15:14:08.000000000 +0200
+--- xymon.orig/xymond/xymond_filestore.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/xymond_filestore.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,13 +2,13 @@
  .SH NAME
  xymond_filestore \- xymond worker module for storing Xymon data
@@ -2495,8 +2495,8 @@ Index: xymon/xymond/xymond_filestore.8
  .SH FILES
 Index: xymon/xymond/xymond_history.8
 ===================================================================
---- xymon.orig/xymond/xymond_history.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/xymond_history.8	2012-06-15 15:06:34.000000000 +0200
+--- xymon.orig/xymond/xymond_history.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/xymond_history.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymond_history \- xymond worker module for logging status changes 
@@ -2549,8 +2549,8 @@ Index: xymon/xymond/xymond_history.8
  This module does not rely on any configuration files.
 Index: xymon/xymond/xymond_hostdata.8
 ===================================================================
---- xymon.orig/xymond/xymond_hostdata.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/xymond_hostdata.8	2012-06-15 15:09:12.000000000 +0200
+--- xymon.orig/xymond/xymond_hostdata.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/xymond_hostdata.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymond_hostdata \- xymond worker module for storing historical client data
@@ -2582,8 +2582,8 @@ Index: xymon/xymond/xymond_hostdata.8
  .SH FILES
 Index: xymon/xymond/xymond_rrd.8
 ===================================================================
---- xymon.orig/xymond/xymond_rrd.8	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymond/xymond_rrd.8	2012-06-15 15:16:36.000000000 +0200
+--- xymon.orig/xymond/xymond_rrd.8	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymond/xymond_rrd.8	2012-07-24 00:52:08.000000000 +0200
 @@ -2,9 +2,9 @@
  .SH NAME
  xymond_rrd \- xymond worker module for updating Xymon RRD files
@@ -2674,8 +2674,8 @@ Index: xymon/xymond/xymond_rrd.8
  	echo "DS:rainfall:DERIVE:600:0:100"
 Index: xymon/xymongen/xymongen.1
 ===================================================================
---- xymon.orig/xymongen/xymongen.1	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymongen/xymongen.1	2012-06-15 14:43:08.000000000 +0200
+--- xymon.orig/xymongen/xymongen.1	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymongen/xymongen.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,11 +2,11 @@
  .SH NAME
  xymongen \- Xymon webpage generator
@@ -3271,11 +3271,11 @@ Index: xymon/xymongen/xymongen.1
  The "XYMONWEB" setting means that the report will be available with
 Index: xymon/xymonnet/xymonnet-again.sh.1
 ===================================================================
---- xymon.orig/xymonnet/xymonnet-again.sh.1	2012-06-12 17:12:22.000000000 +0200
-+++ xymon/xymonnet/xymonnet-again.sh.1	2012-06-15 15:03:16.000000000 +0200
+--- xymon.orig/xymonnet/xymonnet-again.sh.1	2012-07-23 23:13:26.000000000 +0200
++++ xymon/xymonnet/xymonnet-again.sh.1	2012-07-24 00:52:08.000000000 +0200
 @@ -1,11 +1,11 @@
--.TH XYMONNET-AGAIN.SH 1 "Version 4.3.7: 13 Dec 2011" "Xymon"
-+.TH XYMONNET\-AGAIN.SH 1 "Version 4.3.7: 13 Dec 2011" "Xymon"
+-.TH XYMONNET-AGAIN.SH 1 "Version 4.3.8: 15 Jul 2012" "Xymon"
++.TH XYMONNET\-AGAIN.SH 1 "Version 4.3.8: 15 Jul 2012" "Xymon"
  .SH NAME
 -xymonnet-again.sh \- Xymon network re-test tool
 +xymonnet\-again.sh \- Xymon network re-test tool
@@ -3314,8 +3314,8 @@ Index: xymon/xymonnet/xymonnet-again.sh.1
  xymonnet(1), xymon(7), tasks.cfg(5)
 Index: xymon/xymonnet/xymonnet.1
 ===================================================================
---- xymon.orig/xymonnet/xymonnet.1	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymonnet/xymonnet.1	2012-06-15 15:01:46.000000000 +0200
+--- xymon.orig/xymonnet/xymonnet.1	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymonnet/xymonnet.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymonnet \- Xymon network test tool
@@ -3392,7 +3392,7 @@ Index: xymon/xymonnet/xymonnet.1
  .br
 -With "--dns=only" xymonnet will ONLY do the DNS lookup;
 +With "\-\-dns=only" xymonnet will ONLY do the DNS lookup;
- it it fails, then all services on that host will be 
+ if it fails, then all services on that host will be 
  reported as being down.
  .br
 -With "--dns=ip" xymonnet will never do a DNS lookup;
@@ -3578,7 +3578,7 @@ Index: xymon/xymonnet/xymonnet.1
  Adhere to the Big Brother syntax for a URL, which allows specifying 
  a HTTP proxy as part of a URL. See \fB"HTTP Testing via proxy"\fR in the
  .I hosts.cfg(5) 
-@@ -281,58 +281,58 @@
+@@ -281,28 +281,28 @@
  common. This option restores the old Big Brother-compatible behaviour.
  
  .SH OPTIONS FOR SSL CERTIFICATE TESTS
@@ -3609,6 +3609,19 @@ Index: xymon/xymonnet/xymonnet.1
  "sslbits=N" setting in 
  .I hosts.cfg(5)
  
+-.IP --sslkeysize=N
++.IP \-\-sslkeysize=N
+ Enables checking of the length of the public key in SSL certificates.
+ N is the minimum size of the SSL public key, typically such keys
+ are 2048 bits, but some older certificates may use keys with 1024 bits
+@@ -310,28 +310,28 @@
+ bits will result in the "sslcert" status going yellow.
+ Default: 0, i.e. this check is disabled.
+ 
+-.IP --no-cipherlist
++.IP \-\-no\-cipherlist
+ Do not show the list of encryption ciphers on the "sslcert" status.
+ 
  
  .SH DEBUGGING OPTIONS
 -.IP --no-update
@@ -3636,95 +3649,10 @@ Index: xymon/xymonnet/xymonnet.1
  Dumps internal memory structures before and/or after the
  tests have executed.
  
- 
- .SH INFORMATIONAL OPTIONS
--.IP "--help or -?"
-+.IP "\-\-help or \-?"
- Provide a summary of available command-line options.
- 
--.IP "--version"
-+.IP "\-\-version"
- Prints the version number of xymonnet
- 
--.IP --services
-+.IP \-\-services
- Dump the list of defined TCP services xymonnet knows
- how to test. Do not run any tests.
- 
-@@ -344,7 +344,7 @@
- http://www.netscape.com/newsref/std/cookie_spec.html for details
- on this format. The
- .I curl(1)
--utility can output a file in this format if run with the "--cookie-jar FILENAME"
-+utility can output a file in this format if run with the "\-\-cookie\-jar FILENAME"
- option.
- 
- 
-@@ -416,13 +416,13 @@
- 
- For a discussion of the various ways of running encrypted ldap, see
- .br
--http://www.openldap.org/lists/openldap-software/200305/msg00079.html
-+http://www.openldap.org/lists/openldap\-software/200305/msg00079.html
- .br
--http://www.openldap.org/lists/openldap-software/200305/msg00084.html
-+http://www.openldap.org/lists/openldap\-software/200305/msg00084.html
- .br
--http://www.openldap.org/lists/openldap-software/200201/msg00042.html
-+http://www.openldap.org/lists/openldap\-software/200201/msg00042.html
- .br
--http://www.openldap.org/lists/openldap-software/200206/msg00387.html
-+http://www.openldap.org/lists/openldap\-software/200206/msg00387.html
- 
- When testing LDAP URI's, all of the communications are handled 
- by the ldap library. Therefore, it is not possible to obtain the 
-@@ -467,10 +467,10 @@
- which amounts to 256 on many Unix systems.
- 
- You can choose the number of concurrent connections with the
--"--concurrency=N" option to xymonnet.
-+"\-\-concurrency=N" option to xymonnet.
- 
- Connection attempts timeout after 10 seconds - this can be
--changed with the "--timeout=N" option.
-+changed with the "\-\-timeout=N" option.
- 
- Both of these settings play a part in deciding how long the testing
- takes. A conservative estimate for doing N TCP tests is:
-@@ -573,7 +573,7 @@
- present in order for the check to complete, then you can add
- this cookie to this file, and it will be sent along with the 
- HTTP request. To get the cookies into this file, you can use
--the "curl --cookie-jar FILE" to request the URL that sets
-+the "curl \-\-cookie\-jar FILE" to request the URL that sets
- the cookie.
- .sp
- .IP "$XYMONTMP/*.status - test status summary"
-@@ -582,7 +582,7 @@
- TESTNAME.[LOCATION].status. The LOCATION part may be null. This
- file is used to determine how long the failure has lasted, which
- in turn decides if this test should be included in the tests done by
--.I xymonnet-again.sh(1)
-+.I xymonnet\-again.sh(1)
- .br
- It is also used internally by xymonnet when determining the
- color for tests that use the "badconn" or "badTESTNAME" tags.
-@@ -590,9 +590,9 @@
- .IP $XYMONTMP/frequenttests.[LOCATION]
- This file contains the hostnames of those hosts that should be
- retested by the
--.I xymonnet-again.sh(1)
-+.I xymonnet\-again.sh(1)
- test tool. It is updated only by xymonnet during the normal
--runs, and read by xymonnet-again.sh.
-+runs, and read by xymonnet\-again.sh.
- 
- .SH "SEE ALSO"
- hosts.cfg(5), protocols.cfg(5), xymonserver.cfg(5), xymonping(1),
 Index: xymon/xymonnet/xymonping.1
 ===================================================================
---- xymon.orig/xymonnet/xymonping.1	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymonnet/xymonping.1	2012-06-15 15:02:35.000000000 +0200
+--- xymon.orig/xymonnet/xymonping.1	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymonnet/xymonping.1	2012-07-24 00:52:08.000000000 +0200
 @@ -2,7 +2,7 @@
  .SH NAME
  xymonping \- Xymon ping tool
@@ -3794,8 +3722,8 @@ Index: xymon/xymonnet/xymonping.1
  .SH "SEE ALSO"
 Index: xymon/xymonproxy/xymonproxy.8
 ===================================================================
---- xymon.orig/xymonproxy/xymonproxy.8	2012-06-15 14:17:10.000000000 +0200
-+++ xymon/xymonproxy/xymonproxy.8	2012-06-15 14:26:11.000000000 +0200
+--- xymon.orig/xymonproxy/xymonproxy.8	2012-07-23 23:41:15.000000000 +0200
++++ xymon/xymonproxy/xymonproxy.8	2012-07-24 00:52:08.000000000 +0200
 @@ -3,7 +3,7 @@
  .SH NAME
  xymonproxy \- Xymon message proxy

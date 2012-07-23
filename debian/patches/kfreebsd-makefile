@@ -3,7 +3,7 @@ Add Makefile for GNU/kFreeBSD
 Index: xymon/build/Makefile.GNU_kFreeBSD
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ xymon/build/Makefile.GNU_kFreeBSD	2012-06-12 18:32:45.000000000 +0200
++++ xymon/build/Makefile.GNU_kFreeBSD	2012-07-23 23:40:57.000000000 +0200
 @@ -0,0 +1,27 @@
 +# bbgen compile-time settings for GNU/kFreeBSD systems
 +
@@ -34,9 +34,9 @@ Index: xymon/build/Makefile.GNU_kFreeBSD
 +
 Index: xymon/configure.server
 ===================================================================
---- xymon.orig/configure.server	2012-06-12 18:32:39.000000000 +0200
-+++ xymon/configure.server	2012-06-12 18:32:45.000000000 +0200
-@@ -483,16 +483,17 @@
+--- xymon.orig/configure.server	2012-07-23 23:39:37.000000000 +0200
++++ xymon/configure.server	2012-07-23 23:40:57.000000000 +0200
+@@ -497,16 +497,17 @@
  echo "LFSDEF = $LFS"                     >>Makefile
  
  echo "" >>Makefile

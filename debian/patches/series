@@ -14,7 +14,6 @@ hobbit_files_ifexist
 580493-negative-timeoffset
 kfreebsd-makefile
 bbcombotest-fix
-622069-sslv2-deprecation
 fix-configure-for-multiarch
 png-multiarch
 hardening-buildflags

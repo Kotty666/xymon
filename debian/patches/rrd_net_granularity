@@ -1,21 +1,21 @@
 Index: xymon/xymond/rrd/do_net.c
 ===================================================================
---- xymon.orig/xymond/rrd/do_net.c	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymond/rrd/do_net.c	2011-09-30 00:36:35.000000000 +0200
-@@ -143,7 +143,7 @@
+--- xymon.orig/xymond/rrd/do_net.c	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymond/rrd/do_net.c	2012-07-23 23:40:33.000000000 +0200
+@@ -145,7 +145,7 @@
  		p = strstr(msg, "\nSeconds:");
  		if (p && (sscanf(p+1, "Seconds: %f", &seconds) == 1)) {
  			setupfn2("%s.%s.rrd", "tcp", testname);
--			sprintf(rrdvalues, "%d:%.2f", (int)tstamp, seconds);
-+			sprintf(rrdvalues, "%d:%f", (int)tstamp, seconds);
+-			snprintf(rrdvalues, sizeof(rrdvalues), "%d:%.2f", (int)tstamp, seconds);
++			snprintf(rrdvalues, sizeof(rrdvalues), "%d:%f", (int)tstamp, seconds);
  			return create_and_update_rrd(hostname, testname, classname, pagepaths, xymonnet_params, xymonnet_tpl);
  		}
  	}
 Index: xymon/xymonnet/xymonnet.c
 ===================================================================
---- xymon.orig/xymonnet/xymonnet.c	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymonnet/xymonnet.c	2011-09-30 00:36:35.000000000 +0200
-@@ -1742,8 +1742,8 @@
+--- xymon.orig/xymonnet/xymonnet.c	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymonnet/xymonnet.c	2012-07-23 23:40:33.000000000 +0200
+@@ -1770,8 +1770,8 @@
  		}
  
  		if (t->duration.tv_sec != -1) {
@@ -28,9 +28,9 @@ Index: xymon/xymonnet/xymonnet.c
  		addtostatus("\n\n");
 Index: xymon/xymonnet/dns.c
 ===================================================================
---- xymon.orig/xymonnet/dns.c	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymonnet/dns.c	2011-09-30 00:36:35.000000000 +0200
-@@ -349,7 +349,7 @@
+--- xymon.orig/xymonnet/dns.c	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymonnet/dns.c	2012-07-23 23:40:33.000000000 +0200
+@@ -357,7 +357,7 @@
  		tst = strtok(NULL, ",");
  	}
  	xfree(tspec);
@@ -41,8 +41,8 @@ Index: xymon/xymonnet/dns.c
  	ares_destroy(channel);
 Index: xymon/xymonnet/httpresult.c
 ===================================================================
---- xymon.orig/xymonnet/httpresult.c	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymonnet/httpresult.c	2011-09-30 00:36:35.000000000 +0200
+--- xymon.orig/xymonnet/httpresult.c	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymonnet/httpresult.c	2012-07-23 23:40:33.000000000 +0200
 @@ -295,9 +295,9 @@
  			}
  			if (req->faileddeps) addtostatus(req->faileddeps);
@@ -58,8 +58,8 @@ Index: xymon/xymonnet/httpresult.c
  		}
 Index: xymon/xymonnet/ldaptest.c
 ===================================================================
---- xymon.orig/xymonnet/ldaptest.c	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymonnet/ldaptest.c	2011-09-30 00:36:35.000000000 +0200
+--- xymon.orig/xymonnet/ldaptest.c	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymonnet/ldaptest.c	2012-07-23 23:40:33.000000000 +0200
 @@ -476,8 +476,8 @@
  		}
  		if (req->faileddeps) addtostatus(req->faileddeps);
@@ -86,9 +86,9 @@ Index: xymon/xymonnet/ldaptest.c
  	}
 Index: xymon/xymonnet/xymonping.c
 ===================================================================
---- xymon.orig/xymonnet/xymonping.c	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymonnet/xymonping.c	2011-09-30 00:36:35.000000000 +0200
-@@ -357,11 +357,11 @@
+--- xymon.orig/xymonnet/xymonping.c	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymonnet/xymonping.c	2012-07-23 23:40:33.000000000 +0200
+@@ -356,11 +356,11 @@
  		if (hosts[idx]->received > 0) {
  			printf("%s is alive", inet_ntoa(hosts[idx]->addr.sin_addr));
  			rtt_usecs = (hosts[idx]->rtt_total.tv_sec*1000000 + (hosts[idx]->rtt_total.tv_nsec / 1000)) / hosts[idx]->received;

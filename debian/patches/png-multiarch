@@ -4,8 +4,10 @@ Forwarded: no
 Author: gregor herrmann <gregoa@debian.org>
 Last-Update: 2011-12-26
 
---- a/build/rrd.sh
-+++ b/build/rrd.sh
+Index: xymon/build/rrd.sh
+===================================================================
+--- xymon.orig/build/rrd.sh	2012-07-23 23:39:36.000000000 +0200
++++ xymon/build/rrd.sh	2012-07-23 23:41:09.000000000 +0200
 @@ -3,7 +3,7 @@
  	RRDDEF=""
  	RRDINC=""
@@ -13,5 +15,5 @@ Last-Update: 2011-12-26
 -	PNGLIB=""
 +	PNGLIB="$(libpng12-config --ldflags)"
  	ZLIB=""
- 	for DIR in /opt/rrdtool* /usr/local/rrdtool* /usr/local /usr /usr/pkg /opt/csw /opt/sfw /usr/sfw
+ 	for DIR in /opt/rrdtool* /usr/local/rrdtool* /usr/local /usr/pkg /opt/csw /opt/sfw /usr/sfw
  	do

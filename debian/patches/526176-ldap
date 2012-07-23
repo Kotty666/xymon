@@ -34,14 +34,15 @@ pointer is greater than the size of an integer, such as ia64 and amd64.
   [1] http://people.debian.org/~dannf/check-implicit-pointer-functions
   [2] http://wiki.debian.org/ImplicitPointerConversions
 
---- orig-xymon-4.3.0~beta2.dfsg/build/test-ldap.c	2009-02-12 06:00:50.000000000 -0700
-+++ xymon-4.3.0~beta2.dfsg/build/test-ldap.c	2009-04-29 12:13:07.387783442 -0600
-@@ -1,6 +1,7 @@
- #include <time.h>
+Index: xymon/build/test-ldap.c
+===================================================================
+--- xymon.orig/build/test-ldap.c	2012-07-23 23:39:37.000000000 +0200
++++ xymon/build/test-ldap.c	2012-07-23 23:40:51.000000000 +0200
+@@ -2,6 +2,7 @@
+ #include <sys/time.h>
  #include <stdio.h>
  
 +#define LDAP_DEPRECATED 1
  #include <ldap.h>
  #include <lber.h>
  
-

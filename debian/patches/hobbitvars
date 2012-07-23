@@ -2,8 +2,8 @@ Fix paths to fit into the Debian directory structure
 
 Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2011-09-29 23:49:01.000000000 +0200
-+++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2012-07-23 23:40:24.000000000 +0200
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -25,7 +25,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  FQDN="TRUE"			# Use fully-qualified hostnames internally. Keep it TRUE unless you know better.
  XYMONLOGSTATUS="DYNAMIC"	# Are HTML status logs statically or dynamically generated?
  				# Use DYNAMIC with Xymon, unless you run xymond_filestore --status --html
-@@ -61,9 +60,9 @@
+@@ -78,7 +77,7 @@
  XYMONWEBHOSTURL="$XYMONWEBHOST$XYMONSERVERWWWURL"	# Prefix for all static Xymon pages - http://www.foo.com/xymon
  XYMONWEBHTMLLOGS="$XYMONWEBHOSTURL/html"	# Prefix for the Xymon HTML logs (only if XYMONLOGSTATUS=STATIC)
  XYMONWEB="$XYMONSERVERWWWURL"			# Xymon URL prefix without the host part
@@ -34,9 +34,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  XYMONHELPSKIN="$XYMONSERVERWWWURL/help"         # Xymon URL prefix for the online help files.
  XYMONNOTESSKIN="$XYMONSERVERWWWURL/notes"       # Xymon URL prefix for the online notes-files.
  XYMONMENUSKIN="$XYMONSERVERWWWURL/menu"         # Xymon URL prefix for the webpage menu files.
- XYMONREPURL="$XYMONSERVERWWWURL/rep"		# Xymon URL prefix for the Xymon availability reports
- XYMONSNAPURL="$XYMONSERVERWWWURL/snap"		# Xymon URL prefix for the Xymon snapshots
-@@ -73,7 +73,7 @@
+@@ -90,7 +89,7 @@
  
  # Locations of system-wide files and directories
  XYMONHOME="@XYMONHOME@"				# The Xymon server directory, where programs and configurations go. 
@@ -45,7 +43,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  HOSTSCFG="$XYMONHOME/etc/hosts.cfg"		# The hosts.cfg file
  XYMON="$XYMONHOME/bin/xymon"			# The 'xymon' client program
  XYMONGEN="$XYMONHOME/bin/xymongen"		# The xymongen program
-@@ -287,3 +287,5 @@
+@@ -304,3 +303,5 @@
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
  BBCLIENTLOGS="$XYMONSERVERLOGS"
  
@@ -53,8 +51,8 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 +include /var/run/xymon/xymonserver-include.cfg
 Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2011-09-29 20:22:32.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2012-07-23 23:40:24.000000000 +0200
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -75,8 +73,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
  
 Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2011-09-29 20:22:32.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2012-07-23 23:40:24.000000000 +0200
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -106,8 +104,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
      # Create it with "htpasswd -c @INSTALLETCDIR@/xymonpasswd USERNAME"
 Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2011-09-29 20:22:32.000000000 +0200
-+++ xymon/xymond/etcfiles/tasks.cfg.DIST	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymond/etcfiles/tasks.cfg.DIST	2012-07-23 23:40:24.000000000 +0200
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -117,7 +115,7 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
  		--restart=$XYMONTMP/xymond.chk --checkpoint-file=$XYMONTMP/xymond.chk --checkpoint-interval=600 \
  		--log=$XYMONSERVERLOGS/xymond.log \
  		--admin-senders=127.0.0.1,$XYMONSERVERIP \
-@@ -87,7 +87,7 @@
+@@ -100,7 +100,7 @@
  [xymonproxy]
  	DISABLED
  	ENVFILE @XYMONHOME@/etc/xymonserver.cfg
@@ -126,7 +124,7 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
  	LOGFILE $XYMONSERVERLOGS/xymonproxy.log
  
  
-@@ -102,7 +102,7 @@
+@@ -115,7 +115,7 @@
  [xymonfetch]
  	DISABLED
  	ENVFILE @XYMONHOME@/etc/xymonserver.cfg
@@ -135,7 +133,7 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
  	LOGFILE $XYMONSERVERLOGS/xymonfetch.log
  
  
-@@ -238,3 +238,5 @@
+@@ -251,3 +251,5 @@
  # Include add-on modules.
  directory @XYMONHOME@/etc/tasks.d
  
@@ -143,8 +141,8 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 +include /var/run/xymon/xymonlaunch-include.cfg
 Index: xymon/client/clientlaunch.cfg.DIST
 ===================================================================
---- xymon.orig/client/clientlaunch.cfg.DIST	2011-09-29 20:22:32.000000000 +0200
-+++ xymon/client/clientlaunch.cfg.DIST	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/client/clientlaunch.cfg.DIST	2012-07-23 23:39:38.000000000 +0200
++++ xymon/client/clientlaunch.cfg.DIST	2012-07-23 23:40:24.000000000 +0200
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -156,8 +154,8 @@ Index: xymon/client/clientlaunch.cfg.DIST
  # The main client task
 Index: xymon/client/xymonclient.cfg.DIST
 ===================================================================
---- xymon.orig/client/xymonclient.cfg.DIST	2011-09-29 20:22:32.000000000 +0200
-+++ xymon/client/xymonclient.cfg.DIST	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/client/xymonclient.cfg.DIST	2012-07-23 23:39:38.000000000 +0200
++++ xymon/client/xymonclient.cfg.DIST	2012-07-23 23:40:24.000000000 +0200
 @@ -1,17 +1,20 @@
  # Environment settings for the Xymon client.
  
@@ -186,8 +184,8 @@ Index: xymon/client/xymonclient.cfg.DIST
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/graphs.cfg	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/xymond/etcfiles/graphs.cfg	2011-09-30 00:26:01.000000000 +0200
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2012-07-23 23:39:38.000000000 +0200
++++ xymon/xymond/etcfiles/graphs.cfg	2012-07-23 23:40:24.000000000 +0200
 @@ -2095,3 +2095,4 @@
  
  ########### end of ifmib graphs ###########

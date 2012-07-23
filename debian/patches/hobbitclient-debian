@@ -1,8 +1,8 @@
 Index: xymon/client/xymonclient-linux.sh
 ===================================================================
---- xymon.orig/client/xymonclient-linux.sh	2011-09-29 20:22:33.000000000 +0200
-+++ xymon/client/xymonclient-linux.sh	2011-09-29 23:26:36.000000000 +0200
-@@ -69,6 +69,8 @@
+--- xymon.orig/client/xymonclient-linux.sh	2012-07-23 23:39:38.000000000 +0200
++++ xymon/client/xymonclient-linux.sh	2012-07-23 23:40:17.000000000 +0200
+@@ -74,6 +74,8 @@
  if test -r /proc/mdstat; then echo "[mdstat]"; cat /proc/mdstat; fi
  echo "[ps]"
  ps -Aww -o pid,ppid,user,start,state,pri,pcpu,time,pmem,rsz,vsz,cmd
