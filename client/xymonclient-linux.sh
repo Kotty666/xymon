@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-linux.sh 6712 2011-07-31 21:01:52Z storner $
+# $Id: xymonclient-linux.sh 7059 2012-07-14 15:18:14Z storner $
 
 echo "[date]"
 date
@@ -47,6 +47,11 @@ who
 echo "[df]"
 EXCLUDES=`cat /proc/filesystems | grep nodev | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
 df -Pl -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
+N
+s/[ 	]*\n[ 	]*/ /
+}'
+echo "[inode]"
+df -Pil -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
 N
 s/[ 	]*\n[ 	]*/ /
 }'

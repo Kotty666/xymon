@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char openbsd_rcsid[] = "$Id: openbsd.c 6712 2011-07-31 21:01:52Z storner $";
+static char openbsd_rcsid[] = "$Id: openbsd.c 7060 2012-07-14 16:32:11Z storner $";
 
 void handle_openbsd_client(char *hostname, char *clienttype, enum ostype_t os,
 			   void *hinfo, char *sender, time_t timestamp, 
@@ -25,7 +25,6 @@ void handle_openbsd_client(char *hostname, char *clienttype, enum ostype_t os,
 	char *topstr;
 	char *dfstr;
 	char *meminfostr;
-	char *swapctlstr;
 	char *msgsstr;
 	char *netstatstr;
 	char *ifstatstr;
@@ -48,7 +47,6 @@ void handle_openbsd_client(char *hostname, char *clienttype, enum ostype_t os,
 	topstr = getdata("top");
 	dfstr = getdata("df");
 	meminfostr = getdata("meminfo");
-	swapctlstr = getdata("swapctl");
 	msgsstr = getdata("msgs");
 	netstatstr = getdata("netstat");
 	ifstatstr = getdata("ifstat");

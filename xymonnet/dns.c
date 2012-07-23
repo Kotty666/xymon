@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: dns.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: dns.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <unistd.h>
 #include <string.h>
@@ -67,8 +67,14 @@ static void dns_init(void)
 	dnscache = xtreeNew(strcasecmp);
 
 	if (use_ares_lookup) {
-		int status = ares_init(&mychannel);
+		struct ares_options options;
+		int status;
 
+		/* ARES timeout backported from Xymon trunk 20120411 - this should give us a ~23 second timeout */
+		options.timeout = 2000;
+		options.tries = 4;
+
+		status = ares_init_options(&mychannel, &options, (ARES_OPT_TIMEOUTMS | ARES_OPT_TRIES));
 		if (status != ARES_SUCCESS) {
 			errprintf("Cannot initialize ARES resolver, using standard\n");
 			errprintf("ARES error was: '%s'\n", ares_strerror(status));
@@ -132,7 +138,7 @@ static void dns_simple_callback(void *arg, int status, int timeout, struct hoste
 
 static void dns_ares_queue_run(ares_channel channel)
 {
-	int nfds, selres;
+	int nfds;
 	fd_set read_fds, write_fds;
 	struct timeval *tvp, tv;
 	int loops = 0;
@@ -162,7 +168,7 @@ static void dns_ares_queue_run(ares_channel channel)
 		tv.tv_sec = dnstimeout; tv.tv_usec = 0;
 		tvp = ares_timeout(channel, &tv, &tv);
 
-		selres = select(nfds, &read_fds, &write_fds, NULL, tvp);
+		select(nfds, &read_fds, &write_fds, NULL, tvp);
 		ares_process(channel, &read_fds, &write_fds);
 	}
 
@@ -300,9 +306,11 @@ int dns_test_server(char *serverip, char *hostname, strbuffer_t *banner)
 	options.flags = ARES_FLAG_NOCHECKRESP;
 	options.servers = &serveraddr;
 	options.nservers = 1;
-	options.timeout = dnstimeout;
+	/* ARES timeout backported from Xymon trunk 20120411 - this should give us a ~23 second timeout */
+	options.timeout = 2000;
+	options.tries = 4;
 
-	status = ares_init_options(&channel, &options, (ARES_OPT_FLAGS | ARES_OPT_SERVERS | ARES_OPT_TIMEOUT));
+	status = ares_init_options(&channel, &options, (ARES_OPT_FLAGS | ARES_OPT_SERVERS | ARES_OPT_TIMEOUTMS | ARES_OPT_TRIES));
 	if (status != ARES_SUCCESS) {
 		errprintf("Could not initialize ares channel: %s\n", ares_strerror(status));
 		return 1;

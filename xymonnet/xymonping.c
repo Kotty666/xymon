@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonping.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymonping.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include "config.h"
 
@@ -166,7 +166,6 @@ int send_ping(int sock, int startidx, int minresponses)
 	static unsigned char buffer[PING_PACKET_SIZE];
 	struct icmp *icmphdr;
 	struct pingdata_t *pingdata;
-	struct timezone tz;
 	int sentbytes;
 	int idx = startidx;
 

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: stackio.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: stackio.c 7058 2012-07-14 15:01:11Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -338,7 +338,7 @@ static void addtofnlist(char *dirname, void **v_listhead)
 	if (*dirname == '/') strcpy(dirfn, dirname); else sprintf(dirfn, "%s/%s", stackfd_base, dirname);
 
 	if ((dirfd = opendir(dirfn)) == NULL) {
-		errprintf("Cannot open directory %s\n", fn);
+		errprintf("Cannot open directory %s\n", dirfn);
 		return;
 	}
 
@@ -361,7 +361,7 @@ static void addtofnlist(char *dirname, void **v_listhead)
 		/* Skip all dot-files */
 		if (*(d->d_name) == '.') continue;
 
-		/* Skip editor backups - file ending wit '~' */
+		/* Skip editor backups - file ending with '~' */
 		if (*(d->d_name + fnlen - 1) == '~') continue;
 
 		/* Skip RCS files - they end with ",v" */
@@ -421,12 +421,13 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 
 		if ( (strncmp(bufpastwhitespace, "include ", 8) == 0) ||
 		     (extraincl && (strncmp(bufpastwhitespace, extraincl, strlen(extraincl)) == 0)) ) {
-			char *newfn, *eol, eolchar;
+			char *newfn, *eol, eolchar = '\0';
 
 			eol = bufpastwhitespace + strcspn(bufpastwhitespace, "\r\n"); if (eol) { eolchar = *eol; *eol = '\0'; }
 			newfn = bufpastwhitespace + strcspn(bufpastwhitespace, " \t");
 			newfn += strspn(newfn, " \t");
-		
+			while (*newfn && isspace(*(newfn + strlen(newfn) - 1))) *(newfn + strlen(newfn) -1) = '\0';
+
 			if (*newfn && (stackfopen(newfn, "r", (void **)fdhead->listhead) != NULL))
 				return stackfgets(buffer, extraincl);
 			else {
@@ -437,11 +438,12 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 			}
 		}
 		else if (strncmp(bufpastwhitespace, "directory ", 10) == 0) {
-			char *dirfn, *eol, eolchar;
+			char *dirfn, *eol, eolchar = '\0';
 
 			eol = bufpastwhitespace + strcspn(bufpastwhitespace, "\r\n"); if (eol) { eolchar = *eol; *eol = '\0'; }
 			dirfn = bufpastwhitespace + 9;
 			dirfn += strspn(dirfn, " \t");
+			while (*dirfn && isspace(*(dirfn + strlen(dirfn) - 1))) *(dirfn + strlen(dirfn) -1) = '\0';
 
 			if (*dirfn) addtofnlist(dirfn, (void **)fdhead->listhead);
 			if (fnlist && (stackfopen(fnlist->name, "r", (void **)fdhead->listhead) != NULL)) {

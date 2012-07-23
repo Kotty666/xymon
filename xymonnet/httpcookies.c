@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httpcookies.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: httpcookies.c 6902 2012-01-24 10:36:11Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -180,7 +180,11 @@ static void load_cookies_one(char *cookiefn)
 
 void load_cookies(void)
 {
+	static int initdone = 0;
 	char cookiefn[PATH_MAX];
+
+	if (initdone) return;
+	initdone = 1;
 
 	sprintf(cookiefn, "%s/etc/cookies", xgetenv("XYMONHOME"));
 	load_cookies_one(cookiefn);

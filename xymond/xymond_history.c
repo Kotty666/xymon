@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_history.c 6748 2011-09-04 17:24:36Z storner $";
+static char rcsid[] = "$Id: xymond_history.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -318,7 +318,6 @@ int main(int argc, char *argv[])
 
 					while (!gotit) {
 						off_t tmppos = ftello(statuslogfd);
-						time_t dur;
 						int dur_i;
 
 						if (fgets(l, sizeof(l)-1, statuslogfd)) {
@@ -332,7 +331,6 @@ int main(int argc, char *argv[])
 								 */
 								pos = tmppos;
 								lastchg = lastchg_i;
-								dur = dur_i;
 							}
 						}
 						else {

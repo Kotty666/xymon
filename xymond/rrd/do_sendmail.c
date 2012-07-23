@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char sendmail_rcsid[] = "$Id: do_sendmail.c 6712 2011-07-31 21:01:52Z storner $";
+static char sendmail_rcsid[] = "$Id: do_sendmail.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_sendmail_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -86,7 +86,7 @@ int do_sendmail_rrd(char *hostname, char *testname, char *classname, char *pagep
 			found = sscanf(bofdata, "%*s %lu %luK %lu %luK %lu %lu %lu %s",
 					&msgsfr, &bytesfr, &msgsto, &bytesto, &msgsrej, &msgsdis, &msgsqur, mailer);
 			if (found == 8) {
-				sprintf(rrdvalues, "%d:%lu:%lu:%lu:%lu:%lu:%lu:%lu",
+				snprintf(rrdvalues, sizeof(rrdvalues), "%d:%lu:%lu:%lu:%lu:%lu:%lu:%lu",
 					(int)tstamp, msgsfr, bytesfr*1024, msgsto, bytesto*1024, 
 					msgsrej, msgsdis, msgsqur);
 				goto gotdata;
@@ -96,7 +96,7 @@ int do_sendmail_rrd(char *hostname, char *testname, char *classname, char *pagep
 			found = sscanf(bofdata, "%*s %lu %luK %lu %luK %lu %lu %s",
 					&msgsfr, &bytesfr, &msgsto, &bytesto, &msgsrej, &msgsdis, mailer);
 			if (found == 7) {
-				sprintf(rrdvalues, "%d:%lu:%lu:%lu:%lu:%lu:%lu:U",
+				snprintf(rrdvalues, sizeof(rrdvalues), "%d:%lu:%lu:%lu:%lu:%lu:%lu:U",
 					(int)tstamp, msgsfr, bytesfr*1024, msgsto, bytesto*1024, msgsrej, msgsdis);
 				goto gotdata;
 			}
@@ -105,7 +105,7 @@ int do_sendmail_rrd(char *hostname, char *testname, char *classname, char *pagep
 			found = sscanf(bofdata, "%*s %lu %luK %lu %luK %s",
 					&msgsfr, &bytesfr, &msgsto, &bytesto, mailer);
 			if (found == 5) {
-				sprintf(rrdvalues, "%d:%lu:%lu:%lu:%lu:U:U:U",
+				snprintf(rrdvalues, sizeof(rrdvalues), "%d:%lu:%lu:%lu:%lu:U:U:U",
 					(int)tstamp, msgsfr, bytesfr*1024, msgsto, bytesto*1024);
 				goto gotdata;
 			}

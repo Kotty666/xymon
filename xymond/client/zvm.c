@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char zvm_rcsid[] = "$Id: zvm.c 6783 2011-11-30 11:56:42Z storner $";
+static char zvm_rcsid[] = "$Id: zvm.c 7060 2012-07-14 16:32:11Z storner $";
 
 static void zvm_cpu_report(char *hostname, char *clientclass, enum ostype_t os,
                      void *hinfo, char *fromline, char *timestr,
@@ -363,11 +363,9 @@ void handle_zvm_client(char *hostname, char *clienttype, enum ostype_t os,
 	char *timestr;
 	char *cpuutilstr;
 	char *uptimestr;
-	char *msgcachestr;
 	char *dfstr;
 	char *usersstr;		/* Logged on z/VM Users  */
 	char *msgsstr;
-	char *netstatstr;
 	char *ifstatstr;
 	char *portsstr;
 
@@ -380,7 +378,6 @@ void handle_zvm_client(char *hostname, char *clienttype, enum ostype_t os,
 	timestr = getdata("date");
 	uptimestr = getdata("uptime");
 	cpuutilstr = getdata("cpu");
-	msgcachestr = getdata("msgcache");
 	dfstr = getdata("df");
 	usersstr = getdata("UserID");
 	msgsstr = getdata("msgs");

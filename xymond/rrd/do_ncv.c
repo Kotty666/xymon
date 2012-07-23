@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char ncv_rcsid[] = "$Id: do_ncv.c 6712 2011-07-31 21:01:52Z storner $";
+static char ncv_rcsid[] = "$Id: do_ncv.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -25,7 +25,7 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 	int split_ncv = 0;
 	int dslen;
 
-	sprintf(rrdvalues, "%d", (int)tstamp);
+	snprintf(rrdvalues, sizeof(rrdvalues), "%d", (int)tstamp);
 	params = (char **)calloc(1, sizeof(char *));
 	paridx = 0;
 
@@ -135,7 +135,7 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 					dsname[outidx] = '\0';
 				}
 
-				sprintf(dskey, ",%s:", dsname);
+				snprintf(dskey, sizeof(dskey), ",%s:", dsname);
 				if (split_ncv) setupfn2("%s,%s.rrd", testname, dsname);
 
 				if (dstypes) {
@@ -152,10 +152,10 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 					dstype += strlen(dskey);
 					p = strchr(dstype, ','); if (p) *p = '\0';
 					if(split_ncv) {
-						sprintf(dsdef, "DS:lambda:%s:600:U:U", dstype);
+						snprintf(dsdef, sizeof(dsdef), "DS:lambda:%s:600:U:U", dstype);
 					}
 					else {
-						sprintf(dsdef, "DS:%s:%s:600:U:U", dsname, dstype);
+						snprintf(dsdef, sizeof(dsdef), "DS:%s:%s:600:U:U", dsname, dstype);
 					}
 					if (p) *p = ',';
 				}
@@ -164,7 +164,7 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 						strcpy(dsdef, "DS:lambda:DERIVE:600:U:U");
 					}
 					else {
-						sprintf(dsdef, "DS:%s:DERIVE:600:U:U", dsname);
+						snprintf(dsdef, sizeof(dsdef), "DS:%s:DERIVE:600:U:U", dsname);
 					}
 				}
 
@@ -173,7 +173,7 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 					paridx++;
 					params = (char **)realloc(params, (1 + paridx)*sizeof(char *));
 					params[paridx] = NULL;
-					sprintf(rrdvalues+strlen(rrdvalues), ":%s", val);
+					snprintf(rrdvalues+strlen(rrdvalues), sizeof(rrdvalues)-strlen(rrdvalues), ":%s", val);
 				}
 			}
 
@@ -184,7 +184,7 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 				for (paridx=0; (params[paridx] != NULL); paridx++) xfree(params[paridx]);
 				paridx = 0;
 				params[0] = NULL;
-				sprintf(rrdvalues, "%d", (int)tstamp);
+				snprintf(rrdvalues, sizeof(rrdvalues), "%d", (int)tstamp);
 			}
 		}
 	} /* end of while */

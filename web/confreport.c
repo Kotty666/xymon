@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: confreport.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: confreport.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -231,11 +231,10 @@ static void print_host(hostlist_t *host, htnames_t *testnames[], int testcount)
 	while (itm) {
 		char *visdata = NULL, *colname = NULL, *expdata = NULL;
 		weburl_t bu;
-		int dialuptest = 0, reversetest = 0, alwaystruetest = 0, httpextra = 0;
+		int httpextra = 0;
 
-		if (*itm == '?') { dialuptest=1;     itm++; }
-		if (*itm == '!') { reversetest=1;    itm++; }
-		if (*itm == '~') { alwaystruetest=1; itm++; }
+		/* Skip modifiers */
+		itm += strspn(itm, "?!~");
 
 		if ( argnmatch(itm, "http")         ||
 		     argnmatch(itm, "content=http") ||
@@ -604,7 +603,7 @@ htnames_t *get_proclist(char *hostname, char *statusbuf)
 		if (marker) {
 			marker += strspn(marker, " \t");
 
-			p = strstr(marker, " - "); if (p) *p = '\0';
+			p = strstr(marker, "\\n"); if (p) *p = '\0';
 			newitem = (htnames_t *)malloc(sizeof(htnames_t));
 			newitem->name = strdup(marker);
 			newitem->next = NULL;
@@ -617,8 +616,7 @@ htnames_t *get_proclist(char *hostname, char *statusbuf)
 			}
 
 			if (p) {
-				*p = ' ';
-				marker = p;
+				*p = '\\';
 			}
 
 			marker = strstr(marker, "\\n&");
@@ -634,7 +632,7 @@ int main(int argc, char *argv[])
 	int argi, hosti, testi;
 	char *pagepattern = NULL, *hostpattern = NULL;
 	char *envarea = NULL, *cookie = NULL, *nexthost;
-	char *xymoncmd, *procscmd, *svcscmd;
+	char *xymoncmd = NULL, *procscmd = NULL, *svcscmd = NULL;
         int alertcolors, alertinterval;
 	char configfn[PATH_MAX];
 	char *respbuf = NULL, *procsbuf = NULL, *svcsbuf = NULL;

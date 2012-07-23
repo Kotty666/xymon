@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: url.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: url.c 7037 2012-07-13 14:44:27Z storner $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -336,6 +336,7 @@ void parse_url(char *inputurl, urlelem_t *url)
 	else {
 		errprintf("Malformed URL - no 'scheme:' in '%s'\n", inputurl);
 		url->parseerror = 1;
+		xfree(tempurl);
 		return;
 	}
 
@@ -353,6 +354,7 @@ void parse_url(char *inputurl, urlelem_t *url)
 	else {
 		errprintf("Malformed URL missing '//' in '%s'\n", inputurl);
 		url->parseerror = 2;
+		xfree(tempurl);
 		return;
 	}
 
@@ -382,6 +384,7 @@ void parse_url(char *inputurl, urlelem_t *url)
 		else {
 			errprintf("Unknown scheme (no port) '%s'\n", url->scheme);
 			url->parseerror = 3;
+			xfree(tempurl);
 			return;
 		}
 	}
@@ -396,7 +399,7 @@ void parse_url(char *inputurl, urlelem_t *url)
 
 		load_netrc();
 		for (walk = loginhead; (walk && (strcmp(walk->host, url->host) != 0)); walk = walk->next) ;
-		if (walk) url->auth = walk->auth;
+		if (walk) url->auth = strdup(walk->auth);
 	}
 
 	/* Build the canonical form of this URL, free from all config artefacts */

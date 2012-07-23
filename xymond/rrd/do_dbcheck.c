@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char dbcheck_rcsid[] = "$Id: do_dbcheck.c 6648 2011-03-08 13:05:32Z storner $";
+static char dbcheck_rcsid[] = "$Id: do_dbcheck.c 7060 2012-07-14 16:32:11Z storner $";
 
 int do_dbcheck_memreq_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -44,7 +44,7 @@ static void *dbcheck_memreq_tpl      = NULL;
 			hostname, testname, used, avus);
 		dbgprintf("dbcheck: host %s test %s reqfail %ld failsize %ld\n",
 			hostname, testname, reqf, fsz);
-		sprintf(rrdvalues, "%d:%ld:%f:%ld:%f:%ld:%ld",
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%ld:%f:%ld:%f:%ld:%ld",
 			(int) tstamp, free, avfr, used, avus, reqf,fsz);
 		setupfn("%s.rrd",testname);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, dbcheck_memreq_params, dbcheck_memreq_tpl);
@@ -89,7 +89,7 @@ static void *dbcheck_hitcache_tpl      = NULL;
 			hostname, testname, hitsql, hittbl, hitbody, hittrig);
 		dbgprintf("dbcheck: host %s test %s blbuff %5.2f rowchache %5.2f\n",
 			hostname, testname, blbuff, rowchache);
-		sprintf(rrdvalues, "%d:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f",
+		sprintf(rrdvalues, "%d:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f",
 			(int) tstamp, pinsql, pintbl, pinbody, pintrig,
 			hitsql, hittbl, hitbody, hittrig, blbuff, rowchache);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, dbcheck_hitcache_params, dbcheck_hitcache_tpl);
@@ -127,7 +127,7 @@ static void *dbcheck_session_tpl      = NULL;
 		hostname, testname, maxsess, currsess, pctsess);
 			dbgprintf("dbcheck: host %s test %s maxproc %ld currproc %ld pctproc %5.2f\n",
 		hostname, testname, maxproc, currproc, pctproc);
-                        sprintf(rrdvalues, "%d:%ld:%ld:%5.2f:%ld:%ld:%5.2f",
+                        sprintf(rrdvalues, "%d:%ld:%ld:%05.2f:%ld:%ld:%05.2f",
                        	(int) tstamp, maxsess, currsess, pctsess, maxproc, currproc, pctproc);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, dbcheck_session_params, dbcheck_session_tpl);
 	}
@@ -163,7 +163,7 @@ static void *dbcheck_rb_tpl    = NULL;
                         if ( sscanf(start,"ROLLBACK percentage for %s is %f",execname,&pct) !=2) goto nextline;
                         setupfn2("%s,%s.rrd",testname,execname);
                         dbgprintf("dbcheck: host %s test %s name %s pct %5.2f\n", hostname, testname, execname, pct);
-                        sprintf(rrdvalues, "%d:%5.2f", (int) tstamp, pct);
+                        sprintf(rrdvalues, "%d:%05.2f", (int) tstamp, pct);
                         create_and_update_rrd(hostname, testname, classname, pagepaths, dbcheck_rb_params, dbcheck_rb_tpl);
 nextline:
                         if (execname) { xfree(execname); execname = NULL; }
@@ -203,14 +203,14 @@ static void *dbcheck_invobj_tpl    = NULL;
 			if ( strstr(curline,"red") == curline) red++;
 			if ( strstr(curline,"yellow") == curline) yellow++;
 			if ( strstr(curline,"green") == curline) green++;
-nextline:
+
                         if (eoln) *(eoln)='\n';
                         curline = (eoln ? (eoln+1) : NULL);
                 }
                 setupfn("%s.rrd",testname);
                 dbgprintf("dbcheck: host %s test %s  red %ld yellow %ld green %ld\n", 
 			hostname, testname, red,yellow,green);
-                sprintf(rrdvalues, "%d:%ld:%ld:%ld", (int) tstamp, red,yellow,green);
+                snprintf(rrdvalues, sizeof(rrdvalues), "%d:%ld:%ld:%ld", (int) tstamp, red,yellow,green);
                         create_and_update_rrd(hostname, testname, classname, pagepaths, dbcheck_invobj_params, dbcheck_invobj_tpl);
         }
         return 0;
@@ -272,8 +272,6 @@ int do_dbcheck_tablespace_rrd(char *hostname, char *testname, char *classname, c
                long long aused = 0;
                /* FD: Using double instead of long long because we can have decimal on Netapp and DbCheck */
                double dused = 0;
-               /* FD: used to add a column if the filesystem is named "snap reserve" for netapp.pl */
-               int snapreserve=0;
 
                eoln = strchr(curline, '\n'); if (eoln) *eoln = '\0';
 
@@ -341,7 +339,7 @@ int do_dbcheck_tablespace_rrd(char *hostname, char *testname, char *classname, c
                         * all of it by using the testname as part of the filename.
                         */
                        setupfn2("%s%s.rrd", testname,diskname);
-                       sprintf(rrdvalues, "%d:%d:%lld", (int)tstamp, pused, aused);
+                       snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d:%lld", (int)tstamp, pused, aused);
                        create_and_update_rrd(hostname, testname, classname, pagepaths, tablespace_params, tablespace_tpl);
                }
                if (diskname) { xfree(diskname); diskname = NULL; }

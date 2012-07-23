@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char xymon_rcsid[] = "$Id: do_xymongen.c 6712 2011-07-31 21:01:52Z storner $";
+static char xymon_rcsid[] = "$Id: do_xymongen.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_xymongen_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -116,7 +116,7 @@ int do_xymongen_rrd(char *hostname, char *testname, char *classname, char *pagep
 	else {
 		setupfn("%s.rrd", "xymongen");
 	}
-	sprintf(rrdvalues, "%d:%.2f", (int)tstamp, runtime);
+	snprintf(rrdvalues, sizeof(rrdvalues), "%d:%.2f", (int)tstamp, runtime);
 	create_and_update_rrd(hostname, testname, classname, pagepaths, xymon_params, xymon_tpl);
 
 
@@ -126,7 +126,7 @@ int do_xymongen_rrd(char *hostname, char *testname, char *classname, char *pagep
 	else {
 		setupfn("%s.rrd", "xymon");
 	}
-	sprintf(rrdvalues, "%d:%d:%d", (int)tstamp, hostcount, statuscount);
+	snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d:%d", (int)tstamp, hostcount, statuscount);
 	create_and_update_rrd(hostname, testname, classname, pagepaths, xymon2_params, xymon2_tpl);
 
 
@@ -136,7 +136,7 @@ int do_xymongen_rrd(char *hostname, char *testname, char *classname, char *pagep
 	else {
 		setupfn("%s.rrd", "xymon2");
 	}
-	sprintf(rrdvalues, "%d:%d:%d:%d:%d:%d:%d:%d:%d:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f", 
+	snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f", 
 		(int)tstamp, 
 		redcount, rednopropcount, yellowcount, yellownopropcount,
 		greencount, purplecount, clearcount, bluecount,

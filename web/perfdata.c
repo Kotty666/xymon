@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: perfdata.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: perfdata.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -280,30 +280,28 @@ int onehost(char *hostname, char *starttime, char *endtime)
 void format_rrdtime(char *t, char **tday, char **thm)
 {
 	int year, month, day, hour, min,sec;
-	int n, parseerror;
+	int n;
 	time_t now = getcurrenttime(NULL);
 	struct tm *nowtm = localtime(&now);
 
 	if (t == NULL) return;
 
 	/* Input is YYYY/MM/DD@HH:MM:SS or YYYYMMDD or MMDD */
-	parseerror = 0;
 	n = sscanf(t, "%d/%d/%d@%d:%d:%d", &year, &month, &day, &hour, &min, &sec);
 	switch (n) {
 	  case 6: break; /* Got all */
 	  case 5: sec = 0; break;
 	  case 4: min = sec = 0; break;
 	  case 3: hour = min = sec = 0; break;
-	  default: parseerror = 1; break;
+	  default: break;
 	}
 
-	parseerror = 0;
 	hour = min = sec = 0;
 	n = sscanf(t, "%d/%d/%d", &year, &month, &day);
 	switch (n) {
 	  case 3: break; /* Got all */
 	  case 2: day = month; month = year; year = nowtm->tm_year + 1900;
-	  default: parseerror = 1; break;
+	  default: break;
 	}
 
 	if (year < 100) year += 2000;
@@ -346,7 +344,7 @@ int main(int argc, char **argv)
 		}
 	}
 	else {
-		char *envarea;
+		char *envarea = NULL;
 		int argi;
 
 		for (argi = 1; (argi < argc); argi++) {

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: showgraph.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: showgraph.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -89,6 +89,7 @@ typedef struct gdef_t {
 	char *exfnpat;
 	char *title;
 	char *yaxis;
+	char *graphopts;
 	int  novzoom;
 	char **defs;
 	struct gdef_t *next;
@@ -363,6 +364,10 @@ void load_gdefs(char *fn)
 		}
 		else if (strncasecmp(p, "NOVZOOM", 7) == 0) {
 			newitem->novzoom = 1;
+		}
+		else if (strncasecmp(p, "GRAPHOPTIONS", 12) == 0) {
+			p += 12; p += strspn(p, " \t");
+			newitem->graphopts = strdup(p);
 		}
 		else if (haveupperlimit && (strncmp(p, "-u ", 3) == 0)) {
 			continue;
@@ -679,7 +684,6 @@ void graph_link(FILE *output, char *uri, char *grtype, time_t seconds)
 char *build_selfURI(void)
 {
 	strbuffer_t *result = newstrbuffer(2048);
-	char *p;
 	char numbuf[40];
 
 	addtobuffer(result, xgetenv("SCRIPT_NAME"));
@@ -781,6 +785,10 @@ void generate_graph(char *gdeffn, char *rrddir, char *graphfn)
 	char **calcpr = NULL;
 	int xsize, ysize;
 	double ymin, ymax;
+
+	char *useroptval = NULL;
+	char **useropts = NULL;
+	int useroptcount = 0, useroptidx;
 
 	/* Find the graphs.cfg file and load it */
 	if (gdeffn == NULL) {
@@ -1055,13 +1063,34 @@ void generate_graph(char *gdeffn, char *rrddir, char *graphfn)
 	sprintf(widthopt, "-w%d", graphwidth);
 
 	/*
+	 * Grab user-provided additional rrd_graph options from RRDGRAPHOPTS
+	 */
+	useroptcount = 0;
+	useroptval = gdef->graphopts;
+	if (!useroptval) useroptval = getenv("RRDGRAPHOPTS");
+	if (useroptval) {
+		char *tok;
+
+		useropts = (char **)calloc(1, sizeof(char *));
+		useroptval = strdup(useroptval);
+		tok = strtok(useroptval, " ");
+		while (tok) {
+			useroptcount++;
+			useropts = (char **)realloc(useropts, (useroptcount+1)*sizeof(char *));
+			useropts[useroptcount-1] = tok;
+			useropts[useroptcount] = NULL;
+			tok = strtok(NULL, " ");
+		}
+	}
+
+	/*
 	 * Setup the arguments for calling rrd_graph. 
 	 * There's up to 16 standard arguments, plus the 
 	 * graph-specific ones (which may be repeated if
 	 * there are multiple RRD-files to handle).
 	 */
 	for (pcount = 0; (gdef->defs[pcount]); pcount++) ;
-	rrdargs = (char **) calloc(16 + pcount*rrddbcount + 1, sizeof(char *));
+	rrdargs = (char **) calloc(16 + pcount*rrddbcount + useroptcount + 1, sizeof(char *));
 
 
 	argi = 0;
@@ -1093,6 +1122,10 @@ void generate_graph(char *gdeffn, char *rrddir, char *graphfn)
 	if (graphend) {
 		sprintf(endopt, "-e %u", (unsigned int) graphend);
 		rrdargs[argi++] = endopt;
+	}
+
+	for (useroptidx=0; (useroptidx < useroptcount); useroptidx++) {
+		rrdargs[argi++] = useropts[useroptidx];
 	}
 
 	for (rrdidx=0; (rrdidx < rrddbcount); rrdidx++) {
@@ -1166,6 +1199,9 @@ void generate_graph(char *gdeffn, char *rrddir, char *graphfn)
 
 		errormsg(rrd_get_error());
 	}
+
+	if (useroptval) xfree(useroptval);
+	if (useropts) xfree(useropts);
 }
 
 void generate_zoompage(char *selfURI)

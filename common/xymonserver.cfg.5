@@ -1,4 +1,4 @@
-.TH XYMONSERVER.CFG 5 "Version 4.3.7: 13 Dec 2011" "Xymon"
+.TH XYMONSERVER.CFG 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
 .SH NAME
 xymonserver.cfg \- Xymon environment variables
 
@@ -87,6 +87,12 @@ Default: 120 pixels.
 .IP RRDWIDTH
 The default width (in pixels) of the RRD graph images.
 Default: 576 pixels.
+
+.IP RRDGRAPHOPTS
+Extra options for the RRD graph command. These are passed directly to
+the "rrdgraph" command used to generate graphs, see the
+.I rrdgraph(1)
+man-page for details of the options.
 
 .IP TRENDSECONDS
 The graphs on the "trends" page show data for the past TRENDSECONDS

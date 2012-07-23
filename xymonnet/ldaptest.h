@@ -15,7 +15,7 @@
 
 #include <time.h>
 
-#ifdef XYMON_LDAP
+#ifdef HAVE_LDAP
 #include <lber.h>
 #define LDAP_DEPRECATED 1
 #include <ldap.h>
@@ -39,8 +39,10 @@ typedef struct {
 	struct timespec duration;
 
 	char   *certinfo;               /* Data about SSL certificate */
+	char   *certissuer;             /* Data about SSL certificate */
 	time_t certexpires;             /* Expiry time for SSL cert */
 	int    mincipherbits;
+	int    certkeysz;
 } ldap_data_t;
 
 extern char *ldap_library_version;

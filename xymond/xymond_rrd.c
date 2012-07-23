@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_rrd.c 6748 2011-09-04 17:24:36Z storner $";
+static char rcsid[] = "$Id: xymond_rrd.c 6899 2012-01-24 10:18:20Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -166,12 +166,13 @@ loaddone:
 char **get_rrd_definition(char *key, int *count)
 {
 	xtreePos_t handle;
+	rrddeftree_t *rec;
 
 	handle = xtreeFind(rrddeftree, key);
 	if (handle == xtreeEnd(rrddeftree)) {
 		handle = xtreeFind(rrddeftree, "");	/* The default record */
 	}
-	rrddeftree_t *rec = (rrddeftree_t *)xtreeData(rrddeftree, handle);
+	rec = (rrddeftree_t *)xtreeData(rrddeftree, handle);
 
 	*count = rec->count;
 	return rec->defs;

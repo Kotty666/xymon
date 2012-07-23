@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_client.c 6792 2011-12-06 15:25:18Z storner $";
+static char rcsid[] = "$Id: xymond_client.c 7064 2012-07-14 20:47:48Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -509,7 +509,6 @@ void unix_disk_report(char *hostname, char *clientclass, enum ostype_t os,
 {
 	int diskcolor = COL_GREEN;
 
-	int dchecks = 0;
 	int freecol = -1;
 	int capacol = -1;
 	int mntcol  = -1;
@@ -527,7 +526,7 @@ void unix_disk_report(char *hostname, char *clientclass, enum ostype_t os,
 
 	monmsg = newstrbuffer(0);
 	dfstr_filtered = newstrbuffer(0);
-	dchecks = clear_disk_counts(hinfo, clientclass);
+	clear_disk_counts(hinfo, clientclass);
 	clearalertgroups();
 
 	bol = dfstr; /* Must do this always, to at least grab the column-numbers we need */
@@ -665,7 +664,7 @@ void unix_disk_report(char *hostname, char *clientclass, enum ostype_t os,
 	sprintf(msgline, "%s.disk %s %s - Filesystems %s\n",
 		commafy(hostname), colorname(diskcolor), 
 		(timestr ? timestr : "<No timestamp data>"), 
-		((diskcolor == COL_GREEN) ? "OK" : "NOT ok"));
+		(((diskcolor == COL_RED) || (diskcolor == COL_YELLOW)) ? "NOT ok" : "ok"));
 	addtostatus(msgline);
 
 	/* And add the info about what's wrong */
@@ -690,7 +689,6 @@ void unix_inode_report(char *hostname, char *clientclass, enum ostype_t os,
 {
 	int inodecolor = COL_GREEN;
 
-	int ichecks = 0;
 	int freecol = -1;
 	int capacol = -1;
 	int mntcol  = -1;
@@ -708,7 +706,7 @@ void unix_inode_report(char *hostname, char *clientclass, enum ostype_t os,
 
 	monmsg = newstrbuffer(0);
 	dfstr_filtered = newstrbuffer(0);
-	ichecks = clear_inode_counts(hinfo, clientclass);
+	clear_inode_counts(hinfo, clientclass);
 	clearalertgroups();
 
 	bol = dfstr; /* Must do this always, to at least grab the column-numbers we need */
@@ -789,9 +787,6 @@ void unix_inode_report(char *hostname, char *clientclass, enum ostype_t os,
 
 					addtobuffer(monmsg, msgline);
 					addalertgroup(group);
-				} else {
-					msgp += sprintf(msgp, "&green <!-- ID=%s --> %s OK\n", fsname, fsname);
-					addtobuffer(monmsg, msgline);
 				}
 			}
 
@@ -849,7 +844,7 @@ void unix_inode_report(char *hostname, char *clientclass, enum ostype_t os,
 	sprintf(msgline, "%s.inode %s %s - Filesystems %s\n",
 		commafy(hostname), colorname(inodecolor), 
 		(timestr ? timestr : "<No timestamp data>"), 
-		((inodecolor == COL_GREEN) ? "OK" : "NOT ok"));
+		(((inodecolor == COL_RED) || (inodecolor == COL_YELLOW)) ? "NOT ok" : "ok"));
 	addtostatus(msgline);
 
 	/* And add the info about what's wrong */
@@ -1103,7 +1098,7 @@ void unix_procs_report(char *hostname, char *clientclass, enum ostype_t os,
 	sprintf(msgline, "%s.procs %s %s - Processes %s\n",
 		commafy(hostname), colorname(pscolor), 
 		(timestr ? timestr : "<No timestamp data>"), 
-		((pscolor == COL_GREEN) ? "OK" : "NOT ok"));
+		(((pscolor == COL_RED) || (pscolor == COL_YELLOW)) ? "NOT ok" : "ok"));
 	addtostatus(msgline);
 
 	/* And add the info about what's wrong */
@@ -1282,9 +1277,10 @@ void msgs_report(char *hostname, char *clientclass, enum ostype_t os,
 	if (group) sprintf(msgline, "status/group:%s ", group); else strcpy(msgline, "status ");
 	addtostatus(msgline);
 
-	sprintf(msgline, "%s.msgs %s System logs at %s\n",
+	sprintf(msgline, "%s.msgs %s %s - System logs %s\n",
 		commafy(hostname), colorname(msgscolor), 
-		(timestr ? timestr : "<No timestamp data>"));
+		(timestr ? timestr : "<No timestamp data>"),
+		(((msgscolor == COL_RED) || (msgscolor == COL_YELLOW)) ? "NOT ok" : "ok"));
 	addtostatus(msgline);
 
 	if (STRBUFLEN(reddata)) {
@@ -1476,9 +1472,10 @@ void file_report(char *hostname, char *clientclass, enum ostype_t os,
 		if (group) sprintf(msgline, "status/group:%s ", group); else strcpy(msgline, "status ");
 		addtostatus(msgline);
 
-		sprintf(msgline, "%s.files %s Files status at %s\n",
+		sprintf(msgline, "%s.files %s %s - Files %s\n",
 			commafy(hostname), colorname(filecolor), 
-			(timestr ? timestr : "<No timestamp data>"));
+			(timestr ? timestr : "<No timestamp data>"),
+			(((filecolor == COL_RED) || (filecolor == COL_YELLOW)) ? "NOT ok" : "ok"));
 		addtostatus(msgline);
 
 		if (STRBUFLEN(reddata)) {
@@ -1723,7 +1720,7 @@ void unix_ports_report(char *hostname, char *clientclass, enum ostype_t os,
 		sprintf(msgline, "%s.ports %s %s - Ports %s\n",
 			commafy(hostname), colorname(portcolor), 
 			(timestr ? timestr : "<No timestamp data>"), 
-			((portcolor == COL_GREEN) ? "OK" : "NOT ok"));
+			(((portcolor == COL_RED) || (portcolor == COL_YELLOW)) ? "NOT ok" : "ok"));
 		addtostatus(msgline);
 
 		/* And add the info about what's wrong */
@@ -1791,7 +1788,6 @@ void testmode(char *configfn)
 	void *hinfo, *oldhinfo = NULL;
 	char hostname[1024], clientclass[1024];
 	char s[4096];
-	int cfid;
 
 	load_hostnames(xgetenv("HOSTSCFG"), NULL, get_fqdn());
 	load_client_config(configfn);
@@ -1839,7 +1835,7 @@ void testmode(char *configfn)
 			int recentlimit, ancientlimit, uptimecolor;
 			int maxclockdiff, clockdiffcolor;
 
-			cfid = get_cpu_thresholds(hinfo, clientclass, &loadyellow, &loadred, &recentlimit, &ancientlimit, &uptimecolor, &maxclockdiff, &clockdiffcolor);
+			get_cpu_thresholds(hinfo, clientclass, &loadyellow, &loadred, &recentlimit, &ancientlimit, &uptimecolor, &maxclockdiff, &clockdiffcolor);
 
 			printf("Load: Yellow at %.2f, red at %.2f\n", loadyellow, loadred);
 			printf("Uptime: %s from boot until %s,", colorname(uptimecolor), durationstring(recentlimit));
@@ -1862,7 +1858,7 @@ void testmode(char *configfn)
 
 			printf("Filesystem: "); fflush(stdout);
 			fgets(s, sizeof(s), stdin); clean_instr(s);
-			cfid = get_disk_thresholds(hinfo, clientclass, s, &warnlevel, &paniclevel, 
+			get_disk_thresholds(hinfo, clientclass, s, &warnlevel, &paniclevel, 
 						   &abswarn, &abspanic, &ignored, &groups);
 			if (ignored) 
 				printf("Ignored\n");

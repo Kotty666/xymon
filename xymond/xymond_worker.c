@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_worker.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymond_worker.c 7078 2012-07-15 11:05:15Z storner $";
 
 #include "config.h"
 
@@ -451,7 +451,7 @@ startagain:
 	needmoredata = (endpos == NULL);
 	while (needmoredata) {
 		/* Fill buffer with more data until we get an end-of-message marker */
-		struct timespec now, tmo;
+		struct timespec now;
 		struct timeval selecttmo;
 		fd_set fdread;
 		int res;
@@ -582,7 +582,7 @@ startagain:
 		goto startagain;
 	}
 
-	if (!locatorid) {
+	{
 		/* 
 		 * Get and check the message sequence number.
 		 * We dont do this for network based workers, since the
@@ -612,7 +612,7 @@ startagain:
 			}
 			else {
 				/* Out-of-sequence message. Cant do much except accept it */
-				errprintf("%s: Got message %u, expected %u\n", id, *seq, seqnum+1);
+				if (!locatorid) errprintf("%s: Got message %u, expected %u\n", id, *seq, seqnum+1);
 				seqnum = *seq;
 			}
 

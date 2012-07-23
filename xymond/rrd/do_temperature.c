@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char temperature_rcsid[] = "$Id: do_temperature.c 6712 2011-07-31 21:01:52Z storner $";
+static char temperature_rcsid[] = "$Id: do_temperature.c 7060 2012-07-14 16:32:11Z storner $";
 
 int do_temperature_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -45,7 +45,7 @@ int do_temperature_rrd(char *hostname, char *testname, char *classname, char *pa
 	*/
 
 	char *bol, *eol, *comment, *p;
-	int tmpF, tmpC;
+	int tmpC;
 
 	if (temperature_tpl == NULL) temperature_tpl = setup_template(temperature_params);
 
@@ -74,7 +74,7 @@ int do_temperature_rrd(char *hostname, char *testname, char *classname, char *pa
 			p = bol + strlen(bol) - 1;
 			while ((p > bol) && isspace((int)*p)) p--;
 			while ((p > bol) && isdigit((int)*p)) p--;
-			tmpF = atoi(p);
+			// tmpF = atoi(p);
 			while ((p > bol) && isspace((int)*p)) p--;
 			while ((p > bol) && isdigit((int)*p)) p--;
 			tmpC = atoi(p);
@@ -83,7 +83,7 @@ int do_temperature_rrd(char *hostname, char *testname, char *classname, char *pa
 			savech = *(p+1); *(p+1) = '\0'; 
 			setupfn2("%s.%s.rrd", "temperature", bol); *(p+1) = savech;
 
-			sprintf(rrdvalues, "%d:%d", (int)tstamp, tmpC);
+			snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, tmpC);
 			create_and_update_rrd(hostname, testname, classname, pagepaths, temperature_params, temperature_tpl);
 		}
 

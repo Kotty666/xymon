@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: headfoot.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: headfoot.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -184,7 +184,6 @@ void sethostenv_filter(char *hostptn, char *pageptn, char *ipptn)
 static listpool_t *find_listpool(char *listname)
 {
 	listpool_t *pool = NULL;
-	listrec_t *zombie;
 
 	if (!listname) listname = "";
 	for (pool = listpoolhead; (pool && strcmp(pool->name, listname)); pool = pool->next);

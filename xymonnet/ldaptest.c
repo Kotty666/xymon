@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: ldaptest.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: ldaptest.c 7060 2012-07-14 16:32:11Z storner $";
 
 #include <sys/types.h>
 #include <stdlib.h>
@@ -39,7 +39,7 @@ static volatile int connect_timeout = 0;
 
 int init_ldap_library(void)
 {
-#ifdef XYMON_LDAP
+#ifdef HAVE_LDAP
 	char versionstring[100];
 
 	/* Doesnt really do anything except define the version-number string */
@@ -52,14 +52,14 @@ int init_ldap_library(void)
 
 void shutdown_ldap_library(void)
 {
-#ifdef XYMON_LDAP
+#ifdef HAVE_LDAP
 	/* No-op for LDAP */
 #endif
 }
 
 int add_ldap_test(testitem_t *t)
 {
-#ifdef XYMON_LDAP
+#ifdef HAVE_LDAP
 	testitem_t *basecheck;
 	ldap_data_t *req;
 	LDAPURLDesc *ludp;
@@ -80,19 +80,19 @@ int add_ldap_test(testitem_t *t)
 	req = (ldap_data_t *) t->privdata;
 	req->ldapdesc = (void *) ludp;
 	req->usetls = (strncmp(urltotest, "ldaps:", 6) == 0);
-#ifdef XYMON_LDAP_USESTARTTLS
 	if (req->usetls && (ludp->lud_port == LDAPS_PORT)) {
 		dbgprintf("Forcing port %d for ldaps with STARTTLS\n", LDAP_PORT );
 		ludp->lud_port = LDAP_PORT;
 	}
-#endif
 	req->ldapstatus = 0;
 	req->output = NULL;
 	req->ldapcolor = -1;
 	req->faileddeps = NULL;
 	req->duration.tv_sec = req->duration.tv_nsec = 0;
 	req->certinfo = NULL;
+	req->certissuer = NULL;
 	req->certexpires = 0;
+	req->certkeysz = 0;
 	req->skiptest = 0;
 
 	if (badurl) {
@@ -121,15 +121,17 @@ int add_ldap_test(testitem_t *t)
 }
 
 
+#if (LDAP_VENDOR != OpenLDAP) || !defined(LDAP_OPT_NETWORK_TIMEOUT)
 static void ldap_alarmhandler(int signum)
 {
 	signal(signum, SIG_DFL);
 	connect_timeout = 1;
 }
+#endif
 
 void run_ldap_tests(service_t *ldaptest, int sslcertcheck, int querytimeout)
 {
-#ifdef XYMON_LDAP
+#ifdef HAVE_LDAP
 	ldap_data_t *req;
 	testitem_t *t;
 	struct timespec starttime;
@@ -222,7 +224,6 @@ void run_ldap_tests(service_t *ldaptest, int sslcertcheck, int querytimeout)
 		}
 #endif
 
-#ifdef XYMON_LDAP_USESTARTTLS
 		if (req->usetls) {
 			dbgprintf("Trying to enable TLS for session\n");
 			if ((rc = ldap_start_tls_s(ld, NULL, NULL)) != LDAP_SUCCESS) {
@@ -232,7 +233,6 @@ void run_ldap_tests(service_t *ldaptest, int sslcertcheck, int querytimeout)
 				continue;
 			}
 		}
-#endif
 
 		if (!connect_timeout) {
 			msgID = ldap_simple_bind(ld, (t->host->ldapuser ? t->host->ldapuser : ""), 

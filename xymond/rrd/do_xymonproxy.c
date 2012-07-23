@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char xymonproxy_rcsid[] = "$Id: do_xymonproxy.c 6712 2011-07-31 21:01:52Z storner $";
+static char xymonproxy_rcsid[] = "$Id: do_xymonproxy.c 7026 2012-07-13 14:05:20Z storner $";
 
 int do_xymonproxy_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 { 
@@ -28,7 +28,7 @@ int do_xymonproxy_rrd(char *hostname, char *testname, char *classname, char *pag
 		else {
 			setupfn("%s.rrd", "xymonproxy");
 		}
-		sprintf(rrdvalues, "%d:%.2f", (int) tstamp, runtime);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%.2f", (int) tstamp, runtime);
 		return create_and_update_rrd(hostname, testname, classname, pagepaths, xymonproxy_params, xymonproxy_tpl);
 	}
 

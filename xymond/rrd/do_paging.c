@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char paging_rcsid[] = "$Id: do_paging.c 6712 2011-07-31 21:01:52Z storner $";
+static char paging_rcsid[] = "$Id: do_paging.c 7026 2012-07-13 14:05:20Z storner $";
 
 static char *paging_params[] = { "DS:rate:GAUGE:600:0:U", NULL };
 static void *paging_tpl      = NULL;
@@ -30,7 +30,7 @@ int do_paging_rrd(char *hostname, char *testname, char *classname, char *pagepat
 		sscanf(pr, "%d per", &pagerate);
 		setupfn("paging.pagerate.rrd", fn);
 
-		sprintf(rrdvalues, "%d:%d", (int)tstamp, pagerate);
+		snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, pagerate);
 		create_and_update_rrd(hostname, testname, classname, pagepaths, paging_params, paging_tpl);
                 if (strstr(msg, "z/VM")) {  /*  Additional handling for z/VM  */
                         pr=strstr(msg,"XSTORE-");
@@ -42,11 +42,11 @@ int do_paging_rrd(char *hostname, char *testname, char *classname, char *pagepat
                                 sscanf(pr, "%d/SEC", &migrate);
  
                                 setupfn("paging.xstore.rrd", fn);
-                                sprintf(rrdvalues, "%d:%d", (int)tstamp, xstore);
+                                snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, xstore);
                                 create_and_update_rrd(hostname, testname, classname, pagepaths, paging_params, paging_tpl);
  
                                 setupfn("paging.migrate.rrd", fn);
-                                sprintf(rrdvalues, "%d:%d", (int)tstamp, migrate);
+                                snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d", (int)tstamp, migrate);
                                 create_and_update_rrd(hostname, testname, classname, pagepaths, paging_params, paging_tpl);
                         }
 
