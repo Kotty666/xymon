@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: color.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: color.c 7105 2012-07-23 11:47:20Z storner $";
 
 #include <string.h>
 #include <stdlib.h>
@@ -125,7 +125,7 @@ int colorset(char *colspec, int excludeset)
 	char *cspeccopy = strdup(colspec);
 	int c, ac;
 	char *p;
-	char *pp;
+	char *pp = NULL;
 
 	p = strtok_r(cspeccopy, ",", &pp);
 	ac = 0;

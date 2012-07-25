@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7076 2012-07-15 10:49:22Z storner $";
+static char rcsid[] = "$Id: xymond.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -5050,10 +5050,10 @@ int main(int argc, char *argv[])
 	errprintf("Setting up logfiles\n");
 	setvbuf(stdout, NULL, _IONBF, 0);
 	setvbuf(stderr, NULL, _IONBF, 0);
-	freopen("/dev/null", "r", stdin);
+	reopen_file("/dev/null", "r", stdin);
 	if (logfn) {
-		freopen(logfn, "a", stdout);
-		freopen(logfn, "a", stderr);
+		reopen_file(logfn, "a", stdout);
+		reopen_file(logfn, "a", stderr);
 	}
 
 	if (ackinfologfn) {
@@ -5098,9 +5098,9 @@ int main(int argc, char *argv[])
 		while (wait3(&childstat, WNOHANG, NULL) > 0) ;
 
 		if (logfn && dologswitch) {
-			freopen(logfn, "a", stdout);
-			freopen(logfn, "a", stderr);
-			if (ackinfologfd) freopen(ackinfologfn, "a", ackinfologfd);
+			reopen_file(logfn, "a", stdout);
+			reopen_file(logfn, "a", stderr);
+			if (ackinfologfd) reopen_file(ackinfologfn, "a", ackinfologfd);
 			dologswitch = 0;
 			posttoall("logrotate");
 		}

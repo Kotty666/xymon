@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: enadis.c 7076 2012-07-15 10:49:22Z storner $";
+static char rcsid[] = "$Id: enadis.c 7096 2012-07-18 12:16:31Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -218,11 +218,13 @@ void do_one_host(char *hostname, char *fullmsg, char *username)
 	int i, result;
 	
 	if (disableend == DISABLE_UNTIL)   {
-
 		nowtime = time(NULL);
 		starttime = nowtime;
 		if (action == ACT_SCHED_DISABLE) starttime = schedtime;
-		duration = (int) difftime (endtime, starttime); 
+		if (duration > 0) {
+			/* Convert to minutes unless "until OK" */
+			duration = (int) difftime (endtime, starttime) / 60; 
+		}
 		scale = 1;
 	}
 

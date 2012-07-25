@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_channel.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: xymond_channel.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -559,10 +559,10 @@ int main(int argc, char *argv[])
 	signal(SIGALRM, SIG_IGN);
 
 	/* Switch stdout/stderr to the logfile, if one was specified */
-	freopen("/dev/null", "r", stdin);	/* xymond_channel's stdin is not used */
+	reopen_file("/dev/null", "r", stdin);	/* xymond_channel's stdin is not used */
 	if (logfn) {
-		freopen(logfn, "a", stdout);
-		freopen(logfn, "a", stderr);
+		reopen_file(logfn, "a", stdout);
+		reopen_file(logfn, "a", stderr);
 	}
 
 	/* Attach to the channel */
@@ -642,8 +642,8 @@ int main(int argc, char *argv[])
 				 * the worker module as well, but must handle our own logfile.
 				 */
 				if (strncmp(inbuf+checksumsize, "@@logrotate", 11) == 0) {
-					freopen(logfn, "a", stdout);
-					freopen(logfn, "a", stderr);
+					reopen_file(logfn, "a", stdout);
+					reopen_file(logfn, "a", stderr);
 				}
 
 				if (checksumsize > 0) {

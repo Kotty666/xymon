@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: errormsg.c 7068 2012-07-14 20:55:50Z storner $";
+static char rcsid[] = "$Id: errormsg.c 7106 2012-07-23 13:02:48Z storner $";
 
 #include <sys/types.h>
 #include <string.h>
@@ -21,6 +21,7 @@ static char rcsid[] = "$Id: errormsg.c 7068 2012-07-14 20:55:50Z storner $";
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include <errno.h>
 
 #include "libxymon.h"
 
@@ -156,6 +157,22 @@ void traceprintf(const char *fmt, ...)
 	}
 }
 
+void reopen_file(char *fn, char *mode, FILE *fd)
+{
+	FILE *testfd;
+
+	testfd = fopen(fn, mode);
+	if (!testfd) {
+		fprintf(stderr, "reopen_file: Cannot open new file: %s\n", strerror(errno));
+		return;
+	}
+	fclose(testfd);
+
+	if (freopen(fn, mode, fd) == NULL) {
+		/* Ugh ... lost the filedescriptor :-(( */
+	}
+}
+
 void redirect_cgilog(char *cginame)
 {
 	char logfn[PATH_MAX];
@@ -167,14 +184,7 @@ void redirect_cgilog(char *cginame)
 
 	if (cginame) errappname = strdup(cginame);
 	sprintf(logfn, "%s/cgierror.log", cgilogdir);
-	if (fd = fopen(logfn, "a")) {
-		fclose(fd);
-		fd = freopen(logfn, "a", stderr);
-		/* If freopen fails, stderr is now silently invalid. Print a warning to stdout to at least prevent mysterious HTTP 500 errors */
-		if (!fd) fprintf(stdout, "Content-type: text/plain\n\nError redirecting CGI stderr to %s\n", logfn);
-	} else {
-		fprintf(stderr, "Cannot redirect CGI errors to %s\n", logfn);
-	}
+	reopen_file(logfn, "a", stderr);
 
 	/* If debugging, setup the debug logfile */
 	if (debug) {
@@ -182,4 +192,5 @@ void redirect_cgilog(char *cginame)
 		set_debugfile(logfn, 1);
 	}
 }
+
 

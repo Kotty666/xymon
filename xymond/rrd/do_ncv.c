@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char ncv_rcsid[] = "$Id: do_ncv.c 7026 2012-07-13 14:05:20Z storner $";
+static char ncv_rcsid[] = "$Id: do_ncv.c 7085 2012-07-16 11:08:37Z storner $";
 
 int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -103,8 +103,9 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 
 		if (name && val && *val) {
 			char *endptr;
+			double dummy;
 
-			strtod(val, &endptr);
+			dummy = strtod(val, &endptr); /* Dont care - we're only interested in endptr */
 			if (isspace((int)*endptr) || (*endptr == '\0')) {
 				char dsname[250];    /* name of ncv in status message (with space and all) */
 				char dskey[252];     /* name of final DS key (stripped)                    */

@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httptest.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: httptest.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <limits.h>
@@ -539,11 +539,19 @@ void add_http_test(testitem_t *t)
 				struct stat st;
 
 				if (fstat(fileno(pf), &st) == 0) {
+					int n;
+
 					xfree(httptest->weburl.postdata);
-					httptest->weburl.postdata = (char *)malloc(st.st_size + 1);
-					fread(httptest->weburl.postdata, 1, st.st_size, pf);
-					*(httptest->weburl.postdata+st.st_size) = '\0';
-					contlen = st.st_size;
+					httptest->weburl.postdata = (char *)malloc(st.st_size + 1); *(httptest->weburl.postdata) = '\0';
+					n = fread(httptest->weburl.postdata, 1, st.st_size, pf);
+					if (n == st.st_size) {
+						*(httptest->weburl.postdata+n) = '\0';
+						contlen = n;
+					}
+					else {
+						errprintf("Cannot read file %s: %s\n", httptest->weburl.postdata+5, strerror(errno));
+						contlen = 0;
+					}
 				}
 				else {
 					errprintf("Cannot stat file %s\n", httptest->weburl.postdata+5);

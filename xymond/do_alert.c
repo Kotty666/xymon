@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_alert.c 6796 2011-12-07 21:47:56Z storner $";
+static char rcsid[] = "$Id: do_alert.c 7117 2012-07-24 15:48:41Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -755,7 +755,7 @@ void cleanup_alert(activealerts_t *alert)
 				rptwalk = rpthead = rpthead->next;
 			}
 			else {
-				rptprev->next = rptwalk->next;
+				if (rptprev) rptprev->next = rptwalk->next;
 				rptwalk = rptwalk->next;
 			}
 

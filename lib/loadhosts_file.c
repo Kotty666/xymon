@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid_file[] = "$Id: loadhosts_file.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid_file[] = "$Id: loadhosts_file.c 7105 2012-07-23 11:47:20Z storner $";
 
 static int get_page_name_title(char *buf, char *key, char **name, char **title)
 {
@@ -130,7 +130,7 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 	pagelist_t *curtoppage, *curpage, *pgtail;
 	namelist_t *nametail = NULL;
 	void * htree;
-	char *cfgdata, *inbol, *ineol, insavchar;
+	char *cfgdata, *inbol, *ineol, insavchar = '\0';
 
 	load_hostinfo(NULL);
 

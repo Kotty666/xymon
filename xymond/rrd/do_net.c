@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char do_net_rcsid[] = "$Id: do_net.c 7060 2012-07-14 16:32:11Z storner $";
+static char do_net_rcsid[] = "$Id: do_net.c 7105 2012-07-23 11:47:20Z storner $";
 
 int do_net_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -113,12 +113,12 @@ int do_net_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 
 			tm = offsetdirection = plusminus = errorbound = secs = NULL;
 			year = strtok(msgcopy, " ");
-			if (year) tm = strtok(NULL, " ");
-			if (tm) offsetdirection = strtok(NULL, " ");
-			if (offsetdirection) offset = strtok(NULL, " ");
-			if (offset) plusminus = strtok(NULL, " ");
-			if (plusminus) errorbound = strtok(NULL, " ");
-			if (errorbound) secs = strtok(NULL, " ");
+			tm = year ? strtok(NULL, " ") : NULL;
+			offsetdirection = tm ? strtok(NULL, " ") : NULL;
+			offset = offsetdirection ? strtok(NULL, " ") : NULL;
+			plusminus = offset ? strtok(NULL, " ") : NULL;
+			errorbound = plusminus ? strtok(NULL, " ") : NULL;
+			secs = errorbound ? strtok(NULL, " ") : NULL;
 
 			if ( offsetdirection && ((strcmp(offsetdirection, "+") == 0) || (strcmp(offsetdirection, "-") == 0)) &&
 			     plusminus && (strcmp(plusminus, "+/-") == 0) && 

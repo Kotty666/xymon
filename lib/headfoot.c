@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: headfoot.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: headfoot.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -1562,10 +1562,12 @@ void headfoot(FILE *output, char *template, char *pagepath, char *head_or_foot, 
 	}
 
 	if (fd != -1) {
+		int n;
+
 		fstat(fd, &st);
-		templatedata = (char *) malloc(st.st_size + 1);
-		read(fd, templatedata, st.st_size);
-		templatedata[st.st_size] = '\0';
+		templatedata = (char *) malloc(st.st_size + 1); *templatedata = '\0';
+		n = read(fd, templatedata, st.st_size);
+		if (n > 0) templatedata[n] = '\0';
 		close(fd);
 
 		output_parsed(output, templatedata, bgcolor, getcurrenttime(NULL));
@@ -1581,10 +1583,12 @@ void headfoot(FILE *output, char *template, char *pagepath, char *head_or_foot, 
 	sprintf(bulletinfile, "%s/web/bulletin_%s", xgetenv("XYMONHOME"), head_or_foot);
 	fd = open(bulletinfile, O_RDONLY);
 	if (fd != -1) {
+		int n;
+
 		fstat(fd, &st);
-		templatedata = (char *) malloc(st.st_size + 1);
-		read(fd, templatedata, st.st_size);
-		templatedata[st.st_size] = '\0';
+		templatedata = (char *) malloc(st.st_size + 1); *templatedata = '\0';
+		n = read(fd, templatedata, st.st_size);
+		templatedata[n] = '\0';
 		close(fd);
 		output_parsed(output, templatedata, bgcolor, getcurrenttime(NULL));
 		xfree(templatedata);
@@ -1612,11 +1616,12 @@ void showform(FILE *output, char *headertemplate, char *formtemplate, int color,
 	if (formfile >= 0) {
 		char *inbuf;
 		struct stat st;
+		int n;
 
 		fstat(formfile, &st);
-		inbuf = (char *) malloc(st.st_size + 1);
-		read(formfile, inbuf, st.st_size);
-		inbuf[st.st_size] = '\0';
+		inbuf = (char *) malloc(st.st_size + 1); *inbuf = '\0';
+		n = read(formfile, inbuf, st.st_size);
+		inbuf[n] = '\0';
 		close(formfile);
 
 		if (headertemplate) headfoot(output, headertemplate, (hostenv_pagepath ? hostenv_pagepath : ""), "header", color);

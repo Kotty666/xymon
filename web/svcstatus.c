@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus.c 7066 2012-07-14 20:50:51Z storner $";
+static char rcsid[] = "$Id: svcstatus.c 7117 2012-07-24 15:48:41Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -190,7 +190,7 @@ int do_request(void)
 	char *restofmsg = NULL, *ackmsg = NULL, *dismsg = NULL, *acklist=NULL, *modifiers = NULL;	/* These are just used */
 	int ishtmlformatted = 0;
 	int clientavail = 0;
-	char *ip, *displayname, *compacts;
+	char *ip = NULL, *displayname = NULL, *compacts;
 
 	if (parse_query() != 0) return 1;
 

@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: perfdata.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: perfdata.c 7105 2012-07-23 11:47:20Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -98,7 +98,7 @@ int oneset(char *hostname, char *rrdname, char *starttime, char *endtime, char *
 	int columnindex;
 	char tstamp[30];
 	int dataindex, rowcount, havemin, havemax, missingdata;
-	double sum, min, max, val;
+	double sum, min = 0.0, max = 0.0, val;
 
 	char *rrdargs[10];
 	int result;

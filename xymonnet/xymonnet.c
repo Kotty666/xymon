@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonnet.c 7065 2012-07-14 20:48:42Z storner $";
+static char rcsid[] = "$Id: xymonnet.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -1220,16 +1220,20 @@ int start_ping_service(service_t *service)
 		else {
 			/* parent */
 			char ip[IP_ADDR_STRLEN+1];	/* Must have room for the \n at the end also */
-			int hnum;
+			int hnum, feederror = 0;
 
 			close(pfd[0]);
 
 			/* Feed the IP's to test to the child */
-			for (handle = xtreeFirst(iptree), hnum = 0; handle != xtreeEnd(iptree); handle = xtreeNext(iptree, handle), hnum++) {
+			for (handle = xtreeFirst(iptree), hnum = 0; ((feederror == 0) && (handle != xtreeEnd(iptree))); handle = xtreeNext(iptree, handle), hnum++) {
 				if ((hnum % pingchildcount) != i) continue;
 
 				sprintf(ip, "%s\n", xtreeKey(iptree, handle));
-				write(pfd[1], ip, strlen(ip));
+				if (write(pfd[1], ip, strlen(ip)) != strlen(ip)) {
+					errprintf("Cannot feed IP to ping tool: %s\n", strerror(errno));
+					feederror = 1;
+					continue;
+				}
 				pingcount++;
 			}
 

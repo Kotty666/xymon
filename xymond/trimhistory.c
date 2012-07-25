@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: trimhistory.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: trimhistory.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -214,9 +214,8 @@ void trim_files(time_t cutoff)
 			fd = fopen(pidfn, "r");
 			if (fd) {
 				char l[100];
-				fgets(l, sizeof(l), fd);
+				pid = (fgets(l, sizeof(l), fd) ? atol(l) : 0);
 				fclose(fd);
-				pid = atol(l);
 			}
 
 			if (pid > 0) kill(pid, SIGHUP);

@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: statusreport.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: statusreport.c 7117 2012-07-24 15:48:41Z storner $";
 
 #include <stdio.h>
 #include <ctype.h>
@@ -106,6 +106,8 @@ int main(int argc, char *argv[])
 			embedded = 1;
 		}
 	}
+
+	if (!filter) allhosts = 1;
 
 	if (!allhosts) {
       		/* Setup the filter we use for the report */
