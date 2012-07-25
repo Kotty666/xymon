@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: contest.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: contest.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include "config.h"
 
@@ -379,11 +379,12 @@ static int cert_password_cb(char *buf, int size, int rwflag, void *userdata)
 	strcpy(p, ".pass");
 
 	passfd = fopen(passfn, "r");
-	if (passfd) {
-		fgets(passphrase, sizeof(passphrase)-1, passfd);
+	if (passfd && fgets(passphrase, sizeof(passphrase)-1, passfd)) {
 		p = strchr(passphrase, '\n'); if (p) *p = '\0';
-		fclose(passfd);
 	}
+	else
+		*passphrase = '\0';
+	if (passfd) fclose(passfd);
 
 	strncpy(buf, passphrase, size);
 	buf[size - 1] = '\0';

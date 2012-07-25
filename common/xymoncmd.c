@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymoncmd.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymoncmd.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -34,9 +34,7 @@ static void xymon_default_envs(char *envfn)
 
 	if (getenv("MACHINEDOTS") == NULL) {
 		fd = popen("uname -n", "r");
-		if (fd) {
-			char *p;
-			fgets(buf, sizeof(buf), fd);
+		if (fd && fgets(buf, sizeof(buf), fd)) {
 			p = strchr(buf, '\n'); if (p) *p = '\0';
 			pclose(fd);
 		}
@@ -50,11 +48,8 @@ static void xymon_default_envs(char *envfn)
 	xgetenv("MACHINE");
 
 	if (getenv("SERVEROSTYPE") == NULL) {
-		char *p;
-
 		fd = popen("uname -s", "r");
-		if (fd) {
-			fgets(buf, sizeof(buf), fd);
+		if (fd && fgets(buf, sizeof(buf), fd)) {
 			pclose(fd);
 		}
 		else strcpy(buf, "unix");

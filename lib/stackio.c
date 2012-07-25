@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: stackio.c 7058 2012-07-14 15:01:11Z storner $";
+static char rcsid[] = "$Id: stackio.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -546,8 +546,11 @@ int main(int argc, char *argv[])
 		}
 
 		printf("\nCmd: "); fflush(stdout);
-		fgets(cmd, sizeof(cmd), stdin);
-		p = strchr(cmd, '\n'); if (p) *p = '\0';
+		if (fgets(cmd, sizeof(cmd), stdin)) {
+			p = strchr(cmd, '\n'); if (p) *p = '\0';
+		}
+		else
+			done = 1;
 	}
 
 	xfree(fn);

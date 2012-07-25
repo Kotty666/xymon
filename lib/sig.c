@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sig.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: sig.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <limits.h>
 #include <signal.h>
@@ -53,7 +53,7 @@ static void sigsegv_handler(int signum)
 	}
 
 	/* Dump core and abort */
-	chdir(signal_tmpdir);
+	if (chdir(signal_tmpdir) == 0) {};	/* Cannot chdir? Well, abort anyway */
 	abort();
 }
 

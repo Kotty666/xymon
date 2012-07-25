@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loaddata.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: loaddata.c 7117 2012-07-24 15:48:41Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -273,9 +273,10 @@ state_t *init_state(char *filename, logdata_t *log)
 		newstate->entry->causes = (dynamicreport ? NULL : save_replogs());
 	}
 	else if (snapshot) {
-		time_t fileage = snapshot - histentry_start;
+		time_t fileage;
 
 		newstate->entry->color = history_color(fd, snapshot, &histentry_start, &newstate->entry->histlogname);
+		fileage = snapshot - histentry_start;
 
 		newstate->entry->oldage = (fileage >= recentgif_limit);
 		newstate->entry->fileage = fileage;
@@ -495,10 +496,11 @@ state_t *load_state(dispsummary_t **sumhead)
 			if (stat(dumpfn, &st) == 0) {
 				fd = fopen(dumpfn, "r");
 				if (fd) {
-					board = (char *)malloc(st.st_size + 1);
-					fread(board, 1, st.st_size, fd);
-					fclose(fd);
-					xymondresult = XYMONSEND_OK;
+					board = (char *)malloc(st.st_size + 1); *board = '\0';
+					if (fread(board, 1, st.st_size, fd)) {
+						fclose(fd);
+						xymondresult = XYMONSEND_OK;
+					}
 				}
 			}
 		}

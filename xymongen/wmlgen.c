@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: wmlgen.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: wmlgen.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <limits.h>
 #include <stdlib.h>
@@ -23,6 +23,7 @@ static char rcsid[] = "$Id: wmlgen.c 6712 2011-07-31 21:01:52Z storner $";
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 #include "xymongen.h"
 #include "wmlgen.h"
@@ -45,7 +46,9 @@ static void delete_old_cards(char *dirname)
 		return;
         }
 
-	chdir(dirname);
+	if (chdir(dirname) == -1) {
+		return;
+	}
 	while ((d = readdir(xymoncards))) {
 		strcpy(fn, d->d_name);
 		stat(fn, &st);
@@ -406,7 +409,9 @@ void do_wml_cards(char *webdir)
 		rename("nongreen.wml.tmp", "nongreen.wml");
 
 		/* Make sure there is the index.wml file pointing to nongreen.wml */
-		symlink("nongreen.wml", "index.wml");
+		if (!symlink("nongreen.wml", "index.wml")) {
+			errprintf("symlink nongreen.xml->index.wml failed: %s\n", strerror(errno));
+		}
 	}
 
 	return;

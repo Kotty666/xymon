@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: htmllog.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: htmllog.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -208,11 +208,12 @@ void generate_html_log(char *hostname, char *displayname, char *service, char *i
 		if (formfile >= 0) {
 			char *inbuf;
 			struct stat st;
+			int n;
 
 			fstat(formfile, &st);
-			inbuf = (char *) malloc(st.st_size + 1);
-			read(formfile, inbuf, st.st_size);
-			inbuf[st.st_size] = '\0';
+			inbuf = (char *) malloc(st.st_size + 1); *inbuf = '\0';
+			n = read(formfile, inbuf, st.st_size);
+			if (n > 0) inbuf[n] = '\0';
 			close(formfile);
 
 			sethostenv_backsecs(graphtime);
@@ -231,11 +232,12 @@ void generate_html_log(char *hostname, char *displayname, char *service, char *i
 		if (formfile >= 0) {
 			char *inbuf;
 			struct stat st;
+			int n;
 
 			fstat(formfile, &st);
-			inbuf = (char *) malloc(st.st_size + 1);
-			read(formfile, inbuf, st.st_size);
-			inbuf[st.st_size] = '\0';
+			inbuf = (char *) malloc(st.st_size + 1); *inbuf = '\0';
+			n = read(formfile, inbuf, st.st_size);
+			if (n > 0) inbuf[st.st_size] = '\0';
 			close(formfile);
 
 			sethostenv_critack(atoi(prio), ttgroup, ttextra, 

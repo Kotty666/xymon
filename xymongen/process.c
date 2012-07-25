@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: process.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: process.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <limits.h>
 #include <string.h>
@@ -22,6 +22,7 @@ static char rcsid[] = "$Id: process.c 6712 2011-07-31 21:01:52Z storner $";
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 #include "xymongen.h"
 #include "process.h"
@@ -174,7 +175,11 @@ void delete_old_acks(void)
 		return;
         }
 
-	chdir(xgetenv("XYMONACKDIR"));
+	if (chdir(xgetenv("XYMONACKDIR")) == -1) {
+		errprintf("Cannot chdir to %s: %s\n", xgetenv("XYMONACKDIR"), strerror(errno));
+		return;
+	}
+
 	while ((d = readdir(xymonacks))) {
 		strcpy(fn, d->d_name);
 		if (strncmp(fn, "ack.", 4) == 0) {

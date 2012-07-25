@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadlayout.c 6900 2012-01-24 10:32:42Z storner $";
+static char rcsid[] = "$Id: loadlayout.c 7105 2012-07-23 11:47:20Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -428,7 +428,7 @@ xymongen_page_t *load_layout(char *pgset)
 	int	ip1, ip2, ip3, ip4;
 	char	*p;
 	int	fqdn = get_fqdn();
-	char	*cfgdata, *inbol, *ineol, insavchar;
+	char	*cfgdata, *inbol, *ineol, insavchar = '\0';
 
 	if (loadhostsfromxymond) {
 		if (load_hostnames("@", NULL, fqdn) != 0) {

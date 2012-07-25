@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_filestore.c 6748 2011-09-04 17:24:36Z storner $";
+static char rcsid[] = "$Id: xymond_filestore.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -453,8 +453,8 @@ int main(int argc, char *argv[])
 		else if (strncmp(metadata[0], "@@logrotate", 11) == 0) {
 			char *fn = xgetenv("XYMONCHANNEL_LOGFILENAME");
 			if (fn && strlen(fn)) {
-				freopen(fn, "a", stdout);
-				freopen(fn, "a", stderr);
+				reopen_file(fn, "a", stdout);
+				reopen_file(fn, "a", stderr);
 			}
 			continue;
 		}

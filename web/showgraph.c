@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: showgraph.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: showgraph.c 7105 2012-07-23 11:47:20Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -181,7 +181,7 @@ void request_cacheflush(char *hostname)
 void parse_query(void)
 {
 	cgidata_t *cgidata = NULL, *cwalk;
-	char *stp;
+	char *stp = NULL;
 
 	cgidata = cgi_request();
 
@@ -1048,7 +1048,7 @@ void generate_graph(char *gdeffn, char *rrddir, char *graphfn)
 		}
 		pfd = popen(pcmd, "r");
 		if (pfd) {
-			fgets(graphtitle, sizeof(graphtitle), pfd);
+			if (fgets(graphtitle, sizeof(graphtitle), pfd) == NULL) *graphtitle = '\0';
 			pclose(pfd);
 		}
 

@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: client_config.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: client_config.c 7117 2012-07-24 15:48:41Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -1896,7 +1896,7 @@ static c_rule_t *getrule(char *hostname, char *pagename, char *classname, void *
 		rwalk = ruleset(hostname, pagename, classname); 
 	}
 	else {
-		rwalk = rwalk->next;
+		if (rwalk) rwalk = rwalk->next;
 	}
 
 	holidayset = (hinfo ? xmh_item(hinfo, XMH_HOLIDAYS) : NULL);

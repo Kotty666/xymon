@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: clientupdate.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: clientupdate.c 7085 2012-07-16 11:08:37Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	versionfd = fopen(versionfn, "r");
 	if (versionfd) {
 		char *p;
-		fgets(version, sizeof(version), versionfd);
+		if (fgets(version, sizeof(version), versionfd) == NULL) *version = '\0';
 		p = strchr(version, '\n'); if (p) *p = '\0';
 		fclose(versionfd);
 	}

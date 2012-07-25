@@ -40,7 +40,7 @@
  *   active alerts for this host.test combination.
  */
 
-static char rcsid[] = "$Id: xymond_alert.c 6748 2011-09-04 17:24:36Z storner $";
+static char rcsid[] = "$Id: xymond_alert.c 7120 2012-07-24 16:24:39Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -416,7 +416,7 @@ int main(int argc, char *argv[])
 			argi++; 
 			while (argi < argc) {
 				if (strncasecmp(argv[argi], "--duration=", 11) == 0) {
-					testdur = atoi(strchr(argv[argi], '=')+1);
+					testdur = durationvalue(strchr(argv[argi], '=')+1);
 				}
 				else if (strncasecmp(argv[argi], "--color=", 8) == 0) {
 					testcolor = strchr(argv[argi], '=')+1;
@@ -439,7 +439,7 @@ int main(int argc, char *argv[])
 
 			if ((testhost == NULL) || (testservice == NULL)) {
 				printf("Usage: xymond_alert --test HOST SERVICE [options]\n");
-				printf("Possible options:\n\t[--duration=SECONDS]\n\t[--color=COLOR]\n\t[--group=GROUPNAME]\n\t[--time=TIMESPEC]\n");
+				printf("Possible options:\n\t[--duration=MINUTES]\n\t[--color=COLOR]\n\t[--group=GROUPNAME]\n\t[--time=TIMESPEC]\n");
 
 				return 1;
 			}
@@ -796,8 +796,8 @@ int main(int argc, char *argv[])
 		else if (strncmp(metadata[0], "@@logrotate", 11) == 0) {
 			char *fn = xgetenv("XYMONCHANNEL_LOGFILENAME");
 			if (fn && strlen(fn)) {
-				freopen(fn, "a", stdout);
-				freopen(fn, "a", stderr);
+				reopen_file(fn, "a", stdout);
+				reopen_file(fn, "a", stderr);
 
 				if (tracefn) {
 					stoptrace();

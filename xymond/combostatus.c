@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: combostatus.c 6780 2011-11-30 11:48:03Z storner $";
+static char rcsid[] = "$Id: combostatus.c 7092 2012-07-17 09:07:08Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -308,10 +308,13 @@ static long evaluate(char *symbolicexpr, char **resultexpr, value_t **valuelist,
 				tname = gettname(symbol);
 				if (hname && tname) {
 					oneval = getvalue(gethname(symbol), gettname(symbol), &onecolor, errbuf);
+					if (oneval == -1) {
+						dbgprintf("Forward lookup of '%s.%s' pending for '%s'\n", hname, tname, symbolicexpr);
+						return -1;
+					}
 				}
 				else {
-					errprintf("Invalid data for symbol calculation - missing host/testname: %s\n",
-						  symbol);
+					errprintf("Invalid data for symbol calculation - missing host/testname: %s\n", symbol);
 					oneval = 0;
 					onecolor = COL_CLEAR;
 				}

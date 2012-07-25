@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sendmsg.c 7067 2012-07-14 20:52:41Z storner $";
+static char rcsid[] = "$Id: sendmsg.c 7084 2012-07-16 06:14:24Z storner $";
 
 #include "config.h"
 
@@ -579,7 +579,7 @@ sendresult_t sendmessage(char *msg, char *recipient, int timeout, sendreturn_t *
  	if ((xymsrv == NULL) && xgetenv("XYMSRV")) xymsrv = strdup(xgetenv("XYMSRV"));
 	if (recipient == NULL) recipient = xymsrv;
 	if ((recipient == NULL) && xgetenv("XYMSERVERS")) {
-		*recipient = "0.0.0.0";
+		recipient = "0.0.0.0";
 	} else if (recipient == NULL) {
 		errprintf("No recipient for message\n");
 		return XYMONSEND_EBADIP;
