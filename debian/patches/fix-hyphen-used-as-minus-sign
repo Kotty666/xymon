@@ -1524,8 +1524,8 @@ Index: xymon/web/xymonwebaccess.5
 --- xymon.orig/web/xymonwebaccess.5	2012-07-23 23:13:25.000000000 +0200
 +++ xymon/web/xymonwebaccess.5	2012-07-24 00:52:08.000000000 +0200
 @@ -1,6 +1,6 @@
--.TH XYMON-WEBACCESS 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
-+.TH XYMON\-WEBACCESS 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
+-.TH XYMON-WEBACCESS 5 "Version 4.3.9: 24 Jul 2012" "Xymon"
++.TH XYMON\-WEBACCESS 5 "Version 4.3.9: 24 Jul 2012" "Xymon"
  .SH NAME
 -xymon-webaccess \- Web-based access controls in Xymon
 +xymon\-webaccess \- Web-based access controls in Xymon
@@ -1695,8 +1695,8 @@ Index: xymon/xymond/client-local.cfg.5
 --- xymon.orig/xymond/client-local.cfg.5	2012-07-23 23:13:25.000000000 +0200
 +++ xymon/xymond/client-local.cfg.5	2012-07-24 00:52:08.000000000 +0200
 @@ -1,34 +1,34 @@
--.TH CLIENT-LOCAL.CFG 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
-+.TH CLIENT\-LOCAL.CFG 5 "Version 4.3.8: 15 Jul 2012" "Xymon"
+-.TH CLIENT-LOCAL.CFG 5 "Version 4.3.9: 24 Jul 2012" "Xymon"
++.TH CLIENT\-LOCAL.CFG 5 "Version 4.3.9: 24 Jul 2012" "Xymon"
  .SH NAME
 -client-local.cfg \- Local configuration settings for Xymon clients
 +client\-local.cfg \- Local configuration settings for Xymon clients
@@ -1886,8 +1886,8 @@ Index: xymon/xymond/xymon-mailack.8
 --- xymon.orig/xymond/xymon-mailack.8	2012-07-23 23:41:15.000000000 +0200
 +++ xymon/xymond/xymon-mailack.8	2012-07-24 00:52:08.000000000 +0200
 @@ -1,14 +1,14 @@
--.TH XYMON-MAILACK 8 "Version 4.3.8: 15 Jul 2012" "Xymon"
-+.TH XYMON\-MAILACK 8 "Version 4.3.8: 15 Jul 2012" "Xymon"
+-.TH XYMON-MAILACK 8 "Version 4.3.9: 24 Jul 2012" "Xymon"
++.TH XYMON\-MAILACK 8 "Version 4.3.9: 24 Jul 2012" "Xymon"
  .SH NAME
 -xymon-mailack \- permit acknowledging alerts via e-mail
 +xymon\-mailack \- permit acknowledging alerts via e-mail
@@ -2214,9 +2214,9 @@ Index: xymon/xymond/xymond_alert.8
 +.BI "\-\-color=COLORNAME"
  The COLORNAME parameter is the color of the alert: red, yellow or purple.
  .br
--.BI "--duration=SECONDS"
-+.BI "\-\-duration=SECONDS"
- The SECONDS parameter is the duration of the alert in seconds. 
+-.BI "--duration=MINUTES"
++.BI "\-\-duration=MINUTES"
+ The MINUTES parameter is the duration of the alert in minutes. 
  .br
 -.BI "--group=GROUPNAME"
 +.BI "\-\-group=GROUPNAME"
@@ -3274,8 +3274,8 @@ Index: xymon/xymonnet/xymonnet-again.sh.1
 --- xymon.orig/xymonnet/xymonnet-again.sh.1	2012-07-23 23:13:26.000000000 +0200
 +++ xymon/xymonnet/xymonnet-again.sh.1	2012-07-24 00:52:08.000000000 +0200
 @@ -1,11 +1,11 @@
--.TH XYMONNET-AGAIN.SH 1 "Version 4.3.8: 15 Jul 2012" "Xymon"
-+.TH XYMONNET\-AGAIN.SH 1 "Version 4.3.8: 15 Jul 2012" "Xymon"
+-.TH XYMONNET-AGAIN.SH 1 "Version 4.3.9: 24 Jul 2012" "Xymon"
++.TH XYMONNET\-AGAIN.SH 1 "Version 4.3.9: 24 Jul 2012" "Xymon"
  .SH NAME
 -xymonnet-again.sh \- Xymon network re-test tool
 +xymonnet\-again.sh \- Xymon network re-test tool
