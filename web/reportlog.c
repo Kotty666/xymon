@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: reportlog.c 6749 2011-09-04 17:26:31Z storner $";
+static char rcsid[] = "$Id: reportlog.c 7136 2012-08-01 08:51:24Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 	fclose(fd);
 
 	textrepfn = (char *)malloc(1024 + strlen(hostname) + strlen(service));
-	sprintf(textrepfn, "avail-%s-%s-%u-%u.txt", hostname, service, (unsigned int)getcurrenttime(NULL), (int)getpid());
+	sprintf(textrepfn, "avail-%s-%s-%u-%lu.txt", hostname, service, (unsigned int)getcurrenttime(NULL), (unsigned long)getpid());
 	textrepfullfn = (char *)malloc(1024 + strlen(xgetenv("XYMONREPDIR")) + strlen(textrepfn));
 	sprintf(textrepfullfn, "%s/%s", xgetenv("XYMONREPDIR"), textrepfn);
 	textrepurl = (char *)malloc(1024 + strlen(xgetenv("XYMONREPURL")) + strlen(textrepfn));

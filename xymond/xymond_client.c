@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_client.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymond_client.c 7149 2012-08-01 16:16:57Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -801,14 +801,22 @@ void unix_inode_report(char *hostname, char *clientclass, enum ostype_t os,
 	}
 
 	if ((capacol == -1) && (mntcol == -1)) {
-		/* If this happens, we havent found our headers so no filesystems have been processed */
-		inodecolor = COL_YELLOW;
-		sprintf(msgline, "&red Expected strings (%s and %s) not found in df output\n", 
-			capahdr, mnthdr);
-		addtobuffer(monmsg, msgline);
-
-		errprintf("Host %s (%s) sent incomprehensible inode report - missing columnheaders '%s' and '%s'\n%s\n",
-			  hostname, osname(os), capahdr, mnthdr, dfstr);
+		if (strlen(dfstr) == 0) {
+			/* Empty inode report, happens on Solaris when all filesystems are ZFS */
+			inodecolor = COL_GREEN;
+			sprintf(msgline, "&green No filesystems reporting inode data\n");
+			addtobuffer(monmsg, msgline);
+		}
+		else {
+			/* If this happens, we havent found our headers so no filesystems have been processed */
+			inodecolor = COL_YELLOW;
+			sprintf(msgline, "&red Expected strings (%s and %s) not found in df output\n", 
+				capahdr, mnthdr);
+			addtobuffer(monmsg, msgline);
+	
+			errprintf("Host %s (%s) sent incomprehensible inode report - missing columnheaders '%s' and '%s'\n%s\n",
+				  hostname, osname(os), capahdr, mnthdr, dfstr);
+		}
 	}
 
 	/* Check for filesystems that must (not) exist */

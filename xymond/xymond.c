@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymond.c 7138 2012-08-01 11:39:17Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -3060,7 +3060,7 @@ void do_message(conn_t *msg, char *origin)
 			/* Pick out the real sender of this message */
 			msgfrom = strstr(currmsg, "\nStatus message received from ");
 			if (msgfrom) {
-				sscanf(msgfrom, "\nStatus message received from %16s\n", sender);
+				sscanf(msgfrom, "\nStatus message received from %15s\n", sender);
 				*msgfrom = '\0';
 			}
 
@@ -3137,7 +3137,7 @@ void do_message(conn_t *msg, char *origin)
 	else if (strncmp(msg->buf, "status", 6) == 0) {
 		msgfrom = strstr(msg->buf, "\nStatus message received from ");
 		if (msgfrom) {
-			sscanf(msgfrom, "\nStatus message received from %16s\n", sender);
+			sscanf(msgfrom, "\nStatus message received from %15s\n", sender);
 			*msgfrom = '\0';
 		}
 
@@ -3178,7 +3178,7 @@ void do_message(conn_t *msg, char *origin)
 
 		msgfrom = strstr(msg->buf, "\nStatus message received from ");
 		if (msgfrom) {
-			sscanf(msgfrom, "\nStatus message received from %16s\n", sender);
+			sscanf(msgfrom, "\nStatus message received from %15s\n", sender);
 			*msgfrom = '\0';
 		}
 
@@ -4003,7 +4003,7 @@ void do_message(conn_t *msg, char *origin)
 		if (msgfrom) {
 			char *ipline = strstr(msgfrom, "\nClientIP:");
 			if (ipline) { 
-				sscanf(ipline, "\nClientIP:%16s\n", sender);
+				sscanf(ipline, "\nClientIP:%15s\n", sender);
 			}
 		}
 
@@ -5006,7 +5006,7 @@ int main(int argc, char *argv[])
 	{
 		FILE *fd = fopen(pidfile, "w");
 		if (fd) {
-			if (fprintf(fd, "%d\n", (int)getpid()) <= 0) {
+			if (fprintf(fd, "%lu\n", (unsigned long)getpid()) <= 0) {
 				errprintf("Error writing PID file %s: %s\n", pidfile, strerror(errno));
 			}
 			fclose(fd);

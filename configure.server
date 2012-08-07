@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configure script for Xymon server
-# $Id: configure.server 7102 2012-07-23 10:55:23Z storner $
+# $Id: configure.server 7124 2012-07-26 07:17:44Z storner $
 
 echo ""
 echo "Configuration script for Xymon"
@@ -469,8 +469,8 @@ echo "# OpenSSL settings"                >>Makefile
 if test "$ENABLESSL" = "y"
 then
     echo "SSLFLAGS = $SSLFLAGS"          >>Makefile
-    if test "$SSLINC" != ""; then
-	echo "SSLINCDIR = -I$SSLINC"     >>Makefile
+    if test "$OSSLINC" != ""; then
+	echo "SSLINCDIR = -I$OSSLINC"    >>Makefile
     fi
     if test "$OSSLLIB" != ""; then
 	echo "SSLLIBS = -L$OSSLLIB -lssl -lcrypto" >>Makefile
