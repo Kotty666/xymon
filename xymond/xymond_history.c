@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_history.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymond_history.c 7136 2012-08-01 08:51:24Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 	{
 		FILE *pidfd = fopen(pidfn, "w");
 		if (pidfd) {
-			fprintf(pidfd, "%d\n", getpid());
+			fprintf(pidfd, "%lu\n", (unsigned long)getpid());
 			fclose(pidfd);
 		}
 	}

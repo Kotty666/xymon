@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-sunos.sh 6712 2011-07-31 21:01:52Z storner $
+# $Id: xymonclient-sunos.sh 7149 2012-08-01 16:16:57Z storner $
 
 echo "[date]"
 date
@@ -32,6 +32,17 @@ while test "$1" != ""; do
   /bin/df -F $1 -k | grep -v " /var/run" | tail +2
   shift
 done
+
+# This only works for ufs filesystems
+echo "[inode]"
+(if test -x /usr/ucb/df
+then
+   /usr/ucb/df -i
+else
+   df -o i 2>/dev/null
+fi) | awk '
+NR<2{printf "%-20s %10s %10s %10s %10s %s\n", $1, "itotal", $2, $3, $4, $5}
+NR>=2{printf "%-20s %10d %10d %10d %10s %s\n", $1, $2+$3, $2, $3, $4, $5}'
 
 echo "[mount]"
 mount

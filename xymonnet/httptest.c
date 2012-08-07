@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httptest.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: httptest.c 7123 2012-07-26 07:17:02Z storner $";
 
 #include <sys/types.h>
 #include <limits.h>
@@ -20,6 +20,7 @@ static char rcsid[] = "$Id: httptest.c 7085 2012-07-16 11:08:37Z storner $";
 #include <regex.h>
 #include <ctype.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 #include "version.h"
 #include "libxymon.h"
