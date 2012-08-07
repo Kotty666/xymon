@@ -2,18 +2,18 @@ Fixes tons of spelling errors found by lintian initally and then later by grep.
 
 Index: xymon/docs/install.html
 ===================================================================
---- xymon.orig/docs/install.html	2012-07-25 17:57:09.000000000 +0200
-+++ xymon/docs/install.html	2012-07-25 17:57:44.000000000 +0200
-@@ -20,7 +20,7 @@
+--- xymon.orig/docs/install.html	2012-08-07 08:18:17.000000000 +0200
++++ xymon/docs/install.html	2012-08-07 08:18:55.000000000 +0200
+@@ -23,7 +23,7 @@
+ 		which has brief instructions for installing Xymon for these types of systems.</b></p>
  
- <h2>Prerequisites - before you install Xymon</h2>
  <p>There are a few things you should check before you begin to install Xymon.
 -Dont be scared of the number of items here - it is likely that you already have
 +Don't be scared of the number of items here - it is likely that you already have
  most or all of it in place.</p>
  
  <h4>A webbrowser capable of handling HTML 4, JavaScript and CSS</h4>
-@@ -34,10 +34,10 @@
+@@ -37,10 +37,10 @@
  IPC mechanisms (shared memory, semaphores) - that should be just about anything
  Unix-like you are likely to have.</p>
  
@@ -28,8 +28,8 @@ Index: xymon/docs/install.html
  memory, a higher value may be required.  See <a href="http://www.xymon.com/archive/2005/08/msg00183.html">http://www.xymon.com/archive/2005/08/msg00183.html</a> for more information about these issues.</p>
 Index: xymon/docs/known-issues.html
 ===================================================================
---- xymon.orig/docs/known-issues.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/known-issues.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/known-issues.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/known-issues.html	2012-08-07 08:18:55.000000000 +0200
 @@ -84,7 +84,7 @@
  </p>
  
@@ -41,8 +41,8 @@ Index: xymon/docs/known-issues.html
  <pre><tt>
 Index: xymon/docs/manpages/man8/xymonproxy.8.html
 ===================================================================
---- xymon.orig/docs/manpages/man8/xymonproxy.8.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man8/xymonproxy.8.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man8/xymonproxy.8.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man8/xymonproxy.8.html	2012-08-07 08:18:55.000000000 +0200
 @@ -68,7 +68,7 @@
  <P>
  <DT>--listen=LOCALIP[:PORT]<DD>
@@ -103,8 +103,8 @@ Index: xymon/docs/manpages/man8/xymonproxy.8.html
  <DT>Timeout details - reading from client<DD>
 Index: xymon/docs/xymon-mrtg.html
 ===================================================================
---- xymon.orig/docs/xymon-mrtg.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/xymon-mrtg.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/xymon-mrtg.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/xymon-mrtg.html	2012-08-07 08:18:55.000000000 +0200
 @@ -19,7 +19,7 @@
  <h3>Simple Xymon-MRTG support</h3>
  <p>MRTG by default uses its own fileformat for the data files, and 
@@ -116,8 +116,8 @@ Index: xymon/docs/xymon-mrtg.html
  
 Index: xymon/xymonproxy/xymonproxy.8
 ===================================================================
---- xymon.orig/xymonproxy/xymonproxy.8	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonproxy/xymonproxy.8	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonproxy/xymonproxy.8	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonproxy/xymonproxy.8	2012-08-07 08:18:55.000000000 +0200
 @@ -48,7 +48,7 @@
  
  .IP "--listen=LOCALIP[:PORT]"
@@ -178,8 +178,8 @@ Index: xymon/xymonproxy/xymonproxy.8
  .IP "Timeout details - reading from client"
 Index: xymon/xymonproxy/xymonproxy.c
 ===================================================================
---- xymon.orig/xymonproxy/xymonproxy.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonproxy/xymonproxy.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonproxy/xymonproxy.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonproxy/xymonproxy.c	2012-08-07 08:18:55.000000000 +0200
 @@ -241,7 +241,7 @@
  	unsigned long msgs_recovered = 0;
  	struct timespec timeinqueue = { 0, 0 };
@@ -218,8 +218,8 @@ Index: xymon/xymonproxy/xymonproxy.c
  					}
 Index: xymon/docs/manpages/man1/xymonnet.1.html
 ===================================================================
---- xymon.orig/docs/manpages/man1/xymonnet.1.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man1/xymonnet.1.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man1/xymonnet.1.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man1/xymonnet.1.html	2012-08-07 08:18:55.000000000 +0200
 @@ -115,7 +115,7 @@
  deprecated and should not be used.
  <P>
@@ -249,8 +249,8 @@ Index: xymon/docs/manpages/man1/xymonnet.1.html
  <P>
 Index: xymon/xymond/xymond.c
 ===================================================================
---- xymon.orig/xymond/xymond.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond.c	2012-08-07 08:18:55.000000000 +0200
 @@ -62,7 +62,7 @@
  #define DISABLED_UNTIL_OK -1
  
@@ -334,8 +334,8 @@ Index: xymon/xymond/xymond.c
  		 */
 Index: xymon/xymond/xymond_worker.c
 ===================================================================
---- xymon.orig/xymond/xymond_worker.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_worker.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_worker.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_worker.c	2012-08-07 08:18:55.000000000 +0200
 @@ -389,7 +389,7 @@
  		/* idlemsg is used to return the idle message in case of timeouts. */
  		idlemsg = strdup("@@idle\n");
@@ -374,8 +374,8 @@ Index: xymon/xymond/xymond_worker.c
  		 * messages (those that are not handled by other network-based
 Index: xymon/xymonnet/xymonnet.1
 ===================================================================
---- xymon.orig/xymonnet/xymonnet.1	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/xymonnet.1	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/xymonnet.1	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/xymonnet.1	2012-08-07 08:18:55.000000000 +0200
 @@ -90,7 +90,7 @@
  deprecated and should not be used.
  
@@ -405,8 +405,8 @@ Index: xymon/xymonnet/xymonnet.1
  
 Index: xymon/docs/manpages/man1/report.cgi.1.html
 ===================================================================
---- xymon.orig/docs/manpages/man1/report.cgi.1.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man1/report.cgi.1.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man1/report.cgi.1.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man1/report.cgi.1.html	2012-08-07 08:18:55.000000000 +0200
 @@ -22,7 +22,7 @@
  <B>report.cgi</B>
  is invoked as a CGI script via the report.sh CGI wrapper.
@@ -418,8 +418,8 @@ Index: xymon/docs/manpages/man1/report.cgi.1.html
  following parameters:
 Index: xymon/docs/manpages/man8/xymond.8.html
 ===================================================================
---- xymon.orig/docs/manpages/man8/xymond.8.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man8/xymond.8.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man8/xymond.8.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man8/xymond.8.html	2012-08-07 08:18:55.000000000 +0200
 @@ -81,7 +81,7 @@
  <DT>--listen=IP[:PORT]<DD>
  Specifies the IP-address and port where xymond will listen for incoming
@@ -455,8 +455,8 @@ Index: xymon/docs/manpages/man8/xymond.8.html
  <BR>
 Index: xymon/docs/manpages/man8/xymond_alert.8.html
 ===================================================================
---- xymon.orig/docs/manpages/man8/xymond_alert.8.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man8/xymond_alert.8.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man8/xymond_alert.8.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man8/xymond_alert.8.html	2012-08-07 08:18:55.000000000 +0200
 @@ -82,7 +82,7 @@
  
  <B>--group=GROUPNAME</B>
@@ -468,8 +468,8 @@ Index: xymon/docs/manpages/man8/xymond_alert.8.html
  
 Index: xymon/web/report.cgi.1
 ===================================================================
---- xymon.orig/web/report.cgi.1	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/report.cgi.1	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/report.cgi.1	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/report.cgi.1	2012-08-07 08:18:55.000000000 +0200
 @@ -8,7 +8,7 @@
  \fBreport.cgi\fR
  is invoked as a CGI script via the report.sh CGI wrapper.
@@ -481,8 +481,8 @@ Index: xymon/web/report.cgi.1
  following parameters:
 Index: xymon/xymond/xymond.8
 ===================================================================
---- xymon.orig/xymond/xymond.8	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond.8	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond.8	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond.8	2012-08-07 08:18:55.000000000 +0200
 @@ -63,7 +63,7 @@
  .IP "--listen=IP[:PORT]"
  Specifies the IP-address and port where xymond will listen for incoming
@@ -518,8 +518,8 @@ Index: xymon/xymond/xymond.8
  .br
 Index: xymon/xymond/xymond_alert.8
 ===================================================================
---- xymon.orig/xymond/xymond_alert.8	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_alert.8	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_alert.8	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_alert.8	2012-08-07 08:18:55.000000000 +0200
 @@ -56,7 +56,7 @@
  The MINUTES parameter is the duration of the alert in minutes. 
  .br
@@ -531,8 +531,8 @@ Index: xymon/xymond/xymond_alert.8
  .BI "--time=TIMESTRING"
 Index: xymon/xymond/xymond_sample.c
 ===================================================================
---- xymon.orig/xymond/xymond_sample.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_sample.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_sample.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_sample.c	2012-08-07 08:18:55.000000000 +0200
 @@ -52,7 +52,7 @@
  			 * You can have a timeout when waiting for new
  			 * messages. If it happens, you will get a "@@idle\n"
@@ -555,8 +555,8 @@ Index: xymon/xymond/xymond_sample.c
  		 *
 Index: xymon/README
 ===================================================================
---- xymon.orig/README	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/README	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/README	2012-08-07 08:18:09.000000000 +0200
++++ xymon/README	2012-08-07 08:18:55.000000000 +0200
 @@ -82,7 +82,7 @@
  
  or on the web http://lists.xymon.com/mailman/listinfo/xymon
@@ -568,9 +568,9 @@ Index: xymon/README
  
 Index: xymon/RELEASENOTES
 ===================================================================
---- xymon.orig/RELEASENOTES	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/RELEASENOTES	2012-07-25 17:57:44.000000000 +0200
-@@ -214,8 +214,8 @@
+--- xymon.orig/RELEASENOTES	2012-08-07 08:18:09.000000000 +0200
++++ xymon/RELEASENOTES	2012-08-07 08:18:55.000000000 +0200
+@@ -219,8 +219,8 @@
  Modem-bank testing ("dialup" host definition) does not work
  ===========================================================
  Previous versions of Xymon supported the Big Brother "dialup"
@@ -583,8 +583,8 @@ Index: xymon/RELEASENOTES
  (Note: This has nothing to do with the "dialup" directive 
 Index: xymon/client/localclient.cfg
 ===================================================================
---- xymon.orig/client/localclient.cfg	2012-07-25 17:57:28.000000000 +0200
-+++ xymon/client/localclient.cfg	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/client/localclient.cfg	2012-08-07 08:18:38.000000000 +0200
++++ xymon/client/localclient.cfg	2012-08-07 08:18:55.000000000 +0200
 @@ -257,7 +257,7 @@
  #             the output from netstat. This is typically "10.0.0.1:80" for the IP 
  #             10.0.0.1, port 80. Or "*:80" for any local address, port 80.
@@ -605,8 +605,8 @@ Index: xymon/client/localclient.cfg
  # 8AM and 10PM.
 Index: xymon/common/hosts.cfg.5
 ===================================================================
---- xymon.orig/common/hosts.cfg.5	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/common/hosts.cfg.5	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/common/hosts.cfg.5	2012-08-07 08:18:09.000000000 +0200
++++ xymon/common/hosts.cfg.5	2012-08-07 08:18:55.000000000 +0200
 @@ -103,11 +103,11 @@
  on other hosts as well.
  
@@ -636,8 +636,8 @@ Index: xymon/common/hosts.cfg.5
  When multiple IP's are pinged, you can choose if ALL IP's
 Index: xymon/common/xymonclient.cfg.5
 ===================================================================
---- xymon.orig/common/xymonclient.cfg.5	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/common/xymonclient.cfg.5	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/common/xymonclient.cfg.5	2012-08-07 08:18:09.000000000 +0200
++++ xymon/common/xymonclient.cfg.5	2012-08-07 08:18:55.000000000 +0200
 @@ -15,7 +15,7 @@
  Chosen when the Xymon client was compiled.
  
@@ -649,8 +649,8 @@ Index: xymon/common/xymonclient.cfg.5
  
 Index: xymon/common/xymonserver.cfg.5
 ===================================================================
---- xymon.orig/common/xymonserver.cfg.5	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/common/xymonserver.cfg.5	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/common/xymonserver.cfg.5	2012-08-07 08:18:09.000000000 +0200
++++ xymon/common/xymonserver.cfg.5	2012-08-07 08:18:55.000000000 +0200
 @@ -347,9 +347,9 @@
  Default: $XYMONSERVERIP
  
@@ -674,8 +674,8 @@ Index: xymon/common/xymonserver.cfg.5
  page and all other pages (xymon.html, subpages, critical.html). 
 Index: xymon/docs/manpages/man1/xymonping.1.html
 ===================================================================
---- xymon.orig/docs/manpages/man1/xymonping.1.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man1/xymonping.1.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man1/xymonping.1.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man1/xymonping.1.html	2012-08-07 08:18:55.000000000 +0200
 @@ -13,7 +13,7 @@
  <A NAME="lbAC">&nbsp;</A>
  <H2>SYNOPSIS</H2>
@@ -722,9 +722,9 @@ Index: xymon/docs/manpages/man1/xymonping.1.html
  <H2>SUID-ROOT INSTALLATION REQUIRED</H2>
 Index: xymon/docs/manpages/man5/analysis.cfg.5.html
 ===================================================================
---- xymon.orig/docs/manpages/man5/analysis.cfg.5.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man5/analysis.cfg.5.html	2012-07-25 17:57:44.000000000 +0200
-@@ -163,7 +163,7 @@
+--- xymon.orig/docs/manpages/man5/analysis.cfg.5.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man5/analysis.cfg.5.html	2012-08-07 08:18:55.000000000 +0200
+@@ -162,7 +162,7 @@
  <P>
  Example: Go yellow if more than 20% swap is used, and red if
  more than 40% swap is used or the actual memory utilisation exceeds
@@ -733,7 +733,7 @@ Index: xymon/docs/manpages/man5/analysis.cfg.5.html
  <DL COMPACT>
  <DT><DD>
  <PRE>
-@@ -437,12 +437,12 @@
+@@ -436,12 +436,12 @@
  &quot;addr&quot; is a (partial) local address specification in the format used on
  the output from netstat.
  <DT>EXLOCAL=addr<DD>
@@ -748,7 +748,7 @@ Index: xymon/docs/manpages/man5/analysis.cfg.5.html
  <DT>STATE=state<DD>
  Causes only the sockets in the specified state to be included, &quot;state&quot;
  is usually LISTEN or ESTABLISHED but can be any socket state reported by
-@@ -454,7 +454,7 @@
+@@ -453,7 +453,7 @@
  
  &quot;addr&quot; is typically &quot;10.0.0.1:80&quot; for the IP 10.0.0.1, port 80. 
  Or &quot;*:80&quot; for any local address, port 80. Note that the Xymon clients 
@@ -759,8 +759,8 @@ Index: xymon/docs/manpages/man5/analysis.cfg.5.html
  <BR>
 Index: xymon/docs/manpages/man5/hosts.cfg.5.html
 ===================================================================
---- xymon.orig/docs/manpages/man5/hosts.cfg.5.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man5/hosts.cfg.5.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man5/hosts.cfg.5.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man5/hosts.cfg.5.html	2012-08-07 08:18:55.000000000 +0200
 @@ -130,11 +130,11 @@
  on other hosts as well.
  <P>
@@ -790,8 +790,8 @@ Index: xymon/docs/manpages/man5/hosts.cfg.5.html
  When multiple IP's are pinged, you can choose if ALL IP's
 Index: xymon/docs/manpages/man5/xymonclient.cfg.5.html
 ===================================================================
---- xymon.orig/docs/manpages/man5/xymonclient.cfg.5.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man5/xymonclient.cfg.5.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man5/xymonclient.cfg.5.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man5/xymonclient.cfg.5.html	2012-08-07 08:18:55.000000000 +0200
 @@ -29,7 +29,7 @@
  Chosen when the Xymon client was compiled.
  <P>
@@ -803,8 +803,8 @@ Index: xymon/docs/manpages/man5/xymonclient.cfg.5.html
  <P>
 Index: xymon/docs/manpages/man5/xymonserver.cfg.5.html
 ===================================================================
---- xymon.orig/docs/manpages/man5/xymonserver.cfg.5.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man5/xymonserver.cfg.5.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man5/xymonserver.cfg.5.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man5/xymonserver.cfg.5.html	2012-08-07 08:18:55.000000000 +0200
 @@ -399,9 +399,9 @@
  Default: $XYMONSERVERIP
  <P>
@@ -828,8 +828,8 @@ Index: xymon/docs/manpages/man5/xymonserver.cfg.5.html
  page and all other pages (xymon.html, subpages, critical.html). 
 Index: xymon/docs/xymon-alerts.html
 ===================================================================
---- xymon.orig/docs/xymon-alerts.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/xymon-alerts.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/xymon-alerts.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/xymon-alerts.html	2012-08-07 08:18:55.000000000 +0200
 @@ -8,7 +8,7 @@
  <body>
  <h1>Configuring Xymon Alerts</h1>
@@ -868,8 +868,8 @@ Index: xymon/docs/xymon-alerts.html
  <pre>
 Index: xymon/rpm/xymon-client.default
 ===================================================================
---- xymon.orig/rpm/xymon-client.default	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/rpm/xymon-client.default	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/rpm/xymon-client.default	2012-08-07 08:18:09.000000000 +0200
++++ xymon/rpm/xymon-client.default	2012-08-07 08:18:55.000000000 +0200
 @@ -2,7 +2,7 @@
  
  # You MUST set the list of Xymon servers that this
@@ -881,8 +881,8 @@ Index: xymon/rpm/xymon-client.default
  # E.g. (a single Xymon server)
 Index: xymon/web/svcstatus-info.c
 ===================================================================
---- xymon.orig/web/svcstatus-info.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/svcstatus-info.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/svcstatus-info.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/svcstatus-info.c	2012-08-07 08:18:55.000000000 +0200
 @@ -24,7 +24,7 @@
  #include <unistd.h>
  #include <utime.h>
@@ -894,9 +894,9 @@ Index: xymon/web/svcstatus-info.c
  #include <arpa/inet.h>
 Index: xymon/xymond/analysis.cfg.5
 ===================================================================
---- xymon.orig/xymond/analysis.cfg.5	2012-07-25 17:57:28.000000000 +0200
-+++ xymon/xymond/analysis.cfg.5	2012-07-25 17:57:44.000000000 +0200
-@@ -121,7 +121,7 @@
+--- xymon.orig/xymond/analysis.cfg.5	2012-08-07 08:18:38.000000000 +0200
++++ xymon/xymond/analysis.cfg.5	2012-08-07 08:18:55.000000000 +0200
+@@ -120,7 +120,7 @@
  .sp
  Example: Go yellow if more than 20% swap is used, and red if
  more than 40% swap is used or the actual memory utilisation exceeds
@@ -905,7 +905,7 @@ Index: xymon/xymond/analysis.cfg.5
  .IP
  .nf
  MEMSWAP 20 40
-@@ -359,12 +359,12 @@
+@@ -358,12 +358,12 @@
  "addr" is a (partial) local address specification in the format used on
  the output from netstat.
  .IP "EXLOCAL=addr"
@@ -920,7 +920,7 @@ Index: xymon/xymond/analysis.cfg.5
  .IP "STATE=state"
  Causes only the sockets in the specified state to be included, "state"
  is usually LISTEN or ESTABLISHED but can be any socket state reported by
-@@ -374,7 +374,7 @@
+@@ -373,7 +373,7 @@
  .LP
  "addr" is typically "10.0.0.1:80" for the IP 10.0.0.1, port 80. 
  Or "*:80" for any local address, port 80. Note that the Xymon clients 
@@ -931,9 +931,9 @@ Index: xymon/xymond/analysis.cfg.5
  .br
 Index: xymon/xymond/etcfiles/analysis.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/analysis.cfg	2012-07-25 17:57:28.000000000 +0200
-+++ xymon/xymond/etcfiles/analysis.cfg	2012-07-25 17:57:44.000000000 +0200
-@@ -258,7 +258,7 @@
+--- xymon.orig/xymond/etcfiles/analysis.cfg	2012-08-07 08:18:38.000000000 +0200
++++ xymon/xymond/etcfiles/analysis.cfg	2012-08-07 08:18:55.000000000 +0200
+@@ -257,7 +257,7 @@
  #             the output from netstat. This is typically "10.0.0.1:80" for the IP 
  #             10.0.0.1, port 80. Or "*:80" for any local address, port 80.
  #             NB: The Xymon clients normally report only the numeric data for
@@ -942,7 +942,7 @@ Index: xymon/xymond/etcfiles/analysis.cfg
  #                 number (e.g. "80") instead of the service name ("www").
  #             "state" causes only the sockets in the specified state to be included;
  #             it is usually LISTEN or ESTABLISHED.
-@@ -313,7 +313,7 @@
+@@ -312,7 +312,7 @@
  # located in the hosts.cfg file, via the hosts' page/subpage/subparent
  # directives. This can be convenient to pick out all hosts on a specific page.
  #
@@ -953,8 +953,8 @@ Index: xymon/xymond/etcfiles/analysis.cfg
  # 8AM and 10PM.
 Index: xymon/xymonnet/xymonping.1
 ===================================================================
---- xymon.orig/xymonnet/xymonping.1	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/xymonping.1	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/xymonping.1	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/xymonping.1	2012-08-07 08:18:55.000000000 +0200
 @@ -2,23 +2,23 @@
  .SH NAME
  xymonping \- Xymon ping tool
@@ -998,8 +998,8 @@ Index: xymon/xymonnet/xymonping.1
  xymonping needs to be installed with suid-root privileges,
 Index: xymon/build/setup-newfiles.c
 ===================================================================
---- xymon.orig/build/setup-newfiles.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/build/setup-newfiles.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/build/setup-newfiles.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/build/setup-newfiles.c	2012-08-07 08:18:55.000000000 +0200
 @@ -67,7 +67,7 @@
  		if (stat(destfn, &st) == 0) {
  			/* Destination file exists, see if it's a previous version */
@@ -1027,8 +1027,8 @@ Index: xymon/build/setup-newfiles.c
  			}
 Index: xymon/client/logfetch.c
 ===================================================================
---- xymon.orig/client/logfetch.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/client/logfetch.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/client/logfetch.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/client/logfetch.c	2012-08-07 08:18:55.000000000 +0200
 @@ -37,7 +37,7 @@
  #include "libxymon.h"
  
@@ -1040,8 +1040,8 @@ Index: xymon/client/logfetch.c
  #define LINES_AROUND_TRIGGER 5
 Index: xymon/client/msgcache.c
 ===================================================================
---- xymon.orig/client/msgcache.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/client/msgcache.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/client/msgcache.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/client/msgcache.c	2012-08-07 08:18:55.000000000 +0200
 @@ -205,7 +205,7 @@
  			addtobuffer(conn->msgbuf, client_response);
  
@@ -1062,9 +1062,9 @@ Index: xymon/client/msgcache.c
  	memset(&laddr, 0, sizeof(laddr));
 Index: xymon/client/xymonclient-freebsd.sh
 ===================================================================
---- xymon.orig/client/xymonclient-freebsd.sh	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/client/xymonclient-freebsd.sh	2012-07-25 17:57:44.000000000 +0200
-@@ -45,7 +45,7 @@
+--- xymon.orig/client/xymonclient-freebsd.sh	2012-08-07 08:18:09.000000000 +0200
++++ xymon/client/xymonclient-freebsd.sh	2012-08-07 08:18:55.000000000 +0200
+@@ -53,7 +53,7 @@
  echo "[ports]"
  (netstat -na -f inet; netstat -na -f inet6) | grep "^tcp"
  echo "[ps]"
@@ -1075,8 +1075,8 @@ Index: xymon/client/xymonclient-freebsd.sh
  # $TOP must be set, the install utility should do that for us if it exists.
 Index: xymon/client/xymonclient-sunos.sh
 ===================================================================
---- xymon.orig/client/xymonclient-sunos.sh	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/client/xymonclient-sunos.sh	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/client/xymonclient-sunos.sh	2012-08-07 08:18:09.000000000 +0200
++++ xymon/client/xymonclient-sunos.sh	2012-08-07 08:18:55.000000000 +0200
 @@ -25,7 +25,7 @@
  # Print the root filesystem first, with the header, and those fs's that have the same type.
  ROOTFSTYPE=`/bin/df -n / | awk '{print $3}'`
@@ -1088,8 +1088,8 @@ Index: xymon/client/xymonclient-sunos.sh
  while test "$1" != ""; do
 Index: xymon/client/xymonclient.cfg.DIST
 ===================================================================
---- xymon.orig/client/xymonclient.cfg.DIST	2012-07-25 17:57:12.000000000 +0200
-+++ xymon/client/xymonclient.cfg.DIST	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/client/xymonclient.cfg.DIST	2012-08-07 08:18:25.000000000 +0200
++++ xymon/client/xymonclient.cfg.DIST	2012-08-07 08:18:55.000000000 +0200
 @@ -6,7 +6,7 @@
  
  PATH="/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/lib/xymon/client/bin"  # PATH setting for the client scripts.
@@ -1101,8 +1101,8 @@ Index: xymon/client/xymonclient.cfg.DIST
  XYMONHOME="$XYMONCLIENTHOME"       # Directory for the Xymon client files
 Index: xymon/common/tasks.cfg.5
 ===================================================================
---- xymon.orig/common/tasks.cfg.5	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/common/tasks.cfg.5	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/common/tasks.cfg.5	2012-08-07 08:18:09.000000000 +0200
++++ xymon/common/tasks.cfg.5	2012-08-07 08:18:55.000000000 +0200
 @@ -89,7 +89,7 @@
  
  The \fBGROUP\fR keyword can be used to limit the number of tasks 
@@ -1114,8 +1114,8 @@ Index: xymon/common/tasks.cfg.5
  change the limit by defining the group before the tasks, with
 Index: xymon/docs/configure.txt
 ===================================================================
---- xymon.orig/docs/configure.txt	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/configure.txt	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/configure.txt	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/configure.txt	2012-08-07 08:18:55.000000000 +0200
 @@ -105,7 +105,7 @@
  top-level directory. I can set this up if you tell me
  what group-ID your webserver runs with. This is typically
@@ -1127,8 +1127,8 @@ Index: xymon/docs/configure.txt
  www-data
 Index: xymon/docs/manpages/man1/combostatus.1.html
 ===================================================================
---- xymon.orig/docs/manpages/man1/combostatus.1.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man1/combostatus.1.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man1/combostatus.1.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man1/combostatus.1.html	2012-08-07 08:18:55.000000000 +0200
 @@ -62,7 +62,7 @@
  combostatus.
  <P>
@@ -1140,8 +1140,8 @@ Index: xymon/docs/manpages/man1/combostatus.1.html
  <P>
 Index: xymon/docs/manpages/man1/xymongen.1.html
 ===================================================================
---- xymon.orig/docs/manpages/man1/xymongen.1.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man1/xymongen.1.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man1/xymongen.1.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man1/xymongen.1.html	2012-08-07 08:18:55.000000000 +0200
 @@ -550,7 +550,7 @@
  
  The syntax is identical to the normal &quot;page&quot; and &quot;subpage&quot;
@@ -1153,8 +1153,8 @@ Index: xymon/docs/manpages/man1/xymongen.1.html
  <BR>
 Index: xymon/docs/manpages/man5/alerts.cfg.5.html
 ===================================================================
---- xymon.orig/docs/manpages/man5/alerts.cfg.5.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man5/alerts.cfg.5.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man5/alerts.cfg.5.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man5/alerts.cfg.5.html	2012-08-07 08:18:55.000000000 +0200
 @@ -170,7 +170,7 @@
  
  This is used to define a recipient that does NOT trigger any alerts, and also terminates the
@@ -1166,8 +1166,8 @@ Index: xymon/docs/manpages/man5/alerts.cfg.5.html
  set of recipients is important.
 Index: xymon/docs/manpages/man5/tasks.cfg.5.html
 ===================================================================
---- xymon.orig/docs/manpages/man5/tasks.cfg.5.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man5/tasks.cfg.5.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man5/tasks.cfg.5.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man5/tasks.cfg.5.html	2012-08-07 08:18:55.000000000 +0200
 @@ -118,7 +118,7 @@
  <P>
  The <B>GROUP</B> keyword can be used to limit the number of tasks 
@@ -1179,8 +1179,8 @@ Index: xymon/docs/manpages/man5/tasks.cfg.5.html
  change the limit by defining the group before the tasks, with
 Index: xymon/docs/manpages/man8/xymon-mailack.8.html
 ===================================================================
---- xymon.orig/docs/manpages/man8/xymon-mailack.8.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man8/xymon-mailack.8.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man8/xymon-mailack.8.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man8/xymon-mailack.8.html	2012-08-07 08:18:55.000000000 +0200
 @@ -85,7 +85,7 @@
  Load environment from FILENAME, usually xymonserver.cfg.
  <P>
@@ -1192,8 +1192,8 @@ Index: xymon/docs/manpages/man8/xymon-mailack.8.html
  </DL>
 Index: xymon/docs/xymon-tips.html.DIST
 ===================================================================
---- xymon.orig/docs/xymon-tips.html.DIST	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/xymon-tips.html.DIST	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/xymon-tips.html.DIST	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/xymon-tips.html.DIST	2012-08-07 08:18:55.000000000 +0200
 @@ -41,7 +41,7 @@
  </table>
  <hr>
@@ -1214,8 +1214,8 @@ Index: xymon/docs/xymon-tips.html.DIST
  <ul>
 Index: xymon/lib/acklog.c
 ===================================================================
---- xymon.orig/lib/acklog.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/acklog.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/acklog.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/acklog.c	2012-08-07 08:18:55.000000000 +0200
 @@ -53,7 +53,7 @@
  		acklog = fopen(acklogfilename, "r");
  	}
@@ -1227,8 +1227,8 @@ Index: xymon/lib/acklog.c
  	}
 Index: xymon/lib/availability.c
 ===================================================================
---- xymon.orig/lib/availability.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/availability.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/availability.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/availability.c	2012-08-07 08:18:55.000000000 +0200
 @@ -401,7 +401,7 @@
  	/* Sanity check */
  	if (totime > getcurrenttime(NULL)) totime = getcurrenttime(NULL);
@@ -1240,8 +1240,8 @@ Index: xymon/lib/availability.c
  				      l, sizeof(l), &starttime, &duration, colstr);
 Index: xymon/lib/environ.c
 ===================================================================
---- xymon.orig/lib/environ.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/environ.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/environ.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/environ.c	2012-08-07 08:18:55.000000000 +0200
 @@ -293,12 +293,12 @@
  {
  	static char *val;
@@ -1259,8 +1259,8 @@ Index: xymon/lib/environ.c
  
 Index: xymon/lib/files.c
 ===================================================================
---- xymon.orig/lib/files.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/files.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/files.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/files.c	2012-08-07 08:18:55.000000000 +0200
 @@ -52,7 +52,7 @@
  					}
  					else if (S_ISDIR(st.st_mode)) {
@@ -1272,8 +1272,8 @@ Index: xymon/lib/files.c
  			}
 Index: xymon/lib/headfoot.c
 ===================================================================
---- xymon.orig/lib/headfoot.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/headfoot.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/headfoot.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/headfoot.c	2012-08-07 08:18:55.000000000 +0200
 @@ -614,7 +614,7 @@
  
  		/* Find token */
@@ -1285,8 +1285,8 @@ Index: xymon/lib/headfoot.c
  
 Index: xymon/lib/loadalerts.c
 ===================================================================
---- xymon.orig/lib/loadalerts.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/loadalerts.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/loadalerts.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/loadalerts.c	2012-08-07 08:18:55.000000000 +0200
 @@ -829,7 +829,7 @@
  
  	/* alert->groups is a comma-separated list of groups, so it needs some special handling */
@@ -1320,8 +1320,8 @@ Index: xymon/lib/loadalerts.c
  		 */
 Index: xymon/lib/loadalerts.h
 ===================================================================
---- xymon.orig/lib/loadalerts.h	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/loadalerts.h	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/loadalerts.h	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/loadalerts.h	2012-08-07 08:18:55.000000000 +0200
 @@ -14,7 +14,7 @@
  #include <time.h>
  #include <stdio.h>
@@ -1333,8 +1333,8 @@ Index: xymon/lib/loadalerts.h
  
 Index: xymon/lib/matching.h
 ===================================================================
---- xymon.orig/lib/matching.h	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/matching.h	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/matching.h	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/matching.h	2012-08-07 08:18:55.000000000 +0200
 @@ -11,7 +11,7 @@
  #ifndef __MATCHING_H__
  #define __MATCHING_H__
@@ -1346,8 +1346,8 @@ Index: xymon/lib/matching.h
  #include <stdarg.h>
 Index: xymon/lib/misc.c
 ===================================================================
---- xymon.orig/lib/misc.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/misc.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/misc.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/misc.c	2012-08-07 08:18:55.000000000 +0200
 @@ -467,7 +467,7 @@
  	inbuf = newstrbuffer(0);
  
@@ -1359,8 +1359,8 @@ Index: xymon/lib/misc.c
  			sprintf(extfn, "%s/ext/%s/%s", xgetenv("XYMONHOME"), family, p);
 Index: xymon/lib/netservices.c
 ===================================================================
---- xymon.orig/lib/netservices.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/netservices.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/netservices.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/netservices.c	2012-08-07 08:18:55.000000000 +0200
 @@ -145,7 +145,7 @@
  			return xymonnetsvcs;
  		}
@@ -1381,8 +1381,8 @@ Index: xymon/lib/netservices.c
  		walk = head;
 Index: xymon/lib/notifylog.c
 ===================================================================
---- xymon.orig/lib/notifylog.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/notifylog.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/notifylog.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/notifylog.c	2012-08-07 08:18:55.000000000 +0200
 @@ -210,7 +210,7 @@
  
  		hostname = hostsvc; svcname = strrchr(hostsvc, '.'); if (svcname) { *svcname = '\0'; svcname++; } else svcname = "";
@@ -1394,8 +1394,8 @@ Index: xymon/lib/notifylog.c
  		p = strchr(recipient, '['); if (p) *p = '\0';
 Index: xymon/lib/stackio.c
 ===================================================================
---- xymon.orig/lib/stackio.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/stackio.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/stackio.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/stackio.c	2012-08-07 08:18:55.000000000 +0200
 @@ -350,7 +350,7 @@
  		newlistitem = (filelist_t *)malloc(sizeof(filelist_t));
  		newlistitem->filename = strdup(dirfn);
@@ -1407,8 +1407,8 @@ Index: xymon/lib/stackio.c
  	}
 Index: xymon/lib/timefunc.c
 ===================================================================
---- xymon.orig/lib/timefunc.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/timefunc.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/timefunc.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/timefunc.c	2012-08-07 08:18:55.000000000 +0200
 @@ -409,7 +409,7 @@
  	char *endpos;
  	char savedelim;
@@ -1420,8 +1420,8 @@ Index: xymon/lib/timefunc.c
  	*endpos = '\0';
 Index: xymon/lib/url.c
 ===================================================================
---- xymon.orig/lib/url.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/url.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/url.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/url.c	2012-08-07 08:18:55.000000000 +0200
 @@ -412,7 +412,7 @@
  	p = canonurl = (char *)malloc(canonurllen);
  	p += sprintf(p, "%s://", url->scheme);
@@ -1433,8 +1433,8 @@ Index: xymon/lib/url.c
  	 * if (url->auth) p += sprintf(p, "%s@", url->auth);
 Index: xymon/lib/xymonrrd.c
 ===================================================================
---- xymon.orig/lib/xymonrrd.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/lib/xymonrrd.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/lib/xymonrrd.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/lib/xymonrrd.c	2012-08-07 08:18:55.000000000 +0200
 @@ -157,7 +157,7 @@
  	rrd_setup();
  
@@ -1446,8 +1446,8 @@ Index: xymon/lib/xymonrrd.c
  
 Index: xymon/web/csvinfo.c
 ===================================================================
---- xymon.orig/web/csvinfo.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/csvinfo.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/csvinfo.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/csvinfo.c	2012-08-07 08:18:55.000000000 +0200
 @@ -58,7 +58,7 @@
  		else if (strcasecmp(cwalk->name, "db") == 0) {
  			char *val, *p;
@@ -1459,8 +1459,8 @@ Index: xymon/web/csvinfo.c
  			if (p) val = (p+1);
 Index: xymon/web/history.c
 ===================================================================
---- xymon.orig/web/history.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/history.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/history.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/history.c	2012-08-07 08:18:55.000000000 +0200
 @@ -179,7 +179,7 @@
  		goto again;
  	}
@@ -1481,8 +1481,8 @@ Index: xymon/web/history.c
  		 */
 Index: xymon/web/report.c
 ===================================================================
---- xymon.orig/web/report.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/report.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/report.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/report.c	2012-08-07 08:18:55.000000000 +0200
 @@ -303,7 +303,7 @@
  	else if (childpid > 0) {
  		wait(&childstat);
@@ -1494,9 +1494,9 @@ Index: xymon/web/report.c
  		if (WIFEXITED(childstat) && (WEXITSTATUS(childstat) != 0) ) {
 Index: xymon/web/showgraph.c
 ===================================================================
---- xymon.orig/web/showgraph.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/showgraph.c	2012-07-25 17:57:44.000000000 +0200
-@@ -811,7 +811,7 @@
+--- xymon.orig/web/showgraph.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/showgraph.c	2012-08-07 08:18:55.000000000 +0200
+@@ -816,7 +816,7 @@
  		*delim = '\0';
  		realservice = strdup(delim+1);
  
@@ -1505,7 +1505,7 @@ Index: xymon/web/showgraph.c
  		for (gdefuser = gdefs; (gdefuser && strcmp(service, gdefuser->name)); gdefuser = gdefuser->next) ;
  		strcpy(service, realservice);
  		wantsingle = 1;
-@@ -974,7 +974,7 @@
+@@ -979,7 +979,7 @@
  
  			/* 
  			 * Has it been updated recently (within the past 24 hours) ? 
@@ -1516,8 +1516,8 @@ Index: xymon/web/showgraph.c
  				continue;
 Index: xymon/web/snapshot.c
 ===================================================================
---- xymon.orig/web/snapshot.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/snapshot.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/snapshot.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/snapshot.c	2012-08-07 08:18:55.000000000 +0200
 @@ -232,7 +232,7 @@
  	else if (childpid > 0) {
  		wait(&childstat);
@@ -1529,8 +1529,8 @@ Index: xymon/web/snapshot.c
  		if (WIFEXITED(childstat) && (WEXITSTATUS(childstat) != 0) ) {
 Index: xymon/web/svcstatus.c
 ===================================================================
---- xymon.orig/web/svcstatus.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/web/svcstatus.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/web/svcstatus.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/web/svcstatus.c	2012-08-07 08:18:55.000000000 +0200
 @@ -515,7 +515,7 @@
  		struct stat st;
  		FILE *fd;
@@ -1542,8 +1542,8 @@ Index: xymon/web/svcstatus.c
  		 */
 Index: xymon/xymond/alerts.cfg.5
 ===================================================================
---- xymon.orig/xymond/alerts.cfg.5	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/alerts.cfg.5	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/alerts.cfg.5	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/alerts.cfg.5	2012-08-07 08:18:55.000000000 +0200
 @@ -124,7 +124,7 @@
  .BR "IGNORE"
  This is used to define a recipient that does NOT trigger any alerts, and also terminates the
@@ -1555,8 +1555,8 @@ Index: xymon/xymond/alerts.cfg.5
  set of recipients is important.
 Index: xymon/xymond/client/snmpcollect.c
 ===================================================================
---- xymon.orig/xymond/client/snmpcollect.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/client/snmpcollect.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/client/snmpcollect.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/client/snmpcollect.c	2012-08-07 08:18:55.000000000 +0200
 @@ -41,7 +41,7 @@
  		if (strcmp(mibname, "proxy") == 0) {
  			/*
@@ -1568,8 +1568,8 @@ Index: xymon/xymond/client/snmpcollect.c
  		}
 Index: xymon/xymond/combostatus.1
 ===================================================================
---- xymon.orig/xymond/combostatus.1	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/combostatus.1	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/combostatus.1	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/combostatus.1	2012-08-07 08:18:55.000000000 +0200
 @@ -41,7 +41,7 @@
  combostatus.
  
@@ -1581,8 +1581,8 @@ Index: xymon/xymond/combostatus.1
  
 Index: xymon/xymond/do_alert.c
 ===================================================================
---- xymon.orig/xymond/do_alert.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/do_alert.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/do_alert.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/do_alert.c	2012-08-07 08:18:55.000000000 +0200
 @@ -46,7 +46,7 @@
  static repeat_t *rpthead = NULL;
  
@@ -1603,21 +1603,21 @@ Index: xymon/xymond/do_alert.c
  		rpt = find_repeatinfo(alert, recip, 1);
 Index: xymon/xymond/rrd/do_ifstat.c
 ===================================================================
---- xymon.orig/xymond/rrd/do_ifstat.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/rrd/do_ifstat.c	2012-07-25 17:57:44.000000000 +0200
-@@ -206,7 +206,7 @@
+--- xymon.orig/xymond/rrd/do_ifstat.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/rrd/do_ifstat.c	2012-08-07 08:18:55.000000000 +0200
+@@ -208,7 +208,7 @@
  				/*
  				 * Linux' netif aliases mess up things. 
  				 * Clear everything when we see an interface name.
 -				 * But we dont want to track the "lo" interface.
 +				 * But we don't want to track the "lo" interface.
  				 */
- 				if (strcmp(ifname, "lo") == 0) {
- 					xfree(ifname); ifname = NULL;
+ 
+ 				/* Strip off the last character if it is a colon (:) */
 Index: xymon/xymond/trimhistory.c
 ===================================================================
---- xymon.orig/xymond/trimhistory.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/trimhistory.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/trimhistory.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/trimhistory.c	2012-08-07 08:18:55.000000000 +0200
 @@ -492,7 +492,7 @@
  	/* Process statuslogs also ? */
  	if (!droplogs) return 0;
@@ -1629,8 +1629,8 @@ Index: xymon/xymond/trimhistory.c
  		errprintf("Cannot cd to historical statuslogs directory: %s\n", strerror(errno));
 Index: xymon/xymond/webfiles/zoom.js
 ===================================================================
---- xymon.orig/xymond/webfiles/zoom.js	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/webfiles/zoom.js	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/webfiles/zoom.js	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/webfiles/zoom.js	2012-08-07 08:18:55.000000000 +0200
 @@ -595,7 +595,7 @@
   countStr = "";
  
@@ -1642,8 +1642,8 @@ Index: xymon/xymond/webfiles/zoom.js
    gMouseObj.dragging = false;
 Index: xymon/xymond/xymon-mailack.8
 ===================================================================
---- xymon.orig/xymond/xymon-mailack.8	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymon-mailack.8	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymon-mailack.8	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymon-mailack.8	2012-08-07 08:18:55.000000000 +0200
 @@ -54,7 +54,7 @@
  Load environment from FILENAME, usually xymonserver.cfg.
  
@@ -1655,8 +1655,8 @@ Index: xymon/xymond/xymon-mailack.8
  .SH "SEE ALSO"
 Index: xymon/xymond/xymon-mailack.c
 ===================================================================
---- xymon.orig/xymond/xymon-mailack.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymon-mailack.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymon-mailack.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymon-mailack.c	2012-08-07 08:18:55.000000000 +0200
 @@ -76,7 +76,7 @@
  				firsttxtline = strdup(STRBUF(inbuf));
  			}
@@ -1668,8 +1668,8 @@ Index: xymon/xymond/xymon-mailack.c
  		/* See if we're at the end of the mail headers */
 Index: xymon/xymond/xymond_alert.c
 ===================================================================
---- xymon.orig/xymond/xymond_alert.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_alert.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_alert.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_alert.c	2012-08-07 08:18:55.000000000 +0200
 @@ -368,7 +368,7 @@
  	MEMDEFINE(acklogfn);
  	MEMDEFINE(notiflogfn);
@@ -1690,8 +1690,8 @@ Index: xymon/xymond/xymond_alert.c
  				awalk->state = (newcolor == COL_BLUE) ? A_DISABLED : A_RECOVERED;
 Index: xymon/xymond/xymond_capture.c
 ===================================================================
---- xymon.orig/xymond/xymond_capture.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_capture.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_capture.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_capture.c	2012-08-07 08:18:55.000000000 +0200
 @@ -62,7 +62,7 @@
  			 * You can have a timeout when waiting for new
  			 * messages. If it happens, you will get a "@@idle\n"
@@ -1703,8 +1703,8 @@ Index: xymon/xymond/xymond_capture.c
  			timeout->tv_sec = (atoi(argv[argi]+10));
 Index: xymon/xymond/xymond_channel.c
 ===================================================================
---- xymon.orig/xymond/xymond_channel.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_channel.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_channel.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_channel.c	2012-08-07 08:18:55.000000000 +0200
 @@ -434,7 +434,7 @@
  	xtreePos_t handle;
  
@@ -1725,9 +1725,9 @@ Index: xymon/xymond/xymond_channel.c
  			 * and wait the full alarm-timer duration.
 Index: xymon/xymond/xymond_client.c
 ===================================================================
---- xymon.orig/xymond/xymond_client.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_client.c	2012-07-25 17:57:44.000000000 +0200
-@@ -1396,7 +1396,7 @@
+--- xymon.orig/xymond/xymond_client.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_client.c	2012-08-07 08:18:55.000000000 +0200
+@@ -1404,7 +1404,7 @@
  			}
  
  			if (!anyrules) {
@@ -1738,8 +1738,8 @@ Index: xymon/xymond/xymond_client.c
  		}
 Index: xymon/xymond/xymond_filestore.c
 ===================================================================
---- xymon.orig/xymond/xymond_filestore.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_filestore.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_filestore.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_filestore.c	2012-08-07 08:18:55.000000000 +0200
 @@ -192,7 +192,7 @@
  	int seq;
  	int running = 1;
@@ -1751,8 +1751,8 @@ Index: xymon/xymond/xymond_filestore.c
  	for (argi = 1; (argi < argc); argi++) {
 Index: xymon/xymond/xymond_history.c
 ===================================================================
---- xymon.orig/xymond/xymond_history.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_history.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_history.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_history.c	2012-08-07 08:18:55.000000000 +0200
 @@ -83,7 +83,7 @@
  	MEMDEFINE(newcol2);
  	MEMDEFINE(oldcol2);
@@ -1773,8 +1773,8 @@ Index: xymon/xymond/xymond_history.c
  			else                          trend = 0;	/* Shouldn't happen ... */
 Index: xymon/xymond/xymond_locator.c
 ===================================================================
---- xymon.orig/xymond/xymond_locator.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_locator.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_locator.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_locator.c	2012-08-07 08:18:55.000000000 +0200
 @@ -58,7 +58,7 @@
   * - a tree with information about what servers provide this service; and
   * - a tree with information about the hosts that have been registered to
@@ -1813,8 +1813,8 @@ Index: xymon/xymond/xymond_locator.c
  	memset(&laddr, 0, sizeof(laddr));
 Index: xymon/xymond/xymond_rootlogin.pl
 ===================================================================
---- xymon.orig/xymond/xymond_rootlogin.pl	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_rootlogin.pl	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_rootlogin.pl	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_rootlogin.pl	2012-08-07 08:18:55.000000000 +0200
 @@ -88,7 +88,7 @@
  	my $statusmsg;
  	my $cmd;
@@ -1826,8 +1826,8 @@ Index: xymon/xymond/xymond_rootlogin.pl
  	# Is there a "root" login somewhere in the "who" section?
 Index: xymon/xymongen/loaddata.c
 ===================================================================
---- xymon.orig/xymongen/loaddata.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymongen/loaddata.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymongen/loaddata.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymongen/loaddata.c	2012-08-07 08:18:55.000000000 +0200
 @@ -146,7 +146,7 @@
  	}
  
@@ -1839,8 +1839,8 @@ Index: xymon/xymongen/loaddata.c
  		p++;
 Index: xymon/xymongen/pagegen.c
 ===================================================================
---- xymon.orig/xymongen/pagegen.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymongen/pagegen.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymongen/pagegen.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymongen/pagegen.c	2012-08-07 08:18:55.000000000 +0200
 @@ -36,7 +36,7 @@
  char *includecolumns = NULL;
  char *nongreenignorecolumns = "";
@@ -1909,8 +1909,8 @@ Index: xymon/xymongen/pagegen.c
  				    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, nongreennodialups, 
 Index: xymon/xymongen/rssgen.c
 ===================================================================
---- xymon.orig/xymongen/rssgen.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymongen/rssgen.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymongen/rssgen.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymongen/rssgen.c	2012-08-07 08:18:55.000000000 +0200
 @@ -134,7 +134,7 @@
  	fprintf(fd, "    <link>");
  	if (generate_static()) {
@@ -1931,8 +1931,8 @@ Index: xymon/xymongen/rssgen.c
  						fprintf(fd, "\t<A TARGET=\"_content\" HREF=\"%s/html/%s.%s.html\">",
 Index: xymon/xymongen/xymongen.1
 ===================================================================
---- xymon.orig/xymongen/xymongen.1	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymongen/xymongen.1	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymongen/xymongen.1	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymongen/xymongen.1	2012-08-07 08:18:55.000000000 +0200
 @@ -455,7 +455,7 @@
  .br
  The syntax is identical to the normal "page" and "subpage"
@@ -1944,8 +1944,8 @@ Index: xymon/xymongen/xymongen.1
  .br
 Index: xymon/xymongen/xymongen.c
 ===================================================================
---- xymon.orig/xymongen/xymongen.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymongen/xymongen.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymongen/xymongen.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymongen/xymongen.c	2012-08-07 08:18:55.000000000 +0200
 @@ -564,7 +564,7 @@
  	if (xgetenv("XYMONSUBPAGEHTACCESS")) xymonsubpagehtaccess = strdup(xgetenv("XYMONSUBPAGEHTACCESS"));
  
@@ -1957,8 +1957,8 @@ Index: xymon/xymongen/xymongen.c
  	if (embedded) {
 Index: xymon/xymonnet/contest.c
 ===================================================================
---- xymon.orig/xymonnet/contest.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/contest.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/contest.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/contest.c	2012-08-07 08:18:55.000000000 +0200
 @@ -293,10 +293,10 @@
  		}
  	        *outp = 255; outp++;
@@ -1983,7 +1983,7 @@ Index: xymon/xymonnet/contest.c
  	memset(passphrase, 0, sizeof(passphrase));
  
  	return strlen(buf);
-@@ -1256,7 +1256,7 @@
+@@ -1260,7 +1260,7 @@
  							item->telnetbuflen = res;
  
  							/*
@@ -1994,8 +1994,8 @@ Index: xymon/xymonnet/contest.c
  							 * we go here.
 Index: xymon/xymonnet/dns.h
 ===================================================================
---- xymon.orig/xymonnet/dns.h	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/dns.h	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/dns.h	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/dns.h	2012-08-07 08:18:55.000000000 +0200
 @@ -16,7 +16,7 @@
  /* dnslookup values */
  #define DNS_THEN_IP     0	/* Try DNS - if it fails, use IP from hosts.cfg */
@@ -2007,8 +2007,8 @@ Index: xymon/xymonnet/dns.h
  extern int max_dns_per_run;
 Index: xymon/xymonnet/dns2.c
 ===================================================================
---- xymon.orig/xymonnet/dns2.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/dns2.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/dns2.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/dns2.c	2012-08-07 08:18:55.000000000 +0200
 @@ -51,7 +51,7 @@
  
  #include "dns2.h"
@@ -2020,8 +2020,8 @@ Index: xymon/xymonnet/dns2.c
  #endif
 Index: xymon/xymonnet/httpresult.c
 ===================================================================
---- xymon.orig/xymonnet/httpresult.c	2012-07-25 17:57:16.000000000 +0200
-+++ xymon/xymonnet/httpresult.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/httpresult.c	2012-08-07 08:18:30.000000000 +0200
++++ xymon/xymonnet/httpresult.c	2012-08-07 08:18:55.000000000 +0200
 @@ -566,7 +566,7 @@
  			addtostatus("\nNo output received from server\n\n");
  		}
@@ -2033,9 +2033,9 @@ Index: xymon/xymonnet/httpresult.c
  				req->outlen = MAX_CONTENT_DATA;
 Index: xymon/xymonnet/httptest.c
 ===================================================================
---- xymon.orig/xymonnet/httptest.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/httptest.c	2012-07-25 17:57:44.000000000 +0200
-@@ -355,7 +355,7 @@
+--- xymon.orig/xymonnet/httptest.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/httptest.c	2012-08-07 08:18:55.000000000 +0200
+@@ -356,7 +356,7 @@
  	httptest->contlen = -1;
  	httptest->parsestatus = (httptest->weburl.proxyurl ? httptest->weburl.proxyurl->parseerror : httptest->weburl.desturl->parseerror);
  
@@ -2046,8 +2046,8 @@ Index: xymon/xymonnet/httptest.c
  
 Index: xymon/xymonnet/ldaptest.c
 ===================================================================
---- xymon.orig/xymonnet/ldaptest.c	2012-07-25 17:57:16.000000000 +0200
-+++ xymon/xymonnet/ldaptest.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/ldaptest.c	2012-08-07 08:18:30.000000000 +0200
++++ xymon/xymonnet/ldaptest.c	2012-08-07 08:18:55.000000000 +0200
 @@ -106,7 +106,7 @@
  	 * At this point, the plain TCP checks have already run.
  	 * So we know from the test found in t->privdata whether
@@ -2068,8 +2068,8 @@ Index: xymon/xymonnet/ldaptest.c
  
 Index: xymon/xymonnet/xymon-snmpcollect.c
 ===================================================================
---- xymon.orig/xymonnet/xymon-snmpcollect.c	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/xymon-snmpcollect.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/xymon-snmpcollect.c	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/xymon-snmpcollect.c	2012-08-07 08:18:55.000000000 +0200
 @@ -302,7 +302,7 @@
  			/*
  			 * While fetching keys, walk the current key-table until we reach the end of the table.
@@ -2108,8 +2108,8 @@ Index: xymon/xymonnet/xymon-snmpcollect.c
  	readmibs(NULL, mibcheck);
 Index: xymon/xymonnet/xymonnet.c
 ===================================================================
---- xymon.orig/xymonnet/xymonnet.c	2012-07-25 17:57:16.000000000 +0200
-+++ xymon/xymonnet/xymonnet.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/xymonnet.c	2012-08-07 08:18:30.000000000 +0200
++++ xymon/xymonnet/xymonnet.c	2012-08-07 08:18:55.000000000 +0200
 @@ -538,7 +538,7 @@
  							if (ips) { *ips = '\0'; ips++; }
  						} while (ips && (*ips));
@@ -2148,8 +2148,8 @@ Index: xymon/xymonnet/xymonnet.c
  		sprintf(msgline, "\nTCP test statistics:\n # TCP tests total     : %8d\n # HTTP tests          : %8d\n # Simple TCP tests    : %8d\n # Connection attempts : %8d\n # bytes written       : %8ld\n # bytes read          : %8ld\n",
 Index: xymon/xymonnet/xymonnet.h
 ===================================================================
---- xymon.orig/xymonnet/xymonnet.h	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymonnet/xymonnet.h	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/xymonnet.h	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymonnet/xymonnet.h	2012-08-07 08:18:55.000000000 +0200
 @@ -86,7 +86,7 @@
  	char *hostname;
  	char ip[IP_ADDR_STRLEN];
@@ -2177,8 +2177,8 @@ Index: xymon/xymonnet/xymonnet.h
  	struct extraping_t *extrapings;
 Index: xymon/xymonnet/xymonping.c
 ===================================================================
---- xymon.orig/xymonnet/xymonping.c	2012-07-25 17:57:16.000000000 +0200
-+++ xymon/xymonnet/xymonping.c	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymonnet/xymonping.c	2012-08-07 08:18:30.000000000 +0200
++++ xymon/xymonnet/xymonping.c	2012-08-07 08:18:55.000000000 +0200
 @@ -182,7 +182,7 @@
  	if (idx >= hostcount) return hostcount;
  
@@ -2199,8 +2199,8 @@ Index: xymon/xymonnet/xymonping.c
  		/* Do one loop over the hosts we havent had responses from yet. */
 Index: xymon/docs/bb-to-xymon.html
 ===================================================================
---- xymon.orig/docs/bb-to-xymon.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/bb-to-xymon.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/bb-to-xymon.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/bb-to-xymon.html	2012-08-07 08:18:55.000000000 +0200
 @@ -8,7 +8,7 @@
  
  <h1>Upgrading from Big Brother to Xymon</h1>
@@ -2212,8 +2212,8 @@ Index: xymon/docs/bb-to-xymon.html
  <h3>First step: Install Xymon</h3>
 Index: xymon/docs/manpages/man8/xymond_channel.8.html
 ===================================================================
---- xymon.orig/docs/manpages/man8/xymond_channel.8.html	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/docs/manpages/man8/xymond_channel.8.html	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/docs/manpages/man8/xymond_channel.8.html	2012-08-07 08:18:09.000000000 +0200
++++ xymon/docs/manpages/man8/xymond_channel.8.html	2012-08-07 08:18:55.000000000 +0200
 @@ -92,7 +92,7 @@
  option causes it to run as a stand-alone background task.
  <P>
@@ -2225,8 +2225,8 @@ Index: xymon/docs/manpages/man8/xymond_channel.8.html
  <P>
 Index: xymon/xymond/etcfiles/snmpmibs.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/snmpmibs.cfg	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/etcfiles/snmpmibs.cfg	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/etcfiles/snmpmibs.cfg	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/etcfiles/snmpmibs.cfg	2012-08-07 08:18:55.000000000 +0200
 @@ -39,7 +39,7 @@
  	Used = HOST-RESOURCES-MIB::hrStorageUsed			/rrd:GAUGE
  
@@ -2238,8 +2238,8 @@ Index: xymon/xymond/etcfiles/snmpmibs.cfg
  	keyidx <HOST-RESOURCES-MIB::hrSWRunIndex>
 Index: xymon/xymond/xymond_channel.8
 ===================================================================
---- xymon.orig/xymond/xymond_channel.8	2012-07-25 17:57:02.000000000 +0200
-+++ xymon/xymond/xymond_channel.8	2012-07-25 17:57:44.000000000 +0200
+--- xymon.orig/xymond/xymond_channel.8	2012-08-07 08:18:09.000000000 +0200
++++ xymon/xymond/xymond_channel.8	2012-08-07 08:18:55.000000000 +0200
 @@ -61,7 +61,7 @@
  option causes it to run as a stand-alone background task.
  

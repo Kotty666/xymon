@@ -17,8 +17,8 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
 
 Index: xymon/client/xymonclient-linux.sh
 ===================================================================
---- xymon.orig/client/xymonclient-linux.sh	2012-07-23 23:40:17.000000000 +0200
-+++ xymon/client/xymonclient-linux.sh	2012-07-23 23:40:41.000000000 +0200
+--- xymon.orig/client/xymonclient-linux.sh	2012-08-07 08:18:23.000000000 +0200
++++ xymon/client/xymonclient-linux.sh	2012-08-07 08:18:32.000000000 +0200
 @@ -45,8 +45,13 @@
  echo "[who]"
  who
@@ -37,9 +37,9 @@ Index: xymon/client/xymonclient-linux.sh
  }'
 Index: xymon/xymond/etcfiles/analysis.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/analysis.cfg	2012-07-23 23:39:37.000000000 +0200
-+++ xymon/xymond/etcfiles/analysis.cfg	2012-07-23 23:40:41.000000000 +0200
-@@ -354,6 +354,11 @@
+--- xymon.orig/xymond/etcfiles/analysis.cfg	2012-08-07 08:18:10.000000000 +0200
++++ xymon/xymond/etcfiles/analysis.cfg	2012-08-07 08:18:32.000000000 +0200
+@@ -353,6 +353,11 @@
  
  
  DEFAULT

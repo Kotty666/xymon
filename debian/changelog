@@ -1,4 +1,4 @@
-xymon (4.3.9-1) UNRELEASED; urgency=low
+xymon (4.3.10-1) UNRELEASED; urgency=low
 
   * New upstream release
     - Removed patch 622069-sslv2-deprecation (solved upstream)
@@ -12,7 +12,7 @@ xymon (4.3.9-1) UNRELEASED; urgency=low
       .tar.gz. as package suffix.
     + support release canditates
 
- -- Axel Beckert <abe@debian.org>  Wed, 25 Jul 2012 17:59:42 +0200
+ -- Axel Beckert <abe@debian.org>  Tue, 07 Aug 2012 08:17:27 +0200
 
 xymon (4.3.7-1) experimental; urgency=low
 

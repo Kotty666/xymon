@@ -1,7 +1,9 @@
 Change paths in documentation to fit Debian paths
 
---- a/docs/xymon-apacheconf.txt
-+++ b/docs/xymon-apacheconf.txt
+Index: xymon/docs/xymon-apacheconf.txt
+===================================================================
+--- xymon.orig/docs/xymon-apacheconf.txt	2012-08-07 08:18:11.000000000 +0200
++++ xymon/docs/xymon-apacheconf.txt	2012-08-07 08:18:17.000000000 +0200
 @@ -9,35 +9,35 @@
  #     the Xymon webfiles as the root URL. In that case,
  #     you should instead set this:
@@ -48,9 +50,11 @@ Change paths in documentation to fit Debian paths
      AuthType Basic
      AuthName "Xymon Administration"
      Require valid-user
---- a/docs/install.html
-+++ b/docs/install.html
-@@ -163,7 +163,7 @@ directory (recommended for better securi
+Index: xymon/docs/install.html
+===================================================================
+--- xymon.orig/docs/install.html	2012-08-07 08:18:11.000000000 +0200
++++ xymon/docs/install.html	2012-08-07 08:18:17.000000000 +0200
+@@ -165,7 +165,7 @@
  password-file that controls access to this directory. Use the <tt>htpasswd</tt>
  command both to create the password file and to add or delete users:<br>
  <pre><tt>
