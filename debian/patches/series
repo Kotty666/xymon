@@ -19,3 +19,4 @@ png-multiarch
 hardening-buildflags
 fix-spelling-errors
 fix-hyphen-used-as-minus-sign
+fix-exp-values-in-ncv

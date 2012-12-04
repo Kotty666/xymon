@@ -11,6 +11,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
     + ignore pre-built binary packages for distributions which use
       .tar.gz. as package suffix.
     + support release canditates
+  * Add patch to support scientific notation for NCV data.
 
  -- Axel Beckert <abe@debian.org>  Tue, 07 Aug 2012 08:17:27 +0200
 
