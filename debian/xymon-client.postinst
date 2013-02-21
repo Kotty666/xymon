@@ -37,7 +37,7 @@ case "$1" in
 	    for d in  /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -user hobbit -exec chown -c xymon '{}' +;
 	    done
-	    pkill -u hobbit vmstat
+	    pkill -u hobbit vmstat || true
 	    deluser hobbit || echo "Couldn't delete user hobbit, please remove it manually"
 	fi
 
