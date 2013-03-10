@@ -16,6 +16,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
       .tar.gz. as package suffix.
     + support release canditates
   * Add patch to support scientific notation for NCV data.
+  * Bump Standards-Version to 3.9.4 (no changes)
   * Fixed the following lintian warnings:
     + vcs-field-not-canonical
     + hardening-no-fortify-functions (by passing CPPFLAGS via CFLAGS)
