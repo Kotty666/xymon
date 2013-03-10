@@ -19,6 +19,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
   * Fixed the following lintian warnings:
     + vcs-field-not-canonical
     + hardening-no-fortify-functions (by passing CPPFLAGS via CFLAGS)
+    + hardening-no-relro (by passing LDFLAGS via CFLAGS)
 
  -- Axel Beckert <abe@debian.org>  Tue, 07 Aug 2012 08:17:27 +0200
 

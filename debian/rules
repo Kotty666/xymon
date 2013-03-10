@@ -43,7 +43,7 @@ build-stamp: Makefile
 	dh_testdir
 
 	# Parallel building does not work as of 4.3.0~beta2
-	CFLAGS="$(CFLAGS) $(CPPFLAGS)" PKGBUILD=1 $(MAKE) MAKEFLAGS=-j1
+	CFLAGS="$(CFLAGS) $(CPPFLAGS) $(LDFLAGS)" PKGBUILD=1 $(MAKE) MAKEFLAGS=-j1
 
 	touch build-stamp
 
@@ -67,7 +67,7 @@ install-server: build install-clean
 	dh_testroot
 	dh_install -a
 	dh_installdirs -a
-	CFLAGS="$(CFLAGS) $(CPPFLAGS)" PKGBUILD=1 INSTALLROOT=$S/ $(MAKE) install
+	CFLAGS="$(CFLAGS) $(CPPFLAGS) $(LDFLAGS)" PKGBUILD=1 INSTALLROOT=$S/ $(MAKE) install
 	# Static content in /usr/share
 	cd $S/var/lib/xymon/www && \
 		mv gifs ../../../../usr/share/xymon && ln -s ../../../../usr/share/xymon/gifs . && \
@@ -97,7 +97,7 @@ install-client: build install-clean
 	dh_testroot
 	dh_install -a
 	dh_installdirs -a
-	CFLAGS="$(CFLAGS) $(CPPFLAGS)" PKGBUILD=1 INSTALLROOT=$C/ $(MAKE) install-client
+	CFLAGS="$(CFLAGS) $(CPPFLAGS) $(LDFLAGS)" PKGBUILD=1 INSTALLROOT=$C/ $(MAKE) install-client
 	cd $C/usr/lib/xymon/client && mv etc/* $C/etc/xymon && rmdir etc && ln -s ../../../../etc/xymon etc
 	cd $C/usr/lib/xymon/client && rmdir logs && ln -s ../../../../var/log/xymon logs
 	cd $C/usr/lib/xymon/client && rmdir tmp && ln -s ../../../../var/lib/xymon/tmp
