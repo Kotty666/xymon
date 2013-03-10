@@ -16,6 +16,8 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
       .tar.gz. as package suffix.
     + support release canditates
   * Add patch to support scientific notation for NCV data.
+  * Fixed the following lintian warnings:
+    + vcs-field-not-canonical
 
  -- Axel Beckert <abe@debian.org>  Tue, 07 Aug 2012 08:17:27 +0200
 
