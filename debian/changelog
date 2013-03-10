@@ -18,6 +18,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
   * Add patch to support scientific notation for NCV data.
   * Fixed the following lintian warnings:
     + vcs-field-not-canonical
+    + hardening-no-fortify-functions (by passing CPPFLAGS via CFLAGS)
 
  -- Axel Beckert <abe@debian.org>  Tue, 07 Aug 2012 08:17:27 +0200
 
