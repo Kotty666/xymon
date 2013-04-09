@@ -1,0 +1,47 @@
+--- a/xymond/etcfiles/xymon-apache-open.DIST
++++ b/xymond/etcfiles/xymon-apache-open.DIST
+@@ -11,14 +11,14 @@
+ #
+ #          DocumentRoot @INSTALLWWWDIR@
+ 
+-Alias @XYMONHOSTURL@/  "@INSTALLWWWDIR@/"
++Alias @XYMONHOSTURL@  "@INSTALLWWWDIR@"
+ <Directory "@INSTALLWWWDIR@">
+     Options Indexes FollowSymLinks Includes MultiViews
+     Order allow,deny
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias @XYMONCGIURL@/ "@CGIDIR@/"
++ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
+ <Directory "@CGIDIR@">
+     AllowOverride None
+     Options ExecCGI Includes
+--- a/xymond/etcfiles/xymon-apache-secure.DIST
++++ b/xymond/etcfiles/xymon-apache-secure.DIST
+@@ -11,14 +11,14 @@
+ #
+ #          DocumentRoot @INSTALLWWWDIR@
+ 
+-Alias @XYMONHOSTURL@/  "@INSTALLWWWDIR@/"
++Alias @XYMONHOSTURL@  "@INSTALLWWWDIR@"
+ <Directory "@INSTALLWWWDIR@">
+     Options Indexes FollowSymLinks Includes MultiViews
+     Order allow,deny
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias @XYMONCGIURL@/ "@CGIDIR@/"
++ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
+ <Directory "@CGIDIR@">
+     AllowOverride None
+     Options ExecCGI Includes
+@@ -26,7 +26,7 @@
+     Allow from all
+ </Directory>
+ 
+-ScriptAlias @SECUREXYMONCGIURL@/ "@SECURECGIDIR@/"
++ScriptAlias @SECUREXYMONCGIURL@ "@SECURECGIDIR@"
+ <Directory "@SECURECGIDIR@">
+     AllowOverride None
+     Options ExecCGI Includes

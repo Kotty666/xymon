@@ -1,9 +1,7 @@
 Change paths in documentation to fit Debian paths
 
-Index: xymon/docs/xymon-apacheconf.txt
-===================================================================
---- xymon.orig/docs/xymon-apacheconf.txt	2012-08-07 08:18:11.000000000 +0200
-+++ xymon/docs/xymon-apacheconf.txt	2012-08-07 08:18:17.000000000 +0200
+--- a/docs/xymon-apacheconf.txt
++++ b/docs/xymon-apacheconf.txt
 @@ -9,35 +9,35 @@
  #     the Xymon webfiles as the root URL. In that case,
  #     you should instead set this:
@@ -13,8 +11,8 @@ Index: xymon/docs/xymon-apacheconf.txt
  
 -Alias /xymon/  "/usr/local/xymon/server/www/"
 -<Directory "/usr/local/xymon/server/www/">
-+Alias /xymon/  "/usr/lib/xymon/server/www/"
-+<Directory "/usr/lib/xymon/server/www/">
++Alias /xymon  "/usr/lib/xymon/server/www"
++<Directory "/usr/lib/xymon/server/www">
      Options Indexes FollowSymLinks Includes MultiViews
      Order allow,deny
      Allow from all
@@ -22,7 +20,7 @@ Index: xymon/docs/xymon-apacheconf.txt
  
 -ScriptAlias /xymon-cgi/ "/usr/local/xymon/cgi-bin/"
 -<Directory "/usr/local/xymon/cgi-bin">
-+ScriptAlias /xymon-cgi/ "/usr/lib/xymon/cgi-bin/"
++ScriptAlias /xymon-cgi "/usr/lib/xymon/cgi-bin"
 +<Directory "/usr/lib/xymon/cgi-bin">
      AllowOverride None
      Options ExecCGI Includes
@@ -32,7 +30,7 @@ Index: xymon/docs/xymon-apacheconf.txt
  
 -ScriptAlias /xymon-seccgi/ "/usr/local/xymon/cgi-secure/"
 -<Directory "/usr/local/xymon/cgi-secure">
-+ScriptAlias /xymon-seccgi/ "/usr/lib/xymon/cgi-secure/"
++ScriptAlias /xymon-seccgi "/usr/lib/xymon/cgi-secure"
 +<Directory "/usr/lib/xymon/cgi-secure">
      AllowOverride None
      Options ExecCGI Includes
@@ -50,10 +48,8 @@ Index: xymon/docs/xymon-apacheconf.txt
      AuthType Basic
      AuthName "Xymon Administration"
      Require valid-user
-Index: xymon/docs/install.html
-===================================================================
---- xymon.orig/docs/install.html	2012-08-07 08:18:11.000000000 +0200
-+++ xymon/docs/install.html	2012-08-07 08:18:17.000000000 +0200
+--- a/docs/install.html
++++ b/docs/install.html
 @@ -165,7 +165,7 @@
  password-file that controls access to this directory. Use the <tt>htpasswd</tt>
  command both to create the password file and to add or delete users:<br>
