@@ -41,6 +41,12 @@ case "$1" in
 
 	create_includefiles
 
+	if test "$TMPFSSIZE" && test -e /proc/mounts && ! grep -q /var/lib/xymon/tmp /proc/mounts; then
+		echo "Mounting tmpfs on /var/lib/xymon/tmp"
+		rm -f /var/lib/xymon/tmp/*
+		mount -t tmpfs -o"size=$TMPFSSIZE,mode=755,uid=$(id -u xymon)" tmpfs /var/lib/xymon/tmp
+	fi
+
 	log_daemon_msg "Starting $DESC" "$NAME"
 	start-stop-daemon --exec $DAEMON --chuid xymon --umask 022 --start \
 		-- \

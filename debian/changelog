@@ -25,6 +25,8 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
   [ Christoph Berg ]
   * Migrate /etc/default/hobbit-client on upgrade (Closes: #679766)
   * Remove trailing slash from Alias in Apache configs (Closes: #603151)
+  * Mount a tmpfs on /var/lib/xymon/tmp if TMPFSSIZE is set in
+    /etc/default/xymon-client.
 
  -- Christoph Berg <myon@debian.org>  Tue, 09 Apr 2013 16:22:46 +0200
 

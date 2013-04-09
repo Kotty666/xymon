@@ -20,3 +20,13 @@ XYMONSERVERS=""
 # CLIENTHOSTNAME=""
 # CLIENTOS="rhel3"
 
+CLIENTHOSTNAME=""
+
+# Optionally mount a tmpfs on /var/lib/xymon/tmp. On client systems this has
+# the advantage that client reports will continue to work even if the /var
+# filesystem is out of space. This setting is ignored on server systems where
+# this directory contains important information that must be preserved over
+# reboots (xymond.chk).
+
+#TMPFSSIZE="5000000"
+
