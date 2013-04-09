@@ -34,8 +34,8 @@ case "$1" in
 		--ingroup xymon --disabled-password --disabled-login \
 		--gecos "Xymon System Monitor" xymon
 	if getent passwd hobbit > /dev/null; then
-	    for d in  /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
-		find $d -user hobbit -exec chown -c xymon '{}' +;
+	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
+		find $d -user hobbit -print0 2>/dev/null | xargs -0 -r chown xymon
 	    done
 	    pkill -u hobbit vmstat || true
 	    deluser hobbit || echo "Couldn't delete user hobbit, please remove it manually"
@@ -44,7 +44,7 @@ case "$1" in
 	# Migrate old group
 	if getent group hobbit > /dev/null; then
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
-		find $d -group hobbit -exec chgrp -c xymon '{}' +;
+		find $d -group hobbit -print0 2>/dev/null | xargs -0 -r chgrp xymon
 	    done
 	    delgroup hobbit || echo "Couldn't delete group hobbit, please remove it manually"
 	fi
@@ -85,7 +85,9 @@ case "$1" in
 	fi
 
 	# Remove empty directories in /etc/hobbit and possibly /etc/hobbit itself.
-	rmdir --ignore-fail-on-non-empty -pv /etc/hobbit/*/ || true
+	if test -d /etc/hobbit; then
+		rmdir --ignore-fail-on-non-empty -p /etc/hobbit/*/ || true
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

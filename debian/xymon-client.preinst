@@ -15,6 +15,7 @@ case "$1" in
 	invoke-rc.d --quiet hobbit stop || true
 	test -d /var/lib/hobbit -a ! -d /var/lib/xymon && mv -v /var/lib/hobbit /var/lib/xymon || true
 	test -d /var/lib/xymon || mkdir /var/lib/xymon
+	test -e /etc/default/hobbit-client -a ! -e /etc/default/xymon-client && mv -v /etc/default/hobbit-client /etc/default/xymon-client || true
 	;;
 esac
 
