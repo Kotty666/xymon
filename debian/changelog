@@ -27,6 +27,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
   * Remove trailing slash from Alias in Apache configs (Closes: #603151)
   * Mount a tmpfs on /var/lib/xymon/tmp if TMPFSSIZE is set in
     /etc/default/xymon-client.
+  * Update logrotate config for /var/log/xymon.
 
  -- Christoph Berg <myon@debian.org>  Tue, 09 Apr 2013 16:22:46 +0200
 
