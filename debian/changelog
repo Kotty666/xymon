@@ -21,6 +21,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
     + vcs-field-not-canonical
     + hardening-no-fortify-functions (by passing CPPFLAGS via CFLAGS)
     + hardening-no-relro (by passing LDFLAGS via CFLAGS)
+    + duplicate-files (xymonserver-migration.cfg)
 
   [ Christoph Berg ]
   * Migrate /etc/default/hobbit-client on upgrade (Closes: #679766)
