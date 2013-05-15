@@ -11,6 +11,8 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
     (Closes: #679706; LP: #1042821)
   * xymon-client: Ignore exit code of pkill in postinst script
     (LP: #1069227)
+  * debian/rules improvements:
+    + No more ignore dh_lintian failures
   * Update watch file:
     + ignore pre-built binary packages for distributions which use
       .tar.gz. as package suffix.
