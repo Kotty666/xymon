@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_rrd.c 7136 2012-08-01 08:51:24Z storner $";
+static char rcsid[] = "$Id: xymond_rrd.c 7178 2013-04-20 15:08:16Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
 		}
 		metadata[metacount] = NULL;
 
-		if ((metacount >= 14) && (strncmp(metadata[0], "@@status", 8) == 0)) {
+		if ((metacount >= 14) && (strncmp(metadata[0], "@@status", 8) == 0) && restofmsg) {
 			/*
 			 * @@status|timestamp|sender|origin|hostname|testname|expiretime|color|testflags|\
 			 * prevcolor|changetime|ackexpiretime|ackmessage|disableexpiretime|disablemessage|\
@@ -357,7 +357,7 @@ int main(int argc, char *argv[])
 				break;
 			}
 		}
-		else if ((metacount > 5) && (strncmp(metadata[0], "@@data", 6) == 0)) {
+		else if ((metacount > 5) && (strncmp(metadata[0], "@@data", 6) == 0) && restofmsg) {
 			/* @@data|timestamp|sender|origin|hostname|testname|classname|pagepaths */
 			tstamp = atoi(metadata[1]);
 			sender = metadata[2];

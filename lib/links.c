@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: links.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: links.c 7183 2013-04-21 08:55:14Z storner $";
 
 #include <unistd.h>
 #include <string.h>
@@ -42,14 +42,17 @@ char *link_docext(char *fn)
 	char *p = strrchr(fn, '.');
 	if (p == NULL) return NULL;
 
-	if ( (strcmp(p, ".php") == 0)    ||
-             (strcmp(p, ".php3") == 0)   ||
-             (strcmp(p, ".asp") == 0)    ||
-             (strcmp(p, ".doc") == 0)    ||
-	     (strcmp(p, ".shtml") == 0)  ||
-	     (strcmp(p, ".phtml") == 0)  ||
-	     (strcmp(p, ".html") == 0)   ||
-	     (strcmp(p, ".htm") == 0))      {
+	if ( (strcasecmp(p, ".php") == 0)    ||
+             (strcasecmp(p, ".php3") == 0)   ||
+             (strcasecmp(p, ".asp") == 0)    ||
+             (strcasecmp(p, ".pdf") == 0)    ||
+             (strcasecmp(p, ".doc") == 0)    ||
+             (strcasecmp(p, ".docx") == 0)    ||
+             (strcasecmp(p, ".odt") == 0)    ||
+	     (strcasecmp(p, ".shtml") == 0)  ||
+	     (strcasecmp(p, ".phtml") == 0)  ||
+	     (strcasecmp(p, ".html") == 0)   ||
+	     (strcasecmp(p, ".htm") == 0))      {
 		return p;
 	}
 

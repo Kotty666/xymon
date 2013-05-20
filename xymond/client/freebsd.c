@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char freebsd_rcsid[] = "$Id: freebsd.c 7149 2012-08-01 16:16:57Z storner $";
+static char freebsd_rcsid[] = "$Id: freebsd.c 7174 2012-11-30 06:22:35Z storner $";
 
 void handle_freebsd_client(char *hostname, char *clienttype, enum ostype_t os, 
 			   void *hinfo, char *sender, time_t timestamp,
@@ -85,8 +85,16 @@ void handle_freebsd_client(char *hostname, char *clienttype, enum ostype_t os,
 	if (vmtotalstr) {
 		p = strstr(vmtotalstr, "\nFree Memory Pages:");
 		if (p) {
-			memphysfree = atol(p + 18);
+			memphysfree = atol(p + 19)/1024;
+			memphysused = memphystotal - memphysfree;
 			found++;
+		} else {
+			p = strstr(vmtotalstr, "\nFree Memory:");
+			if (p) {
+				memphysfree = atol(p + 13)/1024;
+				memphysused = memphystotal - memphysfree;
+				found++;
+			}
 		}
 	}
 

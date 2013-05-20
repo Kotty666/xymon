@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-linux.sh 7059 2012-07-14 15:18:14Z storner $
+# $Id: xymonclient-linux.sh 7172 2012-11-14 11:32:41Z storner $
 
 echo "[date]"
 date
@@ -45,16 +45,17 @@ uptime
 echo "[who]"
 who
 echo "[df]"
-EXCLUDES=`cat /proc/filesystems | grep nodev | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
+EXCLUDES=`cat /proc/filesystems | grep nodev | grep -v rootfs | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
+ROOTFS=`readlink -m /dev/root`
 df -Pl -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
 N
 s/[ 	]*\n[ 	]*/ /
-}'
+}' -e "s&^rootfs&${ROOTFS}&"
 echo "[inode]"
 df -Pil -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
 N
 s/[ 	]*\n[ 	]*/ /
-}'
+}' -e "s&^rootfs&${ROOTFS}&"
 echo "[mount]"
 mount
 echo "[free]"
