@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 
 
-static char rcsid[] = "$Id: loadhosts.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: loadhosts.c 7184 2013-04-21 08:55:57Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -42,7 +42,7 @@ typedef struct namelist_t {
 	char *groupid, *dgname;
 	char *classname;
 	char *osname;
-	struct namelist_t *next;
+	struct namelist_t *next, *prev;
 
 	char *allelems;		/* Storage for data pointed to by elems */
 	char **elems;		/* List of pointers to the elements of the entry */
@@ -58,7 +58,7 @@ typedef struct namelist_t {
 } namelist_t;
 
 static pagelist_t *pghead = NULL;
-static namelist_t *namehead = NULL;
+static namelist_t *namehead = NULL, *nametail = NULL;
 static namelist_t *defaulthost = NULL;
 static char *xmh_item_key[XMH_LAST];
 static char *xmh_item_name[XMH_LAST];
@@ -271,6 +271,7 @@ static void initialize_hostlist(void)
 		if (walk->elems) xfree(walk->elems);
 		xfree(walk);
 	}
+	nametail = NULL;
 
 	while (pghead) {
 		pagelist_t *walk = pghead;
@@ -433,7 +434,10 @@ void *hostinfo(char *hostname)
 		return (strcasecmp(hostname, hivalhost) == 0) ? &hival_hostinfo : NULL;
 	}
 
-	if (!configloaded) load_hostnames(xgetenv("HOSTSCFG"), NULL, get_fqdn());
+	if (!configloaded) {
+		load_hostnames(xgetenv("HOSTSCFG"), NULL, get_fqdn());
+		configloaded = 1;
+	}
 
 	hosthandle = xtreeFind(rbhosts, hostname);
 	if (hosthandle != xtreeEnd(rbhosts)) {

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: strfunc.c 7038 2012-07-13 14:51:14Z storner $";
+static char rcsid[] = "$Id: strfunc.c 7186 2013-04-21 10:53:07Z storner $";
 
 #include "config.h"
 
@@ -187,6 +187,8 @@ char *htmlquoted(char *s)
 	static strbuffer_t *result = NULL;
 	char *inp, *endp;
 	char c;
+
+	if (!s) return NULL;
 
 	if (!result) result = newstrbuffer(4096);
 	clearstrbuffer(result);

@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char memory_rcsid[] = "$Id: do_memory.c 7026 2012-07-13 14:05:20Z storner $";
+static char memory_rcsid[] = "$Id: do_memory.c 7167 2012-08-08 10:24:34Z storner $";
 
 static char *memory_params[]      = { "DS:realmempct:GAUGE:600:0:U", NULL };
 static void *memory_tpl           = NULL;
@@ -52,7 +52,7 @@ void do_memory_rrd_update(time_t tstamp, char *hostname, char *testname, char *c
 	}
 }
 
-/* bb-xsnmp.pl memory update - Marco Avissano */
+/* bb-xsnmp.pl memory update - Marco Avvisano */
 void do_memory_rrd_update_router(time_t tstamp, char *hostname, char *testname, char *classname, char *pagepaths, int procval, int ioval, int fastval)
 {
 	if (memory_tpl == NULL) memory_tpl = setup_template(memory_params);

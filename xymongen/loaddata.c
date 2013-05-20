@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loaddata.c 7117 2012-07-24 15:48:41Z storner $";
+static char rcsid[] = "$Id: loaddata.c 7181 2013-04-20 15:31:22Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -486,6 +486,7 @@ state_t *load_state(dispsummary_t **sumhead)
 
 	if (!reportstart && !snapshot) {
 		char *dumpfn = getenv("BOARDDUMP");
+		char *filter = getenv("BOARDFILTER");
 
 		if (dumpfn) {
 			/* Debugging - read data from a dump file */
@@ -505,8 +506,13 @@ state_t *load_state(dispsummary_t **sumhead)
 			}
 		}
 		else {
-			xymondresult = sendmessage("xymondboard fields=hostname,testname,color,flags,lastchange,logtime,validtime,acktime,disabletime,sender,cookie,line1,acklist", NULL, XYMON_TIMEOUT, sres);
+			char *bcmd;
+
+			bcmd = (char *)malloc(1024 + (filter ? strlen(filter) : 0));
+			sprintf(bcmd, "xymondboard fields=hostname,testname,color,flags,lastchange,logtime,validtime,acktime,disabletime,sender,cookie,line1,acklist %s", filter);
+			xymondresult = sendmessage(bcmd, NULL, XYMON_TIMEOUT, sres);
 			board = getsendreturnstr(sres, 1);
+			xfree(bcmd);
 		}
 	}
 	else {

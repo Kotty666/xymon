@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymongen.c 6752 2011-09-09 08:12:02Z storner $";
+static char rcsid[] = "$Id: xymongen.c 7180 2013-04-20 15:10:55Z storner $";
 
 #include <stdio.h>
 #include <unistd.h>
@@ -651,12 +651,15 @@ int main(int argc, char *argv[])
 
 	/* The full summary page - nongreen.html */
 	if (do_nongreen) {
-		nongreen_color = do_nongreen_page(nssidebarfilename, PAGE_NONGREEN);
+		nongreen_color = do_nongreen_page(nssidebarfilename, PAGE_NONGREEN, "nongreen");
+		nongreencolors = (nongreencolors & ~(1 << COL_YELLOW));
+		nongreencolors = (nongreencolors & ~(1 << COL_PURPLE));
+		nongreen_color = do_nongreen_page(nssidebarfilename, PAGE_NONGREEN, "red");
 		add_timestamp("Non-green page generation done");
 	}
 
 	/* Reduced summary (alerts) page - critical.html */
-	critical_color = do_nongreen_page(NULL, PAGE_CRITICAL);
+	critical_color = do_nongreen_page(NULL, PAGE_CRITICAL, "critical");
 	add_timestamp("Critical page generation done");
 
 	if (snapshot) {
