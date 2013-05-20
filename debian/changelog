@@ -1,4 +1,4 @@
-xymon (4.3.10-1) UNRELEASED; urgency=low
+xymon (4.3.11-1) UNRELEASED; urgency=low
 
   [ Axel Beckert ]
   * New upstream release
@@ -34,7 +34,7 @@ xymon (4.3.10-1) UNRELEASED; urgency=low
     /etc/default/xymon-client.
   * Update logrotate config for /var/log/xymon.
 
- -- Christoph Berg <myon@debian.org>  Tue, 09 Apr 2013 16:22:46 +0200
+ -- Axel Beckert <abe@debian.org>  Mon, 20 May 2013 15:03:38 +0200
 
 xymon (4.3.7-1) experimental; urgency=low
 
