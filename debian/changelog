@@ -4,6 +4,7 @@ xymon (4.3.11-1) UNRELEASED; urgency=low
   * New upstream release
     - Removed patch 622069-sslv2-deprecation (solved upstream)
     - Refreshed and updated patches where needed
+    - Add build/test-clockgettime-librt to debian/clean
   * Update dependencies for smooth upgrade: xymon-client breaks earlier
     versions of xymon and xymon depends on a current xymon-client.
     (Closes: #699611)
