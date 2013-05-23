@@ -8,6 +8,8 @@ xymon (4.3.11-1) UNRELEASED; urgency=low
   * Update dependencies for smooth upgrade: xymon-client breaks earlier
     versions of xymon and xymon depends on a current xymon-client.
     (Closes: #699611)
+  * Add build-dependency on procps so that the build system finds the
+    paths to uptime and top.
   * xymon-client: Depend on procps for pkill in postinst script
     (Closes: #679706; LP: #1042821)
   * xymon-client: Ignore exit code of pkill in postinst script
