@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sendmsg.c 7084 2012-07-16 06:14:24Z storner $";
+static char rcsid[] = "$Id: sendmsg.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include "config.h"
 
@@ -126,7 +126,7 @@ static void setup_transport(char *recipient)
 	}
 
 	dbgprintf("Transport setup is:\n");
-	dbgprintf("xymondportnumber = %d\n", xymondportnumber),
+	dbgprintf("xymondportnumber = %d\n", xymondportnumber);
 	dbgprintf("xymonproxyhost = %s\n", (xymonproxyhost ? xymonproxyhost : "NONE"));
 	dbgprintf("xymonproxyport = %d\n", xymonproxyport);
 }

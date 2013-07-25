@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymoncmd.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymoncmd.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -33,13 +33,15 @@ static void xymon_default_envs(char *envfn)
 	char *homedir, *p;
 
 	if (getenv("MACHINEDOTS") == NULL) {
+	    if (getenv("HOSTNAME") != NULL) sprintf(buf, "%s", xgetenv("HOSTNAME"));
+	    else {
 		fd = popen("uname -n", "r");
 		if (fd && fgets(buf, sizeof(buf), fd)) {
 			p = strchr(buf, '\n'); if (p) *p = '\0';
 			pclose(fd);
 		}
 		else strcpy(buf, "localhost");
-
+	    }
 		evar = (char *)malloc(strlen(buf) + 13);
 		sprintf(evar, "MACHINEDOTS=%s", buf);
 		putenv(evar);
@@ -50,12 +52,13 @@ static void xymon_default_envs(char *envfn)
 	if (getenv("SERVEROSTYPE") == NULL) {
 		fd = popen("uname -s", "r");
 		if (fd && fgets(buf, sizeof(buf), fd)) {
+			p = strchr(buf, '\n'); if (p) *p = '\0';
 			pclose(fd);
 		}
 		else strcpy(buf, "unix");
 		for (p=buf; (*p); p++) *p = (char) tolower((int)*p);
 
-		evar = (char *)malloc(strlen(buf) + 10);
+		evar = (char *)malloc(strlen(buf) + 14);
 		sprintf(evar, "SERVEROSTYPE=%s", buf);
 		putenv(evar);
 	}

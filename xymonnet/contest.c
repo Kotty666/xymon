@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: contest.c 7122 2012-07-26 07:16:29Z storner $";
+static char rcsid[] = "$Id: contest.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include "config.h"
 
@@ -962,12 +962,12 @@ void do_tcp_tests(int timeout, int concurrency)
 						   case EADDRINUSE   : errprintf("connect returned EADDRINUSE!\n"); break;
 						   case EFAULT       : errprintf("connect returned EFAULT!\n"); break;
 						   case EALREADY     : errprintf("connect returned EALREADY!\n"); break;
-						   default           : errprintf("connect returned %d, errno=%d\n", res, errno);
+						   default           : errprintf("connect returned %d for test %s, errno=%d, %s\n", res, nextinqueue->tspec, errno, strerror(errno));
 						}
 					}
 					else {
 						/* Should NEVER happen. connect returns 0 or -1 */
-						errprintf("Strange result from connect: %d, errno=%d\n", res, errno);
+						errprintf("Strange result from connect: %d, for test %s, errno=%d, %s\n", res, nextinqueue->tspec, errno, strerror(errno));
 					}
 				}
 				else {

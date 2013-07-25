@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char sco_sv_rcsid[] = "$Id: sco_sv.c 6712 2011-07-31 21:01:52Z storner $";
+static char sco_sv_rcsid[] = "$Id: sco_sv.c 7197 2013-05-03 16:07:04Z storner $";
 
 void handle_sco_sv_client(char *hostname, char *clienttype, enum ostype_t os, 
 			  void *hinfo, char *sender, time_t timestamp,
@@ -76,7 +76,7 @@ void handle_sco_sv_client(char *hostname, char *clienttype, enum ostype_t os,
 		char *p;
 
 		memphystotal = memphysfree = 0;
-		memphystotal = (atoi(memsizestr) / 1048576);
+		memphystotal = (atol(memsizestr) / 1048576);
 		if(sscanf(freememstr, "%*s %ld %ld %*d %*d", &memphysfree, &memswapfree) == 2)
 			memphysfree /= 256; /* comes in 4kb pages */
 		else

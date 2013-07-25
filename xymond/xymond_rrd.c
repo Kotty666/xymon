@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_rrd.c 7178 2013-04-20 15:08:16Z storner $";
+static char rcsid[] = "$Id: xymond_rrd.c 7206 2013-07-23 13:47:08Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -28,6 +28,7 @@ static char rcsid[] = "$Id: xymond_rrd.c 7178 2013-04-20 15:08:16Z storner $";
 #include <sys/un.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <libgen.h>
 
 #include "libxymon.h"
 #include "xymond_worker.h"
@@ -213,12 +214,17 @@ int main(int argc, char *argv[])
 		else if (strcmp(argv[argi], "--no-cache") == 0) {
 			use_rrd_cache = 0;
 		}
+		else if (strcmp(argv[argi], "--no-rrd") == 0) {
+			no_rrd = 1;
+		}
 		else if (net_worker_option(argv[argi])) {
 			/* Handled in the subroutine */
 		}
 	}
 
 	save_errbuf = 0;
+
+	if (no_rrd && !processor) errprintf("RRD writing disabled, but no external processor has been specified.\n");
 
 	if ((rrddir == NULL) && xgetenv("XYMONRRDS")) {
 		rrddir = strdup(xgetenv("XYMONRRDS"));
@@ -342,6 +348,7 @@ int main(int argc, char *argv[])
 			  case COL_YELLOW:
 			  case COL_RED:
 			  case COL_BLUE: /* Blue is OK, because it only arrives here when an update is sent */
+			  case COL_CLEAR: /* Clear is OK, because it could still contain valid metric data */
 				tstamp = atoi(metadata[1]);
 				sender = metadata[2];
 				hostname = metadata[4]; 
@@ -353,7 +360,7 @@ int main(int argc, char *argv[])
 				break;
 
 			  default:
-				/* Ignore reports with purple, blue or clear - they have no data we want. */
+				/* Ignore reports with purple - they have no data we want. */
 				break;
 			}
 		}
@@ -393,7 +400,7 @@ int main(int argc, char *argv[])
 
 			MEMDEFINE(hostdir);
 
-			sprintf(hostdir, "%s/%s", rrddir, hostname);
+			sprintf(hostdir, "%s/%s", rrddir, basename(hostname));
 			dropdirectory(hostdir, 1);
 
 			MEMUNDEFINE(hostdir);

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymongen.c 7180 2013-04-20 15:10:55Z storner $";
+static char rcsid[] = "$Id: xymongen.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include <stdio.h>
 #include <unistd.h>
@@ -686,11 +686,11 @@ int main(int argc, char *argv[])
 	if (egocolumn) {
 		char msgline[4096];
 		char *timestamps;
-		long tasksleep = (xgetenv("TASKSLEEP") ? atol(xgetenv("TASKSLEEP")) : 300);
+		long tasksleep = (xgetenv("TASKSLEEP") ? atol(xgetenv("TASKSLEEP")) : -1);
 		int color;
 
 		/* Go yellow if it runs for too long */
-		if (total_runtime() > tasksleep) {
+		if ((tasksleep > 0) && (total_runtime() > tasksleep)) {
 			errprintf("WARNING: Runtime %ld longer than TASKSLEEP (%ld)\n", total_runtime(), tasksleep);
 		}
 		color = (errbuf ? COL_YELLOW : COL_GREEN);
