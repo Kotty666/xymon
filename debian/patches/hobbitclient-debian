@@ -5,7 +5,7 @@ Index: xymon/client/xymonclient-linux.sh
 @@ -75,6 +75,8 @@
  if test -r /proc/mdstat; then echo "[mdstat]"; cat /proc/mdstat; fi
  echo "[ps]"
- ps -Aww -o pid,ppid,user,start,state,pri,pcpu,time,pmem,rsz,vsz,cmd
+ ps -Aww -o pid,ppid,user,start,state,pri,pcpu,time:12,pmem,rsz:10,vsz:10,cmd
 +echo "[dpkg]"
 +COLUMNS=200 dpkg -l | awk '/^..  / { print $1 " " $2 " " $3 }'
  

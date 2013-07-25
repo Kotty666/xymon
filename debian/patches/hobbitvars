@@ -1,7 +1,9 @@
 Fix paths to fit into the Debian directory structure
 
---- a/xymond/etcfiles/xymonserver.cfg.DIST
-+++ b/xymond/etcfiles/xymonserver.cfg.DIST
+Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -13,7 +15,7 @@ Fix paths to fit into the Debian directory structure
  XYMONSERVEROS="@XYMONHOSTOS@"			# The operating system of your server. linux,freebsd,solaris,hpux,aix,osf
  
  XYMONSERVERWWWNAME="@XYMONHOSTNAME@"		# The name used for this hosts' webserver
-@@ -35,8 +35,7 @@
+@@ -36,8 +36,7 @@
  
  # General settings
  XYMONDPORT="1984"		# Portnumber where xymond listens
@@ -23,7 +25,7 @@ Fix paths to fit into the Debian directory structure
  FQDN="TRUE"			# Use fully-qualified hostnames internally. Keep it TRUE unless you know better.
  XYMONLOGSTATUS="DYNAMIC"	# Are HTML status logs statically or dynamically generated?
  				# Use DYNAMIC with Xymon, unless you run xymond_filestore --status --html
-@@ -78,7 +77,7 @@
+@@ -79,7 +78,7 @@
  XYMONWEBHOSTURL="$XYMONWEBHOST$XYMONSERVERWWWURL"	# Prefix for all static Xymon pages - http://www.foo.com/xymon
  XYMONWEBHTMLLOGS="$XYMONWEBHOSTURL/html"	# Prefix for the Xymon HTML logs (only if XYMONLOGSTATUS=STATIC)
  XYMONWEB="$XYMONSERVERWWWURL"			# Xymon URL prefix without the host part
@@ -32,7 +34,7 @@ Fix paths to fit into the Debian directory structure
  XYMONHELPSKIN="$XYMONSERVERWWWURL/help"         # Xymon URL prefix for the online help files.
  XYMONNOTESSKIN="$XYMONSERVERWWWURL/notes"       # Xymon URL prefix for the online notes-files.
  XYMONMENUSKIN="$XYMONSERVERWWWURL/menu"         # Xymon URL prefix for the webpage menu files.
-@@ -90,7 +89,7 @@
+@@ -91,7 +90,7 @@
  
  # Locations of system-wide files and directories
  XYMONHOME="@XYMONHOME@"				# The Xymon server directory, where programs and configurations go. 
@@ -41,14 +43,16 @@ Fix paths to fit into the Debian directory structure
  HOSTSCFG="$XYMONHOME/etc/hosts.cfg"		# The hosts.cfg file
  XYMON="$XYMONHOME/bin/xymon"			# The 'xymon' client program
  XYMONGEN="$XYMONHOME/bin/xymongen"		# The xymongen program
-@@ -304,3 +303,5 @@
+@@ -305,3 +304,5 @@
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
  BBCLIENTLOGS="$XYMONSERVERLOGS"
  
 +include /var/run/xymon/xymonclient-include.cfg
 +include /var/run/xymon/xymonserver-include.cfg
---- a/xymond/etcfiles/xymon-apache-open.DIST
-+++ b/xymond/etcfiles/xymon-apache-open.DIST
+Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2013-07-25 13:24:56.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2013-07-25 13:24:56.000000000 +0200
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -67,8 +71,10 @@ Fix paths to fit into the Debian directory structure
  </Directory>
  
  
---- a/xymond/etcfiles/xymon-apache-secure.DIST
-+++ b/xymond/etcfiles/xymon-apache-secure.DIST
+Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2013-07-25 13:24:56.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2013-07-25 13:24:56.000000000 +0200
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -96,8 +102,10 @@ Fix paths to fit into the Debian directory structure
  
      # Password file where users with access to these scripts are kept.
      # Create it with "htpasswd -c @INSTALLETCDIR@/xymonpasswd USERNAME"
---- a/xymond/etcfiles/tasks.cfg.DIST
-+++ b/xymond/etcfiles/tasks.cfg.DIST
+Index: xymon/xymond/etcfiles/tasks.cfg.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
++++ xymon/xymond/etcfiles/tasks.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -131,8 +139,10 @@ Fix paths to fit into the Debian directory structure
  
 +include /var/run/xymon/clientlaunch-include.cfg
 +include /var/run/xymon/xymonlaunch-include.cfg
---- a/client/clientlaunch.cfg.DIST
-+++ b/client/clientlaunch.cfg.DIST
+Index: xymon/client/clientlaunch.cfg.DIST
+===================================================================
+--- xymon.orig/client/clientlaunch.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
++++ xymon/client/clientlaunch.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -142,9 +152,11 @@ Fix paths to fit into the Debian directory structure
  	LOGFILE $XYMONCLIENTLOGS/msgcache.log
  
  # The main client task
---- a/client/xymonclient.cfg.DIST
-+++ b/client/xymonclient.cfg.DIST
-@@ -1,17 +1,20 @@
+Index: xymon/client/xymonclient.cfg.DIST
+===================================================================
+--- xymon.orig/client/xymonclient.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
++++ xymon/client/xymonclient.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
+@@ -1,18 +1,21 @@
  # Environment settings for the Xymon client.
  
 -XYMSRV="@XYMONHOSTIP@"          # IP address of the Xymon server
@@ -155,6 +167,7 @@ Fix paths to fit into the Debian directory structure
  
 -PATH="/bin:/usr/bin:/sbin:/usr/sbin:/etc"  # PATH setting for the client scripts.
 +PATH="/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/lib/xymon/client/bin"  # PATH setting for the client scripts.
+ SHELL="/bin/sh"				# Shell to use when forking programs
  
  # You normally dont need to modify anything below here
  XYMONDPORT="1984"                   # Portnumber where xymond listens
@@ -170,8 +183,10 @@ Fix paths to fit into the Debian directory structure
  
  # Compatibility settings
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
---- a/xymond/etcfiles/graphs.cfg
-+++ b/xymond/etcfiles/graphs.cfg
+Index: xymon/xymond/etcfiles/graphs.cfg
+===================================================================
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2013-07-25 13:24:56.000000000 +0200
++++ xymon/xymond/etcfiles/graphs.cfg	2013-07-25 13:24:56.000000000 +0200
 @@ -2095,3 +2095,4 @@
  
  ########### end of ifmib graphs ###########
