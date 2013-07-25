@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7138 2012-08-01 11:39:17Z storner $";
+static char rcsid[] = "$Id: xymond.c 7210 2013-07-24 08:21:44Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -75,6 +75,15 @@ static char rcsid[] = "$Id: xymond.c 7138 2012-08-01 11:39:17Z storner $";
 
 /* How long to keep an ack after the status has recovered */
 #define ACKCLEARDELAY 720 /* 12 minutes */
+
+/* How long messages are good for (by default) before going purple - minutes */
+#define DEFAULT_VALIDITY 30
+
+#define DEFAULT_PURPLE_INTERVAL 60
+int purplecheckinterval = DEFAULT_PURPLE_INTERVAL; /* Seconds - check for purples every 60s */
+
+#define DEFAULT_STATS_INTERVAL (5*60)
+int statsinterval = DEFAULT_STATS_INTERVAL;	/* Seconds - report xymond status every 5m */
 
 /* How long are sub-client messages valid */
 #define MAX_SUBCLIENT_LIFETIME 960	/* 15 minutes + a bit */
@@ -160,11 +169,17 @@ typedef struct filecache_t {
 	unsigned char *fdata;
 } filecache_t;
 
+typedef struct senderstats_t {
+	char *senderip;
+	unsigned long msgcount;
+} senderstats_t;
+
 void *rbhosts;				/* The hosts we have reports from */
 void *rbtests;				/* The tests (columns) we have seen */
 void *rborigins;			/* The origins we have seen */
 void *rbcookies;			/* The cookies we use */
 void *rbfilecache;
+void *rbsenders;
 
 sender_t *maintsenders = NULL;
 sender_t *statussenders = NULL;
@@ -2380,6 +2395,8 @@ void handle_dropnrename(enum droprencmd_t cmd, char *sender, char *hostname, cha
 			posttochannel(noteschn, marker, NULL, sender, NULL, NULL, msgbuf);
 			posttochannel(enadischn, marker, NULL, sender, NULL, NULL, msgbuf);
 			posttochannel(clientchn, marker, NULL, sender, NULL, NULL, msgbuf);
+			posttochannel(clichgchn, marker, NULL, sender, NULL, NULL, msgbuf);
+			posttochannel(userchn, marker, NULL, sender, NULL, NULL, msgbuf);
 		}
 
 		xfree(msgbuf);
@@ -3007,6 +3024,25 @@ void do_message(conn_t *msg, char *origin)
 	strncpy(sender, inet_ntoa(msg->addr.sin_addr), sizeof(sender));
 	now = getcurrenttime(NULL);
 	timeroffset = (getcurrenttime(NULL) - gettimer());
+
+	/* Save sender statistics */
+	{
+		xtreePos_t handle;
+		senderstats_t *rec;
+
+		handle = xtreeFind(rbsenders, sender);
+		if (handle == xtreeEnd(rbsenders)) {
+			rec = (senderstats_t *)malloc(sizeof(senderstats_t));
+			rec->senderip = strdup(sender);
+			rec->msgcount = 0;
+			xtreeAdd(rbsenders, rec->senderip, rec);
+		}
+		else {
+			rec = (senderstats_t *)xtreeData(rbsenders, handle);
+		}
+
+		rec->msgcount++;
+	}
 
 	if (traceall || tracelist) {
 		int found = 0;
@@ -4198,6 +4234,27 @@ void do_message(conn_t *msg, char *origin)
 			msg->bufp = msg->buf;
 		}
 	}
+	else if (strncmp(msg->buf, "senderstats", 11) == 0) {
+		xtreePos_t handle;
+		senderstats_t *rec;
+		strbuffer_t *resp;
+		char msgline[1024];
+
+		resp = newstrbuffer(0);
+
+		for (handle = xtreeFirst(rbsenders); (handle != xtreeEnd(rbsenders)); handle = xtreeNext(rbsenders, handle)) {
+			rec = (senderstats_t *)xtreeData(rbsenders, handle);
+			snprintf(msgline, sizeof(msgline), "%s %lu\n", rec->senderip, rec->msgcount);
+			addtobuffer(resp, msgline);
+		}
+
+		msg->doingwhat = RESPONDING;
+		xfree(msg->buf);
+		msg->buflen = STRBUFLEN(resp);
+		msg->buf = grabstrbuffer(resp);
+		if (!msg->buf) msg->buf = strdup("");
+		msg->bufp = msg->buf;
+	}
 
 done:
 	if (msg->doingwhat == RESPONDING) {
@@ -4707,6 +4764,7 @@ int main(int argc, char *argv[])
 	rbfilecache = xtreeNew(strcasecmp);
 	rbghosts = xtreeNew(strcasecmp);
 	rbmultisrc = xtreeNew(strcasecmp);
+	rbsenders = xtreeNew(strcmp);
 
 	/* For wildcard notify's */
 	create_testinfo("*");
@@ -4776,6 +4834,10 @@ int main(int argc, char *argv[])
 		}
 		else if (argnmatch(argv[argi], "--no-purple")) {
 			do_purples = 0;
+		}
+		else if (argnmatch(argv[argi], "--lqueue=")) {
+			char *p = strchr(argv[argi], '=') + 1;
+			listenq = atoi(p);
 		}
 		else if (argnmatch(argv[argi], "--daemon")) {
 			daemonize = 1;
@@ -5142,12 +5204,12 @@ int main(int argc, char *argv[])
 			load_clientconfig();
 		}
 
-		if (do_purples && (now > nextpurpleupdate)) {
-			nextpurpleupdate = getcurrenttime(NULL) + 60;
+		if (do_purples && (now >= nextpurpleupdate)) {
+			nextpurpleupdate = getcurrenttime(NULL) + purplecheckinterval;
 			check_purple_status();
 		}
 
-		if ((last_stats_time + 300) <= now) {
+		if ((last_stats_time + statsinterval) <= now) {
 			char *buf;
 			xymond_hostlist_t *h;
 			testinfo_t *t;

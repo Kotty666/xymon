@@ -1,4 +1,4 @@
-.TH XYMOND_RRD 8 "Version 4.3.11: 21 Apr 2013" "Xymon"
+.TH XYMOND_RRD 8 "Version 4.3.12: 24 Jul 2013" "Xymon"
 .SH NAME
 xymond_rrd \- xymond worker module for updating Xymon RRD files
 .SH SYNOPSIS
@@ -57,6 +57,11 @@ that is put into the graph.
 List of testnames that are handled by the external script. See the
 CUSTOM RRD DATA section below. Note that NCV graphs should NOT be
 listed here, but in the TEST2RRD environment variable - see below.
+
+.IP "--no-rrd"
+Disable the actual writing of RRD files. This is only really useful if
+you send all of the data destined for the RRD files to an external
+processor (the --extra-script option).
 
 .SH ENVIRONMENT
 .IP TEST2RRD

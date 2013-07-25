@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char xymon_rcsid[] = "$Id: do_xymongen.c 7026 2012-07-13 14:05:20Z storner $";
+static char xymon_rcsid[] = "$Id: do_xymongen.c 7204 2013-07-23 12:20:59Z storner $";
 
 int do_xymongen_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -136,7 +136,7 @@ int do_xymongen_rrd(char *hostname, char *testname, char *classname, char *pagep
 	else {
 		setupfn("%s.rrd", "xymon2");
 	}
-	snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f:%5.2f", 
+	snprintf(rrdvalues, sizeof(rrdvalues), "%d:%d:%d:%d:%d:%d:%d:%d:%d:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f:%05.2f", 
 		(int)tstamp, 
 		redcount, rednopropcount, yellowcount, yellownopropcount,
 		greencount, purplecount, clearcount, bluecount,

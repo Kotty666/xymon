@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_worker.c 7078 2012-07-15 11:05:15Z storner $";
+static char rcsid[] = "$Id: xymond_worker.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include "config.h"
 
@@ -216,9 +216,6 @@ static int net_worker_listener(char *ipport)
 
 	/* Close the listener socket */
 	close(lsocket);
-
-	/* Kill any children that are still around */
-	kill(0, SIGTERM);
 
 	return 1;
 }
@@ -611,8 +608,12 @@ startagain:
 				goto startagain;
 			}
 			else {
-				/* Out-of-sequence message. Cant do much except accept it */
-				if (!locatorid) errprintf("%s: Got message %u, expected %u\n", id, *seq, seqnum+1);
+				/*
+				 * Out-of-sequence message. Cant do much except accept it.
+				 * Since xymond_channel filters out some messages, messages
+				 * may be missing. We really could do without the sequence
+				 * numbers now, I think.
+				 */
 				seqnum = *seq;
 			}
 

@@ -13,7 +13,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: runclient.sh 6712 2011-07-31 21:01:52Z storner $
+# $Id: runclient.sh 7208 2013-07-23 15:19:40Z storner $
 
 # Default settings for this client
 MACHINEDOTS="`uname -n`"			# This systems hostname
@@ -55,6 +55,15 @@ do
 done
 
 XYMONCLIENTHOME="`dirname $0`"
+if test `echo "$XYMONCLIENTHOME" | grep "^\."`
+then
+	# no full path, so add current directory to XYMONCLIENTHOME
+	# This may give you "XYMONCLIENTHOME=/usr/local/xymon/./client" - if you 
+	# run this script from /usr/local/xymon with "./client/runclient.sh" - 
+	# but it works fine.
+	XYMONCLIENTHOME="`pwd`/$XYMONCLIENTHOME"
+fi
+
 export MACHINEDOTS SERVEROSTYPE XYMONOSSCRIPT XYMONCLIENTHOME CONFIGCLASS
 
 MACHINE="`echo $MACHINEDOTS | sed -e 's/\./,/g'`"

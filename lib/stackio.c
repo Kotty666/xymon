@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: stackio.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: stackio.c 7202 2013-07-23 05:33:13Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -419,7 +419,7 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 	if (result) {
 		char *bufpastwhitespace = STRBUF(buffer) + strspn(STRBUF(buffer), " \t");
 
-		if ( (strncmp(bufpastwhitespace, "include ", 8) == 0) ||
+		if ( (strncmp(bufpastwhitespace, "include ", 8) == 0) || (strncmp(bufpastwhitespace, "include\t", 8) == 0) ||
 		     (extraincl && (strncmp(bufpastwhitespace, extraincl, strlen(extraincl)) == 0)) ) {
 			char *newfn, *eol, eolchar = '\0';
 
@@ -437,7 +437,7 @@ char *stackfgets(strbuffer_t *buffer, char *extraincl)
 				return result;
 			}
 		}
-		else if (strncmp(bufpastwhitespace, "directory ", 10) == 0) {
+		else if ((strncmp(bufpastwhitespace, "directory ", 10) == 0) || (strncmp(bufpastwhitespace, "directory\t", 10) == 0)) {
 			char *dirfn, *eol, eolchar = '\0';
 
 			eol = bufpastwhitespace + strcspn(bufpastwhitespace, "\r\n"); if (eol) { eolchar = *eol; *eol = '\0'; }

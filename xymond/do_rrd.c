@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_rrd.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: do_rrd.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include <sys/types.h>
 #include <sys/time.h>
@@ -39,6 +39,7 @@ extern int seq;	/* from xymond_rrd.c */
 
 char *rrddir = NULL;
 int use_rrd_cache = 1;         /* Use the cache by default */
+int no_rrd = 0;                /* Write to rrd by default */
 
 static int  processorfd = 0;
 static FILE *processorstream = NULL;
@@ -458,6 +459,9 @@ static int create_and_update_rrd(char *hostname, char *testname, char *classname
 			shutdown_extprocessor();
 		}
 	}
+
+	/* Are we actually handling the writing of RRD files? */
+	if (no_rrd) return 0;
 
 	/* 
 	 * We cannot just cache data every time because then after CACHESZ updates

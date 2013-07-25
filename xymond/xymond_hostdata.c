@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_hostdata.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymond_hostdata.c 7199 2013-07-23 05:27:30Z storner $";
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -24,6 +24,7 @@ static char rcsid[] = "$Id: xymond_hostdata.c 7085 2012-07-16 11:08:37Z storner 
 #include <errno.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <libgen.h>
 
 #include "libxymon.h"
 #include "xymond_worker.h"
@@ -263,15 +264,15 @@ int main(int argc, char *argv[])
 		else if ((metacount > 3) && (strncmp(metadata[0], "@@drophost", 10) == 0)) {
 			/* @@drophost|timestamp|sender|hostname */
 			char hostdir[PATH_MAX];
-			sprintf(hostdir, "%s/%s", clientlogdir, metadata[3]);
+			snprintf(hostdir, sizeof(hostdir), "%s/%s", clientlogdir, basename(metadata[3]));
 			dropdirectory(hostdir, 1);
 		}
 
 		else if ((metacount > 4) && (strncmp(metadata[0], "@@renamehost", 12) == 0)) {
 			/* @@renamehost|timestamp|sender|hostname|newhostname */
 			char oldhostdir[PATH_MAX], newhostdir[PATH_MAX];
-			sprintf(oldhostdir, "%s/%s", clientlogdir, metadata[3]);
-			sprintf(newhostdir, "%s/%s", clientlogdir, metadata[4]);
+			snprintf(oldhostdir, sizeof(oldhostdir), "%s/%s", clientlogdir, basename(metadata[3]));
+			snprintf(newhostdir, sizeof(newhostdir), "%s/%s", clientlogdir, basename(metadata[4]));
 			rename(oldhostdir, newhostdir);
 
 			if (net_worker_locatorbased()) locator_rename_host(metadata[3], metadata[4], ST_HOSTDATA);

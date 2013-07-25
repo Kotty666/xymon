@@ -12,7 +12,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient.sh 6800 2011-12-12 22:15:39Z storner $
+# $Id: xymonclient.sh 7204 2013-07-23 12:20:59Z storner $
 
 # Must make sure the commands return standard (english) texts.
 LANG=C
@@ -43,6 +43,9 @@ touch $MSGTMPFILE
 
 
 CLIENTVERSION="`$XYMONHOME/bin/clientupdate --level`"
+if test -z "$CLIENTVERSION"; then
+	CLIENTVERSION="`$XYMON --version`"
+fi
 
 if test "$LOCALMODE" = "yes"; then
 	echo "@@client#1|0|127.0.0.1|$MACHINEDOTS|$SERVEROSTYPE" >> $MSGTMPFILE

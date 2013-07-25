@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonnet.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymonnet.c 7204 2013-07-23 12:20:59Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -2513,7 +2513,7 @@ int main(int argc, char *argv[])
 		int color;
 
 		/* Go yellow if it runs for too long */
-		if (total_runtime() > runtimewarn) {
+		if ((runtimewarn > 0) && (total_runtime() > runtimewarn)) {
 			errprintf("WARNING: Runtime %ld longer than time limit (%ld)\n", total_runtime(), runtimewarn);
 		}
 		color = (errbuf ? COL_YELLOW : COL_GREEN);

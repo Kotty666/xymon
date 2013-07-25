@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid_file[] = "$Id: loadhosts_file.c 7182 2013-04-20 20:46:13Z storner $";
+static char rcsid_file[] = "$Id: loadhosts_file.c 7204 2013-07-23 12:20:59Z storner $";
 
 static int get_page_name_title(char *buf, char *key, char **name, char **title)
 {
@@ -71,7 +71,7 @@ static int prepare_fromfile(char *hostsfn, char *extrainclude)
 	hosts = stackfopen(hostsfn, "r", &hostfiles);
 	if (hosts == NULL) return -1;
 
-	inbuf = newstrbuffer(0);
+	inbuf = newstrbuffer(20480);
 	while (stackfgets(inbuf, extrainclude)) {
 		sanitize_input(inbuf, 0, 0);
 		addtostrbuffer(contentbuffer, inbuf);
@@ -180,6 +180,9 @@ int load_hostnames(char *hostsfn, char *extrainclude, int fqdn)
 			insavchar = *ineol;
 			*ineol = '\0';
 		}
+
+		/* Strip out initial "v" for vpage/vsubpage/vsubparent -- we don't care about the difference here */
+		if ((strncmp(inbol, "vpage", 5) == 0) || (strncmp(inbol, "vsubpage", 8) == 0) || (strncmp(inbol, "vsubparent", 10) == 0)) inbol++;
 
 		if (strncmp(inbol, "page", 4) == 0) {
 			pagelist_t *newp;
