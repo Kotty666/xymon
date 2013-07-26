@@ -127,7 +127,7 @@ binary binary-arch: build install-server install-client
 	dh_lintian -a
 	# move some files into the client package
 	dh_movefiles --sourcedir=debian/xymon -a
-	cd $S/usr/lib/xymon/server/bin && \
+	set -e; cd $S/usr/lib/xymon/server/bin && \
 		for f in * ; do \
 			if [ -f $C/usr/lib/xymon/client/bin/$$f ] ; then \
 				rm -v $$f ; ln -s ../../client/bin/$$f ; \
