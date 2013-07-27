@@ -1,6 +1,8 @@
 xymon (4.3.12-1) UNRELEASED; urgency=low
 
   * New upstream release
+    - Fixes remote file deletion vulnerability (Closes: #717895,
+      CVE-2013-4173)
     - Refreshed and updated patches where needed
   * Apache 2.2 → 2.4 Migration:
     + Rename /etc/apache2/conf.d/xymon to …/conf-available/xymon.conf
