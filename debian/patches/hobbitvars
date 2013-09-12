@@ -1,9 +1,7 @@
 Fix paths to fit into the Debian directory structure
 
-Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
-===================================================================
---- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
+--- a/xymond/etcfiles/xymonserver.cfg.DIST
++++ b/xymond/etcfiles/xymonserver.cfg.DIST
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -49,10 +47,8 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  
 +include /var/run/xymon/xymonclient-include.cfg
 +include /var/run/xymon/xymonserver-include.cfg
-Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
-===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2013-07-25 13:24:56.000000000 +0200
+--- a/xymond/etcfiles/xymon-apache-open.DIST
++++ b/xymond/etcfiles/xymon-apache-open.DIST
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -71,10 +67,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
  </Directory>
  
  
-Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
-===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2013-07-25 13:24:56.000000000 +0200
+--- a/xymond/etcfiles/xymon-apache-secure.DIST
++++ b/xymond/etcfiles/xymon-apache-secure.DIST
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -102,10 +96,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
  
      # Password file where users with access to these scripts are kept.
      # Create it with "htpasswd -c @INSTALLETCDIR@/xymonpasswd USERNAME"
-Index: xymon/xymond/etcfiles/tasks.cfg.DIST
-===================================================================
---- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/xymond/etcfiles/tasks.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
+--- a/xymond/etcfiles/tasks.cfg.DIST
++++ b/xymond/etcfiles/tasks.cfg.DIST
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -139,10 +131,8 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
  
 +include /var/run/xymon/clientlaunch-include.cfg
 +include /var/run/xymon/xymonlaunch-include.cfg
-Index: xymon/client/clientlaunch.cfg.DIST
-===================================================================
---- xymon.orig/client/clientlaunch.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/client/clientlaunch.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
+--- a/client/clientlaunch.cfg.DIST
++++ b/client/clientlaunch.cfg.DIST
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -152,10 +142,13 @@ Index: xymon/client/clientlaunch.cfg.DIST
  	LOGFILE $XYMONCLIENTLOGS/msgcache.log
  
  # The main client task
-Index: xymon/client/xymonclient.cfg.DIST
-===================================================================
---- xymon.orig/client/xymonclient.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/client/xymonclient.cfg.DIST	2013-07-25 13:24:56.000000000 +0200
+@@ -26,3 +26,4 @@
+ 	LOGFILE $XYMONCLIENTLOGS/xymonclient.log
+ 	INTERVAL 5m
+ 
++include /var/run/xymon/clientlaunch-include.cfg
+--- a/client/xymonclient.cfg.DIST
++++ b/client/xymonclient.cfg.DIST
 @@ -1,18 +1,21 @@
  # Environment settings for the Xymon client.
  
@@ -183,10 +176,8 @@ Index: xymon/client/xymonclient.cfg.DIST
  
  # Compatibility settings
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
-Index: xymon/xymond/etcfiles/graphs.cfg
-===================================================================
---- xymon.orig/xymond/etcfiles/graphs.cfg	2013-07-25 13:24:56.000000000 +0200
-+++ xymon/xymond/etcfiles/graphs.cfg	2013-07-25 13:24:56.000000000 +0200
+--- a/xymond/etcfiles/graphs.cfg
++++ b/xymond/etcfiles/graphs.cfg
 @@ -2095,3 +2095,4 @@
  
  ########### end of ifmib graphs ###########

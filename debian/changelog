@@ -12,6 +12,8 @@ xymon (4.3.12-1) UNRELEASED; urgency=low
 
   [ Christoph Berg ]
   * Rename /etc/xymon/xymongraph.d to graphs.d to match graphs.cfg.
+  * Move the include patching for clientlaunch.cfg/d from debian/rules to the
+    hobbitvars patch.
 
  -- Christoph Berg <myon@debian.org>  Thu, 12 Sep 2013 14:57:11 +0200
 
