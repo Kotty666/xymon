@@ -1,5 +1,6 @@
 xymon (4.3.12-1) UNRELEASED; urgency=low
 
+  [ Axel Beckert ]
   * New upstream release
     - Fixes remote file deletion vulnerability (Closes: #717895,
       CVE-2013-4173)
@@ -9,7 +10,10 @@ xymon (4.3.12-1) UNRELEASED; urgency=low
       (Fixes lintian warnings non-standard-apache2-configuration-name and
       apache2-reverse-dependency-uses-obsolete-directory)
 
- -- Axel Beckert <abe@debian.org>  Thu, 25 Jul 2013 17:07:55 +0200
+  [ Christoph Berg ]
+  * Rename /etc/xymon/xymongraph.d to graphs.d to match graphs.cfg.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 12 Sep 2013 14:57:11 +0200
 
 xymon (4.3.11-1) experimental; urgency=low
 

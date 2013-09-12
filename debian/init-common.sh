@@ -33,10 +33,10 @@ create_includefiles ()
 		done > /var/run/xymon/xymonlaunch-include.cfg
 	fi
 
-	if test -d /etc/xymon/xymongraph.d ; then
-		for cfg in /etc/xymon/xymongraph.d/*.cfg ; do
+	if test -d /etc/xymon/graphs.d ; then
+		for cfg in /etc/xymon/graphs.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
-		done > /var/run/xymon/xymongraph-include.cfg
+		done > /var/run/xymon/graphs-include.cfg
 	fi
 
 	if test -d /etc/xymon/xymonserver.d ; then
