@@ -46,7 +46,7 @@ case "$1" in
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -group hobbit -print0 2>/dev/null | xargs -0 -r chgrp xymon
 	    done
-	    delgroup hobbit || echo "Couldn't delete group hobbit, please remove it manually"
+	    delgroup --only-if-empty hobbit || echo "Couldn't delete group hobbit, please remove it manually"
 	fi
 
 	# Create or migrate directories
