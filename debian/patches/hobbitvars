@@ -1,7 +1,9 @@
 Fix paths to fit into the Debian directory structure
 
---- a/xymond/etcfiles/xymonserver.cfg.DIST
-+++ b/xymond/etcfiles/xymonserver.cfg.DIST
+Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2014-01-10 01:59:38.030307893 +0100
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2014-01-10 01:59:49.570516371 +0100
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -41,14 +43,16 @@ Fix paths to fit into the Debian directory structure
  HOSTSCFG="$XYMONHOME/etc/hosts.cfg"		# The hosts.cfg file
  XYMON="$XYMONHOME/bin/xymon"			# The 'xymon' client program
  XYMONGEN="$XYMONHOME/bin/xymongen"		# The xymongen program
-@@ -305,3 +304,5 @@
+@@ -306,3 +305,5 @@
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
  BBCLIENTLOGS="$XYMONSERVERLOGS"
  
 +include /var/run/xymon/xymonclient-include.cfg
 +include /var/run/xymon/xymonserver-include.cfg
---- a/xymond/etcfiles/xymon-apache-open.DIST
-+++ b/xymond/etcfiles/xymon-apache-open.DIST
+Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2014-01-10 01:59:46.186455235 +0100
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2014-01-10 01:59:49.570516371 +0100
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -67,8 +71,10 @@ Fix paths to fit into the Debian directory structure
  </Directory>
  
  
---- a/xymond/etcfiles/xymon-apache-secure.DIST
-+++ b/xymond/etcfiles/xymon-apache-secure.DIST
+Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2014-01-10 01:59:46.186455235 +0100
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2014-01-10 01:59:49.570516371 +0100
 @@ -15,7 +15,7 @@
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
@@ -96,8 +102,10 @@ Fix paths to fit into the Debian directory structure
  
      # Password file where users with access to these scripts are kept.
      # Create it with "htpasswd -c @INSTALLETCDIR@/xymonpasswd USERNAME"
---- a/xymond/etcfiles/tasks.cfg.DIST
-+++ b/xymond/etcfiles/tasks.cfg.DIST
+Index: xymon/xymond/etcfiles/tasks.cfg.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2014-01-10 01:59:38.030307893 +0100
++++ xymon/xymond/etcfiles/tasks.cfg.DIST	2014-01-10 01:59:49.570516371 +0100
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -131,8 +139,10 @@ Fix paths to fit into the Debian directory structure
  
 +include /var/run/xymon/clientlaunch-include.cfg
 +include /var/run/xymon/xymonlaunch-include.cfg
---- a/client/clientlaunch.cfg.DIST
-+++ b/client/clientlaunch.cfg.DIST
+Index: xymon/client/clientlaunch.cfg.DIST
+===================================================================
+--- xymon.orig/client/clientlaunch.cfg.DIST	2014-01-10 01:59:38.030307893 +0100
++++ xymon/client/clientlaunch.cfg.DIST	2014-01-10 01:59:49.570516371 +0100
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -147,8 +157,10 @@ Fix paths to fit into the Debian directory structure
  	INTERVAL 5m
  
 +include /var/run/xymon/clientlaunch-include.cfg
---- a/client/xymonclient.cfg.DIST
-+++ b/client/xymonclient.cfg.DIST
+Index: xymon/client/xymonclient.cfg.DIST
+===================================================================
+--- xymon.orig/client/xymonclient.cfg.DIST	2014-01-10 01:59:38.030307893 +0100
++++ xymon/client/xymonclient.cfg.DIST	2014-01-10 01:59:49.574516438 +0100
 @@ -1,18 +1,21 @@
  # Environment settings for the Xymon client.
  
@@ -176,9 +188,11 @@ Fix paths to fit into the Debian directory structure
  
  # Compatibility settings
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
---- a/xymond/etcfiles/graphs.cfg
-+++ b/xymond/etcfiles/graphs.cfg
-@@ -2095,3 +2095,4 @@
+Index: xymon/xymond/etcfiles/graphs.cfg
+===================================================================
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2014-01-10 01:59:38.030307893 +0100
++++ xymon/xymond/etcfiles/graphs.cfg	2014-01-10 01:59:49.574516438 +0100
+@@ -2101,3 +2101,4 @@
  
  ########### end of ifmib graphs ###########
  

@@ -1,9 +1,9 @@
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/graphs.cfg	2011-09-30 00:26:01.000000000 +0200
-+++ xymon/xymond/etcfiles/graphs.cfg	2011-09-30 00:29:04.000000000 +0200
-@@ -1152,15 +1152,15 @@
- 	DEF:outbytes@RRDIDX@=@RRDFN@:bytesSent:AVERAGE
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2014-01-10 01:59:49.574516438 +0100
++++ xymon/xymond/etcfiles/graphs.cfg	2014-01-10 02:00:09.770881261 +0100
+@@ -1111,15 +1111,15 @@
+ 	DEF:outbytes@RRDIDX@=@RRDFN@:ds1:AVERAGE
  	CDEF:out@RRDIDX@=outbytes@RRDIDX@,8,*
  	LINE2:in@RRDIDX@#@COLOR@:@RRDPARAM@  inbound
 -	GPRINT:in@RRDIDX@:LAST: \: %10.1lf (cur)
@@ -24,5 +24,5 @@ Index: xymon/xymond/etcfiles/graphs.cfg
 +	GPRINT:out@RRDIDX@:MIN: \: %5.1lf%s (min)
 +	GPRINT:out@RRDIDX@:AVERAGE: \: %5.1lf%s (avg)\n
  
- [files]
- 	FNPATTERN ^filesizes.(.+).rrd
+ [mysqlslow]
+ 	DEF:slow=mysql.rrd:Slowqueries:AVERAGE
