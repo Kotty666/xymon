@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7210 2013-07-24 08:21:44Z storner $";
+static char rcsid[] = "$Id: xymond.c 7281 2013-08-15 08:53:34Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -53,11 +53,9 @@ static char rcsid[] = "$Id: xymond.c 7210 2013-07-24 08:21:44Z storner $";
 #include <sys/sem.h>
 #include <sys/shm.h>
 #include <sys/wait.h>
+#include <sys/msg.h>
 
 #include "libxymon.h"
-
-#include "xymond_buffer.h"
-#include "xymond_ipc.h"
 
 #define DISABLED_UNTIL_OK -1
 
@@ -228,6 +226,11 @@ xymond_channel_t *clientchn = NULL;	/* Receives "client" messages */
 xymond_channel_t *clichgchn = NULL;	/* Receives "clichg" messages */
 xymond_channel_t *userchn   = NULL;	/* Receives "usermsg" messages */
 
+static int backfeedqueue = -1;
+static unsigned long backfeedcount = 0;
+static char *bf_buf = NULL;
+static int bf_bufsz = 0;
+
 #define NO_COLOR (COL_COUNT)
 static char *colnames[COL_COUNT+1];
 int alertcolors, okcolors;
@@ -267,6 +270,7 @@ typedef struct xymond_statistics_t {
 xymond_statistics_t xymond_stats[] = {
 	{ "status", 0 },
 	{ "combo", 0 },
+	{ "extcombo", 0 },
 	{ "page", 0 },
 	{ "summary", 0 },
 	{ "data", 0 },
@@ -450,6 +454,8 @@ char *generate_stats(void)
 	addtobuffer(statsbuf, msgline);
 	clients = semctl(userchn->semid, CLIENTCOUNT, GETVAL);
 	sprintf(msgline, "user   channel messages: %10ld (%d readers)\n", userchn->msgcount, clients);
+	addtobuffer(statsbuf, msgline);
+	sprintf(msgline, "backfeed messages      : %10ld\n", backfeedcount);
 	addtobuffer(statsbuf, msgline);
 
 	ghandle = xtreeFirst(rbghosts);
@@ -901,6 +907,7 @@ void posttochannel(xymond_channel_t *channel, char *channelmarker,
 			*(channel->channelbuf + bufsz - 5) = '\0';
 			break;
 
+		  case C_FEEDBACK_QUEUE:
 		  case C_LAST:
 			break;
 		}
@@ -1324,7 +1331,7 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 			  textornull(hostname), textornull(testname), textornull(sender));
 		return;
 	}
-	if (msg_data(msg) == (char *)msg) {
+	if (msg_data(msg, 0) == (char *)msg, 0) {
 		errprintf("Bogus status message: msg_data finds no host.test. Sent from: '%s', data:'%s'\n",
 			  sender, msg);
 		return;
@@ -1496,7 +1503,7 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 			 *   data collection, so it does not make sense to check it (thanks to Cade Robinson).
 			 * - some multi-homed hosts use a random IP for sending us data.
 			 */
-			if ( (strcmp(log->sender, "xymond") != 0) && (strcmp(sender, "xymond") != 0) )  {
+			if ( (strcmp(log->sender, "xymond") != 0) && (strcmp(sender, "xymond") != 0) && (strcmp(sender, "0.0.0.0") != 0))  {
 				if ((xmh_item(hinfo, XMH_FLAG_PULLDATA) == NULL) && (xmh_item(hinfo, XMH_FLAG_MULTIHOMED) == NULL)) {
 					log_multisrc(log, sender);
 				}
@@ -1602,7 +1609,7 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 		}
 
 		/* Get at the test flags. They are immediately after the color */
-		p = msg_data(msg);
+		p = msg_data(msg, 0);
 		p += strlen(colorname(newcolor));
 
 		if (strncmp(p, " <!-- [flags:", 13) == 0) {
@@ -2157,7 +2164,7 @@ void handle_notify(char *msg, char *sender, char *hostname, char *testname)
 
 	hi = hostinfo(hostname);
 
-	msgtext = msg_data(msg);
+	msgtext = msg_data(msg, 0);
 	channelmsg = (char *)malloc(1024 + strlen(msgtext));
 
 	/* Tell the pagers */
@@ -2899,7 +2906,7 @@ void generate_outbuf(char **outbuf, char **outpos, int *outsz,
 
 		  case F_LINE1:
 			eoln = strchr(lwalk->message, '\n'); if (eoln) *eoln = '\0';
-			bufp += sprintf(bufp, "%s", msg_data(lwalk->message));
+			bufp += sprintf(bufp, "%s", msg_data(lwalk->message, 0));
 			if (eoln) *eoln = '\n';
 			break;
 
@@ -3083,7 +3090,54 @@ void do_message(conn_t *msg, char *origin)
 	/* Count statistics */
 	update_statistics(msg->buf);
 
-	if (strncmp(msg->buf, "combo\n", 6) == 0) {
+	if (strncmp(msg->buf, "extcombo ", 9) == 0) {
+		char *ofsline, *origbuf, *p, *tokr, *ofsstr;
+		int startofs, endofs;
+
+		origbuf = ofsline = msg->buf;
+		p = strchr(ofsline, '\n');
+		if (p) 
+			*p = '\0';
+		else {
+			/* Abort */
+			goto done;
+		}
+
+		ofsstr = strtok_r(ofsline+9, " ", &tokr);
+		startofs = atoi(ofsstr);
+		if ((startofs <= 0) || (startofs >= msg->bufsz)) {
+			/* Invalid offsets, abort */
+			errprintf("Invalid start-offset in extcombo: startofs=%d, bufsz=%d\n", startofs, msg->bufsz);
+			goto done;
+		}
+
+		do {
+			char savechar;
+
+			ofsstr = strtok_r(NULL, " ", &tokr);
+			if (!ofsstr) continue;
+
+			endofs = atoi(ofsstr);
+			if ((endofs <= 0) || (endofs > msg->bufsz)) {
+				/* Invalid offsets, abort */
+				errprintf("Invalid end-offset in extcombo: endofs=%d, bufsz=%d\n", endofs, msg->bufsz);
+				msg->buf = origbuf;
+				goto done;
+			}
+
+			msg->buf = origbuf + startofs;
+			msg->buflen = (endofs - startofs);
+			savechar = *(msg->buf + msg->buflen);
+			*(msg->buf + msg->buflen) = '\0';
+
+			do_message(msg, origin);
+			*(msg->buf + msg->buflen) = savechar;
+			startofs = endofs;
+		} while (ofsstr);
+
+		msg->buf = origbuf;
+	}
+	else if (strncmp(msg->buf, "combo\n", 6) == 0) {
 		char *currmsg, *nextmsg;
 
 		currmsg = msg->buf+6;
@@ -3121,7 +3175,7 @@ void do_message(conn_t *msg, char *origin)
 				  case COL_CLIENT:
 					/* Pseudo color, allows us to send "client" data from a standard BB utility */
 					/* In HOSTNAME.TESTNAME, the TESTNAME is used as the collector-ID */
-					handle_client(currmsg, sender, h->hostname, t->name, "", NULL);
+					if (h) handle_client(currmsg, sender, h->hostname, (t ? t->name : ""), "", NULL);
 					break;
 
 				  default:
@@ -3197,7 +3251,7 @@ void do_message(conn_t *msg, char *origin)
 		  case COL_CLIENT:
 			/* Pseudo color, allows us to send "client" data from a standard BB utility */
 			/* In HOSTNAME.TESTNAME, the TESTNAME is used as the collector-ID */
-			handle_client(msg->buf, sender, h->hostname, t->name, "", NULL);
+			if (h) handle_client(msg->buf, sender, h->hostname, (t ? t->name : ""), "", NULL);
 			break;
 
 		  default:
@@ -3379,7 +3433,7 @@ void do_message(conn_t *msg, char *origin)
 				int msgcol;
 				char response[500];
 
-				bol = msg_data(log->message);
+				bol = msg_data(log->message, 0);
 				msgcol = parse_color(bol);
 				if (msgcol != -1) {
 					/* Skip the color - it may be different in real life */
@@ -3437,7 +3491,7 @@ void do_message(conn_t *msg, char *origin)
 			xfree(msg->buf);
 			bufp = buf = (char *)malloc(bufsz);
 			generate_outbuf(&buf, &bufp, &bufsz, h, log, acklevel);
-			bufp += sprintf(bufp, "%s", msg_data(log->message));
+			bufp += sprintf(bufp, "%s", msg_data(log->message, 0));
 
 			msg->doingwhat = RESPONDING;
 			msg->bufp = msg->buf = buf;
@@ -3502,7 +3556,7 @@ void do_message(conn_t *msg, char *origin)
 			else
 				bufp += sprintf(bufp, "  <DisMsg>N/A</DisMsg>\n");
 
-			bufp += sprintf(bufp, "  <Message><![CDATA[%s]]></Message>\n", msg_data(log->message));
+			bufp += sprintf(bufp, "  <Message><![CDATA[%s]]></Message>\n", msg_data(log->message, 0));
 			for (mwalk = log->metas; (mwalk); mwalk = mwalk->next) {
 				bufp += sprintf(bufp, "<%s>\n%s</%s>\n", 
 						mwalk->metaname->name, mwalk->value, mwalk->metaname->name);
@@ -4257,13 +4311,16 @@ void do_message(conn_t *msg, char *origin)
 	}
 
 done:
-	if (msg->doingwhat == RESPONDING) {
-		shutdown(msg->sock, SHUT_RD);
-	}
-	else if (msg->sock >= 0) {
-		shutdown(msg->sock, SHUT_RDWR);
-		close(msg->sock);
-		msg->sock = -1;
+	if (nesting == 1) {
+		if (msg->doingwhat == RESPONDING) {
+			shutdown(msg->sock, SHUT_RD);
+		}
+		else if (msg->sock >= 0) {
+			shutdown(msg->sock, SHUT_RDWR);
+			close(msg->sock);
+			msg->sock = -1;
+		}
+
 	}
 
 	MEMUNDEFINE(sender);
@@ -4751,6 +4808,7 @@ int main(int argc, char *argv[])
 	struct sigaction sa;
 	time_t conn_timeout = 30;
 	char *envarea = NULL;
+	int create_backfeedqueue = 0;
 
 	MEMDEFINE(colnames);
 
@@ -4961,6 +5019,12 @@ int main(int argc, char *argv[])
 		else if (strcmp(argv[argi], "--no-download") == 0) {
 			 allow_downloads = 0;
 		}
+		else if (strcmp(argv[argi], "--bfq") == 0) {
+			 create_backfeedqueue = 1;
+		}
+		else if (strcmp(argv[argi], "--no-bfq") == 0) {
+			 create_backfeedqueue = 0;
+		}
 		else if (argnmatch(argv[argi], "--help")) {
 			printf("Options:\n");
 			printf("\t--listen=IP:PORT              : The address the daemon listens on\n");
@@ -5108,6 +5172,12 @@ int main(int argc, char *argv[])
 	if (clichgchn == NULL) { errprintf("Cannot setup clichg channel\n"); return 1; }
 	userchn  = setup_channel(C_USER, CHAN_MASTER);
 	if (userchn == NULL) { errprintf("Cannot setup user channel\n"); return 1; }
+	if (create_backfeedqueue) {
+		backfeedqueue  = setup_feedback_queue(CHAN_MASTER);
+		if (backfeedqueue == -1) { errprintf("Cannot setup backfeed-client channel\n"); return 1; }
+		bf_bufsz = 1024*shbufsz(C_FEEDBACK_QUEUE);
+		bf_buf = (char *)malloc(bf_bufsz);
+	}
 
 	errprintf("Setting up logfiles\n");
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -5155,6 +5225,7 @@ int main(int argc, char *argv[])
 		conn_t *cwalk;
 		time_t now = getcurrenttime(NULL);
 		int childstat;
+		int backfeeddata;
 
 		/* Pickup any finished child processes to avoid zombies */
 		while (wait3(&childstat, WNOHANG, NULL) > 0) ;
@@ -5244,6 +5315,32 @@ int main(int argc, char *argv[])
 			}
 		}
 
+		backfeeddata = (backfeedqueue > 0);
+		while (backfeeddata) {
+			int n;
+			ssize_t sz;
+			conn_t msg;
+
+			sz = msgrcv(backfeedqueue, bf_buf, bf_bufsz, 0, (IPC_NOWAIT | MSG_NOERROR));
+			backfeeddata = (sz > 0);
+
+			if (backfeeddata) {
+				backfeedcount++;
+
+				msg.buf = bf_buf;
+				msg.bufsz = msg.buflen = sz;
+				msg.bufp = msg.buf + msg.buflen;
+				msg.doingwhat = RECEIVING;
+				msg.timeout = now + 10;
+				msg.next = NULL;
+				msg.sock = -1;
+				inet_aton("0.0.0.0", (struct in_addr *) &msg.addr.sin_addr.s_addr);
+
+				do_message(&msg, "");
+				*bf_buf = '\0';
+			}
+		}
+
 		/*
 		 * Prepare for the network I/O.
 		 * Find the largest open socket we have, from our active sockets,
@@ -5271,7 +5368,7 @@ int main(int argc, char *argv[])
 		 * some time if there's nothing to do, but short enough for
 		 * us to attend to the housekeeping stuff without undue delay.
 		 */
-		seltmo.tv_sec = 2; seltmo.tv_usec = 0;
+		seltmo.tv_sec = 0; seltmo.tv_usec = 50000;
 		n = select(maxfd+1, &fdread, &fdwrite, NULL, &seltmo);
 		if (n <= 0) {
 			if ((errno == EINTR) || (n == 0)) {
@@ -5507,6 +5604,9 @@ int main(int argc, char *argv[])
 	close_channel(clientchn, CHAN_MASTER);
 	close_channel(clichgchn, CHAN_MASTER);
 	close_channel(userchn, CHAN_MASTER);
+
+	if (backfeedqueue > 0) close_feedback_queue(backfeedqueue, CHAN_MASTER);
+	if (bf_buf) xfree(bf_buf);
 
 	save_checkpoint();
 	unlink(pidfile);

@@ -10,7 +10,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-freebsd.sh 7149 2012-08-01 16:16:57Z storner $
+# $Id: xymonclient-freebsd.sh 7213 2013-07-24 14:52:08Z storner $
 
 echo "[date]"
 date
@@ -51,7 +51,7 @@ netstat -i -b -n | egrep -v "^lo|<Link"
 echo "[netstat]"
 netstat -s
 echo "[ports]"
-(netstat -na -f inet; netstat -na -f inet6) | grep "^tcp"
+(netstat -Wna -f inet; netstat -Wna -f inet6) | grep "^tcp"
 echo "[ps]"
 # Dont use "args". "command" works also in FreeBSD 4.x.
 ps -ax -ww -o pid,ppid,user,start,state,pri,pcpu,cputime,pmem,rss,vsz,command

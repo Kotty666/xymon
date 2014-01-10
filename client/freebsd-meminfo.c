@@ -9,7 +9,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: freebsd-meminfo.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: freebsd-meminfo.c 7213 2013-07-24 14:52:08Z storner $";
 
 #include <sys/types.h>
 #include <sys/sysctl.h>
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	unsigned long physmem;
 
 	int hw_pagesize[] = { CTL_HW, HW_PAGESIZE };
-	unsigned long pagesize;
+	int pagesize;
 
 	int vm_vmtotal[] = { CTL_VM, VM_METER };
 	struct vmtotal vmdata;

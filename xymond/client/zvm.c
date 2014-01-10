@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char zvm_rcsid[] = "$Id: zvm.c 7060 2012-07-14 16:32:11Z storner $";
+static char zvm_rcsid[] = "$Id: zvm.c 7252 2013-08-05 11:54:11Z storner $";
 
 static void zvm_cpu_report(char *hostname, char *clientclass, enum ostype_t os,
                      void *hinfo, char *fromline, char *timestr,
@@ -186,8 +186,8 @@ static void zvm_mdc_report(char *hostname, char *clientclass, enum ostype_t os,
 
 	        sprintf(msgline, "data %s.mdc\n%s\n%d:%d:%d\n", commafy(hostname), osname(os), mdcreads, mdcwrites, mdchitpct);
         	addtobuffer(msg, msgline);
-		sendmessage(STRBUF(msg), NULL, XYMON_TIMEOUT, NULL);
-        	}
+		combo_add(msg);
+        }
 
         freestrbuffer(msg);
 }
@@ -351,7 +351,7 @@ static void zvm_users_report(char *hostname, char *clientclass, enum ostype_t os
 
         freestrbuffer(monmsg);
 
-        if (anycountdata) sendmessage(STRBUF(countdata), NULL, XYMON_TIMEOUT, NULL);
+        if (anycountdata) combo_add(countdata);
         clearstrbuffer(countdata);
 }
 

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: color.c 7105 2012-07-23 11:47:20Z storner $";
+static char rcsid[] = "$Id: color.c 7315 2013-11-25 08:22:31Z storner $";
 
 #include <string.h>
 #include <stdlib.h>
@@ -114,7 +114,7 @@ char *dotgiffilename(int color, int acked, int oldage)
 	else if (use_recentgifs) {
 		strcat(filename, (oldage ? "" : "-recent"));
 	}
-	strcat(filename, ".gif");
+	sprintf(filename+strlen(filename), ".%s", xgetenv("IMAGEFILETYPE"));
 
 	return filename;
 }

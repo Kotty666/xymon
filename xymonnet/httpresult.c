@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httpresult.c 7062 2012-07-14 20:44:42Z storner $";
+static char rcsid[] = "$Id: httpresult.c 7252 2013-08-05 11:54:11Z storner $";
 
 #include <sys/types.h>
 #include <stdlib.h>
@@ -102,7 +102,7 @@ static int statuscolor_by_set(testedhost_t *h, long status, char *okcodes, char 
 
 
 void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firsttest,
-		       char *nonetpage, int failgoesclear)
+		       char *nonetpage, int failgoesclear, int usebackfeedqueue)
 {
 	testitem_t *t;
 	int	color = -1;
@@ -371,17 +371,20 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 	for (t=firsttest; (t && (t->host == host)); t = t->next) {
 		http_data_t *req;
 		char *data = "";
-		char *msg;
+		strbuffer_t *msg = newstrbuffer(0);
+		char msgline[1024];
 
 		if (!t->senddata) continue;
 
 		req = (http_data_t *) t->privdata;
 		if (req->output) data = req->output;
 
-		msg = (char *)malloc(1024 + strlen(host->hostname) + strlen(req->weburl.columnname) + strlen(data));
-		sprintf(msg, "data %s.%s\n%s", commafy(host->hostname), req->weburl.columnname, data);
-		sendmessage(msg, NULL, XYMON_TIMEOUT, NULL);
-		xfree(msg);
+		sprintf(msgline, "data %s.%s\n", commafy(host->hostname), req->weburl.columnname);
+		addtobuffer(msg, msgline);
+		addtobuffer(msg, data);
+		combo_add(msg);
+
+		freestrbuffer(msg);
 	}
 
 	xfree(svcname);

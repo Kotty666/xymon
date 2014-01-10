@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_rrd.c 7206 2013-07-23 13:47:08Z storner $";
+static char rcsid[] = "$Id: xymond_rrd.c 7323 2014-01-07 09:42:42Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -45,6 +45,7 @@ static char rcsid[] = "$Id: xymond_rrd.c 7206 2013-07-23 13:47:08Z storner $";
 int seq = 0;
 static int running = 1;
 static time_t reloadtime = 0;
+static int reloadextprocessor = 0;
 
 typedef struct rrddeftree_t {
 	char *key;
@@ -58,6 +59,9 @@ static void sig_handler(int signum)
 	switch (signum) {
 	  case SIGHUP:
 		  reloadtime = 0;
+		  break;
+	  case SIGPIPE:
+		  reloadextprocessor = 0;
 		  break;
 	  case SIGCHLD:
 		  break;
@@ -189,6 +193,7 @@ int main(int argc, char *argv[])
 	char *processor = NULL;
 	struct sockaddr_un ctlsockaddr;
 	int ctlsocket;
+	int usebackfeedqueue = 0;
 
 	/* Handle program options. */
 	for (argi = 1; (argi < argc); argi++) {
@@ -232,6 +237,8 @@ int main(int argc, char *argv[])
 
 	if (exthandler && extids) setup_exthandler(exthandler, extids);
 
+	usebackfeedqueue = (sendmessage_init_local() > 0);
+
 	/* Do the network stuff if needed */
 	net_worker_run(ST_RRD, LOC_STICKY, update_locator_hostdata);
 
@@ -242,7 +249,7 @@ int main(int argc, char *argv[])
 	sigaction(SIGCHLD, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGPIPE, SIG_DFL);
+	sigaction(SIGPIPE, &sa, NULL);
 
 	/* Setup the control socket that receives cache-flush commands */
 	memset(&ctlsockaddr, 0, sizeof(ctlsockaddr));
@@ -285,6 +292,13 @@ int main(int argc, char *argv[])
 		int gotcachectlmessage;
 		time_t now;
 
+		/* If we need to re-open our external processor, do so */
+		if (reloadextprocessor) {
+			shutdown_extprocessor(); // Just in case we got a PIPE, but the pipe needs to be cleaned up still
+			setup_extprocessor(processor);
+			reloadextprocessor = 0;
+		}
+
 		/* See if we have any cache-control messages pending */
 		do {
 			n = recv(ctlsocket, ctlbuf, sizeof(ctlbuf), 0);
@@ -324,6 +338,8 @@ int main(int argc, char *argv[])
 			*eoln = '\0';
 			restofmsg = eoln+1;
 		}
+
+		if (usebackfeedqueue) combo_start_local(); else combo_start();
 
 		/* Parse the meta-data */
 		metacount = 0; 
@@ -435,6 +451,8 @@ int main(int argc, char *argv[])
 			/* Not implemented. See "droptest". */
 		}
 
+		combo_end();
+
 		/* 
 		 * We fork a subprocess when processing drophost requests.
 		 * Pickup any finished child processes to avoid zombies
@@ -453,6 +471,8 @@ int main(int argc, char *argv[])
 	/* Close the control socket */
 	close(ctlsocket);
 	unlink(ctlsockaddr.sun_path);
+
+	sendmessage_finish_local();
 
 	return 0;
 }

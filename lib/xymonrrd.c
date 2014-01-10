@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonrrd.c 6745 2011-09-04 06:01:06Z storner $";
+static char rcsid[] = "$Id: xymonrrd.c 7322 2014-01-07 09:26:13Z storner $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ void * xymonrrdtree;
 /* This is the information needed to generate links on the trends column page  */
 xymongraph_t *xymongraphs = NULL;
 
-static const char *xymonlinkfmt = "<table summary=\"%s Graph\"><tr><td><A HREF=\"%s&amp;action=menu\"><IMG BORDER=0 SRC=\"%s&amp;graph=hourly&amp;action=view\" ALT=\"xymongraph %s\"></A></td><td> <td align=\"left\" valign=\"top\"> <a href=\"%s&amp;graph=custom&amp;action=selzoom\"> <img src=\"%s/zoom.gif\" border=0 alt=\"Zoom graph\" style='padding: 3px'> </a> </td></tr></table>\n";
+static const char *xymonlinkfmt = "<table summary=\"%s Graph\"><tr><td><A HREF=\"%s&amp;action=menu\"><IMG BORDER=0 SRC=\"%s&amp;graph=hourly&amp;action=view\" ALT=\"xymongraph %s\"></A></td><td> <td align=\"left\" valign=\"top\"> <a href=\"%s&amp;graph=custom&amp;action=selzoom\"> <img src=\"%s/zoom.%s\" border=0 alt=\"Zoom graph\" style='padding: 3px'> </a> </td></tr></table>\n";
 
 static const char *metafmt = "<RRDGraph>\n  <GraphType>%s</GraphType>\n  <GraphLink><![CDATA[%s]]></GraphLink>\n  <GraphImage><![CDATA[%s&amp;graph=hourly]]></GraphImage>\n</RRDGraph>\n";
 
@@ -288,7 +288,7 @@ static char *xymon_graph_text(char *hostname, char *dispname, char *service, int
 			if (bgcolor != -1) sprintf(svcurl+strlen(svcurl), "&amp;color=%s", colorname(bgcolor));
 			sprintf(svcurl+strlen(svcurl), "&amp;graph_start=%d&amp;graph_end=%d", (int)starttime, (int)endtime);
 
-			sprintf(rrdparturl, fmt, rrdservicename, svcurl, svcurl, rrdservicename, svcurl, xgetenv("XYMONSKIN"));
+			sprintf(rrdparturl, fmt, rrdservicename, svcurl, svcurl, rrdservicename, svcurl, xgetenv("XYMONSKIN"), xgetenv("IMAGEFILETYPE"));
 			if ((strlen(rrdparturl) + strlen(rrdurl) + 1) >= rrdurlsize) {
 				rrdurlsize += (4096 + rrdparturlsize);
 				rrdurl = (char *) realloc(rrdurl, rrdurlsize);

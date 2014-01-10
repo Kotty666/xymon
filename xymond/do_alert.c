@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_alert.c 7176 2012-12-18 21:38:57Z storner $";
+static char rcsid[] = "$Id: do_alert.c 7281 2013-08-15 08:53:34Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -264,7 +264,7 @@ static char *message_text(activealerts_t *alert, recip_t *recip)
 	switch (recip->format) {
 	  case ALERTFORM_TEXT:
 	  case ALERTFORM_PLAIN:
-		bom = msg_data(alert->pagemessage);
+		bom = msg_data(alert->pagemessage, 1);
 		eoln = strchr(bom, '\n'); if (eoln) *eoln = '\0';
 
 		/* If there's a "<-- flags:.... -->" then remove it from the message */
@@ -332,7 +332,7 @@ static char *message_text(activealerts_t *alert, recip_t *recip)
 		}
 
 		addtobuffer(buf, info);
-		bom = msg_data(alert->pagemessage);
+		bom = msg_data(alert->pagemessage, 1);
 		eoln = strchr(bom, '\n');
 		if (eoln) {
 			bom = eoln;
@@ -351,7 +351,7 @@ static char *message_text(activealerts_t *alert, recip_t *recip)
 		sprintf(info, "%s:%s %s [%d]\n",
 			alert->hostname, alert->testname, colorname(alert->color), alert->cookie);
 		addtobuffer(buf, info);
-		addtobuffer(buf, msg_data(alert->pagemessage));
+		addtobuffer(buf, msg_data(alert->pagemessage, 0));
 		addtobuffer(buf, "\n");
 		sprintf(info, "See %s%s\n", 
 			xgetenv("XYMONWEBHOST"),

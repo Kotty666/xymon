@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httptest.c 7123 2012-07-26 07:17:02Z storner $";
+static char rcsid[] = "$Id: httptest.c 7321 2014-01-07 08:49:10Z storner $";
 
 #include <sys/types.h>
 #include <limits.h>
@@ -482,6 +482,7 @@ void add_http_test(testitem_t *t)
 	if (httptest->weburl.desturl->schemeopts) {
 		if      (strstr(httptest->weburl.desturl->schemeopts, "3"))      sslopt_version = SSLVERSION_V3;
 		else if (strstr(httptest->weburl.desturl->schemeopts, "2"))      sslopt_version = SSLVERSION_V2;
+		else if (strstr(httptest->weburl.desturl->schemeopts, "t"))      sslopt_version = SSLVERSION_TLS1;
 
 		if      (strstr(httptest->weburl.desturl->schemeopts, "h"))      sslopt_ciphers = ciphershigh;
 		else if (strstr(httptest->weburl.desturl->schemeopts, "m"))      sslopt_ciphers = ciphersmedium;
@@ -633,7 +634,15 @@ void add_http_test(testitem_t *t)
 
 	/* Some standard stuff */
 	addtobuffer(httprequest, "Accept: */*\r\n");
-	addtobuffer(httprequest, "Pragma: no-cache\r\n");
+	switch (httpversion) {
+	   case HTTPVER_10: 
+		addtobuffer(httprequest, "Pragma: no-cache\r\n");
+		break;
+	   case HTTPVER_11: 
+		addtobuffer(httprequest, "Cache-control: no-cache\r\n");
+		break;
+	}
+
 
 	if ((httptest->weburl.testtype == WEBTEST_SOAP) || (httptest->weburl.testtype == WEBTEST_NOSOAP)) {
 		/* Must provide a SOAPAction header */
@@ -673,5 +682,7 @@ void add_http_test(testitem_t *t)
 						 t->testspec, t->silenttest, grabstrbuffer(httprequest), 
 						 httptest, tcp_http_data_callback, tcp_http_final_callback);
 	}
+
+	httptest->tcptest->sni = httptest->weburl.desturl->host;
 }
 

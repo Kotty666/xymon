@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char freebsd_rcsid[] = "$Id: freebsd.c 7174 2012-11-30 06:22:35Z storner $";
+static char freebsd_rcsid[] = "$Id: freebsd.c 7213 2013-07-24 14:52:08Z storner $";
 
 void handle_freebsd_client(char *hostname, char *clienttype, enum ostype_t os, 
 			   void *hinfo, char *sender, time_t timestamp,
@@ -47,7 +47,7 @@ void handle_freebsd_client(char *hostname, char *clienttype, enum ostype_t os,
 
 	timestr = getdata("date");
 	uptimestr = getdata("uptime");
-	clockstr = getdata("clockstr");
+	clockstr = getdata("clock");
 	msgcachestr = getdata("msgcache");
 	whostr = getdata("who");
 	psstr = getdata("ps");

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: environ.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: environ.c 7315 2013-11-25 08:22:31Z storner $";
 
 #include <ctype.h>
 #include <string.h>
@@ -110,6 +110,7 @@ const static struct {
 	{ "XYMONNONGREENEXT", "eventlog.sh acklog.sh" },
 	{ "DOTHEIGHT", "16" },
 	{ "DOTWIDTH", "16" },
+	{ "IMAGEFILETYPE", "gif" },
 	{ "RRDHEIGHT", "120" },
 	{ "RRDWIDTH", "576" },
 	{ "COLUMNDOCURL", "$CGIBINURL/columndoc.sh?%s" },

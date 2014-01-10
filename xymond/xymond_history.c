@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_history.c 7136 2012-08-01 08:51:24Z storner $";
+static char rcsid[] = "$Id: xymond_history.c 7281 2013-08-15 08:53:34Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -225,7 +225,7 @@ int main(int argc, char *argv[])
 		p = strchr(msg, '\n'); 
 		if (p) {
 			*p = '\0'; 
-			statusdata = msg_data(p+1);
+			statusdata = msg_data(p+1, 0);
 		}
 		metacount = 0;
 		memset(&metadata, 0, sizeof(metadata));

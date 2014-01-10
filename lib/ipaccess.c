@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: ipaccess.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: ipaccess.c 7217 2013-07-25 16:04:40Z storner $";
 
 #include <unistd.h>
 #include <string.h>
@@ -74,6 +74,12 @@ int oksender(sender_t *oklist, char *targetip, struct in_addr sender, char *msgb
 			dbgprintf("<- oksender(1-b)\n");
 			return 1;
 		}
+	}
+
+	/* If sender is 0.0.0.0 (i.e. it arrived via backfeed channel), then OK */
+	if (sender.s_addr == INADDR_ANY) {
+		dbgprintf("<- oksender(1-c)\n");
+		return 1;
 	}
 
 	/* It's someone else reporting about the host. Check the access list */
