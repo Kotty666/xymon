@@ -1,0 +1,13 @@
+Index: xymon/client/xymonclient-linux.sh
+===================================================================
+--- xymon.orig/client/xymonclient-linux.sh	2014-01-10 15:30:11.000000000 +0100
++++ xymon/client/xymonclient-linux.sh	2014-01-10 15:32:08.000000000 +0100
+@@ -72,7 +72,7 @@
+ netstat -s
+ echo "[ports]"
+ # Bug in RedHat's netstat spews annoying error messages. 
+-netstat -ant 2>/dev/null
++netstat -antW 2>/dev/null
+ echo "[ifstat]"
+ /sbin/ifconfig 2>/dev/null
+ # Report mdstat data if it exists

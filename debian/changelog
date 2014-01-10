@@ -9,6 +9,8 @@ xymon (4.3.13-1) UNRELEASED; urgency=low
     + Rename /etc/apache2/conf.d/xymon to …/conf-available/xymon.conf
       (Fixes lintian warnings non-standard-apache2-configuration-name and
       apache2-reverse-dependency-uses-obsolete-directory)
+  * Add -W option to "netstat -ant" in client/xymonclient-linux.sh to
+    avoid IPv6 address truncating in ports check. (Closes: #734867)
 
   [ Christoph Berg ]
   * Rename /etc/xymon/xymongraph.d to graphs.d to match graphs.cfg.
