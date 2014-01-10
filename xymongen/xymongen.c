@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymongen.c 7204 2013-07-23 12:20:59Z storner $";
+static char rcsid[] = "$Id: xymongen.c 7311 2013-09-04 08:49:12Z storner $";
 
 #include <stdio.h>
 #include <unistd.h>
@@ -687,7 +687,7 @@ int main(int argc, char *argv[])
 		char msgline[4096];
 		char *timestamps;
 		long tasksleep = (xgetenv("TASKSLEEP") ? atol(xgetenv("TASKSLEEP")) : -1);
-		int color;
+		int usebackfeedqueue, color;
 
 		/* Go yellow if it runs for too long */
 		if ((tasksleep > 0) && (total_runtime() > tasksleep)) {
@@ -695,7 +695,8 @@ int main(int argc, char *argv[])
 		}
 		color = (errbuf ? COL_YELLOW : COL_GREEN);
 
-		combo_start();
+		usebackfeedqueue = (sendmessage_init_local() > 0);
+		if (usebackfeedqueue) combo_start_local(); else combo_start();
 		init_status(color);
 		sprintf(msgline, "status %s.%s %s %s\n\n", xgetenv("MACHINE"), egocolumn, colorname(color), timestamp);
 		addtostatus(msgline);
@@ -746,6 +747,7 @@ int main(int argc, char *argv[])
 
 		finish_status();
 		combo_end();
+		if (usebackfeedqueue) sendmessage_finish_local();
 	}
 	else show_timestamps(NULL);
 

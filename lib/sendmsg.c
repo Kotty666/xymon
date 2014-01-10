@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sendmsg.c 7204 2013-07-23 12:20:59Z storner $";
+static char rcsid[] = "$Id: sendmsg.c 7325 2014-01-07 11:16:14Z storner $";
 
 #include "config.h"
 
@@ -32,12 +32,21 @@ static char rcsid[] = "$Id: sendmsg.c 7204 2013-07-23 12:20:59Z storner $";
 #include <fcntl.h>
 #include <stdio.h>
 
+#include <limits.h>
+#include <sys/resource.h>
+#include <unistd.h>
+#include <signal.h>
+#include <time.h>
+
+#include <sys/ipc.h>
+#include <sys/msg.h>
+
 #include "libxymon.h"
 
 #define SENDRETRIES 2
 
 /* These commands go to all Xymon servers */
-static char *multircptcmds[] = { "status", "combo", "meta", "data", "notify", "enable", "disable", "drop", "rename", "client", NULL };
+static char *multircptcmds[] = { "status", "combo", "extcombo", "meta", "data", "notify", "enable", "disable", "drop", "rename", "client", NULL };
 static char errordetails[1024];
 
 /* Stuff for combo message handling */
@@ -48,19 +57,25 @@ static int	xymonmsgqueued;		/* Anything in the buffer ? */
 static strbuffer_t *xymonmsg = NULL;	/* Complete combo message buffer */
 static strbuffer_t *msgbuf = NULL;	/* message buffer for one status message */
 static int	msgcolor;		/* color of status message in msgbuf */
+static int	combo_is_local = 0;
 static int      maxmsgspercombo = 100;	/* 0 = no limit. 100 is a reasonable default. */
 static int      sleepbetweenmsgs = 0;
 static int      xymondportnumber = 0;
 static char     *xymonproxyhost = NULL;
 static int      xymonproxyport = 0;
 static char	*proxysetting = NULL;
+static char	*comboofsstr = NULL;
+static int	comboofssz = 0;
+static int	*combooffsets = NULL;
 
 static int	xymonmetaqueued;		/* Anything in the buffer ? */
 static strbuffer_t *metamsg = NULL;	/* Complete meta message buffer */
 static strbuffer_t *metabuf = NULL;	/* message buffer for one meta message */
 
-int dontsendmessages = 0;
+static int backfeedqueue = -1;
+static int max_backfeedsz = 16384;
 
+int dontsendmessages = 0;
 
 void setproxy(char *proxy)
 {
@@ -442,6 +457,8 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 	 * server.
 	 */
 
+	// errprintf("sendtomany: onercpt=%s\n", onercpt);
+
 	if (strcmp(onercpt, "0.0.0.0") != 0) 
 		allservers = 0;
 	else if (strncmp(msg, "schedule", 8) == 0)
@@ -455,11 +472,14 @@ static int sendtomany(char *onercpt, char *morercpts, char *msg, int timeout, se
 		i = strspn(msg, "abcdefghijklmnopqrstuvwxyz");
 		msgcmd = (char *)malloc(i+1);
 		strncpy(msgcmd, msg, i); *(msgcmd+i) = '\0';
+		// errprintf("sendtomany: msgcmd=%s\n", msgcmd);
 		for (i = 0; (multircptcmds[i] && strcmp(multircptcmds[i], msgcmd)); i++) ;
 		xfree(msgcmd);
 
 		allservers = (multircptcmds[i] != NULL);
 	}
+
+	// errprintf("sendtomany: allservers=%d\n", allservers);
 
 	if (allservers && !morercpts) {
 		sprintf(errordetails+strlen(errordetails), "No recipients listed! XYMSRV was %s, XYMSERVERS %s",
@@ -568,6 +588,51 @@ char *getsendreturnstr(sendreturn_t *s, int takeover)
 }
 
 
+int sendmessage_init_local(void)
+{
+        backfeedqueue = setup_feedback_queue(CHAN_CLIENT);
+	if (backfeedqueue == -1) return -1;
+
+	max_backfeedsz = 1024*shbufsz(C_FEEDBACK_QUEUE)-1;
+	return max_backfeedsz;
+}
+
+void sendmessage_finish_local(void)
+{
+        close_feedback_queue(backfeedqueue, CHAN_CLIENT);
+}
+
+sendresult_t sendmessage_local(char *msg)
+{
+	int n, done = 0;
+	msglen_t msglen;
+
+	if (backfeedqueue == -1) {
+		return sendmessage(msg, NULL, XYMON_TIMEOUT, NULL);
+	}
+
+	/* Make sure we dont overflow the message buffer */
+	msglen = strlen(msg);
+	if (msglen > max_backfeedsz) {
+		errprintf("Truncating backfeed channel message from %d to %d\n", msglen, max_backfeedsz);
+		*(msg+max_backfeedsz) = '\0';
+		msglen = max_backfeedsz;
+	}
+
+	/* This will block if queue is full, but that is OK */
+	do {
+		n = msgsnd(backfeedqueue, msg, msglen+1, 0);
+		if ((n == 0) || ((n == -1) && (errno != EINTR))) done = 1;
+	} while (!done);
+
+	if (n == -1) {
+		errprintf("Sending via backfeed channel failed: %s\n", strerror(errno));
+		return XYMONSEND_ECONNFAILED;
+	}
+
+	return XYMONSEND_OK;
+}
+
 
 sendresult_t sendmessage(char *msg, char *recipient, int timeout, sendreturn_t *response)
 {
@@ -639,16 +704,36 @@ static void combo_params(void)
 	}
 
 	if (xgetenv("SLEEPBETWEENMSGS")) sleepbetweenmsgs = atoi(xgetenv("SLEEPBETWEENMSGS"));
+
+	comboofssz = 10*maxmsgspercombo;
+	comboofsstr = (char *)malloc(comboofssz+1);
+	combooffsets = (int *)malloc((maxmsgspercombo+1)*sizeof(int));
 }
 
 void combo_start(void)
 {
+	int n;
+
 	combo_params();
+
+	memset(comboofsstr, ' ', comboofssz);
+	memcpy(comboofsstr, "extcombo", 8);
+	*(comboofsstr + comboofssz) = '\0';
+
+	memset(combooffsets, 0, maxmsgspercombo*sizeof(int));
+	combooffsets[0] = comboofssz;
 
 	if (xymonmsg == NULL) xymonmsg = newstrbuffer(0);
 	clearstrbuffer(xymonmsg);
-	addtobuffer(xymonmsg, "combo\n");
+	addtobufferraw(xymonmsg, comboofsstr, comboofssz);
 	xymonmsgqueued = 0;
+	combo_is_local = 0;
+}
+
+void combo_start_local(void)
+{
+	combo_start();
+	combo_is_local = 1;
 }
 
 void meta_start(void)
@@ -660,12 +745,20 @@ void meta_start(void)
 
 static void combo_flush(void)
 {
+	int i;
+	char *outp;
 
 	if (!xymonmsgqueued) {
 		dbgprintf("Flush, but xymonmsg is empty\n");
 		return;
 	}
 
+	outp = strchr(STRBUF(xymonmsg), ' ');
+	for (i = 0; (i <= xymonmsgqueued); i++) {
+		outp += sprintf(outp, " %d", combooffsets[i]);
+	}
+	*outp = '\n';
+	
 	if (debug) {
 		char *p1, *p2;
 
@@ -685,8 +778,14 @@ static void combo_flush(void)
 		} while (p1 && p2);
 	}
 
-	sendmessage(STRBUF(xymonmsg), NULL, XYMON_TIMEOUT, NULL);
-	combo_start();	/* Get ready for the next */
+	if (combo_is_local) {
+		sendmessage_local(STRBUF(xymonmsg));
+		combo_start_local();
+	}
+	else {
+		sendmessage(STRBUF(xymonmsg), NULL, XYMON_TIMEOUT, NULL);
+		combo_start();
+	}
 }
 
 static void meta_flush(void)
@@ -700,20 +799,23 @@ static void meta_flush(void)
 	meta_start();	/* Get ready for the next */
 }
 
-static void combo_add(strbuffer_t *buf)
+void combo_add(strbuffer_t *buf)
 {
-	/* Check if there is room for the message + 2 newlines */
-	if (maxmsgspercombo && (xymonmsgqueued >= maxmsgspercombo)) {
-		/* Nope ... flush buffer */
-		combo_flush();
+	if (combo_is_local) {
+		/* Check if message fits into the backfeed message buffer */
+		if ( (STRBUFLEN(xymonmsg) + STRBUFLEN(buf)) >= max_backfeedsz) {
+			combo_flush();
+		}
 	}
 	else {
-		/* Yep ... add delimiter before new status (but not before the first!) */
-		if (xymonmsgqueued) addtobuffer(xymonmsg, "\n\n");
+		/* Check if there is room for the message + 2 newlines */
+		if (maxmsgspercombo && (xymonmsgqueued >= maxmsgspercombo)) {
+			combo_flush();
+		}
 	}
 
 	addtostrbuffer(xymonmsg, buf);
-	xymonmsgqueued++;
+	combooffsets[++xymonmsgqueued] = STRBUFLEN(xymonmsg);
 }
 
 static void meta_add(strbuffer_t *buf)
@@ -735,6 +837,7 @@ static void meta_add(strbuffer_t *buf)
 void combo_end(void)
 {
 	combo_flush();
+	combo_is_local = 0;
 	dbgprintf("%d status messages merged into %d transmissions\n", xymonstatuscount, xymonmsgcount);
 }
 

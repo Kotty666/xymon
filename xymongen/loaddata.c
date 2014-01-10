@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loaddata.c 7196 2013-04-23 08:40:25Z storner $";
+static char rcsid[] = "$Id: loaddata.c 7298 2013-08-24 06:27:33Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -286,7 +286,7 @@ state_t *init_state(char *filename, logdata_t *log)
 		time_t fileage = (now - log->lastchange);
 
 		newstate->entry->color = log->color;
-		newstate->entry->testflags = strdup(log->testflags);
+		newstate->entry->testflags = strdup(log->testflags ? log->testflags : "");
 		if (testflag_set(newstate->entry, 'D')) newstate->entry->skin = dialupskin;
 		if (testflag_set(newstate->entry, 'R')) newstate->entry->skin = reverseskin;
 		newstate->entry->shorttext = strdup(log->msg);

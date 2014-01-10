@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymon.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymon.c 7223 2013-07-25 19:56:20Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	FILE *respfd = stdout;
 	char *envarea = NULL;
 	sendreturn_t *sres;
-	int wantresponse = 0, mergeinput = 0;
+	int wantresponse = 0, mergeinput = 0, usebackfeedqueue = 0;
 
 	for (argi=1; (argi < argc); argi++) {
 		if (strcmp(argv[argi], "--debug") == 0) {
@@ -150,10 +150,22 @@ int main(int argc, char *argv[])
 	else if (strncmp(STRBUF(msg), "ghostlist", 9) == 0) wantresponse = 1;
 	else if (strncmp(STRBUF(msg), "multisrclist", 12) == 0) wantresponse = 1;
 
-	sres = newsendreturnbuf(wantresponse, respfd);
-	result = sendmessage(STRBUF(msg), recipient, timeout, sres);
+	usebackfeedqueue = ((strcmp(recipient, "0") == 0) && !wantresponse);
 
-	if (sres->respstr) printf("Buffered response is '%s'\n", STRBUF(sres->respstr));
+	if (!usebackfeedqueue) {
+		sres = newsendreturnbuf(wantresponse, respfd);
+		result = sendmessage(STRBUF(msg), recipient, timeout, sres);
+
+		if (sres->respstr) printf("Buffered response is '%s'\n", STRBUF(sres->respstr));
+	}
+	else {
+		dbgprintf("Using backfeed channel\n");
+
+		sendmessage_init_local();
+		sendmessage_local(STRBUF(msg));
+		sendmessage_finish_local();
+		result = 0;
+	}
 
 	return result;
 }

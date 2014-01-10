@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_rrd.c 7204 2013-07-23 12:20:59Z storner $";
+static char rcsid[] = "$Id: do_rrd.c 7304 2013-08-25 14:03:44Z storner $";
 
 #include <sys/types.h>
 #include <sys/time.h>
@@ -270,7 +270,7 @@ static int create_and_update_rrd(char *hostname, char *testname, char *classname
 	xtreePos_t handle;
 	updcacheitem_t *cacheitem = NULL;
 	int pollinterval;
-	char *modifymsg;
+	strbuffer_t *modifymsg;
 	time_t updtime = 0;
 
 	/* Reset the RRD poll interval */
@@ -441,7 +441,7 @@ static int create_and_update_rrd(char *hostname, char *testname, char *classname
 	 * Match the RRD data against any DS client-configuration modifiers.
 	 */
 	modifymsg = check_rrdds_thresholds(hostname, classname, pagepaths, rrdfn, ((rrdtpldata_t *)template)->dsnames, rrdvalues);
-	if (modifymsg) sendmessage(modifymsg, NULL, XYMON_TIMEOUT, NULL);
+	if (modifymsg) combo_add(modifymsg);
 
 	/*
 	 * See if we want the data to go to an external handler.

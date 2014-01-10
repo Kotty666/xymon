@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_buffer.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymond_buffer.c 7217 2013-07-25 16:04:40Z storner $";
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -35,6 +35,7 @@ unsigned int shbufsz(enum msgchannels_t chnid)
 		  case C_PAGE:   v = getenv("MAXMSG_PAGE");   defvalue = shbufsz(C_STATUS); break;
 		  case C_ENADIS: v = getenv("MAXMSG_ENADIS"); defvalue =  32; break;
 		  case C_USER:   v = getenv("MAXMSG_USER");   defvalue = 128; break;
+		  case C_FEEDBACK_QUEUE: v = getenv("MAXMSG_STATUS"); defvalue = 256; break;
 		  default: break;
 		}
 

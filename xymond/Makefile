@@ -12,18 +12,18 @@ ifeq ($(DORRD),yes)
 	PROGRAMS += xymond_rrd
 endif
 
-XYMONDOBJS    = xymond.o xymond_buffer.o xymond_ipc.o
-CHANNELOBJS   = xymond_channel.o xymond_buffer.o xymond_ipc.o
+XYMONDOBJS    = xymond.o
+CHANNELOBJS   = xymond_channel.o
 LOCATOROBJS   = xymond_locator.o
-SAMPLEOBJS    = xymond_sample.o    xymond_worker.o xymond_buffer.o
-FILESTOREOBJS = xymond_filestore.o xymond_worker.o xymond_buffer.o
-HISTORYOBJS   = xymond_history.o   xymond_worker.o xymond_buffer.o
-ALERTOBJS     = xymond_alert.o     xymond_worker.o xymond_buffer.o do_alert.o
-RRDOBJS       = xymond_rrd.o       xymond_worker.o xymond_buffer.o do_rrd.o client_config.o
-HOSTDATAOBJS  = xymond_hostdata.o  xymond_worker.o xymond_buffer.o
-CAPTUREOBJS   = xymond_capture.o   xymond_worker.o xymond_buffer.o
-CLIENTOBJS    = xymond_client.o    xymond_worker.o xymond_buffer.o client_config.o
-DISTRIBUTEOBJS= xymond_distribute.o xymond_worker.o xymond_buffer.o
+SAMPLEOBJS    = xymond_sample.o    xymond_worker.o
+FILESTOREOBJS = xymond_filestore.o xymond_worker.o
+HISTORYOBJS   = xymond_history.o   xymond_worker.o
+ALERTOBJS     = xymond_alert.o     xymond_worker.o do_alert.o
+RRDOBJS       = xymond_rrd.o       xymond_worker.o do_rrd.o client_config.o
+HOSTDATAOBJS  = xymond_hostdata.o  xymond_worker.o
+CAPTUREOBJS   = xymond_capture.o   xymond_worker.o
+CLIENTOBJS    = xymond_client.o    xymond_worker.o client_config.o
+DISTRIBUTEOBJS= xymond_distribute.o xymond_worker.o
 COMBOTESTOBJS = combostatus.o
 MAILACKOBJS   = xymon-mailack.o
 TRIMHISTOBJS  = trimhistory.o
@@ -173,7 +173,7 @@ endif
 ifndef PKGBUILD
 	chown $(XYMONUSER) $(INSTALLROOT)$(MANROOT)/man1 $(INSTALLROOT)$(MANROOT)/man5 $(INSTALLROOT)$(MANROOT)/man8
 	chgrp `$(IDTOOL) -g $(XYMONUSER)` $(INSTALLROOT)$(MANROOT)/man1 $(INSTALLROOT)$(MANROOT)/man5 $(INSTALLROOT)$(MANROOT)/man8
-	chmod 755 $(INSTALLROOT)$(MANROOT)/man1 $(INSTALLROOT)$(MANROOT)/man5 $(INSTALLROOT)$(MANROOT)/man8
+	chmod 755 $(INSTALLROOT)$(MANROOT) $(INSTALLROOT)$(MANROOT)/man1 $(INSTALLROOT)$(MANROOT)/man5 $(INSTALLROOT)$(MANROOT)/man8
 endif
 	cp -fp *.1 $(INSTALLROOT)$(MANROOT)/man1/
 	cp -fp *.5 $(INSTALLROOT)$(MANROOT)/man5/
@@ -191,12 +191,13 @@ install-cfg:
 	cd wwwfiles; find . | grep -v RCS | grep -v ".svn" | grep -v DIST | ../../build/setup-newfiles $(INSTALLROOT)$(INSTALLWWWDIR)/ ../../build/md5.dat
 	cd webfiles; find . | grep -v RCS | grep -v ".svn" | grep -v DIST | ../../build/setup-newfiles $(INSTALLROOT)$(INSTALLWEBDIR)/ ../../build/md5.dat
 	touch $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg.bak
-	chmod g+w $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg.bak
-	mkdir -p $(INSTALLROOT)$(XYMONLOGDIR)
+	chmod 664 $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg.bak
+	mkdir -p $(INSTALLROOT)$(XYMONLOGDIR); chmod 755 $(INSTALLROOT)$(XYMONLOGDIR)
 ifndef PKGBUILD
 	chown $(XYMONUSER) $(INSTALLROOT)$(XYMONLOGDIR) $(INSTALLROOT)$(XYMONHOME) $(INSTALLROOT)$(XYMONHOME)/* $(INSTALLROOT)$(INSTALLBINDIR)/* $(INSTALLROOT)$(INSTALLETCDIR)/* $(INSTALLROOT)$(INSTALLEXTDIR)/* $(INSTALLROOT)$(INSTALLWEBDIR)/* $(INSTALLROOT)$(INSTALLWWWDIR)/gifs $(INSTALLROOT)$(INSTALLWWWDIR)/gifs/* $(INSTALLROOT)$(INSTALLWWWDIR)/menu $(INSTALLROOT)$(INSTALLWWWDIR)/menu/* $(INSTALLROOT)$(INSTALLWWWDIR)/help $(INSTALLROOT)$(INSTALLWWWDIR)/notes $(INSTALLROOT)$(INSTALLWWWDIR)/html $(INSTALLROOT)$(INSTALLWWWDIR)/wml $(INSTALLROOT)$(XYMONVAR) $(INSTALLROOT)$(XYMONVAR)/*
 	chgrp `$(IDTOOL) -g $(XYMONUSER)` $(INSTALLROOT)$(XYMONLOGDIR) $(INSTALLROOT)$(XYMONHOME) $(INSTALLROOT)$(XYMONHOME)/* $(INSTALLROOT)$(INSTALLBINDIR)/* $(INSTALLROOT)$(INSTALLETCDIR)/* $(INSTALLROOT)$(INSTALLEXTDIR)/* $(INSTALLROOT)$(INSTALLWEBDIR)/* $(INSTALLROOT)$(INSTALLWWWDIR)/gifs $(INSTALLROOT)$(INSTALLWWWDIR)/gifs/* $(INSTALLROOT)$(INSTALLWWWDIR)/menu $(INSTALLROOT)$(INSTALLWWWDIR)/menu/* $(INSTALLROOT)$(INSTALLWWWDIR)/help $(INSTALLROOT)$(INSTALLWWWDIR)/notes $(INSTALLROOT)$(INSTALLWWWDIR)/html $(INSTALLROOT)$(INSTALLWWWDIR)/wml $(INSTALLROOT)$(XYMONVAR) $(INSTALLROOT)$(XYMONVAR)/*
 	chgrp $(HTTPDGID) $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg.bak
+	chmod 664 $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg $(INSTALLROOT)$(INSTALLETCDIR)/critical.cfg.bak
 
 	chown root $(INSTALLROOT)$(INSTALLBINDIR)/xymonping || echo "Could not make xymonping owned by root, continuing"
 	chmod 4755 $(INSTALLROOT)$(INSTALLBINDIR)/xymonping || echo "Could not make xymonping suid-root, continuing"

@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char temperature_rcsid[] = "$Id: do_temperature.c 7060 2012-07-14 16:32:11Z storner $";
+static char temperature_rcsid[] = "$Id: do_temperature.c 7248 2013-07-30 12:47:38Z storner $";
 
 int do_temperature_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -69,6 +69,13 @@ int do_temperature_rrd(char *hostname, char *testname, char *classname, char *pa
 		if (gotone) {
 			char savech;
 
+			bol += strspn(bol, " \t");
+
+			/* Strip off any leading bold and italic HTML tags */
+			if      (strncasecmp(bol, "<i><b>", 6) == 0)  { bol += 6; }
+			else if (strncasecmp(bol, "<i>", 3) == 0)  { bol += 3; }
+			else if (strncasecmp(bol, "<b><i>", 6) == 0)  { bol += 6; }
+			else if (strncasecmp(bol, "<b>", 3) == 0)  { bol += 3; } 
 			bol += strspn(bol, " \t");
 
 			p = bol + strlen(bol) - 1;

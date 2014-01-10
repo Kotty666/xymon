@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char zvse_rcsid[] = "$Id: zvse.c 6783 2011-11-30 11:56:42Z storner $";
+static char zvse_rcsid[] = "$Id: zvse.c 7252 2013-08-05 11:54:11Z storner $";
 
 static void zvse_cpu_report(char *hostname, char *clientclass, enum ostype_t os,
                      void *hinfo, char *fromline, char *timestr,
@@ -419,7 +419,7 @@ static void zvse_jobs_report(char *hostname, char *clientclass, enum ostype_t os
 
         freestrbuffer(monmsg);
 
-        if (anycountdata) sendmessage(STRBUF(countdata), NULL, XYMON_TIMEOUT, NULL);
+        if (anycountdata) combo_add(countdata);
         clearstrbuffer(countdata);
 }
 

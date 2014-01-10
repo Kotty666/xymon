@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-linux.sh 7204 2013-07-23 12:20:59Z storner $
+# $Id: xymonclient-linux.sh 7296 2013-08-22 04:44:24Z storner $
 
 echo "[date]"
 date
@@ -18,10 +18,10 @@ uname -rsmn
 echo "[osversion]"
 if [ -x /bin/lsb_release ]; then
 	/bin/lsb_release -r -i -s | xargs echo
-	/bin/lsb_release -a
+	/bin/lsb_release -a 2>/dev/null
 elif [ -x /usr/bin/lsb_release ]; then
 	/usr/bin/lsb_release -r -i -s | xargs echo
-	/usr/bin/lsb_release -a
+	/usr/bin/lsb_release -a 2>/dev/null
 elif [ -f /etc/redhat-release ]; then
 	cat /etc/redhat-release
 elif [ -f /etc/gentoo-release ]; then

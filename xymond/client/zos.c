@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char zos_rcsid[] = "$Id: zos.c 7060 2012-07-14 16:32:11Z storner $";
+static char zos_rcsid[] = "$Id: zos.c 7252 2013-08-05 11:54:11Z storner $";
 
 
 void zos_cpu_report(char *hostname, char *clientclass, enum ostype_t os,
@@ -529,7 +529,7 @@ void zos_jobs_report(char *hostname, char *clientclass, enum ostype_t os,
 
         freestrbuffer(monmsg);
 
-        if (anycountdata) sendmessage(STRBUF(countdata), NULL, XYMON_TIMEOUT, NULL);
+        if (anycountdata) combo_add(countdata);
         clearstrbuffer(countdata);
 }
 

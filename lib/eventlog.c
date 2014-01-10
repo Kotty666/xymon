@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: eventlog.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: eventlog.c 7315 2013-11-25 08:22:31Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -802,8 +802,8 @@ void do_eventlog(FILE *output, int maxcount, int maxminutes, char *fromtime, cha
 				xgetenv("XYMONSKIN"), dotgiffilename(ewalk->oldcolor, 0, 0), 
 				xgetenv("DOTHEIGHT"), xgetenv("DOTWIDTH"), 
 				colorname(ewalk->oldcolor), colorname(ewalk->oldcolor));
-			fprintf(output, "<IMG SRC=\"%s/arrow.gif\" BORDER=0 ALT=\"From -&gt; To\">\n", 
-				xgetenv("XYMONSKIN"));
+			fprintf(output, "<IMG SRC=\"%s/arrow.%s\" BORDER=0 ALT=\"From -&gt; To\">\n", 
+				xgetenv("XYMONSKIN"), xgetenv("IMAGEFILETYPE"));
 			fprintf(output, "<TD><A HREF=\"%s\">\n", 
 				histlogurl(hostname, ewalk->service->name, ewalk->eventtime, NULL));
 			fprintf(output, "<IMG SRC=\"%s/%s\"  HEIGHT=\"%s\" WIDTH=\"%s\" BORDER=0 ALT=\"%s\" TITLE=\"%s\"></A></TD>\n", 

@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_worker.c 7204 2013-07-23 12:20:59Z storner $";
+static char rcsid[] = "$Id: xymond_worker.c 7217 2013-07-25 16:04:40Z storner $";
 
 #include "config.h"
 
@@ -39,7 +39,6 @@ static char rcsid[] = "$Id: xymond_worker.c 7204 2013-07-23 12:20:59Z storner $"
 
 #include "libxymon.h"
 
-#include "xymond_ipc.h"
 #include "xymond_worker.h"
 
 #include <signal.h>

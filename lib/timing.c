@@ -11,8 +11,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: timing.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: timing.c 7328 2014-01-07 12:40:09Z storner $";
 
+#include <unistd.h>	// For POSIX timer definitions
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -36,6 +37,9 @@ static timestamp_t *stamptail = NULL;
 
 time_t gettimer(void)
 {
+	int res;
+	struct timespec t;
+
 #if (_POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
 	res = clock_gettime(CLOCK_MONOTONIC, &t);
 	if(-1 == res)
@@ -56,6 +60,7 @@ void getntimer(struct timespec *tp)
 {
 	struct timeval t;
 	struct timezone tz;
+	int res;
 
 #if (_POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
 	res = clock_gettime(CLOCK_MONOTONIC, tp);

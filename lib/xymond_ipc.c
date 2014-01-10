@@ -22,12 +22,13 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_ipc.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymond_ipc.c 7283 2013-08-16 09:47:06Z storner $";
 
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
+#include <sys/msg.h>
 #include <sys/stat.h>
 
 #include <stdlib.h>
@@ -50,6 +51,7 @@ char *channelnames[C_LAST+1] = {
 	"client",
 	"clichg",
 	"user",
+	"feedback",
 	NULL
 };
 
@@ -152,5 +154,38 @@ void close_channel(xymond_channel_t *chn, int role)
 	MEMUNDEFINE(chn->channelbuf);
 	shmdt(chn->channelbuf);
 	if (role == CHAN_MASTER) shmctl(chn->shmid, IPC_RMID, NULL);
+}
+
+int setup_feedback_queue(int role)
+{
+	char *xymonhome = xgetenv("XYMONHOME");
+	struct stat st;
+	key_t key;
+	int flags = ((role == CHAN_MASTER) ? (IPC_CREAT | 0666) : 0);
+	int queueid;
+
+	if ( (xymonhome == NULL) || (stat(xymonhome, &st) == -1) ) {
+		errprintf("XYMONHOME not defined, or points to invalid directory - cannot continue.\n");
+		return -1;
+	}
+
+	key = ftok(xymonhome, C_FEEDBACK_QUEUE);
+	if (key == -1) {
+		errprintf("Could not generate backfeed key based on %s: %s\n", xymonhome, strerror(errno));
+		return -1;
+	}
+
+	queueid = msgget(key, flags);
+
+	return queueid;
+}
+
+void close_feedback_queue(int queueid, int role)
+{
+	int n;
+
+	if ((queueid >= 0) && (role == CHAN_MASTER)) {
+		n = msgctl(queueid, IPC_RMID, NULL);
+	}
 }
 
