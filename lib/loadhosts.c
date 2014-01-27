@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 
 
-static char rcsid[] = "$Id: loadhosts.c 7184 2013-04-21 08:55:57Z storner $";
+static char rcsid[] = "$Id: loadhosts.c 7374 2014-01-26 11:24:52Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -168,6 +168,12 @@ static void xmh_item_list_setup(void)
 	xmh_item_name[XMH_FLAG_PULLDATA]       = "XMH_FLAG_PULLDATA";
 	xmh_item_key[XMH_FLAG_MULTIHOMED]      = "MULTIHOMED";
 	xmh_item_name[XMH_FLAG_MULTIHOMED]     = "XMH_MULTIHOMED";
+	xmh_item_key[XMH_FLAG_HTTP_HEADER_MATCH]             = "headermatch";
+	xmh_item_name[XMH_FLAG_HTTP_HEADER_MATCH]            = "XMH_FLAG_HTTP_HEADER_MATCH";
+	xmh_item_key[XMH_FLAG_SNI]             = "sni";			// Enable SNI (Server name Indication) for TLS requests
+	xmh_item_name[XMH_FLAG_SNI]            = "XMH_FLAG_SNI";
+	xmh_item_key[XMH_FLAG_NOSNI]           = "nosni";		// Disable SNI (Server name Indication) for TLS requests
+	xmh_item_name[XMH_FLAG_NOSNI]          = "XMH_FLAG_NOSNI";
 	xmh_item_key[XMH_LDAPLOGIN]            = "ldaplogin=";
 	xmh_item_name[XMH_LDAPLOGIN]           = "XMH_LDAPLOGIN";
 	xmh_item_key[XMH_CLASS]                = "CLASS:";

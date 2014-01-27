@@ -40,7 +40,7 @@
  *   active alerts for this host.test combination.
  */
 
-static char rcsid[] = "$Id: xymond_alert.c 7120 2012-07-24 16:24:39Z storner $";
+static char rcsid[] = "$Id: xymond_alert.c 7359 2014-01-21 16:09:01Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -212,6 +212,7 @@ void sig_handler(int signum)
 	  case SIGCHLD:
 		  break;
 
+	  case SIGHUP:
 	  case SIGUSR1:
 		  nextcheckpoint = 0;
 		  break;
@@ -506,6 +507,7 @@ int main(int argc, char *argv[])
 	sigaction(SIGINT,  &sa, NULL);
 	sigaction(SIGCHLD, &sa, NULL);
 	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGHUP,  &sa, NULL);
 
 	if (xgetenv("XYMONSERVERLOGS")) {
 		sprintf(acklogfn, "%s/acknowledge.log", xgetenv("XYMONSERVERLOGS"));

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: environ.c 7315 2013-11-25 08:22:31Z storner $";
+static char rcsid[] = "$Id: environ.c 7350 2014-01-19 12:17:56Z storner $";
 
 #include <ctype.h>
 #include <string.h>
@@ -36,7 +36,7 @@ const static struct {
 	{ "XYMONSERVERSECCGIURL", "/xymon-cgisecure" },
 	{ "XYMONNETWORK", "" },
 	{ "BBLOCATION", "" },
-	{ "PATH", "/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:"BUILD_HOME"/bin" },
+	{ "PATH", "/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:"XYMONHOME"/bin" },
 	{ "DELAYRED", "" },
 	{ "DELAYYELLOW", "" },
 	{ "XYMONDPORT", "1984" },
@@ -67,7 +67,7 @@ const static struct {
 	{ "XYMONSNAPURL", "$XYMONSERVERWWWURL/snap" },
 	{ "XYMONWAP", "$XYMONSERVERWWWURL/wml" },
 	{ "CGIBINURL", "$XYMONSERVERCGIURL" },
-	{ "XYMONHOME", BUILD_HOME },
+	{ "XYMONHOME", XYMONHOME },
 	{ "XYMONTMP", "$XYMONHOME/tmp" },
 	{ "HOSTSCFG", "$XYMONHOME/etc/hosts.cfg" },
 	{ "XYMON", "$XYMONHOME/bin/xymon" },

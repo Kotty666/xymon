@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadalerts.c 7120 2012-07-24 16:24:39Z storner $";
+static char rcsid[] = "$Id: loadalerts.c 7359 2014-01-21 16:09:01Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -981,6 +981,8 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	 * this check to all messages.
 	 */
 	if (crit && crit->timespec && !timematch(xmh_item(hinfo, XMH_HOLIDAYS), crit->timespec)) {
+		/* Try again in a minute */
+		if (nexttime) *nexttime = getcurrenttime(NULL) + 60;
 		traceprintf("Failed '%s' (time criteria)\n", cfline);
 		if (!printmode) return 0; 
 	}

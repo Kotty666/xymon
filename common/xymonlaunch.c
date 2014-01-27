@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonlaunch.c 7204 2013-07-23 12:20:59Z storner $";
+static char rcsid[] = "$Id: xymonlaunch.c 7346 2014-01-13 10:45:03Z storner $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -543,9 +543,8 @@ int main(int argc, char *argv[])
 		else if (stat("/etc/xymon/tasks.cfg", &st) != -1) config = strdup("/etc/xymon/tasks.cfg");
 		else if (stat("/etc/xymon-client/clientlaunch.cfg", &st) != -1) config = strdup("/etc/xymon-client/clientlaunch.cfg");
 		else if (xgetenv("XYMONHOME")) {
-			char *pf = NULL;
-			sprintf(pf, "%s/etc/tasks.cfg", xgetenv("XYMONHOME"));
-			if (pf && stat(pf, &st) != -1) config = strdup(pf);
+			config = (char *)malloc(strlen(xgetenv("XYMONHOME")) + strlen("/etc/tasks.cfg") + 1);
+			sprintf(config, "%s/etc/tasks.cfg", xgetenv("XYMONHOME"));
 		}
 		if (config) dbgprintf("Using config file: %s\n", config);
 	}

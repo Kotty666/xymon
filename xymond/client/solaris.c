@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char solaris_rcsid[] = "$Id: solaris.c 7252 2013-08-05 11:54:11Z storner $";
+static char solaris_rcsid[] = "$Id: solaris.c 7356 2014-01-19 21:26:25Z storner $";
 
 void handle_solaris_client(char *hostname, char *clienttype, enum ostype_t os,
 			   void *hinfo, char *sender, time_t timestamp, 
@@ -128,7 +128,7 @@ void handle_solaris_client(char *hostname, char *clienttype, enum ostype_t os,
 				}
 			}
 
-			if ((blktotal > 0) && (blkfree > 0)) {
+			if ((blktotal >= 0) && (blkfree >= 0)) {
 				/* Values from swap -l are numbers of 512-byte blocks. Convert to MB = N*512/(1024*1024) = N/2048 */
 				memswapused = (blktotal - blkfree) / 2048;
 				memswapfree = blkfree / 2048;

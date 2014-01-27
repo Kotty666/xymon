@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonnet.c 7311 2013-09-04 08:49:12Z storner $";
+static char rcsid[] = "$Id: xymonnet.c 7345 2014-01-10 09:29:38Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -2153,6 +2153,10 @@ int main(int argc, char *argv[])
 		else if (argnmatch(argv[argi], "--sslkeysize=")) {
 			char *p = strchr(argv[argi], '=');
 			p++; sslminkeysize = atoi(p);
+		}
+		else if (argnmatch(argv[argi], "--sni=")) {
+			char *p = strchr(argv[argi], '=');
+			p++; snienabled = ( (strcasecmp(p, "yes") == 0) || (strcasecmp(p, "on") == 0) || (strcasecmp(p, "enabled") == 0) || (strcasecmp(p, "true") == 0) || (strcasecmp(p, "1") == 0) );
 		}
 		else if (strcmp(argv[argi], "--no-cipherlist") == 0) {
 			sslincludecipherlist = 0;
