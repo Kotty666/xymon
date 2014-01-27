@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-linux.sh 7296 2013-08-22 04:44:24Z storner $
+# $Id: xymonclient-linux.sh 7362 2014-01-23 20:42:41Z storner $
 
 echo "[date]"
 date
@@ -83,6 +83,8 @@ then
     then
         echo "[top]"
 	$TOP -b -n 1 
+	# Some top versions do not finish off the last line of output
+	echo ""
     fi
 fi
 

@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: acknowledge.c 6790 2011-12-06 12:56:24Z storner $";
+static char rcsid[] = "$Id: acknowledge.c 7361 2014-01-21 17:21:35Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -329,7 +329,7 @@ int main(int argc, char *argv[])
 				}
 
 				if (first) {
-					fprintf(stdout, "<center><font size=\"+1\"><b>No active alerts</b></font></center\n");
+					fprintf(stdout, "<center><font size=\"+1\"><b>No active alerts</b></font></center>\n");
 				}
 				else {
 					generate_ackline(stdout, NULL, NULL, NULL);

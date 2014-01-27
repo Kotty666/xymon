@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: contest.c 7256 2013-08-07 05:02:37Z storner $";
+static char rcsid[] = "$Id: contest.c 7345 2014-01-10 09:29:38Z storner $";
 
 #include "config.h"
 
@@ -65,6 +65,7 @@ static tcptest_t *thead = NULL;
 
 int shuffletests = 0;
 int sslincludecipherlist = 1;
+int snienabled = 0;	/* SNI disabled by default */
 
 static svcinfo_t svcinfo_http  = { "http", NULL, 0, NULL, 0, 0, (TCP_GET_BANNER|TCP_HTTP), 80 };
 static svcinfo_t svcinfo_https = { "https", NULL, 0, NULL, 0, 0, (TCP_GET_BANNER|TCP_HTTP|TCP_SSL), 443 };

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: showgraph.c 7315 2013-11-25 08:22:31Z storner $";
+static char rcsid[] = "$Id: showgraph.c 7351 2014-01-19 12:19:07Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -158,7 +158,13 @@ void request_cacheflush(char *hostname)
 			do {
 				n = sendto(ctlsocket, bufp, bytesleft, 0, (struct sockaddr *)&myaddr, myaddrsz);
 				if (n == -1) {
-					if (errno != EAGAIN) {
+					if (errno == EDESTADDRREQ) {
+						/* Probably a left-over rrdctl file, ignore it */
+					}
+					else if (errno == EAGAIN) {
+						/* Harmless */
+					}
+					else {
 						errprintf("Sendto failed: %s\n", strerror(errno));
 					}
 

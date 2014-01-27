@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: memory.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: memory.c 7371 2014-01-26 11:12:07Z storner $";
 
 #include <ctype.h>
 #include <string.h>
@@ -357,5 +357,22 @@ int xsprintf(char *dest, const char *fmt, ...)
 #endif
 
 	return printedbytes;
+}
+
+
+char *xresultbuf(int maxsz)
+{
+	static char rrbuf[10000];
+	static char *rrbufnext = rrbuf;
+	char *result;
+
+	if ((rrbufnext + maxsz) >= (rrbuf + sizeof(rrbuf))) 
+		result = rrbufnext = rrbuf;
+	else {
+		result = rrbufnext;
+		rrbufnext += maxsz;
+	}
+
+	return result;
 }
 
