@@ -1,4 +1,4 @@
-.TH CLIENT-LOCAL.CFG 5 "Version 4.3.14: 26 Jan 2014" "Xymon"
+.TH CLIENT-LOCAL.CFG 5 "Version 4.3.16:  9 Feb 2014" "Xymon"
 .SH NAME
 client-local.cfg \- Local configuration settings for Xymon clients
 
@@ -40,6 +40,20 @@ delay of up to two poll cycles (i.e. 5-10 minutes) from a configuration
 change is entered into the client-local.cfg file, and until you see
 the result in the status messages reported by the client.
 
+By default, xymond will look for a matching entry by matching the client
+hostname, classname or operating system name against the section expressions.
+Hostname matches are used first, then classname matches, then OS matches.
+The first match found is the one that is returned to the client.
+
+If xymond is started with the "--merge-clientlocal" option, then xymond
+will instead merge all of the matching sections into one, and return all
+of this data to the client. So you can have host-specific entries, and
+then supplement them with class- or os-generic entries. Note that the
+merging does not remove entries, so if you have e.g. a "log" entry defined
+in both a hostname- and an osname-matching section, then both entries
+will be sent back to the client.
+
+
 .SH FILE FORMAT
 The file is divided into sections, delimited by "[name]" lines.
 A section name can be either an operating system identifier - 
@@ -50,6 +64,19 @@ the client; if such a section does not exist, it will look for
 a section named by the operating system of the client. So you
 can configure special configurations for individual hosts, and have
 a default configuration for all other hosts of a certain type.
+
+It will often be practical to use regular expressions for hostnames.
+To do this you must use
+.sp
+    [host=<expression>]
+.sp
+where <expression> is a Perl-compatible regular expression. The same 
+kind of matching can be done on operating system or host class, using
+.sp
+    [os=<expresssion>]
+.br
+    [class=<expression>]
+
 
 Apart from the section delimiter, the file format is free-form, or
 rather it is defined by the tools that make use of the configuration.
