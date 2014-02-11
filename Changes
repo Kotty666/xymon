@@ -1,3 +1,31 @@
+Changes from 4.3.15 -> 4.3.16 (9 Feb 2014)
+==========================================
+
+* rev 7394
+
+* Fix xymonnet crash on sending http test results
+* Fix xymond crash if client-local.cfg contains empty sections
+* Fix RPM-based initscript for clients with explicit hostname
+* Fix misleading error-message when testing for C-ARES library
+* Fix client-local.cfg handling, so by default it will not merge
+  sections together, i.e. behave like previous 4.x releases.
+  NOTE: The new regexp matching can still be used.
+* Add "--merge-clientlocal" option for xymond, which causes it
+  to merge all matching sections from client-local.cfg into one.
+* Use native POSIX binary-tree handling code
+
+
+Changes from 4.3.14 -> 4.3.15 (31 Jan 2014)
+===========================================
+
+* rev 7384
+
+* Fix xymond_alert crashes introduced in 4.3.14
+* Fix missing C-ARES build files
+* client-local.cfg: Support expression matching of sections
+* acknowledge.cgi: Acks are enabled for all ALERTCOLORS, not just red and yellow
+
+
 Changes from 4.3.13 -> 4.3.14 (26 Jan 2014)
 ===========================================
 

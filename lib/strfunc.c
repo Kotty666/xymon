@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: strfunc.c 7354 2014-01-19 15:40:00Z storner $";
+static char rcsid[] = "$Id: strfunc.c 7390 2014-02-04 16:08:37Z storner $";
 
 #include "config.h"
 
@@ -134,6 +134,7 @@ void addtobuffer_many(strbuffer_t *buf, ...)
 		strbuf_addtobuffer(buf, newtext, strlen(newtext));
 		newtext = va_arg(ap, char *);
 	}
+	va_end(ap);
 }
 
 void addtostrbuffer(strbuffer_t *buf, strbuffer_t *newtext)

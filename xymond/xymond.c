@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7372 2014-01-26 11:15:54Z storner $";
+static char rcsid[] = "$Id: xymond.c 7391 2014-02-07 07:16:57Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -5018,6 +5018,9 @@ int main(int argc, char *argv[])
 			else if (strcmp(p, "drop") == 0) ghosthandling = GH_IGNORE;
 			else if (strcmp(p, "log") == 0) ghosthandling = GH_LOG;
 			else if (strcmp(p, "match") == 0) ghosthandling = GH_MATCH;
+		}
+		else if (argnmatch(argv[argi], "--merge-clientlocal")) {
+			set_clientlocal_mergemode(1);
 		}
 		else if (argnmatch(argv[argi], "--no-purple")) {
 			do_purples = 0;
