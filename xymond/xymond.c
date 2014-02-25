@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7391 2014-02-07 07:16:57Z storner $";
+static char rcsid[] = "$Id: xymond.c 7445 2014-02-23 09:37:35Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -1217,6 +1217,7 @@ void get_hts(char *msg, char *sender, char *origin,
 		if (createlog && (lwalk == NULL)) {
 			lwalk = (xymond_log_t *)calloc(1, sizeof(xymond_log_t));
 			lwalk->lastchange = (time_t *)calloc((flapcount > 0) ? flapcount : 1, sizeof(time_t));
+			lwalk->lastchange[0] = getcurrenttime(NULL);
 			lwalk->color = lwalk->oldcolor = NO_COLOR;
 			lwalk->host = hwalk;
 			lwalk->test = twalk;
@@ -3310,7 +3311,7 @@ void do_message(conn_t *msg, char *origin)
 			if (!ofsstr) continue;
 
 			endofs = atoi(ofsstr);
-			if ((endofs <= 0) || (endofs > msg->bufsz)) {
+			if ((endofs <= 0) || (endofs <= startofs) || (endofs > msg->bufsz)) {
 				/* Invalid offsets, abort */
 				errprintf("Invalid end-offset in extcombo: endofs=%d, bufsz=%d\n", endofs, msg->bufsz);
 				msg->buf = origbuf;
@@ -3927,7 +3928,7 @@ void do_message(conn_t *msg, char *origin)
 					"    <AckTime>", timestr(lwalk->acktime), "</AckTime>\n",
 					"    <DisableTime>", timestr(lwalk->enabletime), "</DisableTime>\n",
 					"    <Sender>", lwalk->sender, "</Sender>\n",
-				NULL);
+					NULL);
 				timestr(-1);
 
 				if (lwalk->cookie && (lwalk->cookieexpires > now))
@@ -4165,7 +4166,7 @@ void do_message(conn_t *msg, char *origin)
 
 			for (swalk = schedulehead; (swalk); swalk = swalk->next) {
 				snprintf(tbuf, sizeof(tbuf), "%d|%d", swalk->id, (int)swalk->executiontime);
-				addtobuffer_many(response, tbuf, "|", swalk->sender, "|", nlencode(swalk->command));
+				addtobuffer_many(response, tbuf, "|", swalk->sender, "|", nlencode(swalk->command), NULL);
 			}
 
 			xfree(msg->buf);

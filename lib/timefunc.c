@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: timefunc.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: timefunc.c 7433 2014-02-13 09:58:18Z storner $";
 
 #include <time.h>
 #include <sys/time.h>
@@ -121,6 +121,8 @@ char *timespec_text(char *spec)
 		if (!days) return "";
 
 		oneday = days;
+
+		if (STRBUFLEN(result) > 0) addtobuffer(result, "<br>");
 
 		while (!daysdone) {
 			switch (*oneday) {

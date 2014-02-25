@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: boilerplate.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: boilerplate.c 7435 2014-02-13 11:22:08Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -35,7 +35,7 @@ void parse_query(void)
 	while (cwalk) {
 		/*
 		 * cwalk->name points to the name of the setting.
-		 * cwakl->value points to the value (may be an empty string).
+		 * cwalk->value points to the value (may be an empty string).
 		 */
 
 		cwalk = cwalk->next;
