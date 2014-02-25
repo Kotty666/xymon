@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: hostgraphs.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: hostgraphs.c 7441 2014-02-23 09:27:44Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -26,6 +26,7 @@ enum { A_SELECT, A_GENERATE } action = A_SELECT;
 char *hostpattern = NULL;
 char *pagepattern = NULL;
 char *ippattern = NULL;
+char *classpattern = NULL;
 char **hosts = NULL;
 char **tests = NULL;
 time_t starttime = 0;
@@ -45,7 +46,7 @@ void parse_query(void)
 	while (cwalk) {
 		/*
 		 * cwalk->name points to the name of the setting.
-		 * cwakl->value points to the value (may be an empty string).
+		 * cwalk->value points to the value (may be an empty string).
 		 */
 
 		if ((strcmp(cwalk->name, "hostpattern") == 0) && cwalk->value && strlen(cwalk->value)) {
@@ -56,6 +57,9 @@ void parse_query(void)
 		}
 		else if ((strcmp(cwalk->name, "ippattern") == 0)   && cwalk->value && strlen(cwalk->value)) {
 			ippattern = strdup(cwalk->value);
+		}
+		else if ((strcmp(cwalk->name, "classpattern") == 0)   && cwalk->value && strlen(cwalk->value)) {
+			classpattern = strdup(cwalk->value);
 		}
 		else if (strcmp(cwalk->name, "DoReport") == 0) {
 			action = A_GENERATE;
@@ -218,8 +222,8 @@ int main(int argc, char *argv[])
 			sprintf(pagepattern, "^%s$|^%s/.+", cookie, cookie);
 		}
 
-		if (hostpattern || pagepattern || ippattern)
-			sethostenv_filter(hostpattern, pagepattern, ippattern);
+		if (hostpattern || pagepattern || ippattern || classpattern)
+			sethostenv_filter(hostpattern, pagepattern, ippattern, classpattern);
 		showform(stdout, hffile, formfile, COL_BLUE, getcurrenttime(NULL), NULL, NULL);
 	}
 	else if ((action == A_GENERATE) && hosts && hosts[0] && tests && tests[0]) {
@@ -235,8 +239,8 @@ int main(int argc, char *argv[])
 
 			for (hosti=1; (hosts[hosti]); hosti++) fprintf(stdout, ",%s", htmlquoted(hosts[hosti]));
 
-			fprintf(stdout, "&amp;service=%s&amp;graph_start=%ld&amp;graph_end=%ld&graph=custom&amp;action=view\"></td></tr>\n",
-				htmlquoted(tests[testi]), (long int)starttime, (long int)endtime);
+			fprintf(stdout, "&amp;service=%s&amp;graph_start=%ld&amp;graph_end=%ld&graph=custom&amp;action=view&amp;graph_height=%s&amp;graph_width=%s\"></td></tr>\n",
+				htmlquoted(tests[testi]), (long int)starttime, (long int)endtime, xgetenv("RRDHEIGHT"), xgetenv("RRDWIDTH"));
 		}
 
 	  	fprintf(stdout, "</table><br><br>\n");

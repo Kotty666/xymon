@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: showgraph.c 7351 2014-01-19 12:19:07Z storner $";
+static char rcsid[] = "$Id: showgraph.c 7442 2014-02-23 09:32:44Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -717,6 +717,11 @@ char *build_selfURI(void)
 	if (service) {
 		addtobuffer(result, "&amp;service=");
 		addtobuffer(result, urlencode(service));
+	}
+	if (haveupperlimit) {
+		snprintf(numbuf, sizeof(numbuf)-1, "%f", upperlimit);
+		addtobuffer(result, "&amp;upper=");
+		addtobuffer(result, urlencode(numbuf));
 	}
 	if (graphheight) {
 		snprintf(numbuf, sizeof(numbuf)-1, "%d", graphheight); 
