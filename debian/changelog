@@ -12,6 +12,7 @@ xymon (4.3.17-1) UNRELEASED; urgency=low
   * Add -W option to "netstat -ant" in client/xymonclient-linux.sh to
     avoid IPv6 address truncating in ports check. (Closes: #734867)
   * Bump Standards-Version to 3.9.5 (no changes)
+  * Add a debian/upstream/metadata file according to DEP-12.
 
   [ Christoph Berg ]
   * Rename /etc/xymon/xymongraph.d to graphs.d to match graphs.cfg.
