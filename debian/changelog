@@ -1,3 +1,10 @@
+xymon (4.3.17-2) UNRELEASED; urgency=medium
+
+  [ Christoph Berg ]
+  *  Always write /var/run/xymon/xymonclient-include.cfg on clients
+
+ -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
+
 xymon (4.3.17-1) experimental; urgency=low
 
   [ Axel Beckert ]
