@@ -3,6 +3,10 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
   [ Christoph Berg ]
   *  Always write /var/run/xymon/xymonclient-include.cfg on clients
 
+  [ Axel Beckert ]
+  * Add build-dependency on libc-ares-dev to avoid using embedded code
+    copy at xymonnet/c-ares-1.7.3.tar.gz
+
  -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
 
 xymon (4.3.17-1) experimental; urgency=low

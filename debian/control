@@ -6,6 +6,7 @@ Uploaders: Axel Beckert <abe@debian.org>
 Build-Depends: debhelper (>= 8.1.0~),
                dpkg-dev (>= 1.16.1~),
                imagemagick,
+               libc-ares-dev,
                libldap2-dev (>= 2.4.25-2~),
                libpcre3-dev (>= 8.12-4~),
                librrd-dev,
