@@ -1,4 +1,4 @@
-mv_conffile /etc/apache2/conf.d/hobbit          /etc/apache2/conf.d/xymon          4.3.7-1~~	xymon
+mv_conffile /etc/apache2/conf.d/hobbit     /etc/apache2/conf-available/xymon.conf  4.3.7-1~~	xymon
 mv_conffile /etc/init.d/hobbit                  /etc/init.d/xymon                  4.3.7-1~~	xymon
 mv_conffile /etc/hobbit/client-local.cfg        /etc/xymon/client-local.cfg        4.3.7-1~~	xymon
 mv_conffile /etc/hobbit/columndoc.csv           /etc/xymon/columndoc.csv           4.3.7-1~~	xymon
@@ -70,3 +70,5 @@ mv_conffile /etc/hobbit/web/bbrep_header        /etc/xymon/web/repnormal_header 
 mv_conffile /etc/hobbit/web/nkack_form          /etc/xymon/web/critack_form        4.3.7-1~~	xymon
 mv_conffile /etc/hobbit/web/nkedit_form         /etc/xymon/web/critedit_form       4.3.7-1~~	xymon
 mv_conffile /etc/hobbit/web/nkedit_header       /etc/xymon/web/critedit_header     4.3.7-1~~	xymon
+
+mv_conffile /etc/apache2/conf.d/xymon     /etc/apache2/conf-available/xymon.conf  4.3.17-2~~	xymon
