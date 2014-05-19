@@ -8,10 +8,16 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
     copy at xymonnet/c-ares-1.7.3.tar.gz
   * Fix includes for graph definitions (xymongraph.d → graphs.d)
     + Add a Breaks for hobbit-plugins << 20140519~
-  * Fix README.Debian and xymon.maintscript with regards to the Apache 2.2 →
-    2.4 Transition
   * Remove reference to /etc/apache2/ from xymon-client.NEWS
-  * xymon.postinst: Also check for a potential apache2 service file
+  * Fix remaining issues of the the Apache 2.2 → 2.4 Transition
+    (modifies mostly debian/rules, xymon.postinst and xymon.maintscript)
+    + Fix conffile paths in README.Debian and xymon.maintscript
+    + Use dh_apache2 and apache2-maintscript-helper
+    + Add build-dependency on dh-apache2.
+    + Add lintian override for missing-build-dependency-for-dh_-command
+      (see #748688)
+    + Enable Apache's mod_authz_groupfile automatically in postinst
+    + Closes: #669776
 
  -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
 

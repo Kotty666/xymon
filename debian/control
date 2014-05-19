@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: Christoph Berg <myon@debian.org>
 Uploaders: Axel Beckert <abe@debian.org>
 Build-Depends: debhelper (>= 8.1.0~),
+               dh-apache2,
                dpkg-dev (>= 1.16.1~),
                imagemagick,
                libc-ares-dev,

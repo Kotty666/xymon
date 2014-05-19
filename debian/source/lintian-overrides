@@ -1,0 +1,2 @@
+# See http://bugs.debian.org/748688
+xymon source: missing-build-dependency-for-dh_-command dh_apache2 => apache2-dev
