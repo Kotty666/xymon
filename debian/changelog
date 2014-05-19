@@ -6,6 +6,8 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
   [ Axel Beckert ]
   * Add build-dependency on libc-ares-dev to avoid using embedded code
     copy at xymonnet/c-ares-1.7.3.tar.gz
+  * Fix includes for graph definitions (xymongraph.d → graphs.d)
+    + Add a Breaks for hobbit-plugins << 20140519~
 
  -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
 

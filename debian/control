@@ -47,7 +47,7 @@ Package: xymon-client
 Architecture: any
 Breaks: hobbit (<= 4.2.0-1),
         hobbit-client (<< 4.2.2),
-        hobbit-plugins (<< 20120619),
+        hobbit-plugins (<< 20140519~),
         xymon (<< 4.3.7-1~)
 Provides: hobbit-client
 Replaces: hobbit-client (<< 4.2.2)

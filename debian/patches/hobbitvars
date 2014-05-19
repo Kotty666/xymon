@@ -196,4 +196,4 @@ Index: xymon/xymond/etcfiles/graphs.cfg
  
  ########### end of ifmib graphs ###########
  
-+include /var/run/xymon/xymongraph-include.cfg
++include /var/run/xymon/graphs-include.cfg
