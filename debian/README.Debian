@@ -13,9 +13,9 @@ by upstream. The main differences are
   hobbit-plugins package for some pre-packaged modules.
 
 - Access to the monitoring website is restricted to localhost by default.
-  Edit /etc/apache2/conf.d/xymon to change this.
+  Edit /etc/apache2/conf-available/xymon to change this.
 
 - The animated gifs were replaced by static versions in the default
   install, change BBSKIN for the animated version.
 
- -- Axel Beckert <abe@debian.org>, Wed, 13 Jun 2012 14:22:53 +0200
+ -- Axel Beckert <abe@debian.org>, Mon, 19 May 2014 17:03:48 +0200
