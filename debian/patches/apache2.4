@@ -1,0 +1,62 @@
+Description: Replace Apache 2.2 directives with those from 2.4
+Author: Axel Beckert <abe@debian.org>
+Bug-Debian: https://bugs.debian.org/669776
+
+Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2014-05-20 19:55:21.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2014-05-20 20:00:09.000000000 +0200
+@@ -14,24 +14,23 @@
+ Alias @XYMONHOSTURL@  "@INSTALLWWWDIR@"
+ <Directory "@INSTALLWWWDIR@">
+     Options Indexes FollowSymLinks Includes MultiViews
+-    Order allow,deny
+-    Allow from localhost ::1/128
++    Require ip 127.0.0.1/8 ::1/128
+ </Directory>
+ 
+ ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
+ <Directory "@CGIDIR@">
+     AllowOverride None
+     Options ExecCGI Includes
+-    Order allow,deny
+-    Allow from localhost ::1/128
++    Require ip 127.0.0.1/8 ::1/128
+ </Directory>
+ 
+ ScriptAlias @SECUREXYMONCGIURL@ "@SECURECGIDIR@"
+ <Directory "@SECURECGIDIR@">
+     AllowOverride None
+     Options ExecCGI Includes
+-    Order allow,deny
+-    Allow from localhost ::1/128
++
++    <RequireAll>
++    Require ip 127.0.0.1/8 ::1/128
+ 
+     # Password file where users with access to these scripts are kept.
+     # Create it with "htpasswd -c @INSTALLETCDIR@/xymonpasswd USERNAME"
+@@ -43,7 +42,6 @@
+     # a specific group membership. See the Apache docs for more details.
+ 
+     AuthUserFile @INSTALLETCDIR@/xymonpasswd
+-    AuthGroupFile @INSTALLETCDIR@/xymongroups
+     AuthType Basic
+     AuthName "Xymon Administration"
+ 
+@@ -51,9 +49,13 @@
+     Require valid-user
+ 
+     # "group admins" restricts access to users who have logged in, AND
+-    # are members of the "admins" group in xymongroups.
+-    # Require group admins
++    # are members of the "admins" group in xymongroups. Needs Apache
++    # 2.4's mod_authz_groufile to be enabled. Call "a2enmod
++    # authz_groupfile" for that.
+ 
++    # AuthGroupFile @INSTALLETCDIR@/xymongroups
++    # Require group admins
++    </RequireAll>
+ </Directory>
+ 
+ # Rewrite-rules for migrating from the URL's used in Hobbit

@@ -16,7 +16,9 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
     + Add build-dependency on dh-apache2.
     + Add lintian override for missing-build-dependency-for-dh_-command
       (see #748688)
-    + Enable Apache's mod_authz_groupfile automatically in postinst
+    + Enable Apache's mod_rewrite automatically in postinst
+    + Add patch to switch default configuration to Apache 2.4 style
+      authorization.
     + Closes: #669776
 
  -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
