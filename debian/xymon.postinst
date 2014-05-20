@@ -39,6 +39,8 @@ case "$1" in
 	cd /var/lib/xymon/www; chown xymon:xymon html notes wml rep snap; chgrp www-data rep snap; chmod g+w rep snap
 	cd /etc/xymon; chgrp www-data critical.cfg critical.cfg.bak; chmod g+w critical.cfg critical.cfg.bak
 
+        # Maybe TODO before Jessie release: prename vs rename vs file-rename
+        # See https://bugs.debian.org/735134 for details
 	if [ -x /usr/bin/prename ]; then
 	    find /var/lib/xymon '(' -name '*bbgen*' -o \
 				    -name '*bbtest*'  -o \
