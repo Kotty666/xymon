@@ -20,6 +20,8 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
     + Add patch to switch default configuration to Apache 2.4 style
       authorization.
     + Closes: #669776
+  * Let xymon depend on perl until after the Jessie release to make sure
+    prename is there for the data migration from hobbit to xymon.
 
  -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
 

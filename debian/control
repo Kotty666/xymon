@@ -27,6 +27,8 @@ Provides: hobbit
 Replaces: hobbit (<< 4.2.2)
 Pre-Depends: ${misc:Pre-Depends}
 Depends: xymon-client (>= 4.3.7-1~),
+# The dependency on perl is only for prename in postinst script
+         perl,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: apache2 | httpd-cgi
