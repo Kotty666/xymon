@@ -9,7 +9,7 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
   * Fix includes for graph definitions (xymongraph.d → graphs.d)
     + Add a Breaks for hobbit-plugins << 20140519~
   * Remove reference to /etc/apache2/ from xymon-client.NEWS
-  * Fix remaining issues of the the Apache 2.2 → 2.4 Transition
+  * Fix remaining issues of the Apache 2.2 → 2.4 transition
     (modifies mostly debian/rules, xymon.postinst and xymon.maintscript)
     + Fix conffile paths in README.Debian and xymon.maintscript
     + Use dh_apache2 and apache2-maintscript-helper
