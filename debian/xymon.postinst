@@ -113,6 +113,8 @@ case "$1" in
     configure)
 	if [ -e /usr/share/apache2/apache2-maintscript-helper ] ; then
             . /usr/share/apache2/apache2-maintscript-helper
+            # Enable CGI support
+            apache2_invoke enmod cgi
             # Needed by the rewrite rules to migrate from old hobbit based URLs
             apache2_invoke enmod rewrite
             # Finally enable the xymon web interface
