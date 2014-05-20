@@ -22,6 +22,8 @@ xymon (4.3.17-2) UNRELEASED; urgency=medium
     + Closes: #669776
   * Let xymon depend on perl until after the Jessie release to make sure
     prename is there for the data migration from hobbit to xymon.
+  * Add lintian override for apache2-reverse-dependency-calls-invoke-rc.d
+    -- it finds the fallback for apache2-maintscript-helper unavailability
 
  -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
 

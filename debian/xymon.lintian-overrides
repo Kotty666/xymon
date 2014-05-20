@@ -1,3 +1,5 @@
 xymon: package-contains-empty-directory usr/lib/xymon/server/download/
 xymon: setuid-binary usr/lib/xymon/server/bin/xymonping 4755 root/root
 xymon: spelling-error-in-binary usr/lib/xymon/server/bin/xymond_rrd retransmited retransmitted
+# Seems a false positive due to the fallback if apache2-maintscript-helper isn't there
+xymon: apache2-reverse-dependency-calls-invoke-rc.d postinst
