@@ -1,4 +1,6 @@
-xymon (4.3.17-2) UNRELEASED; urgency=low
+xymon (4.3.17-2) unstable; urgency=low
+
+  * Upload to unstable again.
 
   [ Christoph Berg ]
   *  Always write /var/run/xymon/xymonclient-include.cfg on clients
@@ -25,7 +27,7 @@ xymon (4.3.17-2) UNRELEASED; urgency=low
   * Add lintian override for apache2-reverse-dependency-calls-invoke-rc.d
     -- it finds the fallback for apache2-maintscript-helper unavailability
 
- -- Axel Beckert <abe@debian.org>  Wed, 07 May 2014 14:18:31 +0200
+ -- Axel Beckert <abe@debian.org>  Tue, 20 May 2014 22:56:11 +0200
 
 xymon (4.3.17-1) experimental; urgency=low
 
