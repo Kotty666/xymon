@@ -1,4 +1,4 @@
-xymon (4.3.17-3) UNRELEASED; urgency=low
+xymon (4.3.17-3) UNRELEASED; urgency=medium
 
   * Fix Vcs-Browser URL.
   * Add README to /etc/xymon/clientlaunch.d listing file name requirements
