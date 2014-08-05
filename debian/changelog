@@ -4,6 +4,7 @@ xymon (4.3.17-3) UNRELEASED; urgency=medium
   * Add README to /etc/xymon/clientlaunch.d listing file name requirements
     (LP: #401393)
   * Overwork package descriptions.
+  * Add lintian overrides for init.d-script-depends-on-all-virtual-facility
 
  -- Axel Beckert <abe@debian.org>  Wed, 21 May 2014 12:11:09 +0200
 
