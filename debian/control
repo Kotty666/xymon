@@ -43,7 +43,7 @@ Description: monitoring system for systems, networks and applications
  statistics are monitored through a locally installed client package
  (xymon-client). Additional (remote as well as local) checks are
  available in the package hobbit-plugins.
-
+ .
  Alerts can trigger when monitoring detects a problem, resulting in
  e-mails or calls to your pager or mobile phone.
  .
