@@ -1,6 +1,6 @@
 xymon (4.3.17-3) UNRELEASED; urgency=medium
 
-  * Fix Vcs-Browser URL.
+  * Fix Vcs-Browser URL and switch it to new cgit web interface.
   * Add README to /etc/xymon/clientlaunch.d listing file name requirements
     (LP: #401393)
   * Overwork package descriptions.
