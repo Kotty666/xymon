@@ -9,7 +9,7 @@ xymon (4.3.17-3) UNRELEASED; urgency=medium
   * Bump Standards-Version to 3.9.6 (no changes needed).
 
   [ Christoph Berg ]
-  * Rename xymonlauch-include to tasks-include.
+  * Rename xymonlaunch-include to tasks-include.
   * Stop providing hobbit-client in the xymon-client init script.
 
  -- Christoph Berg <christoph.berg@credativ.de>  Thu, 02 Oct 2014 13:22:18 +0200
