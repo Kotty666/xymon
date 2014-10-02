@@ -1,5 +1,6 @@
 xymon (4.3.17-3) UNRELEASED; urgency=medium
 
+  [ Axel Beckert ]
   * Fix Vcs-Browser URL and switch it to new cgit web interface.
   * Add README to /etc/xymon/clientlaunch.d listing file name requirements
     (LP: #401393)
@@ -7,7 +8,10 @@ xymon (4.3.17-3) UNRELEASED; urgency=medium
   * Add lintian overrides for init.d-script-depends-on-all-virtual-facility
   * Bump Standards-Version to 3.9.6 (no changes needed).
 
- -- Axel Beckert <abe@debian.org>  Wed, 21 May 2014 12:11:09 +0200
+  [ Christoph Berg ]
+  * Rename xymonlauch-include to tasks-include.
+
+ -- Christoph Berg <christoph.berg@credativ.de>  Thu, 02 Oct 2014 13:22:18 +0200
 
 xymon (4.3.17-2) unstable; urgency=low
 

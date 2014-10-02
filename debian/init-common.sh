@@ -32,9 +32,9 @@ create_includefiles ()
 	done > /var/run/xymon/xymonclient-include.cfg
 
 	if test -x /usr/lib/xymon/server/bin/xymond ; then
-		for cfg in /etc/xymon/xymonlaunch.d/*.cfg ; do
+		for cfg in /etc/xymon/tasks.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
-		done > /var/run/xymon/xymonlaunch-include.cfg
+		done > /var/run/xymon/tasks-include.cfg
 
 		for cfg in /etc/xymon/graphs.d/*.cfg ; do
 			test -e $cfg && echo "include $cfg"
