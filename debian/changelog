@@ -10,6 +10,7 @@ xymon (4.3.17-3) UNRELEASED; urgency=medium
 
   [ Christoph Berg ]
   * Rename xymonlauch-include to tasks-include.
+  * Stop providing hobbit-client in the xymon-client init script.
 
  -- Christoph Berg <christoph.berg@credativ.de>  Thu, 02 Oct 2014 13:22:18 +0200
 
