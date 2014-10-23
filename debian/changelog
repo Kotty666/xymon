@@ -1,3 +1,10 @@
+xymon (4.3.17-4) unstable; urgency=medium
+
+  * Add debconf question to disable the automatic migration from hobbit to
+    xymon. (hobbit-client/automatic-xymon-migration; default true)
+
+ -- Christoph Berg <christoph.berg@credativ.de>  Thu, 23 Oct 2014 14:31:57 +0200
+
 xymon (4.3.17-3) unstable; urgency=low
 
   [ Axel Beckert ]

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xymon\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2012-06-13 12:45+0200\n"
+"POT-Creation-Date: 2014-10-23 14:57+0200\n"
 "PO-Revision-Date: 2012-06-13 13:12+0200\n"
 "Last-Translator: Christoph Berg <myon@debian.org>\n"
 "Language-Team: debian-l10n-german <debian-l10n-german@lists.debian.org>\n"
@@ -18,13 +18,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:2001
+#: ../xymon-client.templates:1001
 msgid "Xymon server:"
 msgstr "Xymon-Server:"
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:2001
+#: ../xymon-client.templates:1001
 msgid ""
 "Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
@@ -34,7 +34,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:2001
+#: ../xymon-client.templates:1001
 msgid ""
 "Using host names instead of IP addresses is discouraged in case the network "
 "experiences DNS failures."
@@ -44,13 +44,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:3001
+#: ../xymon-client.templates:2001
 msgid "Client hostname:"
 msgstr "Client-Hostname:"
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:3001
+#: ../xymon-client.templates:2001
 msgid ""
 "Please enter the host name used by the Xymon client when sending reports to "
 "the Xymon server. This name must match the name used in the hosts.cfg file "
@@ -59,3 +59,20 @@ msgstr ""
 "Geben Sie den Hostnamen ein den der Xymon-Client benutzt um Reports and den "
 "Xymon-Server zu senden. Der Name muss mit dem in der Datei hosts.cfg auf dem "
 "Server übereinstimmen."
+
+#. Type: boolean
+#. Description
+#: ../xymon-client.templates:3001
+msgid "Automatically migrate old hobbit files to xymon?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../xymon-client.templates:3001
+msgid ""
+"The operating system user was renamed from \"hobbit\" to \"xymon\", and all "
+"configuration, state, log directories and files have been renamed as well. "
+"The package postinst scripts can do the migration automatically. This is "
+"usually a good idea, but might not work so well if your config differs "
+"substantially from the default."
+msgstr ""

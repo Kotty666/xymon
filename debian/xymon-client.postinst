@@ -25,6 +25,20 @@ export DPKG_MAINTSCRIPT_NAME=${DPKG_MAINTSCRIPT_NAME:-postinst}
 
 case "$1" in
     configure)
+	# Do the debconf stuff
+	db_get hobbit-client/HOBBITSERVERS
+	HOBBITSERVERS="$RET"
+	db_get hobbit-client/CLIENTHOSTNAME
+	CLIENTHOSTNAME="$RET"
+	if [ "$2" ] && dpkg --compare-versions "$2" lt "4.3.7"; then
+		db_get hobbit-client/automatic-xymon-migration
+		if [ "$RET" = "true" ]; then
+			MIGRATE="true"
+			echo "Migrating xymon-client files from hobbit ..."
+		fi
+	fi
+	db_stop
+
 	# Create new group
 	getent group xymon > /dev/null || addgroup --system xymon
 
@@ -33,7 +47,7 @@ case "$1" in
 		--home /var/lib/xymon --no-create-home \
 		--ingroup xymon --disabled-password --disabled-login \
 		--gecos "Xymon System Monitor" xymon
-	if getent passwd hobbit > /dev/null; then
+	if [ "$MIGRATE" ] && getent passwd hobbit > /dev/null; then
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -user hobbit -print0 2>/dev/null | xargs -0 -r chown xymon
 	    done
@@ -42,7 +56,7 @@ case "$1" in
 	fi
 
 	# Migrate old group
-	if getent group hobbit > /dev/null; then
+	if [ "$MIGRATE" ] && getent group hobbit > /dev/null; then
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
 		find $d -group hobbit -print0 2>/dev/null | xargs -0 -r chgrp xymon
 	    done
@@ -50,23 +64,16 @@ case "$1" in
 	fi
 
 	# Create or migrate directories
-	test -d /var/run/hobbit -a ! -d /var/run/xymon && mv -v /var/run/hobbit /var/run/xymon || true
+	[ "$MIGRATE" ] && test -d /var/run/hobbit -a ! -d /var/run/xymon && mv -v /var/run/hobbit /var/run/xymon || true
 	test -d /var/run/xymon || mkdir /var/run/xymon
 	chown xymon:xymon /var/run/xymon
 
 	test -d /var/lib/xymon/tmp || mkdir /var/lib/xymon/tmp
 	chown xymon:xymon /var/lib/xymon/tmp
 
-	test -d /var/log/hobbit -a ! -d /var/log/xymon && mv -v /var/log/hobbit /var/log/xymon || true
+	[ "$MIGRATE" ] && test -d /var/log/hobbit -a ! -d /var/log/xymon && mv -v /var/log/hobbit /var/log/xymon || true
 	test -d /var/log/xymon || mkdir /var/log/xymon
 	chown xymon:adm /var/log/xymon ; chmod 2755 /var/log/xymon
-
-	# Do the debconf stuff
-	db_get hobbit-client/HOBBITSERVERS
-	HOBBITSERVERS="$RET"
-	db_get hobbit-client/CLIENTHOSTNAME
-	CLIENTHOSTNAME="$RET"
-	db_stop
 
 	# Update configuration file
 	CONFIGFILE=/etc/default/xymon-client
@@ -85,7 +92,7 @@ case "$1" in
 	fi
 
 	# Remove empty directories in /etc/hobbit and possibly /etc/hobbit itself.
-	if test -d /etc/hobbit; then
+	[ "$MIGRATE" ] && if test -d /etc/hobbit; then
 		rmdir --ignore-fail-on-non-empty -p /etc/hobbit/*/ || true
 	fi
     ;;

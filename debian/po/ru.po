@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2.0.dfsg-4\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
-"POT-Creation-Date: 2012-06-13 12:45+0200\n"
+"POT-Creation-Date: 2014-10-23 14:57+0200\n"
 "PO-Revision-Date: 2012-06-13 13:40+0200\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -21,13 +21,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:2001
+#: ../xymon-client.templates:1001
 msgid "Xymon server:"
 msgstr "Сервер Xymon:"
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:2001
+#: ../xymon-client.templates:1001
 msgid ""
 "Please enter the network address used to access the Xymon server(s). If you "
 "use multiple servers, use a space-separated list of addresses."
@@ -38,7 +38,7 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:2001
+#: ../xymon-client.templates:1001
 msgid ""
 "Using host names instead of IP addresses is discouraged in case the network "
 "experiences DNS failures."
@@ -48,18 +48,35 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:3001
+#: ../xymon-client.templates:2001
 msgid "Client hostname:"
 msgstr "Имя клиента:"
 
 #. Type: string
 #. Description
-#: ../xymon-client.templates:3001
+#: ../xymon-client.templates:2001
 msgid ""
 "Please enter the host name used by the Xymon client when sending reports to "
 "the Xymon server. This name must match the name used in the hosts.cfg file "
 "on the Xymon server."
 msgstr ""
-"Введите имя клиентской машины, которое будет использовано клиентом Xymon "
-"при отправке отчётов на сервер Xymon. Это имя должно совпадать с именем в "
-"файле hosts.cfg на сервере Xymon."
+"Введите имя клиентской машины, которое будет использовано клиентом Xymon при "
+"отправке отчётов на сервер Xymon. Это имя должно совпадать с именем в файле "
+"hosts.cfg на сервере Xymon."
+
+#. Type: boolean
+#. Description
+#: ../xymon-client.templates:3001
+msgid "Automatically migrate old hobbit files to xymon?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../xymon-client.templates:3001
+msgid ""
+"The operating system user was renamed from \"hobbit\" to \"xymon\", and all "
+"configuration, state, log directories and files have been renamed as well. "
+"The package postinst scripts can do the migration automatically. This is "
+"usually a good idea, but might not work so well if your config differs "
+"substantially from the default."
+msgstr ""
