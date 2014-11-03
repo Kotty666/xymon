@@ -1,3 +1,10 @@
+xymon (4.3.17-5) UNRELEASED; urgency=medium
+
+  * Restore the lost ROOTFS variable in xymonclient-linux.sh.
+    (Closes: #767901)
+
+ -- Christoph Berg <christoph.berg@credativ.de>  Mon, 03 Nov 2014 12:59:08 +0100
+
 xymon (4.3.17-4) unstable; urgency=medium
 
   * Add debconf question to disable the automatic migration from hobbit to

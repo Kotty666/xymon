@@ -15,31 +15,27 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
 
  -- Christoph Berg <myon@debian.org>  Sat, 05 Jul 2008 14:43:23 +0200
 
-Index: xymon/client/xymonclient-linux.sh
-===================================================================
---- xymon.orig/client/xymonclient-linux.sh	2013-05-20 16:04:13.319498276 +0200
-+++ xymon/client/xymonclient-linux.sh	2013-05-20 16:04:13.299497611 +0200
-@@ -45,9 +45,13 @@
+--- a/client/xymonclient-linux.sh
++++ b/client/xymonclient-linux.sh
+@@ -45,9 +45,14 @@ uptime
  echo "[who]"
  who
  echo "[df]"
 -EXCLUDES=`cat /proc/filesystems | grep nodev | grep -v rootfs | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
--ROOTFS=`readlink -m /dev/root`
--df -Pl -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
 +if test -f /proc/filesystems ; then # Linux
 +	EXCLUDES=`cat /proc/filesystems | grep nodev | egrep -v 'tmpfs|rootfs' | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
 +else # kfreebsd (or /proc not mounted)
 +	EXCLUDES=`mount | grep -v '^/' | egrep -v 'tmpfs|rootfs' | awk '{print $1}' | xargs echo | sed -e 's! ! -x !g'`
 +fi
+ ROOTFS=`readlink -m /dev/root`
+-df -Pl -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
 +# kfreebsd needs an extra grep -v
 +df -Pl -x iso9660 -x $EXCLUDES | grep -v '^/sys' | sed -e '/^[^ 	][^ 	]*$/{
  N
  s/[ 	]*\n[ 	]*/ /
  }' -e "s&^rootfs&${ROOTFS}&"
-Index: xymon/xymond/etcfiles/analysis.cfg
-===================================================================
---- xymon.orig/xymond/etcfiles/analysis.cfg	2013-05-20 16:04:13.319498276 +0200
-+++ xymon/xymond/etcfiles/analysis.cfg	2013-05-20 16:04:13.307497876 +0200
+--- a/xymond/etcfiles/analysis.cfg
++++ b/xymond/etcfiles/analysis.cfg
 @@ -353,6 +353,11 @@
  
  
