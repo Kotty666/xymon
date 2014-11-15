@@ -2,6 +2,7 @@ xymon (4.3.17-5) UNRELEASED; urgency=medium
 
   * Restore the lost ROOTFS variable in xymonclient-linux.sh.
     (Closes: #767901)
+  * Debconf translation: pt by Américo Monteiro, thanks! (Closes: #767840)
 
  -- Christoph Berg <christoph.berg@credativ.de>  Mon, 03 Nov 2014 12:59:08 +0100
 
