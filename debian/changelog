@@ -4,6 +4,7 @@ xymon (4.3.17-5) UNRELEASED; urgency=medium
     (Closes: #767901)
   * Debconf translations, thanks!
     + pt by Américo Monteiro (Closes: #767840)
+    + fr by Jean-Pierre Giraud (Closes: #770168)
     + nl by Frans Spiesschaert (Closes: #771182)
 
  -- Christoph Berg <christoph.berg@credativ.de>  Mon, 03 Nov 2014 12:59:08 +0100
