@@ -49,7 +49,9 @@ case "$1" in
 		--gecos "Xymon System Monitor" xymon
 	if [ "$MIGRATE" ] && getent passwd hobbit > /dev/null; then
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
-		find $d -user hobbit -print0 2>/dev/null | xargs -0 -r chown xymon
+                if [ -d $d ]; then
+		    find $d -user hobbit -print0 2>/dev/null | xargs -0 -r chown xymon
+                fi
 	    done
 	    pkill -u hobbit vmstat || true
 	    deluser hobbit || echo "Couldn't delete user hobbit, please remove it manually"
@@ -58,7 +60,9 @@ case "$1" in
 	# Migrate old group
 	if [ "$MIGRATE" ] && getent group hobbit > /dev/null; then
 	    for d in /etc/hobbit /etc/xymon /var/*/hobbit /var/*/xymon; do
-		find $d -group hobbit -print0 2>/dev/null | xargs -0 -r chgrp xymon
+                if [ -d $d ]; then
+		    find $d -group hobbit -print0 2>/dev/null | xargs -0 -r chgrp xymon
+                fi
 	    done
 	    delgroup --only-if-empty hobbit || echo "Couldn't delete group hobbit, please remove it manually"
 	fi
