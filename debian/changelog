@@ -1,7 +1,8 @@
 xymon (4.3.17-5) UNRELEASED; urgency=medium
 
   [ Christoph Berg ]
-  * Restore the lost ROOTFS variable in xymonclient-linux.sh.
+  * Restore the lost ROOTFS variable in xymonclient-linux.sh, and patch
+    xymond/rrd/do_disk.c to ignore duplicate submissions for the / partition.
     (Closes: #767901)
   * Debconf translations, thanks!
     + pt by Américo Monteiro (Closes: #767840)
