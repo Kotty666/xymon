@@ -1,4 +1,4 @@
-xymon (4.3.17-5) UNRELEASED; urgency=medium
+xymon (4.3.17-5) unstable; urgency=medium
 
   [ Christoph Berg ]
   * Restore the lost ROOTFS variable in xymonclient-linux.sh, and patch
@@ -14,7 +14,7 @@ xymon (4.3.17-5) UNRELEASED; urgency=medium
   * Fix aborting installation in cases where a hobbit user exists despite
     hobbit-client was not installed before. (LP: #1407498)
 
- -- Christoph Berg <christoph.berg@credativ.de>  Mon, 03 Nov 2014 12:59:08 +0100
+ -- Christoph Berg <christoph.berg@credativ.de>  Thu, 22 Jan 2015 17:37:26 +0100
 
 xymon (4.3.17-4) unstable; urgency=medium
 
