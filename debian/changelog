@@ -1,10 +1,16 @@
+xymon (4.3.17-6) UNRELEASED; urgency=medium
+
+  * Add CVE ID to the previous changelog entry.
+
+ -- Axel Beckert <abe@debian.org>  Sat, 31 Jan 2015 15:45:16 +0100
+
 xymon (4.3.17-5) unstable; urgency=medium
 
   [ Christoph Berg ]
   * Restore the lost ROOTFS variable in xymonclient-linux.sh, and patch
     xymond/rrd/do_disk.c to ignore duplicate submissions for the / partition.
     (Closes: #767901)
-  * Fix buffer overrun in web/acknowledge.c (Closes: #776007)
+  * Fix buffer overrun in web/acknowledge.c (Closes: #776007, CVE-2015-1430)
   * Debconf translations, thanks!
     + pt by Américo Monteiro (Closes: #767840)
     + fr by Jean-Pierre Giraud (Closes: #770168)
