@@ -10,6 +10,7 @@ xymon (4.3.18-1) UNRELEASED; urgency=medium
       - fix-spelling-errors
       - hobbitvars
       - netstat-ant-vs-ipv6-address-truncating
+    + debian/rules: Don't remove files which are no more there
   * Add CVE ID to the previous changelog entry.
   * Debconf translations, thanks!
     + ru by Yuri Kozlov (Closes: #776126)
