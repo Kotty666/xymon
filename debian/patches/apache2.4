@@ -18,7 +18,7 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
  ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
  <Directory "@CGIDIR@">
      AllowOverride None
-     Options ExecCGI Includes
+     Options ExecCGI FollowSymLinks Includes
 -    Order allow,deny
 -    Allow from localhost ::1/128
 +    Require ip 127.0.0.1/8 ::1/128
@@ -27,7 +27,7 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
  ScriptAlias @SECUREXYMONCGIURL@ "@SECURECGIDIR@"
  <Directory "@SECURECGIDIR@">
      AllowOverride None
-     Options ExecCGI Includes
+     Options ExecCGI FollowSymLinks Includes
 -    Order allow,deny
 -    Allow from localhost ::1/128
 +

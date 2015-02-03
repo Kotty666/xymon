@@ -1,5 +1,7 @@
---- a/xymond/etcfiles/xymon-apache-open.DIST
-+++ b/xymond/etcfiles/xymon-apache-open.DIST
+Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-02-04 00:05:19.644680794 +0100
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-02-04 00:05:19.636680655 +0100
 @@ -11,14 +11,14 @@
  #
  #          DocumentRoot @INSTALLWWWDIR@
@@ -16,9 +18,11 @@
 +ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
  <Directory "@CGIDIR@">
      AllowOverride None
-     Options ExecCGI Includes
---- a/xymond/etcfiles/xymon-apache-secure.DIST
-+++ b/xymond/etcfiles/xymon-apache-secure.DIST
+     Options ExecCGI FollowSymLinks Includes
+Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-02-04 00:05:19.644680794 +0100
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-02-04 00:05:19.636680655 +0100
 @@ -11,14 +11,14 @@
  #
  #          DocumentRoot @INSTALLWWWDIR@
@@ -35,7 +39,7 @@
 +ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
  <Directory "@CGIDIR@">
      AllowOverride None
-     Options ExecCGI Includes
+     Options ExecCGI FollowSymLinks Includes
 @@ -26,7 +26,7 @@
      Allow from all
  </Directory>
@@ -44,4 +48,4 @@
 +ScriptAlias @SECUREXYMONCGIURL@ "@SECURECGIDIR@"
  <Directory "@SECURECGIDIR@">
      AllowOverride None
-     Options ExecCGI Includes
+     Options ExecCGI FollowSymLinks Includes

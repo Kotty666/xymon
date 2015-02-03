@@ -1,5 +1,15 @@
-xymon (4.3.17-6) UNRELEASED; urgency=medium
+xymon (4.3.18-1) UNRELEASED; urgency=medium
 
+  * New upstream release
+    + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
+    + Drop patch hobbit-ghosts-menu (obsolete in multiple ways)
+    + Refresh and/or update the following patches:
+      - 603151-apache-alias
+      - apache2.4
+      - fix-hyphen-used-as-minus-sign
+      - fix-spelling-errors
+      - hobbitvars
+      - netstat-ant-vs-ipv6-address-truncating
   * Add CVE ID to the previous changelog entry.
   * Debconf translations, thanks!
     + ru by Yuri Kozlov (Closes: #776126)

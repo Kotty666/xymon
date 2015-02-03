@@ -1525,8 +1525,8 @@ Index: xymon/web/xymonwebaccess.5
 --- xymon.orig/web/xymonwebaccess.5	2014-02-11 16:20:26.556743599 +0100
 +++ xymon/web/xymonwebaccess.5	2014-02-11 16:20:26.528743456 +0100
 @@ -1,6 +1,6 @@
--.TH XYMON-WEBACCESS 5 "Version 4.3.17: 23 Feb 2014" "Xymon"
-+.TH XYMON\-WEBACCESS 5 "Version 4.3.17: 23 Feb 2014" "Xymon"
+-.TH XYMON-WEBACCESS 5 "Version 4.3.18:  3 Feb 2015" "Xymon"
++.TH XYMON\-WEBACCESS 5 "Version 4.3.18:  3 Feb 2015" "Xymon"
  .SH NAME
 -xymon-webaccess \- Web-based access controls in Xymon
 +xymon\-webaccess \- Web-based access controls in Xymon
@@ -1696,8 +1696,8 @@ Index: xymon/xymond/client-local.cfg.5
 --- xymon.orig/xymond/client-local.cfg.5	2014-02-11 16:20:26.556743599 +0100
 +++ xymon/xymond/client-local.cfg.5	2014-02-11 16:20:26.532743493 +0100
 @@ -1,34 +1,34 @@
--.TH CLIENT-LOCAL.CFG 5 "Version 4.3.17: 23 Feb 2014" "Xymon"
-+.TH CLIENT\-LOCAL.CFG 5 "Version 4.3.17: 23 Feb 2014" "Xymon"
+-.TH CLIENT-LOCAL.CFG 5 "Version 4.3.18:  3 Feb 2015" "Xymon"
++.TH CLIENT\-LOCAL.CFG 5 "Version 4.3.18:  3 Feb 2015" "Xymon"
  .SH NAME
 -client-local.cfg \- Local configuration settings for Xymon clients
 +client\-local.cfg \- Local configuration settings for Xymon clients
@@ -1887,8 +1887,8 @@ Index: xymon/xymond/xymon-mailack.8
 --- xymon.orig/xymond/xymon-mailack.8	2014-02-11 16:20:26.556743599 +0100
 +++ xymon/xymond/xymon-mailack.8	2014-02-11 16:20:26.532743493 +0100
 @@ -1,14 +1,14 @@
--.TH XYMON-MAILACK 8 "Version 4.3.17: 23 Feb 2014" "Xymon"
-+.TH XYMON\-MAILACK 8 "Version 4.3.17: 23 Feb 2014" "Xymon"
+-.TH XYMON-MAILACK 8 "Version 4.3.18:  3 Feb 2015" "Xymon"
++.TH XYMON\-MAILACK 8 "Version 4.3.18:  3 Feb 2015" "Xymon"
  .SH NAME
 -xymon-mailack \- permit acknowledging alerts via e-mail
 +xymon\-mailack \- permit acknowledging alerts via e-mail
@@ -2355,7 +2355,7 @@ Index: xymon/xymond/xymond_client.8
  
  .SH DESCRIPTION
  xymond_client is a worker module for xymond, and as such it is normally
-@@ -20,64 +20,64 @@
+@@ -20,71 +20,71 @@
  file to determine the color of each status message.
  
  .SH OPTIONS
@@ -2398,6 +2398,14 @@ Index: xymon/xymond/xymond_client.8
  Normally the "ports" status message includes the full netstat-listing
  received from the client. If you prefer to just have the monitored
  ports shown, this option will turn off the full netstat-listing.
+ 
+-.IP "--uptime-status"
++.IP "\-\-uptime\-status"
+ Generate a separate "uptime" status column. The uptime is normally 
+ just reported in the "cpu" status column, but if you would like a
+ separate status column for the uptime, you can use this option. It 
+ is useful if you want to generate an alert in case of a reboot, 
+ without having this alert mixed in with the cpu load alerts.
  
 -.IP "--config=FILENAME"
 +.IP "\-\-config=FILENAME"
@@ -3313,8 +3321,8 @@ Index: xymon/xymonnet/xymonnet-again.sh.1
 --- xymon.orig/xymonnet/xymonnet-again.sh.1	2014-02-11 16:20:26.556743599 +0100
 +++ xymon/xymonnet/xymonnet-again.sh.1	2014-02-11 16:20:26.544743535 +0100
 @@ -1,11 +1,11 @@
--.TH XYMONNET-AGAIN.SH 1 "Version 4.3.17: 23 Feb 2014" "Xymon"
-+.TH XYMONNET\-AGAIN.SH 1 "Version 4.3.17: 23 Feb 2014" "Xymon"
+-.TH XYMONNET-AGAIN.SH 1 "Version 4.3.18:  3 Feb 2015" "Xymon"
++.TH XYMONNET\-AGAIN.SH 1 "Version 4.3.18:  3 Feb 2015" "Xymon"
  .SH NAME
 -xymonnet-again.sh \- Xymon network re-test tool
 +xymonnet\-again.sh \- Xymon network re-test tool
