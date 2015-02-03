@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: dns.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: dns.c 7466 2014-09-26 13:05:06Z storner $";
 
 #include <unistd.h>
 #include <string.h>
@@ -274,7 +274,7 @@ char *dnsresolve(char *hostname)
 
 	result = find_dnscache(hostname);
 	if (result == NULL) {
-		errprintf("dnsresolve - internal error, name '%s' not in cache\n", hostname);
+		errprintf("dnsresolve: name '%s' not in cache. You probably have a NULL IP setting and the 'testip' flag set.\n", hostname);
 		return NULL;
 	}
 	if (strcmp(result, "0.0.0.0") == 0) return NULL;

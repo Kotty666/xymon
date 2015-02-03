@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_capture.c 7085 2012-07-16 11:08:37Z storner $";
+static char rcsid[] = "$Id: xymond_capture.c 7480 2014-09-28 09:53:05Z storner $";
 
 #include <stdio.h>
 #include <string.h>
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 				match = (pcre_exec(testexp, NULL, testname, strlen(testname), 0, 0, ovector, (sizeof(ovector)/sizeof(int))) >= 0);
 				if (!match) continue;
 			}
-			if (exhostexp) {
+			if (extestexp) {
 				match = (pcre_exec(extestexp, NULL, testname, strlen(testname), 0, 0, ovector, (sizeof(ovector)/sizeof(int))) >= 0);
 				if (match) continue;
 			}

@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonproxy.c 7368 2014-01-26 11:08:47Z storner $";
+static char rcsid[] = "$Id: xymonproxy.c 7479 2014-09-28 09:52:04Z storner $";
 
 #include "config.h"
 
@@ -266,6 +266,7 @@ int main(int argc, char *argv[])
 				errprintf("Invalid listen address %s\n", locaddr);
 				return 1;
 			}
+			if (p) *p = ':';
 		}
 		else if (argnmatch(argv[opt], "--server=") || argnmatch(argv[opt], "--bbdisplay=")) {
 			char *ips, *ip1;
@@ -852,7 +853,7 @@ int main(int argc, char *argv[])
 					cwalk->ssocket = -1;
 				}
 				cwalk->arrival.tv_sec = cwalk->arrival.tv_nsec = 0;
-				cwalk->bufp = cwalk->bufp; 
+				cwalk->bufp = cwalk->buf; 
 				cwalk->buflen = 0;
 				memset(cwalk->buf, 0, cwalk->bufsize);
 				memset(&cwalk->caddr, 0, sizeof(cwalk->caddr));

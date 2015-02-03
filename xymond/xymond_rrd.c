@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_rrd.c 7323 2014-01-07 09:42:42Z storner $";
+static char rcsid[] = "$Id: xymond_rrd.c 7475 2014-09-28 09:42:20Z storner $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -61,7 +61,7 @@ static void sig_handler(int signum)
 		  reloadtime = 0;
 		  break;
 	  case SIGPIPE:
-		  reloadextprocessor = 0;
+		  reloadextprocessor = 1;
 		  break;
 	  case SIGCHLD:
 		  break;
