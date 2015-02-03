@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: strfunc.c 7390 2014-02-04 16:08:37Z storner $";
+static char rcsid[] = "$Id: strfunc.c 7478 2014-09-28 09:49:43Z storner $";
 
 #include "config.h"
 
@@ -19,6 +19,7 @@ static char rcsid[] = "$Id: strfunc.c 7390 2014-02-04 16:08:37Z storner $";
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <errno.h>
 
 #include "libxymon.h"
 #include "version.h"
@@ -34,6 +35,11 @@ strbuffer_t *newstrbuffer(int initialsize)
 	if (!initialsize) initialsize = 4096;
 
 	newbuf->s = (char *)malloc(initialsize);
+	if (newbuf->s == NULL) {
+		errprintf("newstrbuffer: Attempt to allocate failed (initialsize=%d): %s\n", initialsize, strerror(errno));
+		xfree(newbuf);
+		return NULL;
+	}
 	*(newbuf->s) = '\0';
 	newbuf->sz = initialsize;
 
@@ -225,5 +231,24 @@ char *htmlquoted(char *s)
 	} while (inp);
 
 	return STRBUF(result);
+}
+
+strbuffer_t *replacetext(char *original, char *oldtext, char *newtext)
+{
+	strbuffer_t *result = newstrbuffer(0);
+	char *pos = original, *start;
+
+	do {
+		start = pos; pos = strstr(pos, oldtext);
+		if (pos) {
+			if (pos > start) strbuf_addtobuffer(result, start, (pos - start));
+			addtobuffer(result, newtext);
+			pos += strlen(oldtext);
+		}
+		else
+			addtobuffer(result, start);
+	} while (pos);
+
+	return result;
 }
 

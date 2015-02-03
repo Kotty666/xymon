@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: acknowledge.c 7381 2014-01-27 16:56:50Z storner $";
+static char rcsid[] = "$Id: acknowledge.c 7483 2014-09-28 09:58:36Z storner $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
 					pcre *dummy;
 					char *re;
 
-					re = (char *)malloc(8 + strlen(pagename));
+					re = (char *)malloc(8 + strlen(pagename)*2);
 					sprintf(re, "%s$|^%s/.+", pagename, pagename);
 					dummy = compileregex(re);
 					if (dummy) {

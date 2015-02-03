@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7445 2014-02-23 09:37:35Z storner $";
+static char rcsid[] = "$Id: xymond.c 7490 2014-09-28 13:13:18Z storner $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -1366,8 +1366,10 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 		 * We dont do this for status changes triggered by a "modify" command.
 		 */
 		modifier_t *mwalk;
+		modifier_t *mlast;
 		int mcolor = -1;
 
+		mlast = NULL;
 		mwalk = log->modifiers;
 		while (mwalk) {
 			mwalk->valid--;
@@ -1381,11 +1383,14 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 
 				/* Remove this modifier from the list. Make sure log->modifiers is updated */
 				if (mwalk == log->modifiers) log->modifiers = mwalk->next;
+				/* ... link the previous entry to the next, since we're about to free the current record */
+				if (mlast) mlast->next = mwalk->next;
 				mwalk = mwalk->next;
 				xfree(zombie);
 			}
 			else {
 				if (mwalk->color > mcolor) mcolor = mwalk->color;
+				mlast = mwalk;
 				mwalk = mwalk->next;
 			}
 		}
@@ -1998,7 +2003,9 @@ void handle_enadis(int enabled, conn_t *msg, char *sender)
 	}
 	else hwalk = xtreeData(rbhosts, hosthandle);
 
-	if (!oksender(maintsenders, hwalk->ip, msg->addr.sin_addr, msg->buf)) goto done;
+	if (!oksender(maintsenders, 
+		      (hwalk->ip && (strcmp(hwalk->ip, "0.0.0.0") != 0)) ? hwalk->ip : NULL,
+		      msg->addr.sin_addr, msg->buf)) goto done;
 
 	if (tname) {
 		testhandle = xtreeFind(rbtests, tname);
@@ -2365,6 +2372,8 @@ void free_log_t(xymond_log_t *zombie)
 	if (zombie->dismsg) xfree(zombie->dismsg);
 	if (zombie->ackmsg) xfree(zombie->ackmsg);
 	if (zombie->grouplist) xfree(zombie->grouplist);
+	if (zombie->lastchange) xfree(zombie->lastchange);
+	if (zombie->testflags) xfree(zombie->testflags);
 	flush_acklist(zombie, 1);
 	xfree(zombie);
 	dbgprintf("<- free_log_t\n");
@@ -2674,8 +2683,11 @@ char *timestr(time_t tstamp)
 	static int residx = -1;
 	char *p;
 
-	if (tstamp < 0) {
+	if (tstamp < DISABLED_UNTIL_OK) {
 		residx = -1;
+	}
+	else if (tstamp == DISABLED_UNTIL_OK) {
+		return "Until OK";
 	}
 	else if (tstamp == 0) {
 		return "N/A";
@@ -2688,6 +2700,7 @@ char *timestr(time_t tstamp)
 
 	return result[residx];
 }
+
 
 hostfilter_rec_t *setup_filter(char *buf, char **fields, int *acklevel, int *havehostfilter)
 {
@@ -2839,7 +2852,7 @@ hostfilter_rec_t *setup_filter(char *buf, char **fields, int *acklevel, int *hav
 	
 		*havehostfilter = 0;
 		while (fwalk && !(*havehostfilter)) { 
-			*havehostfilter = ((fwalk->filtertype == FILTER_XMH) && (fwalk->field = XMH_HOSTNAME)); 
+			*havehostfilter = ((fwalk->filtertype == FILTER_XMH) && (fwalk->field == XMH_HOSTNAME)); 
 			fwalk = fwalk->next;
 		}
 	}
@@ -3677,12 +3690,13 @@ void do_message(conn_t *msg, char *origin)
 			}
 
 			xfree(msg->buf);
-			logdata = generate_outbuf(NULL, logfields, h, log, acklevel);
+			logdata = newstrbuffer(20480);
+			logdata = generate_outbuf(&logdata, logfields, h, log, acklevel);
 			addtobuffer(logdata, msg_data(log->message, 0));
 
 			msg->doingwhat = RESPONDING;
 			msg->buflen = STRBUFLEN(logdata);
-			msg->bufp = grabstrbuffer(logdata);
+			msg->bufp = msg->buf = grabstrbuffer(logdata);
 		}
 
 		clear_filter(logfilter);
@@ -3723,9 +3737,9 @@ void do_message(conn_t *msg, char *origin)
 				"  <ValidTime>", 	timestr(log->validtime), 		"</ValidTime>\n",
 				"  <AckTime>", 		timestr(log->acktime), 			"</AckTime>\n",
 				"  <DisableTime>", 	timestr(log->enabletime), 		"</DisableTime>\n",
-				"  <Sender>", 		log->sender, 				"</Sender>\n", 
+				"  <Sender>", 		(log->sender ? log->sender : "xymond"),	"</Sender>\n", 
 				NULL);
-			timestr(-1);
+			timestr(-999);
 
 			if (log->cookie && (log->cookieexpires > now))
 				addtobuffer_many(response, "  <Cookie>", log->cookie, "</Cookie>\n", NULL);
@@ -3746,7 +3760,6 @@ void do_message(conn_t *msg, char *origin)
 				"  <Message><![CDATA[", msg_data(log->message, 0), "]]></Message>\n",
 				"</ServerStatus>\n",
 				NULL);
-			timestr(-1);
 
 			msg->doingwhat = RESPONDING;
 			msg->buflen = STRBUFLEN(response);
@@ -3927,9 +3940,9 @@ void do_message(conn_t *msg, char *origin)
 					"    <ValidTime>", timestr(lwalk->validtime), "</ValidTime>\n",
 					"    <AckTime>", timestr(lwalk->acktime), "</AckTime>\n",
 					"    <DisableTime>", timestr(lwalk->enabletime), "</DisableTime>\n",
-					"    <Sender>", lwalk->sender, "</Sender>\n",
+					"    <Sender>", (lwalk->sender ? lwalk->sender : "xymond"), "</Sender>\n",
 					NULL);
-				timestr(-1);
+				timestr(-999);
 
 				if (lwalk->cookie && (lwalk->cookieexpires > now))
 					addtobuffer_many(response, "    <Cookie>", lwalk->cookie, "</Cookie>\n", NULL);
@@ -4986,6 +4999,7 @@ int main(int argc, char *argv[])
 			if (p) {
 				*p = '\0';
 				listenport = atoi(p+1);
+				*p = ':';
 			}
 		}
 		else if (argnmatch(argv[argi], "--timeout=")) {
@@ -5451,7 +5465,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		backfeeddata = (backfeedqueue > 0);
+		backfeeddata = (backfeedqueue >= 0);
 		while (backfeeddata) {
 			ssize_t sz;
 			conn_t msg;
@@ -5740,7 +5754,7 @@ int main(int argc, char *argv[])
 	close_channel(clichgchn, CHAN_MASTER);
 	close_channel(userchn, CHAN_MASTER);
 
-	if (backfeedqueue > 0) close_feedback_queue(backfeedqueue, CHAN_MASTER);
+	if (backfeedqueue >= 0) close_feedback_queue(backfeedqueue, CHAN_MASTER);
 	if (bf_buf) xfree(bf_buf);
 
 	save_checkpoint();

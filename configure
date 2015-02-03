@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configuration script for Xymon.
-# $Id: configure 6650 2011-03-08 17:20:28Z storner $
+# $Id: configure 7474 2014-09-28 09:39:28Z storner $
 
 BASEDIR="`dirname $0`"
 TARGET="$1"
@@ -14,16 +14,20 @@ chmod 755 $BASEDIR/configure* $BASEDIR/build/*.sh $BASEDIR/client/*.sh
 
 case "$TARGET" in
   "--client")
-	$BASEDIR/configure.client $*
+	exec $BASEDIR/configure.client $*
 	;;
 
   "--server"|"")
-	$BASEDIR/configure.server $*
+	exec $BASEDIR/configure.server $*
 	;;
 
   "--help")
   	echo "To configure a Xymon server: $0 --server"
   	echo "To configure a Xymon client: $0 --client"
+	;;
+  *)
+	echo "unrecognized $0 target $TARGET"
+	exit 1
 	;;
 esac
 

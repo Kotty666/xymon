@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-linux.sh 7362 2014-01-23 20:42:41Z storner $
+# $Id: xymonclient-linux.sh 7473 2014-09-28 09:35:23Z storner $
 
 echo "[date]"
 date
@@ -30,7 +30,7 @@ elif [ -f /etc/debian_version ]; then
 	echo -n "Debian "
 	cat /etc/debian_version
 elif [ -f /etc/S?SE-release ]; then
-	egrep -i "^suse|^opensuse" /etc/S?SE-release
+	cat /etc/S?SE-release
 elif [ -f /etc/slackware-version ]; then
 	cat /etc/slackware-version
 elif [ -f /etc/mandrake-release ]; then
@@ -68,7 +68,7 @@ echo "[netstat]"
 netstat -s
 echo "[ports]"
 # Bug in RedHat's netstat spews annoying error messages. 
-netstat -ant 2>/dev/null
+netstat -antu 2>/dev/null
 echo "[ifstat]"
 /sbin/ifconfig 2>/dev/null
 # Report mdstat data if it exists
@@ -82,6 +82,7 @@ then
     if test -x "$TOP"
     then
         echo "[top]"
+	export CPULOOP ; CPULOOP=1 ;
 	$TOP -b -n 1 
 	# Some top versions do not finish off the last line of output
 	echo ""

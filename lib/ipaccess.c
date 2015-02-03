@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: ipaccess.c 7217 2013-07-25 16:04:40Z storner $";
+static char rcsid[] = "$Id: ipaccess.c 7476 2014-09-28 09:46:30Z storner $";
 
 #include <unistd.h>
 #include <string.h>
@@ -21,16 +21,17 @@ static char rcsid[] = "$Id: ipaccess.c 7217 2013-07-25 16:04:40Z storner $";
 
 sender_t *getsenderlist(char *iplist)
 {
-	char *p, *tok;
+	char *ips, *p, *tok;
 	sender_t *result;
 	int count;
 
 	dbgprintf("-> getsenderlist\n");
 
-	count = 0; p = iplist; do { count++; p = strchr(p, ','); if (p) p++; } while (p);
+	ips = strdup(iplist);
+	count = 0; p = ips; do { count++; p = strchr(p, ','); if (p) p++; } while (p);
 	result = (sender_t *) calloc(1, sizeof(sender_t) * (count+1));
 
-	tok = strtok(iplist, ","); count = 0;
+	tok = strtok(ips, ","); count = 0;
 	while (tok) {
 		int bits = 32;
 
@@ -47,6 +48,7 @@ sender_t *getsenderlist(char *iplist)
 		count++;
 	}
 
+	xfree(ips);
 	dbgprintf("<- getsenderlist\n");
 
 	return result;

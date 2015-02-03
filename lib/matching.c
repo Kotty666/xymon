@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: matching.c 7105 2012-07-23 11:47:20Z storner $";
+static char rcsid[] = "$Id: matching.c 7481 2014-09-28 09:54:35Z storner $";
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -22,7 +22,7 @@ static char rcsid[] = "$Id: matching.c 7105 2012-07-23 11:47:20Z storner $";
 
 #include "libxymon.h"
 
-static pcre *compileregex_opts(const char *pattern, int flags)
+pcre *compileregex_opts(const char *pattern, int flags)
 {
 	pcre *result;
 	const char *errmsg;
