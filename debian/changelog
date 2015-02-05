@@ -1,5 +1,7 @@
 xymon (4.3.18-1) UNRELEASED; urgency=medium
 
+  TODO before upload: Fix xymond/etcfiles/xymon-apache-open.DIST wrt. no more ".sh"
+
   * New upstream release
     + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
     + Drop patch hobbit-ghosts-menu (obsolete in multiple ways)
