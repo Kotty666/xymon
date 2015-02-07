@@ -2,6 +2,7 @@ xymon (4.3.18-1) UNRELEASED; urgency=medium
 
   TODO before upload: Fix xymond/etcfiles/xymon-apache-open.DIST wrt. no more ".sh"
 
+  [ Axel Beckert ]
   * New upstream release
     + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
     + Drop patch hobbit-ghosts-menu (obsolete in multiple ways)
@@ -16,6 +17,9 @@ xymon (4.3.18-1) UNRELEASED; urgency=medium
   * Add CVE ID to the previous changelog entry.
   * Debconf translations, thanks!
     + ru by Yuri Kozlov (Closes: #776126)
+
+  [ Christian Kastner ]
+  * Document license of sha?.* files in debian/copyright (Closes: #775590)
 
  -- Axel Beckert <abe@debian.org>  Sat, 31 Jan 2015 15:45:16 +0100
 
