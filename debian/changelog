@@ -5,6 +5,7 @@ xymon (4.3.17-6) UNRELEASED; urgency=medium
   * Debconf translations, thanks!
     + ru by Yuri Kozlov (Closes: #776126)
   * Cherry pick twp patches from upstream to fix multiple memory leaks.
+    (Closes: #778343)
 
   [ Christian Kastner ]
   * Document license of sha?.* files in debian/copyright (Closes: #775590)
