@@ -4,8 +4,7 @@ xymon (4.3.17-6) UNRELEASED; urgency=medium
   * Add CVE ID to the previous changelog entry.
   * Debconf translations, thanks!
     + ru by Yuri Kozlov (Closes: #776126)
-  * Cherry pick patch from upstream to fix memory leak in acknowledge
-    handling.
+  * Cherry pick twp patches from upstream to fix multiple memory leaks.
 
   [ Christian Kastner ]
   * Document license of sha?.* files in debian/copyright (Closes: #775590)
