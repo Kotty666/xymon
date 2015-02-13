@@ -1,4 +1,4 @@
-Description:Fix memory leak in acknowledge handling.
+Description: Fix memory leak in acknowledge handling.
  Cherry-picked from the 4.3.18 upstream release.
 Origin: http://sourceforge.net/p/xymon/code/7488/
 Applied-Upstream: http://sourceforge.net/p/xymon/code/7488/
