@@ -5,6 +5,8 @@ xymon (4.3.18-1) UNRELEASED; urgency=medium
   [ Axel Beckert ]
   * New upstream release
     + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
+    + Drop patch fix-xymond-memory-leak (fixed upstream)
+    + Drop patch set-initial-size-for-xymondlog-output (dito)
     + Drop patch hobbit-ghosts-menu (obsolete in multiple ways)
     + Refresh and/or update the following patches:
       - 603151-apache-alias
@@ -14,14 +16,22 @@ xymon (4.3.18-1) UNRELEASED; urgency=medium
       - hobbitvars
       - netstat-ant-vs-ipv6-address-truncating
     + debian/rules: Don't remove files which are no more there
+
+ -- Axel Beckert <abe@debian.org>  Sat, 31 Jan 2015 15:45:16 +0100
+
+xymon (4.3.17-6) unstable; urgency=medium
+
+  [ Axel Beckert ]
   * Add CVE ID to the previous changelog entry.
   * Debconf translations, thanks!
     + ru by Yuri Kozlov (Closes: #776126)
+  * Cherry pick two patches from upstream to fix multiple memory leaks.
+    (Closes: #778343)
 
   [ Christian Kastner ]
   * Document license of sha?.* files in debian/copyright (Closes: #775590)
 
- -- Axel Beckert <abe@debian.org>  Sat, 31 Jan 2015 15:45:16 +0100
+ -- Axel Beckert <abe@debian.org>  Fri, 13 Feb 2015 21:59:49 +0100
 
 xymon (4.3.17-5) unstable; urgency=medium
 
