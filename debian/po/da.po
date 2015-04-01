@@ -1,14 +1,14 @@
 # Danish translation xymon.
-# Copyright (C) 2010 xymon & nedenstående oversættere.
+# Copyright (C) 2015 xymon & nedenstående oversættere.
 # This file is distributed under the same license as xymon package.
-# Joe Hansen <joedalton2@yahoo.dk>, 2010.
+# Joe Hansen <joedalton2@yahoo.dk>, 2010, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: xymon\n"
 "Report-Msgid-Bugs-To: xymon@packages.debian.org\n"
 "POT-Creation-Date: 2014-10-23 14:57+0200\n"
-"PO-Revision-Date: 2012-06-13 12:52+0200\n"
+"PO-Revision-Date: 2015-03-27 12:52+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <debian-l10n-danish@lists.debian.org>\n"
 "Language: da\n"
@@ -64,7 +64,7 @@ msgstr ""
 #. Description
 #: ../xymon-client.templates:3001
 msgid "Automatically migrate old hobbit files to xymon?"
-msgstr ""
+msgstr "Automatisk migrere gamle hobbit-filer til xymon?"
 
 #. Type: boolean
 #. Description
@@ -76,3 +76,8 @@ msgid ""
 "usually a good idea, but might not work so well if your config differs "
 "substantially from the default."
 msgstr ""
+"Operativsystembrugeren blev omdøbt fra »hobbit« til »xymon«, og al konfiguration, "
+"tilstand, logmapper og filer er også blevet omdøbt. Pakkens "
+"efterinstallationsskripter kan udføre migreringen automatisk. Dette er normalt "
+"en god ide, men fungerer måske ikke så godt hvis din konfiguration er meget "
+"anderledes end standarden."
