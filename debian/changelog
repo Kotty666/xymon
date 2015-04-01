@@ -1,6 +1,8 @@
 xymon (4.3.17-7) UNRELEASED; urgency=medium
 
-  * Update Swedish debconf translation, by Martin Bagge (Closes: #781679)
+  * Updated debconf translations:
+    + Danish by Joe Dalton (Closes: #781335)
+    + Swedish by Martin Bagge (Closes: #781679)
 
  -- Axel Beckert <abe@debian.org>  Wed, 01 Apr 2015 18:19:02 +0200
 
