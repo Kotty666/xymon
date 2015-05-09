@@ -17,11 +17,6 @@ xymon (4.3.18-1) UNRELEASED; urgency=medium
       - netstat-ant-vs-ipv6-address-truncating
     + debian/rules: Don't remove files which are no more there
   * debian/watch: Merge the two uversionmangles into one, add /i.
-
- -- Axel Beckert <abe@debian.org>  Sat, 31 Jan 2015 15:45:16 +0100
-
-xymon (4.3.17-7) UNRELEASED; urgency=medium
-
   * Updated debconf translations:
     + Danish by Joe Dalton (Closes: #781335)
     + Swedish by Martin Bagge (Closes: #781679)
