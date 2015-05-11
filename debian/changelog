@@ -18,6 +18,8 @@ xymon (4.3.19-1) UNRELEASED; urgency=medium
       - hobbitvars
       - netstat-ant-vs-ipv6-address-truncating
     + debian/rules: Don't remove files which are no more there
+    + Ignore false positive lintian warnings about <IfModule>-safeguarded
+      Apache 2.2 directives
   * debian/watch: Merge the two uversionmangles into one, add /i.
   * Updated debconf translations:
     + Danish by Joe Dalton (Closes: #781335)
