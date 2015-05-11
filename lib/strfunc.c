@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: strfunc.c 7478 2014-09-28 09:49:43Z storner $";
+static char rcsid[] = "$Id: strfunc.c 7600 2015-03-15 17:55:51Z jccleaver $";
 
 #include "config.h"
 
@@ -225,6 +225,40 @@ char *htmlquoted(char *s)
 		  case '<': addtobuffer(result, "&lt;"); break;
 		  case '>': addtobuffer(result, "&gt;"); break;
 		  case ' ': addtobuffer(result, "&nbsp;"); break;
+		  default: break;
+		}
+		inp = (c == '\0') ? NULL : endp+1;
+	} while (inp);
+
+	return STRBUF(result);
+}
+
+char *prehtmlquoted(char *s)
+{
+	/*
+	 * This routine converts a string which may contain html to a string
+	 * safe to include in a PRE block. It's similar to above, but escapes
+	 * only the minmum characters for efficiency.
+	 */
+
+	static strbuffer_t *result = NULL;
+	char *inp, *endp;
+	char c;
+
+	if (!s) return NULL;
+
+	if (!result) result = newstrbuffer(4096);
+	clearstrbuffer(result);
+
+	inp = s;
+	do {
+		endp = inp + strcspn(inp, "&<>");
+		c = *endp;
+		if (endp > inp) addtobufferraw(result, inp, endp-inp);
+		switch (c) {
+		  case '&': addtobuffer(result, "&amp;"); break;
+		  case '<': addtobuffer(result, "&lt;"); break;
+		  case '>': addtobuffer(result, "&gt;"); break;	// this is not, strictly speaking, needed, but unbalanced encoding might confuse automated readers
 		  default: break;
 		}
 		inp = (c == '\0') ? NULL : endp+1;

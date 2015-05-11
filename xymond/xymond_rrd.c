@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_rrd.c 7475 2014-09-28 09:42:20Z storner $";
+static char rcsid[] = "$Id: xymond_rrd.c 7576 2015-02-18 03:50:11Z jccleaver $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -277,7 +277,6 @@ int main(int argc, char *argv[])
 	/* If we are passing data to an external processor, create the pipe to it */
 	setup_extprocessor(processor);
 
-	running = 1;
 	while (running) {
 		char *eoln, *restofmsg = NULL;
 		char *metadata[MAX_META+1];

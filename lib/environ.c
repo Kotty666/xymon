@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: environ.c 7350 2014-01-19 12:17:56Z storner $";
+static char rcsid[] = "$Id: environ.c 7613 2015-03-24 00:49:23Z jccleaver $";
 
 #include <ctype.h>
 #include <string.h>
@@ -33,7 +33,7 @@ const static struct {
 	{ "XYMONSERVERWWWNAME", XYMONHOSTNAME },
 	{ "XYMONSERVERWWWURL", "/xymon" },
 	{ "XYMONSERVERCGIURL", "/xymon-cgi" },
-	{ "XYMONSERVERSECCGIURL", "/xymon-cgisecure" },
+	{ "XYMONSERVERSECURECGIURL", "/xymon-seccgi" },
 	{ "XYMONNETWORK", "" },
 	{ "BBLOCATION", "" },
 	{ "PATH", "/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:"XYMONHOME"/bin" },
@@ -145,6 +145,8 @@ const static struct {
 	{ "XYMONBODYMENUCSS", "$XYMONMENUSKIN/xymonmenu.css" },
 	{ "XYMONBODYHEADER", "file:$XYMONHOME/etc/xymonmenu.cfg" },
 	{ "XYMONBODYFOOTER", "" },
+	{ "LOGFETCHSKIPTEXT", "<...SKIPPED...>" },
+	{ "LOGFETCHCURRENTTEXT", "<...CURRENT...>" },
 	{ "XYMONALLOKTEXT", "<FONT SIZE=+2 FACE=\"Arial, Helvetica\"><BR><BR><I>All Monitored Systems OK</I></FONT><BR><BR>" },
 	{ "HOSTPOPUP", "CDI" },
 	{ "STATUSLIFETIME", "30" },
@@ -215,7 +217,7 @@ void loadenv(char *envfile, char *area)
 {
 	FILE *fd;
 	strbuffer_t *inbuf;
-	char *p, *oneenv;
+	char *p, *marker, *oneenv;
 
 	MEMDEFINE(l);
 	inbuf = newstrbuffer(0);
@@ -239,14 +241,19 @@ void loadenv(char *envfile, char *area)
 			 */
 			oneenv = NULL;
 
-			p = STRBUF(inbuf) + strcspn(STRBUF(inbuf), "=/");
-			if (*p == '/') {
+			p = STRBUF(inbuf);
+
+			/* Skip ahead for anyone who thinks this is a shell include */
+			if ((strncmp(p, "export ", 7) == 0) || (strncmp(p, "export\t", 7) == 0)) { p += 6; p += strspn(p, " \t"); }
+
+			marker = p + strcspn(p, "=/");
+			if (*marker == '/') {
 				if (area) {
-					*p = '\0';
-					if (strcasecmp(STRBUF(inbuf), area) == 0) oneenv = strdup(expand_env(p+1));
+					*marker = '\0';
+					if (strcasecmp(p, area) == 0) oneenv = strdup(expand_env(marker+1));
 				}
 			}
-			else oneenv = strdup(expand_env(STRBUF(inbuf)));
+			else oneenv = strdup(expand_env(p));
 
 			if (oneenv) {
 				p = strchr(oneenv, '=');

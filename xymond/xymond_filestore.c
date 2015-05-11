@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_filestore.c 7281 2013-08-15 08:53:34Z storner $";
+static char rcsid[] = "$Id: xymond_filestore.c 7506 2015-02-10 13:57:07Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -173,8 +173,7 @@ static int wantedtest(char *wanted, char *key)
 	p = strstr(wanted, ckey);
 	xfree(ckey);
 
-	if (p) dbgprintf("wantedtest: Found '%s' at '%s'\n", key, p);
-	else dbgprintf("wantedtest: '%s' not found\n", key);
+	dbgprintf("wantedtest: Found '%s' at '%s'\n", key, (p ? p : "<not found>"));
 
 	return (p != NULL);
 }
@@ -259,8 +258,7 @@ int main(int argc, char *argv[])
 	setup_signalhandler("xymond_filestore");
 	signal(SIGPIPE, SIG_DFL);
 
-	if (onlytests) dbgprintf("Storing tests '%s' only\n", onlytests);
-	else dbgprintf("Storing all tests\n");
+	dbgprintf("Storing tests: %s\n", (onlytests ? onlytests : "<all>"));
 
 	while (running) {
 		char *metadata[20] = { NULL, };

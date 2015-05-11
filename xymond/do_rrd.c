@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: do_rrd.c 7304 2013-08-25 14:03:44Z storner $";
+static char rcsid[] = "$Id: do_rrd.c 7608 2015-03-21 15:00:40Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/time.h>
@@ -720,6 +720,7 @@ void update_rrd(char *hostname, char *testname, char *msg, time_t tstamp, char *
 	else if (strcmp(id, "proccounts") == 0)  do_counts_rrd("processes", hostname, testname, classname, pagepaths, msg, tstamp);
 	else if (strcmp(id, "portcounts") == 0)  do_counts_rrd("ports", hostname, testname, classname, pagepaths, msg, tstamp);
 	else if (strcmp(id, "linecounts") == 0)  do_derives_rrd("lines", hostname, testname, classname, pagepaths, msg, tstamp);
+	else if (strcmp(id, "deltacounts") == 0) do_counts_rrd("deltalines", hostname, testname, classname, pagepaths, msg, tstamp);
 	else if (strcmp(id, "trends") == 0)      do_trends_rrd(hostname, testname, classname, pagepaths, msg, tstamp);
 
 	else if (strcmp(id, "ifmib") == 0)       do_ifmib_rrd(hostname, testname, classname, pagepaths, msg, tstamp);

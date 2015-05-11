@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_channel.c 7481 2014-09-28 09:54:35Z storner $";
+static char rcsid[] = "$Id: xymond_channel.c 7499 2015-02-07 10:10:23Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -492,7 +492,7 @@ int main(int argc, char *argv[])
 				errprintf("Invalid filter (bad expression): %s\n", p+1);
 			}
 			else {
-				stdfilter = firstlineregexnocase("^@@(logrotate|shutdown|drophost|droptest|renamehost|renametest)");
+				stdfilter = firstlineregex("^@@(logrotate|shutdown|drophost|droptest|renamehost|renametest)");
 			}
 		}
 		else if (argnmatch(argv[argi], "--md5")) {

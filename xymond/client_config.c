@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: client_config.c 7477 2014-09-28 09:48:16Z storner $";
+static char rcsid[] = "$Id: client_config.c 7618 2015-03-30 03:27:16Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -245,7 +245,7 @@ typedef struct c_rule_t {
 	exprlist_t *exdgexp;
 	exprlist_t *classexp;
 	exprlist_t *exclassexp;
-	char *timespec, *statustext, *rrdidstr, *groups;
+	char *timespec, *extimespec, *statustext, *rrdidstr, *groups;
 	ruletype_t ruletype;
 	int cfid;
 	unsigned int flags;
@@ -421,7 +421,7 @@ static c_rule_t *setup_rule(ruletype_t ruletype,
 			    exprlist_t *curpage, exprlist_t *curexpage, 
 			    exprlist_t *curdg, exprlist_t *curexdg, 
 			    exprlist_t *curclass, exprlist_t *curexclass, 
-			    char *curtime, char *curtext, char *curgroup,
+			    char *curtime, char *curextime, char *curtext, char *curgroup,
 			    int cfid)
 {
 	c_rule_t *newitem = (c_rule_t *)calloc(1, sizeof(c_rule_t));
@@ -438,6 +438,7 @@ static c_rule_t *setup_rule(ruletype_t ruletype,
 	newitem->classexp = curclass;
 	newitem->exclassexp = curexclass;
 	if (curtime) newitem->timespec = strdup(curtime);
+	if (curextime) newitem->extimespec = strdup(curextime);
 	if (curtext) newitem->statustext = strdup(curtext);
 	if (curgroup) newitem->groups = strdup(curgroup);
 	newitem->cfid = cfid;
@@ -460,7 +461,8 @@ static int isqual(char *token)
 	     (strncasecmp(token, "EXCLASS=", 8) == 0)		||
 	     (strncasecmp(token, "TEXT=", 5) == 0)		||
 	     (strncasecmp(token, "GROUP=", 6) == 0)		||
-	     (strncasecmp(token, "TIME=", 5) == 0)		) return 1;
+	     (strncasecmp(token, "TIME=", 5) == 0)		||
+	     (strncasecmp(token, "EXTIME=", 7) == 0)		) return 1;
 
 	return 0;
 }
@@ -527,7 +529,7 @@ int load_client_config(char *configfn)
 	strbuffer_t *inbuf;
 	char *tok;
 	exprlist_t *curhost, *curpage, *curclass, *curexhost, *curexpage, *curexclass, *curdg, *curexdg;
-	char *curtime, *curtext, *curgroup;
+	char *curtime, *curextime, *curtext, *curgroup;
 	c_rule_t *currule = NULL;
 	int cfid = 0;
 
@@ -560,6 +562,7 @@ int load_client_config(char *configfn)
 		rulehead = rulehead->next;
 		if (tmp->groups) xfree(tmp->groups);
 		if (tmp->timespec) xfree(tmp->timespec);
+		if (tmp->extimespec) xfree(tmp->extimespec);
 		if (tmp->statustext) xfree(tmp->statustext);
 		if (tmp->rrdidstr) xfree(tmp->rrdidstr);
 
@@ -607,21 +610,21 @@ int load_client_config(char *configfn)
 		havetree = 0;
 	}
 
-#define NEWRULE(X) (setup_rule(X, curhost, curexhost, curpage, curexpage, curdg, curexdg, curclass, curexclass, curtime, curtext, curgroup, cfid));
+#define NEWRULE(X) (setup_rule(X, curhost, curexhost, curpage, curexpage, curdg, curexdg, curclass, curexclass, curtime, curextime, curtext, curgroup, cfid));
 
 	curhost = curpage = curclass = curexhost = curexpage = curexclass = curdg = curexdg = NULL;
-	curtime = curtext = curgroup = NULL;
+	curtime = curextime = curtext = curgroup = NULL;
 	inbuf = newstrbuffer(0);
 	while (stackfgets(inbuf, NULL)) {
 		exprlist_t *newhost, *newpage, *newexhost, *newexpage, *newclass, *newexclass, *newdg, *newexdg;
-		char *newtime, *newtext, *newgroup;
+		char *newtime, *newextime, *newtext, *newgroup;
 		int unknowntok = 0;
 
 		cfid++;
 		sanitize_input(inbuf, 1, 0); if (STRBUFLEN(inbuf) == 0) continue;
 
 		newhost = newpage = newexhost = newexpage = newclass = newexclass = newdg = newexdg = NULL;
-		newtime = newtext = newgroup = NULL;
+		newtime = newextime = newtext = newgroup = NULL;
 		currule = NULL;
 
 		tok = wstok(STRBUF(inbuf));
@@ -678,6 +681,12 @@ int load_client_config(char *configfn)
 				char *p = strchr(tok, '=');
 				if (currule) currule->timespec = strdup(p+1);
 				else newtime = strdup(p+1);
+				tok = wstok(NULL); continue;
+			}
+			else if (strncasecmp(tok, "EXTIME=", 7) == 0) {
+				char *p = strchr(tok, '=');
+				if (currule) currule->extimespec = strdup(p+1);
+				else newextime = strdup(p+1);
 				tok = wstok(NULL); continue;
 			}
 			else if (strncasecmp(tok, "TEXT=", 5) == 0) {
@@ -1572,6 +1581,7 @@ int load_client_config(char *configfn)
 			curexpage = newexpage;
 			curexclass = newexclass;
 			if (curtime) xfree(curtime); curtime = newtime;
+			if (curextime) xfree(curextime); curextime = newextime;
 			if (curtext) xfree(curtext); curtext = newtext;
 			if (curgroup) xfree(curgroup); curgroup = newgroup;
 		}
@@ -1580,6 +1590,7 @@ int load_client_config(char *configfn)
 	stackfclose(fd);
 	freestrbuffer(inbuf);
 	if (curtime) xfree(curtime);
+	if (curextime) xfree(curextime);
 	if (curtext) xfree(curtext);
 
 	/* Create the ruletree, but leave it empty - it will be filled as clients report */
@@ -1874,6 +1885,7 @@ void dump_client_config(void)
 		if (rwalk->flags & CHK_OPTIONAL) printf(" OPTIONAL");
 
 		if (rwalk->timespec) printf(" TIME=%s", rwalk->timespec);
+		if (rwalk->extimespec) printf(" EXTIME=%s", rwalk->extimespec);
 		if (rwalk->hostexp) printf(" HOST=%s", rwalk->hostexp->pattern);
 		if (rwalk->exhostexp) printf(" EXHOST=%s", rwalk->exhostexp->pattern);
 		if (rwalk->dgexp) printf(" DISPLAYGROUP=%s", rwalk->dgexp->pattern);
@@ -1904,6 +1916,7 @@ static c_rule_t *getrule(char *hostname, char *pagename, char *classname, void *
 	for (; (rwalk); rwalk = rwalk->next) {
 		if (rwalk->rule->ruletype != ruletype) continue;
 		if (rwalk->rule->timespec && !timematch(holidayset, rwalk->rule->timespec)) continue;
+		if (rwalk->rule->extimespec && timematch(holidayset, rwalk->rule->extimespec)) continue;
 
 		/* If we get here, then we have something that matches */
 		return rwalk->rule;
@@ -2555,7 +2568,7 @@ int scan_log(void *hinfo, char *classname,
 					anylines++;
 					sprintf(msgline, "&%s ", colorname(rule->rule.log.color));
 					addtobuffer(summarybuf, msgline);
-					addtobuffer(summarybuf, boln);
+					addtobuffer(summarybuf, prehtmlquoted(boln));
 					addtobuffer(summarybuf, "\n");
 				}
 			}
@@ -3249,6 +3262,12 @@ static void add_count(char *pname, mon_proc_t *head)
 					pwalk->rule->rule.proc.pcount++;
 			}
 			else {
+				/* 
+				 * Strip the initial spaces, pipes and so forth seen if an ASCII forest was generated
+				 * This allows PCRE regexes using a '^' to remain useful.
+				 */
+				pname += strspn(pname, " |\\_");
+				if (!pname) break;
 				if (namematch(pname, pwalk->rule->rule.proc.procexp->pattern, pwalk->rule->rule.proc.procexp->exp))
 					pwalk->rule->rule.proc.pcount++;
 			}
@@ -3443,7 +3462,8 @@ static char *check_count(int *count, ruletype_t ruletype, int *lowlim, int *upli
 		break;
 
 	  case C_SVC:
-		result = (*walk)->rule->statustext;
+		/* Have to clear this each time since it contains current state */
+		// result = (*walk)->rule->statustext;
 		if (!result) { 
 			int sz = 1024;
 			char *p;

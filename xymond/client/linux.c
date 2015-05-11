@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char linux_rcsid[] = "$Id: linux.c 7453 2014-03-17 11:15:14Z storner $";
+static char linux_rcsid[] = "$Id: linux.c 7608 2015-03-21 15:00:40Z jccleaver $";
 
 void handle_linux_client(char *hostname, char *clienttype, enum ostype_t os, 
 			 void *hinfo, char *sender, time_t timestamp,
@@ -66,6 +66,7 @@ void handle_linux_client(char *hostname, char *clienttype, enum ostype_t os,
 	msgs_report(hostname, clienttype, os, hinfo, fromline, timestr, msgsstr);
 	file_report(hostname, clienttype, os, hinfo, fromline, timestr);
 	linecount_report(hostname, clienttype, os, hinfo, fromline, timestr);
+	deltacount_report(hostname, clienttype, os, hinfo, fromline, timestr);
 
 	unix_netstat_report(hostname, clienttype, os, hinfo, fromline, timestr, netstatstr);
 	unix_ifstat_report(hostname, clienttype, os, hinfo, fromline, timestr, ifstatstr);
@@ -104,7 +105,7 @@ void handle_linux_client(char *hostname, char *clienttype, enum ostype_t os,
 		char *statcopy, *bol, *eol;
 		int color = COL_GREEN;
 		char *mdname = NULL, *mdstatus = NULL;
-		int mddevices, mdactive, recovering;
+		int mddevices = 0, mdactive = 0, recovering = 0;
 		strbuffer_t *alerttext = newstrbuffer(0);
 		char msgline[1024];
 		char *summary = NULL;

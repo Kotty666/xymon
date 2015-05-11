@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char zos_rcsid[] = "$Id: zos.c 7252 2013-08-05 11:54:11Z storner $";
+static char zos_rcsid[] = "$Id: zos.c 7608 2015-03-21 15:00:40Z jccleaver $";
 
 
 void zos_cpu_report(char *hostname, char *clientclass, enum ostype_t os,
@@ -661,6 +661,7 @@ void handle_zos_client(char *hostname, char *clienttype, enum ostype_t os,
 	unix_disk_report(hostname, clienttype, os, hinfo, fromline, timestr, "Available", "Cap", "Mounted", dfstr);
 	unix_ports_report(hostname, clienttype, os, hinfo, fromline, timestr, 3, 4, 5, portsstr);
 	linecount_report(hostname, clienttype, os, hinfo, fromline, timestr);
+	deltacount_report(hostname, clienttype, os, hinfo, fromline, timestr);
 	unix_ifstat_report(hostname, clienttype, os, hinfo, fromline, timestr, ifstatstr);
 
 

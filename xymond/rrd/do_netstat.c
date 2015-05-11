@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char netstat_rcsid[] = "$Id: do_netstat.c 6712 2011-07-31 21:01:52Z storner $";
+static char netstat_rcsid[] = "$Id: do_netstat.c 7609 2015-03-22 00:21:16Z jccleaver $";
 
 static char *netstat_params[] = { "DS:udpInDatagrams:DERIVE:600:0:U", 
 	                          "DS:udpOutDatagrams:DERIVE:600:0:U", 
@@ -516,6 +516,7 @@ int do_netstat_rrd(char *hostname, char *testname, char *classname, char *pagepa
 
 	  case OS_WIN32:
 	  case OS_WIN32_BBWIN:
+	  case OS_WIN_POWERSHELL:
 		havedata = do_valaftermarkerequal(netstat_win32_markers, datapart, outp);
 		break;
 

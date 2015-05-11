@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configure script for Xymon server
-# $Id: configure.server 7375 2014-01-26 12:39:20Z storner $
+# $Id: configure.server 7598 2015-03-13 06:15:38Z jccleaver $
 
 echo ""
 echo "Configuration script for Xymon"

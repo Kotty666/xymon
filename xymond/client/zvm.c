@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char zvm_rcsid[] = "$Id: zvm.c 7252 2013-08-05 11:54:11Z storner $";
+static char zvm_rcsid[] = "$Id: zvm.c 7608 2015-03-21 15:00:40Z jccleaver $";
 
 static void zvm_cpu_report(char *hostname, char *clientclass, enum ostype_t os,
                      void *hinfo, char *fromline, char *timestr,
@@ -394,6 +394,7 @@ void handle_zvm_client(char *hostname, char *clienttype, enum ostype_t os,
 	msgs_report(hostname, clienttype, os, hinfo, fromline, timestr, msgsstr);
 	file_report(hostname, clienttype, os, hinfo, fromline, timestr);
 	linecount_report(hostname, clienttype, os, hinfo, fromline, timestr);
+	deltacount_report(hostname, clienttype, os, hinfo, fromline, timestr);
 
 
 	splitmsg_done();

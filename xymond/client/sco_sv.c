@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char sco_sv_rcsid[] = "$Id: sco_sv.c 7197 2013-05-03 16:07:04Z storner $";
+static char sco_sv_rcsid[] = "$Id: sco_sv.c 7608 2015-03-21 15:00:40Z jccleaver $";
 
 void handle_sco_sv_client(char *hostname, char *clienttype, enum ostype_t os, 
 			  void *hinfo, char *sender, time_t timestamp,
@@ -66,6 +66,7 @@ void handle_sco_sv_client(char *hostname, char *clienttype, enum ostype_t os,
 	msgs_report(hostname, clienttype, os, hinfo, fromline, timestr, msgsstr);
 	file_report(hostname, clienttype, os, hinfo, fromline, timestr);
 	linecount_report(hostname, clienttype, os, hinfo, fromline, timestr);
+	deltacount_report(hostname, clienttype, os, hinfo, fromline, timestr);
 
 	unix_netstat_report(hostname, clienttype, os, hinfo, fromline, timestr, netstatstr);
 	unix_ifstat_report(hostname, clienttype, os, hinfo, fromline, timestr, ifstatstr);
