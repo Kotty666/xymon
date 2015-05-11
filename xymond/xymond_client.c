@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_client.c 7464 2014-07-15 13:44:49Z storner $";
+static char rcsid[] = "$Id: xymond_client.c 7611 2015-03-22 05:33:04Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -217,7 +217,7 @@ char *nextsection(char *clientdata, char **name)
 		defsecthead = NULL;
 	}
 
-	return nextsection_r(clientdata, name, &current, (void **)&defsecthead);
+	return nextsection_r(clientdata, name, &current, (void *)defsecthead);
 }
 
 
@@ -1054,10 +1054,8 @@ void unix_procs_report(char *hostname, char *clientclass, enum ostype_t os,
 	}
 	if (eol) *eol = '\n';
 
-	if (debug) {
-		if (cmdofs >= 0) dbgprintf("Host %s: Found ps command line at offset %d\n", hostname, cmdofs);
-		else dbgprintf("Host %s: None of the headings found\n", hostname);
-	}
+	if (cmdofs >= 0) { dbgprintf("Host %s: Found ps command line at offset %d\n", hostname, cmdofs); }
+	else { dbgprintf("Host %s: None of the headings found\n", hostname); }
 
 	pchecks = clear_process_counts(hinfo, clientclass);
 
@@ -1152,41 +1150,7 @@ void unix_procs_report(char *hostname, char *clientclass, enum ostype_t os,
 	}
 
 	/* And the full ps output for those who want it */
-	if (pslistinprocs) {
-		/*
-		 * NB: Process listings may contain HTML special characters.
-		 *     We must encode these for HTML, cf.
-		 *     http://www.w3.org/TR/html4/charset.html#h-5.3.2
-		 */
-		char *inp, *tagpos;
-
-		inp = psstr;
-		do {
-			tagpos = inp + strcspn(inp, "<>&\"");
-			switch (*tagpos) {
-			  case '<':
-				*tagpos = '\0'; addtostatus(inp); addtostatus("&lt;"); *tagpos = '<';
-				inp = tagpos + 1;
-				break;
-			  case '>':
-				*tagpos = '\0'; addtostatus(inp); addtostatus("&gt;"); *tagpos = '>';
-				inp = tagpos + 1;
-				break;
-			  case '&':
-				*tagpos = '\0'; addtostatus(inp); addtostatus("&amp;"); *tagpos = '&';
-				inp = tagpos + 1;
-				break;
-			  case '\"':
-				*tagpos = '\0'; addtostatus(inp); addtostatus("&quot;"); *tagpos = '\"';
-				inp = tagpos + 1;
-				break;
-			  default:
-				/* We're done */
-				addtostatus(inp); inp = NULL;
-				break;
-			}
-		} while (inp && *inp);
-	}
+	if (pslistinprocs) addtostatus(prehtmlquoted(psstr));
 
 	if (fromline && !localmode) addtostatus(fromline);
 	finish_status();
@@ -1289,9 +1253,7 @@ void msgs_report(char *hostname, char *clientclass, enum ostype_t os,
 					swalk->sname+5);
 			}
 			addtobuffer(yellowdata, msgline);
-			addtobuffer(yellowdata, "<pre>\n");
 			addtostrbuffer(yellowdata, logsummary);
-			addtobuffer(yellowdata, "</pre>\n");
 			break;
 
 		  case COL_RED:
@@ -1304,9 +1266,7 @@ void msgs_report(char *hostname, char *clientclass, enum ostype_t os,
 					swalk->sname+5);
 			}
 			addtobuffer(reddata, msgline);
-			addtobuffer(yellowdata, "<pre>\n");
 			addtostrbuffer(reddata, logsummary);
-			addtobuffer(yellowdata, "</pre>\n");
 			break;
 		}
 
@@ -1361,9 +1321,7 @@ void msgs_report(char *hostname, char *clientclass, enum ostype_t os,
 				swalk->sname+5);
 		}
 		addtostatus(msgline);
-		addtobuffer(yellowdata, "<pre>\n");
-		addtostatus(swalk->sdata);
-		addtobuffer(yellowdata, "</pre>\n");
+		addtostatus(prehtmlquoted(swalk->sdata));
 		do { swalk=swalk->next; } while (swalk && strncmp(swalk->sname, "msgs:", 5));
 	}
 
@@ -1583,7 +1541,50 @@ void linecount_report(char *hostname, char *clientclass, enum ostype_t os,
 				countstr = (id ? strtok(NULL, "\n") : NULL);
 				if (id && countstr) {
 					countstr += strspn(countstr, "\t ");
-					sprintf(msgline, "%s#%s:%s\n", nocolon(fn), id, countstr);
+					snprintf(msgline, sizeof(msgline), "%s#%s:%s\n", nocolon(fn), id, countstr);
+					addtobuffer(countdata, msgline);
+				}
+
+				boln = (eoln ? eoln + 1 : NULL);
+			}
+		}
+	}
+
+	if (anydata) combo_add(countdata);
+	clearstrbuffer(countdata);
+}
+
+
+void deltacount_report(char *hostname, char *clientclass, enum ostype_t os,
+			void *hinfo, char *fromline, char *timestr)
+{
+	static strbuffer_t *countdata = NULL;
+	sectlist_t *swalk;
+	char msgline[PATH_MAX];
+	int anydata = 0;
+
+	if (!countdata) countdata = newstrbuffer(0);
+
+	sprintf(msgline, "data %s.deltacounts\n", commafy(hostname));
+	addtobuffer(countdata, msgline);
+
+	for (swalk = defsecthead; (swalk); swalk = swalk->next) {
+		if (strncmp(swalk->sname, "deltacount:", 10) == 0) {
+			char *fn, *boln, *eoln, *id, *countstr;
+
+			anydata = 1;
+
+			fn = strchr(swalk->sname, ':'); fn += 1 + strspn(fn+1, "\t ");
+
+			boln = swalk->sdata;
+			while (boln) {
+				eoln = strchr(boln, '\n');
+
+				id = strtok(boln, ":");
+				countstr = (id ? strtok(NULL, "\n") : NULL);
+				if (id && countstr) {
+					countstr += strspn(countstr, "\t ");
+					snprintf(msgline, sizeof(msgline), "%s#%s:%s\n", nocolon(fn), id, countstr);
 					addtobuffer(countdata, msgline);
 				}
 

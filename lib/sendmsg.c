@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: sendmsg.c 7325 2014-01-07 11:16:14Z storner $";
+static char rcsid[] = "$Id: sendmsg.c 7585 2015-02-25 03:49:26Z jccleaver $";
 
 #include "config.h"
 
@@ -131,6 +131,7 @@ static void setup_transport(char *recipient)
 			struct servent *svcinfo;
 
 			svcinfo = getservbyname("bbd", NULL);
+			if (!svcinfo) svcinfo = getservbyname("bb", NULL);
 			if (svcinfo) xymondportnumber = ntohs(svcinfo->s_port);
 		}
 	}
@@ -605,7 +606,11 @@ void sendmessage_finish_local(void)
 sendresult_t sendmessage_local(char *msg)
 {
 	int n, done = 0;
-	msglen_t msglen;
+	#if defined(__OpenBSD__) || defined(__dietlibc__)
+		unsigned long msglen;
+	#else
+		msglen_t msglen;
+	#endif
 
 	if (backfeedqueue == -1) {
 		return sendmessage(msg, NULL, XYMON_TIMEOUT, NULL);

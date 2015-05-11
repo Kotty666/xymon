@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: contest.c 7345 2014-01-10 09:29:38Z storner $";
+static char rcsid[] = "$Id: contest.c 7597 2015-03-13 02:28:00Z jccleaver $";
 
 #include "config.h"
 
@@ -459,12 +459,6 @@ static void setup_ssl(tcptest_t *item)
 
 			/* load entropy from files */
 			RAND_load_file(RAND_file_name(path, sizeof (path)), -1);
-
-			/* load entropy from egd sockets */
-			RAND_egd("/var/run/egd-pool");
-			RAND_egd("/dev/egd-pool");
-			RAND_egd("/etc/egd-pool");
-			RAND_egd("/var/spool/prngd/pool");
 
 			/* shuffle $RANDFILE (or ~/.rnd if unset) */
 			RAND_write_file(RAND_file_name(path, sizeof (path)));

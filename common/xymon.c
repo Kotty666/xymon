@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymon.c 7223 2013-07-25 19:56:20Z storner $";
+static char rcsid[] = "$Id: xymon.c 7594 2015-03-03 20:55:16Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -142,6 +142,7 @@ int main(int argc, char *argv[])
 	else if ((strncmp(STRBUF(msg), "xymondxlog ", 11) == 0) || (strncmp(STRBUF(msg), "hobbitdxlog ", 12) == 0)) wantresponse = 1;
 	else if ((strncmp(STRBUF(msg), "xymondboard", 11) == 0) || (strncmp(STRBUF(msg), "hobbitdboard", 12) == 0)) wantresponse = 1;
 	else if ((strncmp(STRBUF(msg), "xymondxboard", 12) == 0) || (strncmp(STRBUF(msg), "hobbitdxboard", 13) == 0)) wantresponse = 1;
+	else if (strncmp(STRBUF(msg), "schedule ", 9) == 0) wantresponse = 0;
 	else if (strncmp(STRBUF(msg), "schedule", 8) == 0) wantresponse = 1;
 	else if (strncmp(STRBUF(msg), "clientlog ", 10) == 0) wantresponse = 1;
 	else if (strncmp(STRBUF(msg), "hostinfo", 8) == 0) wantresponse = 1;

@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymongrep.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymongrep.c 7508 2015-02-11 14:59:01Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -118,11 +118,6 @@ int main(int argc, char *argv[])
 	int argi, lookc;
 	strbuffer_t *wantedtags;
 
-	if ((argc <= 1) || (strcmp(argv[1], "--help") == 0)) {
-		printf("Usage:\n%s test1 [test1] [test2] ... \n", argv[0]);
-		exit(1);
-	}
-
 	lookv = (char **)malloc(argc*sizeof(char *));
 	lookc = 0;
 
@@ -130,7 +125,16 @@ int main(int argc, char *argv[])
 	conncolumn = xgetenv("PINGCOLUMN");
 
 	for (argi=1; (argi < argc); argi++) {
-		if (strcmp(argv[argi], "--noextras") == 0) {
+		if (strcmp(argv[argi], "--debug") == 0) {
+			char *delim = strchr(argv[argi], '=');
+			debug = 1;
+			if (delim) set_debugfile(delim+1, 0);
+		}
+		else if (strcmp(argv[argi], "--help") == 0) {
+			printf("Usage:\n%s [options] test1 [test2] [test3] ... \n", argv[0]);
+			exit(1);
+		}
+		else if (strcmp(argv[argi], "--noextras") == 0) {
 			extras = 0;
 		}
 		else if (strcmp(argv[argi], "--test-untagged") == 0) {
@@ -156,6 +160,9 @@ int main(int argc, char *argv[])
 		}
 		else if (argnmatch(argv[argi], "--hosts=")) {
 			hostsfn = strchr(argv[argi], '=') + 1;
+		}
+		else if ((*(argv[argi]) == '-') && (strlen(argv[argi]) > 1)) {
+			fprintf(stderr, "Unknown option %s\n", argv[argi]);
 		}
 		else {
 			lookv[lookc] = strdup(argv[argi]);

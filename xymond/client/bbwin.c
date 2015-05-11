@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char bbwin_rcsid[] = "$Id: bbwin.c 6783 2011-11-30 11:56:42Z storner $";
+static char bbwin_rcsid[] = "$Id: bbwin.c 7608 2015-03-21 15:00:40Z jccleaver $";
 
 static void bbwin_uptime_report(char *hostname, char *clientclass, enum ostype_t os,
                      void *hinfo, char *fromline, char *timestr,
@@ -466,6 +466,7 @@ void handle_win32_bbwin_client(char *hostname, char *clienttype, enum ostype_t o
 	msgs_report(hostname, clienttype, os, hinfo, fromline, timestr, msgsstr);
         file_report(hostname, clienttype, os, hinfo, fromline, timestr);
         linecount_report(hostname, clienttype, os, hinfo, fromline, timestr);
+        deltacount_report(hostname, clienttype, os, hinfo, fromline, timestr);
 
 	/* Data status */
         unix_netstat_report(hostname, clienttype, os, hinfo, fromline, timestr, netstatstr);

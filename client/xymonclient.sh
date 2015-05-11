@@ -12,7 +12,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient.sh 7204 2013-07-23 12:20:59Z storner $
+# $Id: xymonclient.sh 7498 2015-02-07 10:00:29Z jccleaver $
 
 # Must make sure the commands return standard (english) texts.
 LANG=C
@@ -48,7 +48,7 @@ if test -z "$CLIENTVERSION"; then
 fi
 
 if test "$LOCALMODE" = "yes"; then
-	echo "@@client#1|0|127.0.0.1|$MACHINEDOTS|$SERVEROSTYPE" >> $MSGTMPFILE
+	echo "@@client#1|1|127.0.0.1|$MACHINEDOTS|$SERVEROSTYPE" >> $MSGTMPFILE
 fi
 
 echo "client $MACHINE.$SERVEROSTYPE $CONFIGCLASS"  >>  $MSGTMPFILE

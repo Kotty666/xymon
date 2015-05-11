@@ -9,7 +9,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: freebsd-meminfo.c 7213 2013-07-24 14:52:08Z storner $";
+static char rcsid[] = "$Id: freebsd-meminfo.c 7505 2015-02-08 03:54:56Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/sysctl.h>
@@ -44,6 +44,6 @@ int main(int argc, char *argv[])
 
 	// printf("Pagesize:%d\n", pagesize);
 	printf("Total:%lu\n", (physmem / (1024 * 1024)));
-	printf("Free:%lu\n", (pagesize / 1024)*(vmdata.t_free / 1024));
+	printf("Free:%d\n", (pagesize / 1024)*(vmdata.t_free / 1024));
 }
 

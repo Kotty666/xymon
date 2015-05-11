@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: netservices.c 7117 2012-07-24 15:48:41Z storner $";
+static char rcsid[] = "$Id: netservices.c 7599 2015-03-13 07:07:12Z jccleaver $";
 
 #include <ctype.h>
 #include <string.h>
@@ -81,9 +81,9 @@ static char *binview(unsigned char *buf, int buflen)
 	unsigned char *inp, *outp;
 	int i;
 
-	if (!buf) return NULL;
-
 	if (result) xfree(result);
+	if (!buf) { result = strdup("[null]"); return result; }
+
 	if (buf && (buflen == 0)) buflen = strlen(buf);
 	result = (char *)malloc(4*buflen + 1);	/* Worst case: All binary */
 

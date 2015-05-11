@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonproxy.c 7479 2014-09-28 09:52:04Z storner $";
+static char rcsid[] = "$Id: xymonproxy.c 7575 2015-02-17 21:12:30Z jccleaver $";
 
 #include "config.h"
 
@@ -964,7 +964,7 @@ int main(int argc, char *argv[])
 		}
 
 		if (combining) {
-			selecttmo.tv_sec = 0; selecttmo.tv_usec = COMBO_DELAY;
+			selecttmo.tv_sec = 0; selecttmo.tv_usec = COMBO_DELAY / 1000;
 		}
 		else {
 			selecttmo.tv_sec = 1; selecttmo.tv_usec = 0;

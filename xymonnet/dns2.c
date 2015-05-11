@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: dns2.c 7484 2014-09-28 09:59:35Z storner $";
+static char rcsid[] = "$Id: dns2.c 7497 2015-02-07 09:54:49Z jccleaver $";
 
 /*
  * All of the code for parsing DNS responses and formatting these into
@@ -472,7 +472,7 @@ static const unsigned char *display_rr(const unsigned char *aptr,
 		/* The RR data is a 16-byte IPv6 address. */
 		if (dlen != 16) return NULL;
 		memcpy(&addr6, aptr, sizeof(struct in6_addr));
-		addtobuffer_many(response->msgbuf, "\t", inet_ntop(AF_INET6,&addr6,msg,sizeof(msg)) );
+		addtobuffer_many(response->msgbuf, "\t", inet_ntop(AF_INET6,&addr6,msg,sizeof(msg)), NULL);
 		break;
 
 	  case T_WKS:

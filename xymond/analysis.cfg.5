@@ -1,4 +1,4 @@
-.TH ANALYSIS.CFG 5 "Version 4.3.18:  3 Feb 2015" "Xymon"
+.TH ANALYSIS.CFG 5 "Version 4.3.19: 30 Mar 2015" "Xymon"
 .SH NAME
 analysis.cfg \- Configuration file for the xymond_client module
 
@@ -575,6 +575,13 @@ Rule matching by the time-of-day. This is specified as the DOWNTIME
 time specification in the hosts.cfg file.  E.g. "TIME=W:0800:2200"
 applied to a rule will make this rule active only on week-days between
 8AM and 10PM.
+
+.BR "EXTIME=timespecification"
+Rule excluding by the time-of-day. This is also specified as the DOWNTIME 
+time specification in the hosts.cfg file.  E.g. "TIME=W:0400:0600"
+applied to a rule will make this rule exclude on week-days between
+4AM and 6AM. This applies on top of any TIME= specification, so both
+must match.
 
 .SH DIRECTING ALERTS TO GROUPS
 For some tests - e.g. "procs" or "msgs" - the right group of people
