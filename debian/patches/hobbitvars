@@ -2,8 +2,8 @@ Fix paths to fit into the Debian directory structure
 
 Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-02-04 00:05:31.860910550 +0100
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -51,61 +51,76 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 +include /var/run/xymon/xymonserver-include.cfg
 Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-02-04 00:05:31.864910624 +0100
-@@ -15,7 +15,7 @@
- <Directory "@INSTALLWWWDIR@">
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-05-12 00:20:38.585902899 +0200
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-05-12 00:23:20.597243966 +0200
+@@ -16,11 +16,11 @@
      Options Indexes FollowSymLinks Includes MultiViews
-     Order allow,deny
--    Allow from all
-+    Allow from localhost ::1/128
+     <IfModule mod_authz_core.c>
+         # Apache 2.4+
+-        Require all granted
++        Require local
+     </IfModule>
+     <IfModule !mod_authz_core.c>
+         Order deny,allow
+-        Allow from all
++        Allow from localhost ::1/128
+     </IfModule>
  </Directory>
  
- ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
-@@ -23,7 +23,7 @@
-     AllowOverride None
+@@ -30,11 +30,11 @@
      Options ExecCGI FollowSymLinks Includes
-     Order allow,deny
--    Allow from all
-+    Allow from localhost ::1/128
+     <IfModule mod_authz_core.c>
+         # Apache 2.4+
+-        Require all granted
++        Require local
+     </IfModule>
+     <IfModule !mod_authz_core.c>
+         Order deny,allow
+-        Allow from all
++        Allow from localhost ::1/128
+     </IfModule>
  </Directory>
- 
  
 Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-02-04 00:05:31.864910624 +0100
-@@ -15,7 +15,7 @@
- <Directory "@INSTALLWWWDIR@">
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:20:38.585902899 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:22:37.976367291 +0200
+@@ -16,11 +16,11 @@
      Options Indexes FollowSymLinks Includes MultiViews
-     Order allow,deny
--    Allow from all
-+    Allow from localhost ::1/128
+     <IfModule mod_authz_core.c>
+         # Apache 2.4+
+-        Require all granted
++        Require local
+     </IfModule>
+     <IfModule !mod_authz_core.c>
+         Order deny,allow
+-        Allow from all
++        Allow from localhost ::1/128
+     </IfModule>
  </Directory>
  
- ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
-@@ -23,7 +23,7 @@
-     AllowOverride None
-     Options ExecCGI FollowSymLinks Includes
-     Order allow,deny
--    Allow from all
-+    Allow from localhost ::1/128
+@@ -34,7 +34,7 @@
+     </IfModule>
+     <IfModule !mod_authz_core.c>
+         Order deny,allow
+-        Allow from all
++        Allow from localhost ::1/128
+     </IfModule>
  </Directory>
  
- ScriptAlias @SECUREXYMONCGIURL@ "@SECURECGIDIR@"
-@@ -31,7 +31,7 @@
-     AllowOverride None
-     Options ExecCGI FollowSymLinks Includes
-     Order allow,deny
--    Allow from all
-+    Allow from localhost ::1/128
+@@ -48,7 +48,7 @@
+     </IfModule>
+     <IfModule !mod_authz_core.c>
+         Order deny,allow
+-        Allow from all
++        Allow from localhost ::1/128
+     </IfModule>
  
      # Password file where users with access to these scripts are kept.
-     # Create it with "htpasswd -c @INSTALLETCDIR@/xymonpasswd USERNAME"
 Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/xymond/etcfiles/tasks.cfg.DIST	2015-02-04 00:05:31.864910624 +0100
+--- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
++++ xymon/xymond/etcfiles/tasks.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -145,8 +160,8 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 +include /var/run/xymon/tasks-include.cfg
 Index: xymon/client/clientlaunch.cfg.DIST
 ===================================================================
---- xymon.orig/client/clientlaunch.cfg.DIST	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/client/clientlaunch.cfg.DIST	2015-02-04 00:05:31.864910624 +0100
+--- xymon.orig/client/clientlaunch.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
++++ xymon/client/clientlaunch.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -163,8 +178,8 @@ Index: xymon/client/clientlaunch.cfg.DIST
 +include /var/run/xymon/clientlaunch-include.cfg
 Index: xymon/client/xymonclient.cfg.DIST
 ===================================================================
---- xymon.orig/client/xymonclient.cfg.DIST	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/client/xymonclient.cfg.DIST	2015-02-04 00:05:31.864910624 +0100
+--- xymon.orig/client/xymonclient.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
++++ xymon/client/xymonclient.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
 @@ -1,18 +1,21 @@
  # Environment settings for the Xymon client.
  
@@ -194,9 +209,9 @@ Index: xymon/client/xymonclient.cfg.DIST
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/graphs.cfg	2015-02-04 00:05:31.868910708 +0100
-+++ xymon/xymond/etcfiles/graphs.cfg	2015-02-04 00:05:31.864910624 +0100
-@@ -2101,3 +2101,4 @@
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2015-05-12 00:20:38.585902899 +0200
++++ xymon/xymond/etcfiles/graphs.cfg	2015-05-12 00:20:38.585902899 +0200
+@@ -2112,3 +2112,4 @@
  
  ########### end of ifmib graphs ###########
  

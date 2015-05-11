@@ -1,7 +1,7 @@
 Index: xymon/client/localclient.cfg
 ===================================================================
---- xymon.orig/client/localclient.cfg	2014-01-27 13:46:19.000000000 +0100
-+++ xymon/client/localclient.cfg	2014-01-27 13:46:19.000000000 +0100
+--- xymon.orig/client/localclient.cfg	2015-05-12 00:24:07.234201450 +0200
++++ xymon/client/localclient.cfg	2015-05-12 00:24:07.230201363 +0200
 @@ -191,6 +191,8 @@
  #             - "NOEXIST" triggers a warning if the file exists. By default,
  #               a warning is triggered for files that have a FILE entry, but
@@ -13,8 +13,8 @@ Index: xymon/client/localclient.cfg
  #               specified type.
 Index: xymon/xymond/client_config.c
 ===================================================================
---- xymon.orig/xymond/client_config.c	2014-01-27 13:46:19.000000000 +0100
-+++ xymon/xymond/client_config.c	2014-01-27 13:46:19.000000000 +0100
+--- xymon.orig/xymond/client_config.c	2015-05-12 00:24:07.234201450 +0200
++++ xymon/xymond/client_config.c	2015-05-12 00:24:07.230201363 +0200
 @@ -141,6 +141,7 @@
  #define FCHK_MD5      (1 << 25)
  #define FCHK_SHA1     (1 << 26)
@@ -23,7 +23,7 @@ Index: xymon/xymond/client_config.c
  
  #define CHK_OPTIONAL  (1 << 30)
  #define CHK_TRACKIT   (1 << 31)
-@@ -1048,6 +1049,9 @@
+@@ -1057,6 +1058,9 @@
  					if (strcasecmp(tok, "noexist") == 0) {
  						currule->flags |= FCHK_NOEXIST;
  					}
@@ -33,7 +33,7 @@ Index: xymon/xymond/client_config.c
  					else if (strncasecmp(tok, "type=", 5) == 0) {
  						currule->flags |= FCHK_TYPE;
  						if (strcasecmp(tok+5, "socket") == 0) currule->rule.fcheck.ftype = S_IFSOCK;
-@@ -1683,6 +1687,8 @@
+@@ -1694,6 +1698,8 @@
  
  			if (rwalk->flags & FCHK_NOEXIST) 
  				printf(" noexist");
@@ -42,7 +42,7 @@ Index: xymon/xymond/client_config.c
  			if (rwalk->flags & FCHK_TYPE)
  				printf(" type=%s", ftypestr(rwalk->rule.fcheck.ftype));
  			if (rwalk->flags & FCHK_MODE) 
-@@ -2691,6 +2697,7 @@
+@@ -2704,6 +2710,7 @@
  		*anyrules = 1;
  		if (!exists) {
  			if (rwalk->flags & CHK_OPTIONAL) goto nextcheck;
@@ -52,8 +52,8 @@ Index: xymon/xymond/client_config.c
  				/* Required file does not exist */
 Index: xymon/xymond/etcfiles/analysis.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/analysis.cfg	2014-01-27 13:46:19.000000000 +0100
-+++ xymon/xymond/etcfiles/analysis.cfg	2014-01-27 13:46:19.000000000 +0100
+--- xymon.orig/xymond/etcfiles/analysis.cfg	2015-05-12 00:24:07.234201450 +0200
++++ xymon/xymond/etcfiles/analysis.cfg	2015-05-12 00:24:07.230201363 +0200
 @@ -191,6 +191,8 @@
  #             - "NOEXIST" triggers a warning if the file exists. By default,
  #               a warning is triggered for files that have a FILE entry, but
@@ -65,8 +65,8 @@ Index: xymon/xymond/etcfiles/analysis.cfg
  #               specified type.
 Index: xymon/xymond/analysis.cfg.5
 ===================================================================
---- xymon.orig/xymond/analysis.cfg.5	2014-01-27 13:46:19.000000000 +0100
-+++ xymon/xymond/analysis.cfg.5	2014-01-27 13:46:19.000000000 +0100
+--- xymon.orig/xymond/analysis.cfg.5	2015-05-12 00:24:07.234201450 +0200
++++ xymon/xymond/analysis.cfg.5	2015-05-12 00:24:07.234201450 +0200
 @@ -294,6 +294,9 @@
  triggers a warning if the file exists. By default,
  a warning is triggered for files that have a FILE entry, but

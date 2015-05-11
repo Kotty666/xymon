@@ -1,8 +1,8 @@
 Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-02-04 00:05:19.644680794 +0100
-+++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-02-04 00:05:19.636680655 +0100
-@@ -11,14 +11,14 @@
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-05-12 00:09:56.951199824 +0200
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-05-12 00:12:15.701343968 +0200
+@@ -11,7 +11,7 @@
  #
  #          DocumentRoot @INSTALLWWWDIR@
  
@@ -10,20 +10,12 @@ Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
 +Alias @XYMONHOSTURL@  "@INSTALLWWWDIR@"
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
-     Order allow,deny
-     Allow from all
- </Directory>
- 
--ScriptAlias @XYMONCGIURL@/ "@CGIDIR@/"
-+ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
- <Directory "@CGIDIR@">
-     AllowOverride None
-     Options ExecCGI FollowSymLinks Includes
+     <IfModule mod_authz_core.c>
 Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-02-04 00:05:19.644680794 +0100
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-02-04 00:05:19.636680655 +0100
-@@ -11,14 +11,14 @@
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:09:56.951199824 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:13:15.954277190 +0200
+@@ -11,7 +11,7 @@
  #
  #          DocumentRoot @INSTALLWWWDIR@
  
@@ -31,21 +23,4 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 +Alias @XYMONHOSTURL@  "@INSTALLWWWDIR@"
  <Directory "@INSTALLWWWDIR@">
      Options Indexes FollowSymLinks Includes MultiViews
-     Order allow,deny
-     Allow from all
- </Directory>
- 
--ScriptAlias @XYMONCGIURL@/ "@CGIDIR@/"
-+ScriptAlias @XYMONCGIURL@ "@CGIDIR@"
- <Directory "@CGIDIR@">
-     AllowOverride None
-     Options ExecCGI FollowSymLinks Includes
-@@ -26,7 +26,7 @@
-     Allow from all
- </Directory>
- 
--ScriptAlias @SECUREXYMONCGIURL@/ "@SECURECGIDIR@/"
-+ScriptAlias @SECUREXYMONCGIURL@ "@SECURECGIDIR@"
- <Directory "@SECURECGIDIR@">
-     AllowOverride None
-     Options ExecCGI FollowSymLinks Includes
+     <IfModule mod_authz_core.c>
