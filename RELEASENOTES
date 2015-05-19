@@ -1,5 +1,5 @@
           <<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>
-           * * *   Release notes for Xymon 4.3.19   * * *
+           * * *   Release notes for Xymon 4.3.20   * * *
           <<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>
 
 
@@ -8,6 +8,43 @@ changes you should be aware of when upgrading.
 
 For a full list of changes and enhancements, please see the 
 Changes file.
+
+
+Changes for 4.3.20
+==================
+Remote summaries display had been broken for a while but should now be working
+again. Summaries are now also displayed on the nongreen.html page
+
+The "Actual Used" memory figure on recent Linux kernels is now taken from
+the "Available" memory reported back from free (or /proc/meminfo), which should
+give a more accurate response. Physical Memory Used is still reported as the 
+combination of Kernel Physical Use + buffers/cache, however this may change in
+a future release.
+
+Documentation for various directives in hosts.cfg(5) has been added
+
+pullclient=IP:PORT directives are honored, if the defaults for the host are
+incorrect
+
+cgiwrap is now installed via hardlinking (or as packaged); FollowSymLinks 
+is no longer needed for the xymon cgi-bin directories and can be removed.
+
+Planned downtime settings are now applied to 'purple' statuses as well
+
+http checks can now be performed using a HEAD request if desired.
+
+Which RRD graphs are displayed on a status page can now be customized on
+a per-test basis through the use of environment variables. For example,
+GRAPHS_cpu="la,vmstat1" will cause an additional graph to be shown on 
+cpu tests. (Submitted by Werner Maier)
+
+A new column will be displayed on all xymon pages allowing direct access
+to a server's raw clientlog (similar to the special info and trends columns). 
+This can be disabled with a "noclient" tag in hosts.cfg
+
+Additional sample protocols.cfg services are present, for svn, amqp(s) and
+ircd. (Note that different ircd servers respond differently and the included
+protocol conversation may require modification to work on your server.)
 
 
 Changes for 4.3.19

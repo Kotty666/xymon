@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7582 2015-02-20 00:38:25Z jccleaver $";
+static char rcsid[] = "$Id: xymond.c 7648 2015-05-01 03:16:21Z jccleaver $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -1244,7 +1244,7 @@ void get_hts(char *msg, char *sender, char *origin,
 
 done:
 	if (colstr) {
-		if ((*color == COL_RED) || (*color == COL_YELLOW)) {
+		if ((*color == COL_RED) || (*color == COL_YELLOW) || (*color == COL_PURPLE)) {
 			char *cause;
 
 			cause = check_downtime(hostname, testname);
@@ -1532,6 +1532,13 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 			if (log->enabletime == DISABLED_UNTIL_OK) log->validtime = INT_MAX;
 			else if (log->enabletime > log->validtime) log->validtime = log->enabletime;
 		}
+		else if ((newcolor == COL_PURPLE) && (xmh_item(hinfo, XMH_DOWNTIME) != NULL) ) {
+			/*
+			 * If DOWNTIME is configured, we don't want to wait the default amount of time
+			 * to re-scan for validity.
+			*/
+			log->validtime = now + 60;
+		}
 
 		/* 
 		 * If we have an existing status, check if the sender has changed.
@@ -1547,7 +1554,7 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 			 * - some multi-homed hosts use a random IP for sending us data.
 			 */
 			if ( (strcmp(log->sender, "xymond") != 0) && (strcmp(sender, "xymond") != 0) && (strcmp(sender, "0.0.0.0") != 0))  {
-				if ((xmh_item(hinfo, XMH_FLAG_PULLDATA) == NULL) && (xmh_item(hinfo, XMH_FLAG_MULTIHOMED) == NULL)) {
+				if ((xmh_item(hinfo, XMH_PULLDATA) == NULL) && (xmh_item(hinfo, XMH_FLAG_MULTIHOMED) == NULL)) {
 					log_multisrc(log, sender);
 				}
 			}
@@ -3003,14 +3010,8 @@ boardfield_t *setup_fields(char *fieldstr)
 			int i;
 			for (i=0; (boardfieldnames[i].name && strcmp(tok, boardfieldnames[i].name)); i++) ;
 			if (boardfieldnames[i].name) {
-				switch (boardfieldnames[i].id) {
-				  case F_IP: fieldid = F_HOSTINFO; xmhfieldid = XMH_IP; break;
-				  case F_HOSTNAME: fieldid = F_HOSTINFO; xmhfieldid = XMH_HOSTNAME; break;
-				  default:
-					fieldid = boardfieldnames[i].id;
-					xmhfieldid = XMH_LAST;
-					break;
-				}
+				fieldid = boardfieldnames[i].id;
+				xmhfieldid = XMH_LAST;
 			}
 		}
 
@@ -3917,9 +3918,10 @@ void do_message(conn_t *msg, char *origin)
 		xtreePos_t hosthandle;
 		xymond_hostlist_t *hwalk;
 		xymond_log_t *lwalk, *firstlog;
-		xymond_log_t infologrec, rrdlogrec;
 		time_t *dummytimes;
-		testinfo_t trendstest, infotest;
+		static testinfo_t trendstest, infotest, clienttest;
+		static xymond_log_t trendslogrec, infologrec, clientlogrec;
+		static int faketestinit = 0;
 		hostfilter_rec_t *logfilter;
 		boardfield_t *logfields;
 		char *fields = NULL;
@@ -3935,21 +3937,31 @@ void do_message(conn_t *msg, char *origin)
 
 		response = newstrbuffer(lastboardsize);
 
-		/* Setup fake log-records for the "info" and "trends" data. */
+		/* Setup fake log-records for the "clientlog", "info" and "trends" data. */
 		dummytimes = (time_t *)calloc((flapcount > 0) ? flapcount : 1, sizeof(time_t));
-		memset(&infotest, 0, sizeof(infotest));
-		infotest.name = xgetenv("INFOCOLUMN");
-		memset(&infologrec, 0, sizeof(infologrec));
-		infologrec.test = &infotest;
 
-		memset(&trendstest, 0, sizeof(trendstest));
-		trendstest.name = xgetenv("TRENDSCOLUMN");
-		memset(&rrdlogrec, 0, sizeof(rrdlogrec));
-		rrdlogrec.test = &trendstest;
+		if (!faketestinit) {
+			memset(&clienttest, 0, sizeof(clienttest));
+			clienttest.name = xgetenv("CLIENTCOLUMN");
+			memset(&clientlogrec, 0, sizeof(clientlogrec));
+			clientlogrec.test = &clienttest;
 
-		infologrec.color = rrdlogrec.color = COL_GREEN;
-		infologrec.message = rrdlogrec.message = "";
-		infologrec.lastchange = rrdlogrec.lastchange = dummytimes;
+			memset(&infotest, 0, sizeof(infotest));
+			infotest.name = xgetenv("INFOCOLUMN");
+			memset(&infologrec, 0, sizeof(infologrec));
+			infologrec.test = &infotest;
+
+			memset(&trendstest, 0, sizeof(trendstest));
+			trendstest.name = xgetenv("TRENDSCOLUMN");
+			memset(&trendslogrec, 0, sizeof(trendslogrec));
+			trendslogrec.test = &trendstest;
+
+			clientlogrec.color = infologrec.color = trendslogrec.color = COL_GREEN;
+			clientlogrec.message = infologrec.message = trendslogrec.message = "";
+			faketestinit = 1;
+		}
+		clientlogrec.lastchange = infologrec.lastchange = trendslogrec.lastchange = dummytimes;
+
 
 		for (hosthandle = xtreeFirst(rbhosts); (hosthandle != xtreeEnd(rbhosts)); hosthandle = xtreeNext(rbhosts, hosthandle)) {
 			hwalk = xtreeData(rbhosts, hosthandle);
@@ -3974,18 +3986,22 @@ void do_message(conn_t *msg, char *origin)
 				/* Host/pagename filter */
 				if (!match_host_filter(hinfo, logfilter, 0, NULL)) continue;
 
-				/* Handle NOINFO and NOTRENDS here */
+				/* Handle NOINFO, NOCLIENT and NOTRENDS here */
+				if (hwalk->clientmsgs && !xmh_item(hinfo, XMH_FLAG_NOCLIENT)) {
+					clientlogrec.next = firstlog;
+					firstlog = &clientlogrec;
+				}
 				if (!xmh_item(hinfo, XMH_FLAG_NOINFO)) {
 					infologrec.next = firstlog;
 					firstlog = &infologrec;
 				}
 				if (!xmh_item(hinfo, XMH_FLAG_NOTRENDS)) {
-					rrdlogrec.next = firstlog;
-					firstlog = &rrdlogrec;
+					trendslogrec.next = firstlog;
+					firstlog = &trendslogrec;
 				}
 			}
 
-			rrdlogrec.host = infologrec.host = hwalk;
+			clientlogrec.host = trendslogrec.host = infologrec.host = hwalk;
 
 			for (lwalk = firstlog; (lwalk); lwalk = lwalk->next) {
 				if (!match_test_filter(lwalk, logfilter)) continue;
@@ -4427,6 +4443,12 @@ void do_message(conn_t *msg, char *origin)
 			else {
 				void *hinfo = hostinfo(hname);
 
+				if (xtreeFind(rbhosts, hname) == xtreeEnd(rbhosts)) {
+					/* No hostlist record */
+					(void *)create_hostlist_t(hname, hostip);
+					hostcount++;
+				}
+
 				handle_client(msg->buf, sender, hname, collectorid, clientos, clientclass);
 
 				if (hinfo) {
@@ -4861,9 +4883,10 @@ void load_checkpoint(char *fn)
 		hostname = knownhost(hostname, hostip, ghosthandling);
 		if (hostname == NULL) continue;
 
-		/* Ignore the "info" and "trends" data, since we generate on the fly now. */
+		/* Ignore the "client", "info" and "trends" data, since we generate on the fly now. */
 		if (strcmp(testname, xgetenv("INFOCOLUMN")) == 0) continue;
 		if (strcmp(testname, xgetenv("TRENDSCOLUMN")) == 0) continue;
+		if (strcmp(testname, xgetenv("CLIENTCOLUMN")) == 0) continue;
 
 		/* Rename the now-forgotten internal statuses */
 		if (strcmp(hostname, getenv("MACHINEDOTS")) == 0) {
@@ -5005,6 +5028,7 @@ void check_purple_status(void)
 					free_log_t(tmp);
 				}
 				else {
+					char *cause;
 					int newcolor = COL_PURPLE;
 					void *hinfo = hostinfo(hwalk->hostname);
 
@@ -5030,6 +5054,14 @@ void check_purple_status(void)
 					/* Tests on dialup hosts go clear, not purple */
 					if ((newcolor == COL_PURPLE) && hinfo && xmh_item(hinfo, XMH_FLAG_DIALUP)) {
 						newcolor = COL_CLEAR;
+					}
+
+					cause = check_downtime(hwalk->hostname, lwalk->test->name);
+					if (lwalk) lwalk->downtimeactive = (cause != NULL);
+					if (cause) {
+						newcolor = COL_BLUE;
+						/* If the status is not disabled, use downcause as the disable text */
+						if (!lwalk->dismsg) lwalk->dismsg = strdup(cause);                                         
 					}
 
 					handle_status(lwalk->message, "xymond", 

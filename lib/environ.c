@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: environ.c 7613 2015-03-24 00:49:23Z jccleaver $";
+static char rcsid[] = "$Id: environ.c 7646 2015-05-01 02:59:44Z jccleaver $";
 
 #include <ctype.h>
 #include <string.h>
@@ -49,6 +49,7 @@ const static struct {
 	{ "PINGCOLUMN", "conn" },
 	{ "INFOCOLUMN", "info" },
 	{ "TRENDSCOLUMN", "trends" },
+	{ "CLIENTCOLUMN", "clientlog" },
 	{ "DOCOMBO", "TRUE" },
 	{ "MAXMSGSPERCOMBO", "100" },
 	{ "SLEEPBETWEENMSGS", "0" },
@@ -163,10 +164,17 @@ char *xgetenv(const char *name)
 		/* If MACHINE is undefined, but MACHINEDOTS is there, create MACHINE  */
 		char *oneenv, *p;
 		
+#ifdef HAVE_SETENV
+		oneenv = strdup(xgetenv("MACHINEDOTS"));
+		p = oneenv; while ((p = strchr(p, '.')) != NULL) *p = ',';
+		setenv(name, oneenv, 1);
+		xfree(oneenv);
+#else
 		oneenv = (char *)malloc(10 + strlen(xgetenv("MACHINEDOTS")));
 		sprintf(oneenv, "%s=%s", name, xgetenv("MACHINEDOTS"));
 		p = oneenv; while ((p = strchr(p, '.')) != NULL) *p = ',';
 		putenv(oneenv);
+#endif
 		result = getenv(name);
 	}
 
@@ -182,10 +190,13 @@ char *xgetenv(const char *name)
 		 * If we got a result, put it into the environment so it will stay there.
 		 * Allocate memory for this new environment string - this stays allocated.
 		 */
+#ifdef HAVE_SETENV
+		setenv(name, result, 1);
+#else
 		newstr = malloc(strlen(name) + strlen(result) + 2);
 		sprintf(newstr, "%s=%s", name, result);
 		putenv(newstr);
-
+#endif
 		/*
 		 * Return pointer to the environment string.
 		 */

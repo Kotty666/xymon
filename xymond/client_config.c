@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: client_config.c 7618 2015-03-30 03:27:16Z jccleaver $";
+static char rcsid[] = "$Id: client_config.c 7640 2015-04-23 14:32:39Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -3480,7 +3480,9 @@ static char *check_count(int *count, ruletype_t ruletype, int *lowlim, int *upli
 			if ((*walk)->rule->rule.svc.stateexp)
 				sz += strlen((*walk)->rule->rule.svc.stateexp->pattern) + 10;
 
+			if ((*walk)->rule->statustext != NULL) xfree((*walk)->rule->statustext);
 			(*walk)->rule->statustext = (char *)malloc(sz + 1);
+
 			p = (*walk)->rule->statustext;
 			if ((*walk)->rule->rule.svc.svcname) {
 				p += sprintf(p, "%s is %s/%s", (*walk)->rule->rule.svc.svcname,
