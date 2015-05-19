@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char la_rcsid[] = "$Id: do_la.c 7026 2012-07-13 14:05:20Z storner $";
+static char la_rcsid[] = "$Id: do_la.c 7639 2015-04-23 06:14:36Z jccleaver $";
 
 int do_la_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -255,6 +255,7 @@ done_parsing:
 		}
 
 		if (found == 4) {
+			if (!phystotal || !pagetotal) { errprintf("Host %s cpu report had 0 total physical/pagefile memory listed\n", hostname); return 0; }
 			phystotal = phystotal / 100;
 			pagetotal = pagetotal / 100;
 			realuse = 100 - (physavail / phystotal);

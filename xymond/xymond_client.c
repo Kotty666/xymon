@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_client.c 7611 2015-03-22 05:33:04Z jccleaver $";
+static char rcsid[] = "$Id: xymond_client.c 7636 2015-04-19 00:36:43Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -1646,11 +1646,12 @@ void unix_vmstat_report(char *hostname, char *clientclass, enum ostype_t os,
 	p = strrchr(vmstatstr, '\n');
 	if (!p) return;  /* No NL in vmstat output ? Unlikely. */
 
-	msg = newstrbuffer(0);
 	if (strlen(p) == 1) {
 		/* Go back to the previous line */
 		do { p--; } while ((p > vmstatstr) && (*p != '\n'));
 	}
+	if (strcmp(p+1,"Terminated") == 0) return;	/* vmstat process was killed early - ignore data */
+	msg = newstrbuffer(0);
 	sprintf(msgline, "data %s.vmstat\n%s\n", commafy(hostname), osname(os));
 	addtobuffer(msg, msgline);
 	addtobuffer(msg, p+1);

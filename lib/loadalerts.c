@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadalerts.c 7588 2015-02-25 20:17:40Z jccleaver $";
+static char rcsid[] = "$Id: loadalerts.c 7661 2015-05-15 15:19:04Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -804,15 +804,22 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	 */
 
 	static char *pgnames = NULL;
+	char *dgname = NULL;
 	int pgmatchres, pgexclres;
 	time_t duration = (getcurrenttime(NULL) - alert->eventstart);
 	int result, cfid = 0;
 	char *pgtok, *cfline = NULL;
 	void *hinfo = hostinfo(alert->hostname);
 
+	if (!hinfo) {
+		dbgprintf("Checking criteria for host '%s', which is not defined\n", alert->hostname);
+		hinfo = localhostinfo(alert->hostname);
+	};
+
 	/* The top-level page needs a name - cannot match against an empty string */
 	if (pgnames) xfree(pgnames);
 	pgnames = strdup((*alert->location == '\0') ? "/" : alert->location);
+	dgname = textornull(xmh_item(hinfo, XMH_DGNAME));
 
 	if (crit) { cfid = crit->cfid; cfline = crit->cfline; }
 	if (!cfid && rulecrit) cfid = rulecrit->cfid;
@@ -820,7 +827,7 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	if (!cfline) cfline = "<undefined>";
 
 	traceprintf("Matching host:service:dgroup:page '%s:%s:%s:%s' against rule line %d\n",
-			alert->hostname, alert->testname, xmh_item(hinfo, XMH_DGNAME), alert->location, cfid);
+			alert->hostname, alert->testname, dgname, alert->location, cfid);
 
 	if (alert->state == A_PAGING) {
 		/* Check max-duration now - it's fast and easy. */
@@ -916,11 +923,11 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 		return 0;
 	}
 
-	if (crit && crit->dgspec && !namematch(xmh_item(hinfo, XMH_DGNAME), crit->dgspec, crit->dgspecre)) { 
+	if (crit && crit->dgspec && !namematch(dgname, crit->dgspec, crit->dgspecre)) { 
 		traceprintf("Failed '%s' (displaygroup not in include list)\n", cfline);
 		return 0; 
 	}
-	if (crit && crit->exdgspec && namematch(xmh_item(hinfo, XMH_DGNAME), crit->exdgspec, crit->exdgspecre)) { 
+	if (crit && crit->exdgspec && namematch(dgname, crit->exdgspec, crit->exdgspecre)) { 
 		traceprintf("Failed '%s' (displaygroup excluded)\n", cfline);
 		return 0; 
 	}
@@ -1221,8 +1228,10 @@ void print_alert_recipients(activealerts_t *alert, strbuffer_t *buf)
 		sprintf(l, "<td align=center>%s</td>", durationstring(recip->interval)); 
 		addtobuffer(buf, l);
 
-		if (timespec) sprintf(l, "<td align=center>%s</td>", timespec); else strcpy(l, "<td align=center>-</td>");
-		if (extimespec) sprintf(l, "<td align=center>%s</td>", extimespec); else strcpy(l, "<td align=center>-</td>");
+		if (timespec && extimespec) sprintf(l, "<td align=center>%s, except %s</td>", timespec, extimespec);
+		else if (timespec) sprintf(l, "<td align=center>%s</td>", timespec);
+		else if (extimespec) sprintf(l, "<td align=center>all, except %s</td>", extimespec);
+		else strcpy(l, "<td align=center>-</td>");
 		addtobuffer(buf, l);
 
 		addtobuffer(buf, "<td>");

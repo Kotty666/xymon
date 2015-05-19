@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus.c 7312 2013-09-04 08:49:55Z storner $";
+static char rcsid[] = "$Id: svcstatus.c 7644 2015-05-01 02:44:02Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -136,6 +136,14 @@ static int parse_query(void)
 	if (!hostname || !service || ((source == SRC_HISTLOGS) && !tstamp) ) {
 		errormsg(403, "Invalid request");
 		return 1;
+	}
+
+	if (strcmp(service, xgetenv("CLIENTCOLUMN")) == 0) {
+		/* Make this a client request */
+		char *p = strdup(basename(hostname));
+		xfree(hostname); hostname = p;	/* no need to convert to dots, since we'll already have them */
+		xfree(service);			/* service does double-duty as the 'section' param */
+		outform = FRM_CLIENT;
 	}
 
 	if (outform == FRM_STATUS) {

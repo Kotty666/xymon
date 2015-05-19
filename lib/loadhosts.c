@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 
 
-static char rcsid[] = "$Id: loadhosts.c 7374 2014-01-26 11:24:52Z storner $";
+static char rcsid[] = "$Id: loadhosts.c 7644 2015-05-01 02:44:02Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -136,6 +136,8 @@ static void xmh_item_list_setup(void)
 	xmh_item_name[XMH_FLAG_NOINFO]         = "XMH_FLAG_NOINFO";
 	xmh_item_key[XMH_FLAG_NOTRENDS]        = "notrends";
 	xmh_item_name[XMH_FLAG_NOTRENDS]       = "XMH_FLAG_NOTRENDS";
+	xmh_item_key[XMH_FLAG_NOCLIENT]        = "noclient";
+	xmh_item_name[XMH_FLAG_NOCLIENT]       = "XMH_FLAG_NOCLIENT";
 	xmh_item_key[XMH_FLAG_NODISP]          = "nodisp";
 	xmh_item_name[XMH_FLAG_NODISP]         = "XMH_FLAG_NODISP";
 	xmh_item_key[XMH_FLAG_NONONGREEN]      = "nonongreen";
@@ -164,8 +166,8 @@ static void xmh_item_list_setup(void)
 	xmh_item_name[XMH_FLAG_NOCLEAR]        = "XMH_FLAG_NOCLEAR";
 	xmh_item_key[XMH_FLAG_HIDEHTTP]        = "HIDEHTTP";
 	xmh_item_name[XMH_FLAG_HIDEHTTP]       = "XMH_FLAG_HIDEHTTP";
-	xmh_item_key[XMH_FLAG_PULLDATA]        = "PULLDATA";
-	xmh_item_name[XMH_FLAG_PULLDATA]       = "XMH_FLAG_PULLDATA";
+	xmh_item_key[XMH_PULLDATA]             = "PULLDATA";
+	xmh_item_name[XMH_PULLDATA]            = "XMH_PULLDATA";
 	xmh_item_key[XMH_FLAG_MULTIHOMED]      = "MULTIHOMED";
 	xmh_item_name[XMH_FLAG_MULTIHOMED]     = "XMH_MULTIHOMED";
 	xmh_item_key[XMH_FLAG_HTTP_HEADER_MATCH]             = "headermatch";
@@ -601,6 +603,12 @@ char *xmh_item(void *hostin, enum xmh_item_t item)
 	  case XMH_FLAG_NOBB2:
 		  p = xmh_find_item(host, XMH_FLAG_NONONGREEN);
 		  if (p == NULL) p = xmh_find_item(host, XMH_FLAG_NOBB2);
+		  return p;
+
+	  case XMH_PULLDATA:
+		  /* special - can be 'pulldata=IP:PORT' or just 'pulldata' */
+		  p = xmh_find_item(host, XMH_PULLDATA);
+		  if ((p != NULL) && (*(p) == '\0')) p = xmh_item_key[XMH_PULLDATA];	/* mirror flag semantics */
 		  return p;
 
 	  default:

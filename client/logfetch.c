@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: logfetch.c 7614 2015-03-24 01:34:07Z jccleaver $";
+static char rcsid[] = "$Id: logfetch.c 7630 2015-04-17 13:52:05Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -481,7 +481,7 @@ char *logdata(char *filename, logdef_t *logdef)
 		       dbgprintf("Found %zu bytes of trigger data, %zu bytes available space for non-trigger data; last trigger ended %zu bytes from end. Max bytes allowed is %zu.\n", triggerbytes, nontriggerbytes, lasttriggeroffset, logdef->maxbytes);
 
 		       /* Allocate a new buffer, reduced to what we actually can hold */
-		       replacement = malloc(sizeof(char) * (triggerbytes + skiptxtbytes + nontriggerbytes));
+		       replacement = malloc(sizeof(char) * (triggerbytes + skiptxtbytes + nontriggerbytes + 1));
 		       if (replacement == NULL) return "Out of memory";
 
 		       dbgprintf("Staging replacement buffer, %zu bytes.\n", (triggerbytes + skiptxtbytes + nontriggerbytes));
@@ -499,6 +499,7 @@ char *logdata(char *filename, logdef_t *logdef)
 		       }
 
 		       /* At this point, all the required trigger lines are present */
+			*(pos) = '\0';
 
 		       if (nontriggerbytes > 0) {
 				char *finalstartptr;
@@ -533,6 +534,7 @@ char *logdata(char *filename, logdef_t *logdef)
 				/* And copy the the rest of the original buffer content */
 				dbgprintf("Copying %zu final bytes of non-trigger content\n", nontriggerbytes);
 				strncpy(pos, finalstartptr, nontriggerbytes);
+				*(pos + nontriggerbytes) = '\0';	/* re-terminate */
 		       }
 
 		       /* Prune out the last line to prevent sending a partial */
@@ -547,7 +549,7 @@ char *logdata(char *filename, logdef_t *logdef)
 		       bytesread = strlen(startpos);          
 	        }
 		else {
-			/* Just drop what is too much */
+			/* Just drop what is too much -- buf+bytesread was terminated above */
 			startpos += (bytesread - logdef->maxbytes);
 			memcpy(startpos, skiptxt, strlen(skiptxt));
 			bytesread = logdef->maxbytes;

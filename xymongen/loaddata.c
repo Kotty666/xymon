@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loaddata.c 7298 2013-08-24 06:27:33Z storner $";
+static char rcsid[] = "$Id: loaddata.c 7647 2015-05-01 03:05:20Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -127,8 +127,8 @@ state_t *init_state(char *filename, logdata_t *log)
 {
 	FILE 		*fd = NULL;
 	char		*p;
-	char		*hostname;
-	char		*testname;
+	char		*hostname = NULL;
+	char		*testname = NULL;
 	char		*testnameidx;
 	state_t 	*newstate;
 	char		fullfn[PATH_MAX];
@@ -163,8 +163,8 @@ state_t *init_state(char *filename, logdata_t *log)
 	}
 
 	if (!reportstart && !snapshot) {
-		hostname = strdup(log->hostname);
-		testname = strdup(log->testname);
+		if (log->hostname) hostname = strdup(log->hostname);
+		if (log->testname) testname = strdup(log->testname);
 	}
 	else {
 		sprintf(fullfn, "%s/%s", xgetenv("XYMONHISTDIR"), filename);
@@ -509,7 +509,7 @@ state_t *load_state(dispsummary_t **sumhead)
 			char *bcmd;
 
 			bcmd = (char *)malloc(1024 + (filter ? strlen(filter) : 0));
-			sprintf(bcmd, "xymondboard fields=hostname,testname,color,flags,lastchange,logtime,validtime,acktime,disabletime,sender,cookie,line1,acklist %s", (filter ? filter: ""));
+			sprintf(bcmd, "xymondboard fields=hostname,testname,color,flags,lastchange,logtime,validtime,acktime,disabletime,sender,cookie,acklist %s", (filter ? filter: ""));
 			xymondresult = sendmessage(bcmd, NULL, XYMON_TIMEOUT, sres);
 			board = getsendreturnstr(sres, 1);
 			xfree(bcmd);
@@ -564,7 +564,7 @@ state_t *load_state(dispsummary_t **sumhead)
 		p = gettok(onelog, "|"); i = 0;
 		while (p) {
 			switch (i) {
-			  /* hostname|testname|color|testflags|lastchange|logtime|validtime|acktime|disabletime|sender|cookie|1st line of message */
+			  /* hostname|testname|color|testflags|lastchange|logtime|validtime|acktime|disabletime|sender|cookie|acklist */
 			  case  0: log.hostname = p; break;
 			  case  1: log.testname = p; break;
 			  case  2: log.color = parse_color(p); break;
@@ -576,12 +576,16 @@ state_t *load_state(dispsummary_t **sumhead)
 			  case  8: log.disabletime = atoi(p); break;
 			  case  9: log.sender = p; break;
 			  case 10: log.cookie = atoi(p); break;
-			  case 11: log.msg = p; break;
-			  case 12: acklist = p; break;
+			  case 11: acklist = p; break;
 			}
 
 			p = gettok(NULL, "|");
 			i++;
+		}
+		if (!log.hostname || !log.testname) {
+			errprintf("Found incomplete or corrupt log line (%s|%s); skipping\n", textornull(log.hostname), textornull(log.testname) );
+			xfree(onelog);
+			continue;
 		}
 		if (!log.msg) log.msg = "";
 		sprintf(fn, "%s.%s", commafy(log.hostname), log.testname);

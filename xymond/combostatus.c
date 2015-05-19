@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: combostatus.c 7610 2015-03-22 03:42:05Z jccleaver $";
+static char rcsid[] = "$Id: combostatus.c 7659 2015-05-13 14:15:42Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -287,7 +287,7 @@ static long evaluate(char *symbolicexpr, char **resultexpr, value_t **valuelist,
 
 	done = 0; inp=symbolicexpr; outp=expr; symp = NULL; 
 	while (!done) {
-		if (isalpha((int)*inp) || isdigit((int)*inp)) {
+		if (isalpha((int)*inp) || (isdigit((int)*inp) && *(inp+1) && (*(inp+1) > ' ') && *(inp+2) && (*(inp+2) > ' ')) ) {	/* puke */
 			if (!insymbol) { insymbol = 1; symp = symbol; }
 			*symp = *inp; symp++;
 		}
