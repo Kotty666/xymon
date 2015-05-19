@@ -2,8 +2,8 @@ Fix paths to fit into the Debian directory structure
 
 Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -25,7 +25,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  FQDN="TRUE"			# Use fully-qualified hostnames internally. Keep it TRUE unless you know better.
  XYMONLOGSTATUS="DYNAMIC"	# Are HTML status logs statically or dynamically generated?
  				# Use DYNAMIC with Xymon, unless you run xymond_filestore --status --html
-@@ -81,7 +80,7 @@
+@@ -83,7 +82,7 @@
  XYMONWEBHOSTURL="$XYMONWEBHOST$XYMONSERVERWWWURL"	# Prefix for all static Xymon pages - http://www.foo.com/xymon
  XYMONWEBHTMLLOGS="$XYMONWEBHOSTURL/html"	# Prefix for the Xymon HTML logs (only if XYMONLOGSTATUS=STATIC)
  XYMONWEB="$XYMONSERVERWWWURL"			# Xymon URL prefix without the host part
@@ -34,7 +34,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  XYMONHELPSKIN="$XYMONSERVERWWWURL/help"         # Xymon URL prefix for the online help files.
  XYMONNOTESSKIN="$XYMONSERVERWWWURL/notes"       # Xymon URL prefix for the online notes-files.
  XYMONMENUSKIN="$XYMONSERVERWWWURL/menu"         # Xymon URL prefix for the webpage menu files.
-@@ -93,7 +92,7 @@
+@@ -95,7 +94,7 @@
  
  # Locations of system-wide files and directories
  XYMONHOME="@XYMONHOME@"				# The Xymon server directory, where programs and configurations go. 
@@ -43,7 +43,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  HOSTSCFG="$XYMONHOME/etc/hosts.cfg"		# The hosts.cfg file
  XYMON="$XYMONHOME/bin/xymon"			# The 'xymon' client program
  XYMONGEN="$XYMONHOME/bin/xymongen"		# The xymongen program
-@@ -308,3 +307,5 @@
+@@ -318,3 +317,5 @@
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
  BBCLIENTLOGS="$XYMONSERVERLOGS"
  
@@ -51,8 +51,8 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 +include /var/run/xymon/xymonserver-include.cfg
 Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-05-12 00:23:20.597243966 +0200
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-05-19 12:09:35.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-05-19 12:09:35.000000000 +0200
 @@ -16,11 +16,11 @@
      Options Indexes FollowSymLinks Includes MultiViews
      <IfModule mod_authz_core.c>
@@ -83,8 +83,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
  
 Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:22:37.976367291 +0200
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-19 12:09:35.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-19 12:09:35.000000000 +0200
 @@ -16,11 +16,11 @@
      Options Indexes FollowSymLinks Includes MultiViews
      <IfModule mod_authz_core.c>
@@ -119,8 +119,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
      # Password file where users with access to these scripts are kept.
 Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/xymond/etcfiles/tasks.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
+--- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
++++ xymon/xymond/etcfiles/tasks.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -160,8 +160,8 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 +include /var/run/xymon/tasks-include.cfg
 Index: xymon/client/clientlaunch.cfg.DIST
 ===================================================================
---- xymon.orig/client/clientlaunch.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/client/clientlaunch.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
+--- xymon.orig/client/clientlaunch.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
++++ xymon/client/clientlaunch.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -178,8 +178,8 @@ Index: xymon/client/clientlaunch.cfg.DIST
 +include /var/run/xymon/clientlaunch-include.cfg
 Index: xymon/client/xymonclient.cfg.DIST
 ===================================================================
---- xymon.orig/client/xymonclient.cfg.DIST	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/client/xymonclient.cfg.DIST	2015-05-12 00:20:38.581902822 +0200
+--- xymon.orig/client/xymonclient.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
++++ xymon/client/xymonclient.cfg.DIST	2015-05-19 12:09:35.000000000 +0200
 @@ -1,18 +1,21 @@
  # Environment settings for the Xymon client.
  
@@ -209,8 +209,8 @@ Index: xymon/client/xymonclient.cfg.DIST
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/graphs.cfg	2015-05-12 00:20:38.585902899 +0200
-+++ xymon/xymond/etcfiles/graphs.cfg	2015-05-12 00:20:38.585902899 +0200
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2015-05-19 12:09:35.000000000 +0200
++++ xymon/xymond/etcfiles/graphs.cfg	2015-05-19 12:09:35.000000000 +0200
 @@ -2112,3 +2112,4 @@
  
  ########### end of ifmib graphs ###########
