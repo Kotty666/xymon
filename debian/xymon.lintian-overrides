@@ -8,3 +8,14 @@ xymon: init.d-script-depends-on-all-virtual-facility etc/init.d/xymon should-sta
 # <IfModule>-safeguarded Apache 2.2 directives are fine
 xymon: apache2-deprecated-auth-config Order
 xymon: apache2-deprecated-auth-config Allow
+# Xymon server is not suitable for installation on a network file
+# system and cgi-bin and cgi-secure are likely always on the same file
+# system. (Upstream introduced these hardlinks in 4.3.20, see
+# http://lists.xymon.com/archive/2015-May/041718.html for the
+# discussion.)
+xymon: package-contains-hardlink usr/lib/xymon/cgi-bin/acknowledgements.sh -> usr/lib/xymon/cgi-secure/ackinfo.sh
+xymon: package-contains-hardlink usr/lib/xymon/cgi-bin/acknowledgements.sh -> usr/lib/xymon/cgi-secure/acknowledge.sh
+xymon: package-contains-hardlink usr/lib/xymon/cgi-bin/acknowledgements.sh -> usr/lib/xymon/cgi-secure/criticaleditor.sh
+xymon: package-contains-hardlink usr/lib/xymon/cgi-bin/acknowledgements.sh -> usr/lib/xymon/cgi-secure/enadis.sh
+xymon: package-contains-hardlink usr/lib/xymon/cgi-bin/acknowledgements.sh -> usr/lib/xymon/cgi-secure/useradm.sh
+xymon: package-contains-hardlink usr/lib/xymon/cgi-bin/acknowledgements.sh -> usr/lib/xymon/server/bin/cgiwrap
