@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadalerts.c 7661 2015-05-15 15:19:04Z jccleaver $";
+static char rcsid[] = "$Id: loadalerts.c 7663 2015-05-21 14:28:50Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
