@@ -1,4 +1,4 @@
-xymon (4.3.20-1) UNRELEASED; urgency=medium
+xymon (4.3.21-1) UNRELEASED; urgency=medium
 
   TODO before upload: Fix xymond/etcfiles/xymon-apache-open.DIST wrt. no more ".sh"
 
@@ -11,6 +11,7 @@ xymon (4.3.20-1) UNRELEASED; urgency=medium
     + Refresh and/or update the following patches:
       - 603151-apache-alias
       - apache2.4 (and drop most of it)
+      - doc-paths
       - fix-hyphen-used-as-minus-sign
       - fix-spelling-errors
       - hobbit_files_ifexist

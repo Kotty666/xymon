@@ -2,8 +2,8 @@ Change paths in documentation to fit Debian paths
 
 Index: xymon/docs/xymon-apacheconf.txt
 ===================================================================
---- xymon.orig/docs/xymon-apacheconf.txt	2015-05-12 00:06:47.880289269 +0200
-+++ xymon/docs/xymon-apacheconf.txt	2015-05-12 00:06:47.876289202 +0200
+--- xymon.orig/docs/xymon-apacheconf.txt	2015-05-26 13:31:34.000000000 +0200
++++ xymon/docs/xymon-apacheconf.txt	2015-05-26 13:31:34.000000000 +0200
 @@ -9,10 +9,10 @@
  #     the Xymon webfiles as the root URL. In that case,
  #     you should instead set this:
@@ -27,7 +27,7 @@ Index: xymon/docs/xymon-apacheconf.txt
 +ScriptAlias /xymon-cgi "/usr/lib/xymon/cgi-bin"
 +<Directory "/usr/lib/xymon/cgi-bin">
      AllowOverride None
-     Options FollowSymLinks ExecCGI Includes
+     Options ExecCGI Includes
      <IfModule mod_authz_core.c>
 @@ -38,8 +38,8 @@
      </IfModule>
@@ -38,12 +38,12 @@ Index: xymon/docs/xymon-apacheconf.txt
 +ScriptAlias /xymon-seccgi "/usr/lib/xymon/cgi-secure"
 +<Directory "/usr/lib/xymon/cgi-secure">
      AllowOverride None
-     Options FollowSymLinks ExecCGI Includes
+     Options ExecCGI Includes
      <IfModule mod_authz_core.c>
 Index: xymon/docs/install.html
 ===================================================================
---- xymon.orig/docs/install.html	2015-05-12 00:06:47.880289269 +0200
-+++ xymon/docs/install.html	2015-05-12 00:06:47.876289202 +0200
+--- xymon.orig/docs/install.html	2015-05-26 13:31:34.000000000 +0200
++++ xymon/docs/install.html	2015-05-26 13:31:34.000000000 +0200
 @@ -165,7 +165,7 @@
  password-file that controls access to this directory. Use the <tt>htpasswd</tt>
  command both to create the password file and to add or delete users:<br>
