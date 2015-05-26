@@ -1,13 +1,13 @@
 Description: Replace Apache 2.2 directives with those from 2.4
 Author: Axel Beckert <abe@debian.org>
 Bug-Debian: https://bugs.debian.org/669776
-Last-Update: 2015-05-12
+Last-Update: 2015-05-26
 
 Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:32:08.851983202 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-12 00:32:08.847983127 +0200
-@@ -61,7 +61,6 @@
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-26 22:33:08.000000000 +0200
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-26 22:33:30.000000000 +0200
+@@ -61,17 +61,23 @@
      # a specific group membership. See the Apache docs for more details.
  
      AuthUserFile @INSTALLETCDIR@/xymonpasswd
@@ -15,19 +15,20 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
      AuthType Basic
      AuthName "Xymon Administration"
  
-@@ -69,9 +68,13 @@
++    <RequireAll>
+     # "valid-user" restricts access to anyone who is logged in.
      Require valid-user
  
      # "group admins" restricts access to users who have logged in, AND
--    # are members of the "admins" group in xymongroups.
--    # Require group admins
-+    # are members of the "admins" group in xymongroups. Needs Apache
-+    # 2.4's mod_authz_groufile to be enabled. Call "a2enmod
-+    # authz_groupfile" for that.
- 
-+    # AuthGroupFile @INSTALLETCDIR@/xymongroups
-+    # Require group admins
+     # are members of the "admins" group in xymongroups.
++    #
+     # Require group admins
 +    </RequireAll>
+ 
++    # The group limitation above needs Apache 2.4's mod_authz_groufile
++    # to be enabled. Call "a2enmod authz_groupfile" for that.
++    #
++    # AuthGroupFile @INSTALLETCDIR@/xymongroups
  </Directory>
  
  # Rewrite-rules for migrating from the URL's used in Hobbit
