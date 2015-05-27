@@ -1,0 +1,38 @@
+Description: Workaround changed "ntpdate -p 2" behaviour since Wheezy
+ In Squeeze, "ntpdate -p 2 host" exits nearly immediately if the host
+ is reachable and longer if not. On Wheezy, this command always takes
+ at least two seconds, and hence slows down xymonnet runs immensely.
+ "ntpdate -p 1 host" works in Wheezy as fast as in Squeeze, though.
+ .
+ This patch changes the default for -p from 2 to 1 and changes its
+ location from being a hardcoded value in xymonnet.c to a configurable
+ value in xymonserver.cfg.
+Author: Axel Beckert <abe@debian.org>
+Bug-Debian: https://bugs.debian.org/776664
+
+Index: xymon/xymonnet/xymonnet.c
+===================================================================
+--- xymon.orig/xymonnet/xymonnet.c	2015-05-27 22:51:39.000000000 +0200
++++ xymon/xymonnet/xymonnet.c	2015-05-27 22:51:39.000000000 +0200
+@@ -1076,7 +1076,7 @@
+ 				sprintf(cmd, "%s -u -d %d %s 2>&1", cmdpath, extcmdtimeout-1, ip_to_test(t->host));
+ 			}
+ 			else {
+-				sprintf(cmd, "%s -u -q -p 2 %s 2>&1", cmdpath, ip_to_test(t->host));
++				sprintf(cmd, "%s -u -q %s 2>&1", cmdpath, ip_to_test(t->host));
+ 			}
+ 
+ 			t->open = (run_command(cmd, "no server suitable for synchronization", t->banner, 1, extcmdtimeout) == 0);
+Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
+===================================================================
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-27 22:51:39.000000000 +0200
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-27 22:51:39.000000000 +0200
+@@ -131,7 +131,7 @@
+ IPTEST_2_CLEAR_ON_FAILED_CONN="TRUE"		# If TRUE, then failing network tests go CLEAR if conn-test fails.
+ NONETPAGE=""					# Network tests that go YELLOW upon failure
+ FPING="@FPING@"					# Path and options for the ping program.
+-NTPDATE="ntpdate"				# Path to the 'ntpdate' program
++NTPDATE="ntpdate -p 1"				# Path to the 'ntpdate' program
+ TRACEROUTE="traceroute"                         # How to do traceroute on failing ping tests. Requires "trace" in hosts.cfg .
+ XYMONROUTERTEXT="router"			# What to call a failing intermediate network device.
+ NETFAILTEXT="not OK"				# Text indicating a network test failed
