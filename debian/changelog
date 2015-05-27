@@ -1,6 +1,5 @@
 xymon (4.3.21-1) UNRELEASED; urgency=medium
 
-  [ Axel Beckert ]
   * New upstream release
     + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
     + Drop patch fix-xymond-memory-leak (fixed upstream)
