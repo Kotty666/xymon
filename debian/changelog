@@ -1,7 +1,5 @@
 xymon (4.3.21-1) UNRELEASED; urgency=medium
 
-  TODO before upload: Fix xymond/etcfiles/xymon-apache-open.DIST wrt. no more ".sh"
-
   [ Axel Beckert ]
   * New upstream release
     + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
