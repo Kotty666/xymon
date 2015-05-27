@@ -1,4 +1,4 @@
-xymon (4.3.21-1) UNRELEASED; urgency=medium
+xymon (4.3.21-1) unstable; urgency=medium
 
   * New upstream release
     + Drop patch acknowledge-malloc (CVE-2015-1430, fixed upstream)
@@ -34,7 +34,7 @@ xymon (4.3.21-1) UNRELEASED; urgency=medium
     "-p" option configurable via xymonserver.cfg and default to "1"
     instead of "2".  (Closes: #776664)
 
- -- Axel Beckert <abe@debian.org>  Wed, 01 Apr 2015 18:19:02 +0200
+ -- Axel Beckert <abe@debian.org>  Thu, 28 May 2015 00:09:48 +0200
 
 xymon (4.3.17-6) unstable; urgency=medium
 
