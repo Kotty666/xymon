@@ -8,6 +8,7 @@ rrd_net_granularity
 hobbitgraph.mailq
 hobbitclient-tmpfs
 hobbit_files_ifexist
+prefer-packaged-temp-plugin-over-unpackaged-devmon
 
 # bug fixes
 526176-ldap
