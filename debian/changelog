@@ -5,6 +5,8 @@ xymon (4.3.21-2) UNRELEASED; urgency=medium
     non-packaged devmon add-on daemon. (Implemented via a modified default
     value of the TEST2RRD setting in xymonserver.cfg.)
   * Add DEP3 patch headers to all remaining patches.
+  * Cherry-pick r7669 from upstream 4.x-master branch to fix zombie
+    processes after dropping host records.
 
  -- Axel Beckert <abe@debian.org>  Thu, 28 May 2015 14:03:06 +0200
 

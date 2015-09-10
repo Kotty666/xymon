@@ -25,3 +25,6 @@ netstat-ant-vs-ipv6-address-truncating
 apache2.4
 disk-no-duplicate-root
 workaround-changed-ntpdate-behaviour
+
+# Cherry-picked from upstream
+cherry-pick-r7669-fix-zombies-after-dropping-host-records
