@@ -9,6 +9,7 @@ xymon (4.3.21-2) UNRELEASED; urgency=medium
     processes after dropping host records.
   * Bump debhelper compatibility to 9 as recommended.
     + Bump version debhelper build-dependency accordingly.
+  * Fix misspelling of the GPL's full name in debian/copyright.
 
  -- Axel Beckert <abe@debian.org>  Thu, 28 May 2015 14:03:06 +0200
 

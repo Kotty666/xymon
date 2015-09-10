@@ -119,7 +119,7 @@ lib/ripemd.h:
   The licence and distribution terms for any publically available version or
   derivative of this code cannot be changed.  i.e. this code cannot simply be
   copied and put under another distribution licence
-  [including the GNU Public Licence.]
+  [including the GNU General Public Licence.]
 
 lib/sha1.c:
   100% Public Domain, by Steve Reid <steve@edmweb.com>, with small changes
