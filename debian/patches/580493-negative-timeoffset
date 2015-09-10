@@ -1,4 +1,16 @@
-See http://bugs.debian.org/580493
+Description: Support negative values in clock.rrd
+ We have some trouble with the clocks of VMware guest systems running
+ too fast.  For this I want to have a look at the "Clock offset" RRD,
+ that can be found in "trends".  The problem is, that a clock that runs
+ too fast, creates a negative value, that isn't allowed in clock.rrd.
+ .
+ The problem is, that the clock.rrd is generated with 0 as the minimum
+ value.  Changing this to "U" (unlimited), solves this problem, at
+ least for new clock.rrd files.
+Bug-Debian: http://bugs.debian.org/580493
+Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
+Last-Update: 2015-09-10
+Reviewed-By: Axel Beckert <abe@debian.org>
 
 Index: xymon/xymond/rrd/do_la.c
 ===================================================================

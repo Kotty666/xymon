@@ -1,4 +1,6 @@
-Fix paths to fit into the Debian directory structure
+Description: Fix paths to fit into the Debian directory structure
+Forwarded: not-needed
+Last-Update: 2015-09-10
 
 Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 ===================================================================

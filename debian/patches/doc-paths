@@ -1,4 +1,9 @@
-Change paths in documentation to fit Debian paths
+Description: Change paths in documentation to fit Debian paths
+Forwarded: not-needed
+Bug-Debian: https://bugs.debian.org/440949
+Author: Christoph Berg <myon@debian.org>
+Last-Update: 2015-09-10
+Reviewed-By: Axel Beckert <abe@debian.org>
 
 Index: xymon/docs/xymon-apacheconf.txt
 ===================================================================

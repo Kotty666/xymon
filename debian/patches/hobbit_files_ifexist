@@ -1,3 +1,9 @@
+Description: Add "IFEXIST" patch to hobbit-clients.cfg/files test
+Author: Bernd Zeimetz <bzed@debian.org>
+Acked-By: Christoph Berg <myon@debian.org>
+Forwarded: no
+Last-Update: 2015-09-10
+
 Index: xymon/client/localclient.cfg
 ===================================================================
 --- xymon.orig/client/localclient.cfg	2015-05-12 00:24:07.234201450 +0200

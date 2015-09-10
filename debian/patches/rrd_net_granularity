@@ -1,3 +1,8 @@
+Description: Improve TCP tests time granularity
+Author: Christoph Berg <myon@debian.org>
+Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
+Last-Update: 2015-09-10
+
 Index: xymon/xymond/rrd/do_net.c
 ===================================================================
 --- xymon.orig/xymond/rrd/do_net.c	2012-07-25 17:57:03.000000000 +0200

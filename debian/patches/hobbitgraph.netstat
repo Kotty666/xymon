@@ -1,3 +1,15 @@
+Description: Adjust description width in the netstat graphs
+ The text below the ifstat RRD graphic is quite unreadable, because it
+ shows all numbers as 10.1lf, which means you have very long numbers
+ which don't fit into the graphic.  As an alternativ I suggest
+ formatting the numbers as 5.1lf%s like the netstat uses, which looks
+ much more readable.
+Author: Roland Rosenfeld <roland@spinnaker.de>
+Bug-Debian: https://bugs.debian.org/447484
+Acked-By: Christoph Berg <myon@debian.org>
+Last-Update: 2015-09-10
+Forwarded: no
+
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
 --- xymon.orig/xymond/etcfiles/graphs.cfg	2014-01-10 01:59:49.574516438 +0100

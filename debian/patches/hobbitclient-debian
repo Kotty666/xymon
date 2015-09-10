@@ -1,3 +1,8 @@
+Description: Send (reformatted) dpkg -l output with client message
+Author: Christoph Berg <myon@debian.org>
+Last-Update: 2015-09-10
+Forwarded: not-needed
+
 Index: xymon/client/xymonclient-linux.sh
 ===================================================================
 --- xymon.orig/client/xymonclient-linux.sh	2013-05-20 16:21:55.890506445 +0200

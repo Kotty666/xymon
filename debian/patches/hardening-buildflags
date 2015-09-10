@@ -1,4 +1,7 @@
-Care that CFLAGS set in debian/rules are honoured.
+Description: Care that CFLAGS set in debian/rules are honoured.
+Author: Axel Beckert <abe@debian.org>
+Forwarded: no
+Last-Update: 2015-09-10
 
 Index: xymon/build/Makefile.Linux
 ===================================================================

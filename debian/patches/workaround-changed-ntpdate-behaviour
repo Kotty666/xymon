@@ -9,6 +9,8 @@ Description: Workaround changed "ntpdate -p 2" behaviour since Wheezy
  value in xymonserver.cfg.
 Author: Axel Beckert <abe@debian.org>
 Bug-Debian: https://bugs.debian.org/776664
+Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
+Last-Update: 2015-09-10
 
 Index: xymon/xymonnet/xymonnet.c
 ===================================================================

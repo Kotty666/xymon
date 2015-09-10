@@ -4,6 +4,7 @@ xymon (4.3.21-2) UNRELEASED; urgency=medium
     hobbit-plugins over supporting temperature values from the
     non-packaged devmon add-on daemon. (Implemented via a modified default
     value of the TEST2RRD setting in xymonserver.cfg.)
+  * Add DEP3 patch headers to all remaining patches.
 
  -- Axel Beckert <abe@debian.org>  Thu, 28 May 2015 14:03:06 +0200
 

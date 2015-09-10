@@ -1,3 +1,8 @@
+Description: Fix tons of lintian warnings "hyphen-used-as-minus-sign"
+Author: Axel Beckert <abe@debian.org>
+Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
+Last-Update: 2015-09-10
+
 Index: xymon/common/clientupdate.1
 ===================================================================
 --- xymon.orig/common/clientupdate.1	2015-05-19 12:14:28.000000000 +0200

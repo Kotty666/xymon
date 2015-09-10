@@ -1,4 +1,7 @@
-Support configurable content type
+Description: Add HTMLCHARSET headers to all html pages generated
+Author: Christoph Berg <myon@debian.org>
+Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
+Last-Update: 2015-09-10
 
 Index: xymon/xymond/webfiles/acknowledge_header
 ===================================================================

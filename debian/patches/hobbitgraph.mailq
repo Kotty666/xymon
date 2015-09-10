@@ -1,3 +1,13 @@
+Description: Fix wrong regex in mailq graph
+ The comment in the file states 'This handles "mailq.rrd",
+ "mailqin.rrd" and "mailqout.rrd"', but this isn't correct, because
+ mailq(.+).rrd doesn't handle mailq.rrd.
+Bug-Debian: https://bugs.debian.org/450830
+Author: Roland Rosenfeld <roland@spinnaker.de>
+Acked-By: Christoph Berg <myon@debian.org>
+Last-Update: 2015-09-10
+Forwarded: no
+
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
 --- xymon.orig/xymond/etcfiles/graphs.cfg	2011-09-30 00:29:04.000000000 +0200

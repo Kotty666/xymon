@@ -1,4 +1,8 @@
-Fixes tons of spelling errors found by lintian initally and then later by grep.
+Description: Fix tons of spelling errors
+ Most of them were found by lintian initally and then later by grep.
+Author: Axel Beckert <abe@debian.org>
+Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
+Last-Update: 2015-09-10
 
 Index: xymon/docs/install.html
 ===================================================================
