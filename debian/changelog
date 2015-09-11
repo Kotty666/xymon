@@ -1,6 +1,6 @@
 xymon (4.3.21-2) UNRELEASED; urgency=medium
 
-  * Add patch to prefer a working graphs in the temp plugin from
+  * Add patch to prefer working graphs in the temp plugin from
     hobbit-plugins over supporting temperature values from the
     non-packaged devmon add-on daemon. (Implemented via a modified default
     value of the TEST2RRD setting in xymonserver.cfg.)
