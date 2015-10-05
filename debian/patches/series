@@ -28,3 +28,4 @@ workaround-changed-ntpdate-behaviour
 
 # Cherry-picked from upstream
 cherry-pick-r7669-fix-zombies-after-dropping-host-records
+fix-wmlgen-segfault
