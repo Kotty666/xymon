@@ -1,3 +1,9 @@
+xymon (4.3.21-3) UNRELEASED; urgency=medium
+
+  * Rename all patches to sport a number prefix and a ".patch" suffix.
+
+ -- Axel Beckert <abe@debian.org>  Mon, 05 Oct 2015 19:02:02 +0200
+
 xymon (4.3.21-2) unstable; urgency=low
 
   * Add patch to prefer working graphs in the temp plugin from
