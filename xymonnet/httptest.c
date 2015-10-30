@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httptest.c 7632 2015-04-17 15:55:57Z jccleaver $";
+static char rcsid[] = "$Id: httptest.c 7703 2015-10-19 19:51:29Z jccleaver $";
 
 #include <sys/types.h>
 #include <limits.h>
@@ -300,7 +300,8 @@ void tcp_http_final_callback(void *priv)
 		int http1subver;
 		char *p;
 
-		sscanf(item->headers, "HTTP/1.%d %ld", &http1subver, &item->httpstatus);
+		/* TODO: HTTP2 ? */
+		sscanf(item->headers, "HTTP/1.%d %d", &http1subver, &item->httpstatus);
 
 		item->contenttype = NULL;
 		p = item->headers;
@@ -321,8 +322,8 @@ void tcp_http_final_callback(void *priv)
 	}
 
 	if (item->tcptest->errcode != CONTEST_ENOERROR) {
-		/* Flag error by setting httpstatus to 0 */
-		item->httpstatus = 0;
+		/* Flag error by setting httpstatus to inverted error code. */
+		item->httpstatus = 0 - item->tcptest->errcode;
 	}
 }
 
@@ -360,7 +361,7 @@ void add_http_test(testitem_t *t)
 	httptest->contlen = -1;
 	httptest->parsestatus = (httptest->weburl.proxyurl ? httptest->weburl.proxyurl->parseerror : httptest->weburl.desturl->parseerror);
 
-	/* If there was a parse error in the URL, dont run the test */
+	/* If there was a parse error in the URL, don't run the test */
 	if (httptest->parsestatus) return;
 
 
@@ -586,6 +587,7 @@ void add_http_test(testitem_t *t)
 	{
 		char useragent[100];
 		char *browser = NULL;
+		char *httpheaders = NULL;
 
 		if (hinfo) browser = xmh_item(hinfo, XMH_BROWSER);
 
@@ -597,6 +599,12 @@ void add_http_test(testitem_t *t)
 		}
 
 		addtobuffer(httprequest, useragent);
+
+		if (hinfo) httpheaders = xmh_item(hinfo, XMH_HTTPHEADERS);
+		if (httpheaders) {
+			addtobuffer(httprequest, httpheaders);
+			addtobuffer(httprequest, "\r\n");
+		}
 	}
 	if (httptest->weburl.desturl->auth) {
 		if (strncmp(httptest->weburl.desturl->auth, "CERT:", 5) == 0) {

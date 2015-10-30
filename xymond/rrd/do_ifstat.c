@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char ifstat_rcsid[] = "$Id: do_ifstat.c 7609 2015-03-22 00:21:16Z jccleaver $";
+static char ifstat_rcsid[] = "$Id: do_ifstat.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 static char *ifstat_params[] = { "DS:bytesSent:DERIVE:600:0:U", 
 	                         "DS:bytesReceived:DERIVE:600:0:U", 
@@ -19,7 +19,7 @@ static void *ifstat_tpl       = NULL;
 /* eth0   Link encap:                                                 */
 /*        RX bytes: 1829192 (265.8 MiB)  TX bytes: 1827320 (187.7 MiB */
 static const char *ifstat_linux_exprs[] = {
-	"^([a-z]+[0123456789.:]*|lo:?)\\s",
+	"^([a-z0-9]+(_[0-9]+)?:*|lo:?)\\s",
 	"^\\s+RX bytes:([0-9]+) .*TX bytes.([0-9]+) ",
 	"^\\s+RX packets\\s+[0-9]+\\s+bytes\\s+([0-9]+) ",
 	"^\\s+TX packets\\s+[0-9]+\\s+bytes\\s+([0-9]+) "
@@ -208,7 +208,7 @@ int do_ifstat_rrd(char *hostname, char *testname, char *classname, char *pagepat
 				/*
 				 * Linux' netif aliases mess up things. 
 				 * Clear everything when we see an interface name.
-				 * But we dont want to track the "lo" interface.
+				 * But we don't want to track the "lo" interface.
 				 */
 
 				/* Strip off the last character if it is a colon (:) */

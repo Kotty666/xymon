@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: contest.c 7597 2015-03-13 02:28:00Z jccleaver $";
+static char rcsid[] = "$Id: contest.c 7698 2015-10-19 08:18:34Z jccleaver $";
 
 #include "config.h"
 
@@ -65,6 +65,7 @@ static tcptest_t *thead = NULL;
 
 int shuffletests = 0;
 int sslincludecipherlist = 1;
+int sslshowallciphers = 0;
 int snienabled = 0;	/* SNI disabled by default */
 
 static svcinfo_t svcinfo_http  = { "http", NULL, 0, NULL, 0, 0, (TCP_GET_BANNER|TCP_HTTP), 80 };
@@ -294,10 +295,10 @@ static int do_telnet_options(tcptest_t *item)
 		}
 	        *outp = 255; outp++;
 		inp++; remain--;
-		if ((*inp == 251) || (*inp == 252))     /* WILL or WONT */
-			y = 254;                          /* -> DONT */
-		if ((*inp == 253) || (*inp == 254))     /* DO or DONT */
-			y = 252;                          /* -> WONT */
+		if ((*inp == 251) || (*inp == 252))     /* WILL or WON'T */
+			y = 254;                          /* -> DON'T */
+		if ((*inp == 253) || (*inp == 254))     /* DO or DON'T */
+			y = 252;                          /* -> WON'T */
 		if (y) {
 			*outp = y; outp++;
 			inp++; remain--;
@@ -390,7 +391,7 @@ static int cert_password_cb(char *buf, int size, int rwflag, void *userdata)
 	strncpy(buf, passphrase, size);
 	buf[size - 1] = '\0';
 
-	/* Clear this buffer for security! Dont want passphrases in core dumps... */
+	/* Clear this buffer for security! Don't want passphrases in core dumps... */
 	memset(passphrase, 0, sizeof(passphrase));
 
 	return strlen(buf);
@@ -445,7 +446,7 @@ static void setup_ssl(tcptest_t *item)
 	struct servent *sp;
 	char portinfo[100];
 	X509 *peercert;
-	char *certcn, *certstart, *certend, *certissuer;
+	char *certcn, *certstart, *certend, *certissuer, *certsigalg;
 	int err, keysz = 0;
 	strbuffer_t *sslinfo;
 	char msglin[2048];
@@ -644,6 +645,7 @@ static void setup_ssl(tcptest_t *item)
 
 	certcn = X509_NAME_oneline(X509_get_subject_name(peercert), NULL, 0);
 	certissuer = X509_NAME_oneline(X509_get_issuer_name(peercert), NULL, 0);
+	certsigalg = OBJ_nid2ln(OBJ_obj2nid(peercert->sig_alg->algorithm));
 	certstart = strdup(xymon_ASN1_UTCTIME(X509_get_notBefore(peercert)));
 	certend = strdup(xymon_ASN1_UTCTIME(X509_get_notAfter(peercert)));
 	{
@@ -672,8 +674,8 @@ static void setup_ssl(tcptest_t *item)
 	}
 
 	snprintf(msglin, sizeof(msglin),
-		"Server certificate:\n\tsubject:%s\n\tstart date: %s\n\texpire date:%s\n\tkey size:%d\n\tissuer:%s\n", 
-		certcn, certstart, certend, keysz, certissuer);
+		"Server certificate:\n\tsubject:%s\n\tstart date: %s\n\texpire date:%s\n\tkey size:%d\n\tissuer:%s\n\tsignature algorithm: %s\n", 
+		certcn, certstart, certend, keysz, certissuer, certsigalg);
 	addtobuffer(sslinfo, msglin);
 	item->certsubject = strdup(certcn);
 	item->certissuer = strdup(certissuer);
@@ -684,20 +686,29 @@ static void setup_ssl(tcptest_t *item)
 
 	/* We list the available ciphers in the SSL cert data */
 	if (sslincludecipherlist) {
-		int i;
-		STACK_OF(SSL_CIPHER) *sk;
+		int b1, b2;
+		b1 = SSL_get_cipher_bits(item->ssldata, &b2);
+		certsigalg = OBJ_nid2ln(X509_get_signature_type(peercert));
+		snprintf(msglin, sizeof(msglin), "\nCipher used: %s (%d bits)\n", SSL_get_cipher_name(item->ssldata), b1);
+		addtobuffer(sslinfo, msglin);
+		item->mincipherbits = b1; 
 
-		addtobuffer(sslinfo, "\nAvailable ciphers:\n");
-		sk = SSL_get_ciphers(item->ssldata);
-		for (i=0; i<sk_SSL_CIPHER_num(sk); i++) {
-			int b1, b2;
+		if (sslshowallciphers) {
+			int i;
+			STACK_OF(SSL_CIPHER) *sk;
 
-			b1 = SSL_CIPHER_get_bits(sk_SSL_CIPHER_value(sk,i), &b2);
-			snprintf(msglin, sizeof(msglin), "Cipher %d: %s (%d bits)\n", i, SSL_CIPHER_get_name(sk_SSL_CIPHER_value(sk,i)), b1);
-			addtobuffer(sslinfo, msglin);
+			addtobuffer(sslinfo, "\nAvailable ciphers:\n");
+			sk = SSL_get_ciphers(item->ssldata);
+			for (i=0; i<sk_SSL_CIPHER_num(sk); i++) {
+				int b1, b2;
 
-			if ((item->mincipherbits == 0) || (b1 < item->mincipherbits)) item->mincipherbits = b1;
-		}
+				b1 = SSL_CIPHER_get_bits(sk_SSL_CIPHER_value(sk,i), &b2);
+				snprintf(msglin, sizeof(msglin), "Cipher %d: %s (%d bits)\n", i, SSL_CIPHER_get_name(sk_SSL_CIPHER_value(sk,i)), b1);
+				addtobuffer(sslinfo, msglin);
+
+				if ((item->mincipherbits == 0) || (b1 < item->mincipherbits)) item->mincipherbits = b1;
+			}
+		}		
 	}
 
 	item->certinfo = grabstrbuffer(sslinfo);
@@ -1260,7 +1271,7 @@ restartselect:
 							item->telnetbuflen = res;
 
 							/*
-							 * Safety measure: Dont loop forever doing
+							 * Safety measure: Don't loop forever doing
 							 * telnet options.
 							 * This puts a maximum on how many times
 							 * we go here.
@@ -1353,7 +1364,7 @@ void show_tcp_test_results(void)
 		if ((item->svcinfo == &svcinfo_http) || (item->svcinfo == &svcinfo_https)) {
 			http_data_t *httptest = (http_data_t *) item->priv;
 
-			printf("httpstatus = %ld, open=%d, errcode=%d, parsestatus=%d\n",
+			printf("httpstatus = %d, open=%d, errcode=%d, parsestatus=%d\n",
 				httptest->httpstatus, httptest->tcptest->open, httptest->tcptest->errcode, httptest->parsestatus);
 			printf("Response:\n");
 			if (httptest->headers) printf("%s\n", httptest->headers); else printf("(no headers)\n");

@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymon-mailack.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: xymon-mailack.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <ctype.h>
 #include <stdio.h>
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 				firsttxtline = strdup(STRBUF(inbuf));
 			}
 
-			continue;	/* We dont care about the rest of the message body */
+			continue;	/* We don't care about the rest of the message body */
 		}
 
 		/* See if we're at the end of the mail headers */

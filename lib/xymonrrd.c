@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonrrd.c 7591 2015-02-26 21:28:16Z jccleaver $";
+static char rcsid[] = "$Id: xymonrrd.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -157,7 +157,7 @@ xymonrrd_t *find_xymon_rrd(char *service, char *flags)
 	rrd_setup();
 
 	if (flags && (strchr(flags, 'R') != NULL)) {
-		/* Dont do RRD's for reverse tests, since they have no data */
+		/* Don't do RRD's for reverse tests, since they have no data */
 		return NULL;
 	}
 

@@ -8,11 +8,11 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char la_rcsid[] = "$Id: do_la.c 7639 2015-04-23 06:14:36Z jccleaver $";
+static char la_rcsid[] = "$Id: do_la.c 7677 2015-10-01 14:09:57Z jccleaver $";
 
 int do_la_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
-	static char *la_params[]          = { "DS:la:GAUGE:600:0:U", NULL };
+	static char *la_params[]          = { "DS:la:GAUGE:600:U:U", NULL };
 	static void *la_tpl               = NULL;
 	static char *clock_params[]       = { "DS:la:GAUGE:600:U:U", NULL }; /* "la" is a misnomer, but to stay compatiable with existing RRD files */
 	static void *clock_tpl            = NULL;

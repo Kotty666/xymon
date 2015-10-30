@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_capture.c 7480 2014-09-28 09:53:05Z storner $";
+static char rcsid[] = "$Id: xymond_capture.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 			 * You can have a timeout when waiting for new
 			 * messages. If it happens, you will get a "@@idle\n"
 			 * message with sequence number 0.
-			 * If you dont want a timeout, just pass a NULL for the timeout parameter.
+			 * If you don't want a timeout, just pass a NULL for the timeout parameter.
 			 */
 			timeout = (struct timespec *)(malloc(sizeof(struct timespec)));
 			timeout->tv_sec = (atoi(argv[argi]+10));

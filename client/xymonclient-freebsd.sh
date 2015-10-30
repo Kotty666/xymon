@@ -10,7 +10,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-freebsd.sh 7618 2015-03-30 03:27:16Z jccleaver $
+# $Id: xymonclient-freebsd.sh 7707 2015-10-19 22:34:59Z jccleaver $
 
 echo "[date]"
 date
@@ -53,7 +53,7 @@ netstat -s
 echo "[ports]"
 (netstat -Wna -f inet; netstat -Wna -f inet6) | grep "^tcp"
 echo "[ps]"
-# Dont use "args". "command" works also in FreeBSD 4.x.
+# Don't use "args". "command" works also in FreeBSD 4.x.
 ps -axd -ww -o pid,ppid,user,start,state,pri,pcpu,cputime,pmem,rss,vsz,command
 
 # $TOP must be set, the install utility should do that for us if it exists.
@@ -61,6 +61,8 @@ if test "$TOP" != ""
 then
     if test -x "$TOP"
     then
+        echo "[nproc]"
+	sysctl -n hw.ncpu
         echo "[top]"
 	$TOP -n 20
     fi

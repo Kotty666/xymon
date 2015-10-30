@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_history.c 7281 2013-08-15 08:53:34Z storner $";
+static char rcsid[] = "$Id: xymond_history.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <sys/types.h>
 #include <stdio.h>
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 	MEMDEFINE(newcol2);
 	MEMDEFINE(oldcol2);
 
-	/* Dont save the error buffer */
+	/* Don't save the error buffer */
 	save_errbuf = 0;
 
 	sprintf(pidfn, "%s/xymond_history.pid", xgetenv("XYMONSERVERLOGS"));
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 	setup_signalhandler("xymond_history");
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = sig_handler;
-	sigaction(SIGCHLD, &sa, NULL);
+	signal(SIGCHLD, SIG_IGN);
 	sigaction(SIGHUP, &sa, NULL);
 	signal(SIGPIPE, SIG_DFL);
 
@@ -195,9 +195,6 @@ int main(int argc, char *argv[])
 		struct tm tstamptm;
 		int trend;
 		int childstat;
-
-		/* Pickup any finished child processes to avoid zombies */
-		while (wait3(&childstat, WNOHANG, NULL) > 0) ;
 
 		if (rotatefiles && alleventsfd) {
 			fclose(alleventsfd);
@@ -507,7 +504,7 @@ int main(int argc, char *argv[])
 			strncpy(newcol2, colorname(newcolor), 2);
 			newcol2[2] = oldcol2[2] = '\0';
 
-			if (oldcolor == -1)           trend = -1;	/* we dont know how bad it was */
+			if (oldcolor == -1)           trend = -1;	/* we don't know how bad it was */
 			else if (newcolor > oldcolor) trend = 2;	/* It's getting worse */
 			else if (newcolor < oldcolor) trend = 1;	/* It's getting better */
 			else                          trend = 0;	/* Shouldn't happen ... */

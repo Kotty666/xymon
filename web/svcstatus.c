@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus.c 7644 2015-05-01 02:44:02Z jccleaver $";
+static char rcsid[] = "$Id: svcstatus.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -523,7 +523,7 @@ int do_request(void)
 		struct stat st;
 		FILE *fd;
 		/*
-		 * Some clients (Unix disk reports) dont have a newline before the
+		 * Some clients (Unix disk reports) don't have a newline before the
 		 * "Status unchanged in ..." text. Most do, but at least Solaris and
 		 * AIX do not. So just look for the text, not the newline.
 		 */

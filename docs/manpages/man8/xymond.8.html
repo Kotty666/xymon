@@ -2,7 +2,7 @@
 <HTML><HEAD><TITLE>Manpage of XYMOND</TITLE>
 </HEAD><BODY>
 <H1>XYMOND</H1>
-Section: Maintenance Commands (8)<BR>Updated: Version 4.3.21: 22 May 2015<BR><A HREF="#index">Index</A>
+Section: Maintenance Commands (8)<BR>Updated: Version 4.3.22-beta: 29 Oct 2015<BR><A HREF="#index">Index</A>
 <A HREF="../index.html">Return to Main Contents</A><HR>
 
 <A NAME="lbAB">&nbsp;</A>
@@ -91,7 +91,7 @@ one and return all of it to the client.
 <DT>--listen=IP[:PORT]<DD>
 Specifies the IP-address and port where xymond will listen for incoming
 connections. By default, xymond listens on IP 0.0.0.0 (i.e. all IP-
-adresses available on the host) and port 1984.
+addresses available on the host) and port 1984.
 <P>
 <DT>--lqueue=NUMBER<DD>
 Specifies the listen-queue for incoming connections. You don't need to tune
@@ -117,8 +117,11 @@ Default: 10 seconds.
 <P>
 <DT>--flap-count=N<DD>
 Track the N latest status-changes for flap-detection. See the
-<B>--flap-seconds</B> option also. To disable flap-checks, set
-N to zero.
+<B>--flap-seconds</B> option also. To disable flap-checks globally, 
+set N to zero. To disable for a specific host, you must use the 
+&quot;noflap&quot; option in 
+<I><A HREF="../man5/hosts.cfg.5.html">hosts.cfg</A>(5).</I>
+
 Default: 5
 <P>
 <DT>--flap-seconds=N<DD>
@@ -164,7 +167,7 @@ broadcast to the CLICHG channel. By default, no client messages
 are pushed to the CLICHG channel. If this option is specified with
 no parameter list, all status columns that go into an alert state
 will trigger the client data to be sent to the CLICHG channel. If
-a paramater list is added to this option, only those status columns
+a parameter list is added to this option, only those status columns
 listed in the list will cause the client data to be sent to the
 CLICHG channel. Several column names can be listed, separated by
 commas. If all columns are given as &quot;!COLUMNNAME&quot;, then all status
@@ -176,12 +179,12 @@ commands to xymond.
 <P>
 By default, any host can send status-updates. If this option is used, 
 then status-updates are accepted only if they are sent by one of the 
-IP-adresses listed here, or if they are sent from the IP-address of the 
+IP-addresses listed here, or if they are sent from the IP-address of the 
 host that the updates pertains to (this is to allow Xymon clients to send in their
 own status updates, without having to list all clients here). So typically
 you will need to list your servers running network tests here.
 <P>
-The format of this option is a list of IP-adresses, optionally with a
+The format of this option is a list of IP-addresses, optionally with a
 network mask in the form of the number of bits. E.g. if you want to 
 accept status-updates from the host 172.16.10.2, you would use
 <BR>
@@ -423,6 +426,6 @@ file is read to determine the names of all known hosts.
 This document was created by
 <A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 01:15:29 GMT, May 23, 2015
+Time: 15:19:55 GMT, October 29, 2015
 </BODY>
 </HTML>

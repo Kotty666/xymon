@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-netbsd.sh 6712 2011-07-31 21:01:52Z storner $
+# $Id: xymonclient-netbsd.sh 7707 2015-10-19 22:34:59Z jccleaver $
 
 echo "[date]"
 date
@@ -48,6 +48,8 @@ if test "$TOP" != ""
 then
     if test -x "$TOP"
     then
+        echo "[nproc]"
+        sysctl -n hw.ncpu
         echo "[top]"
 	$TOP -n 20
     fi

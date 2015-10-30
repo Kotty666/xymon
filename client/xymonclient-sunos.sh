@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-sunos.sh 7356 2014-01-19 21:26:25Z storner $
+# $Id: xymonclient-sunos.sh 7678 2015-10-01 14:42:42Z jccleaver $
 
 # Work out what type of environment we are on 
 #
@@ -32,7 +32,7 @@ echo "[df]"
 # Print the root filesystem first, with the header, and those fs's that have the same type.
 ROOTFSTYPE=`/bin/df -n / | awk '{print $3}'`
 /bin/df -F $ROOTFSTYPE -k
-# Then see what fs types are in use, and weed out those we dont want.
+# Then see what fs types are in use, and weed out those we don't want.
 case $ZTYPE in
 global|Global)
    FSTYPES=`/bin/df -n -l|cut -d: -f2 | awk '{print $1}'|egrep -v "^${ROOTFSTYPE}|^proc|^fd|^mntfs|^ctfs|^devfs|^objfs|^nfs|^lofs|^tmpfs|^sharefs"|sort|uniq`

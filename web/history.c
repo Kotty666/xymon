@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: history.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: history.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -179,7 +179,7 @@ again:
 		goto again;
 	}
 
-	/* Dont try to foresee the future */
+	/* Don't try to foresee the future */
 	now = getcurrenttime(NULL);
 	if (result > now) result = now;
 
@@ -694,7 +694,7 @@ int main(int argc, char *argv[])
 		/* Must modify 4-week charts to be 5-weeks, or the last day is 19% of the bar */
 		/*
 		 * Percent-based charts look awful with 24 hours / 7 days / 28 days / 12 months as basis
-		 * because these numbers dont divide into 100 neatly. So the last item becomes
+		 * because these numbers don't divide into 100 neatly. So the last item becomes
 		 * too large (worst with the 28-day char: 100/28 = 3, last becomes (100-27*3) = 19% wide).
 		 * So adjust the periods to something that matches percent-based calculations better.
 		 */

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: url.c 7632 2015-04-17 15:55:57Z jccleaver $";
+static char rcsid[] = "$Id: url.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -415,7 +415,7 @@ void parse_url(char *inputurl, urlelem_t *url)
 	p = canonurl = (char *)malloc(canonurllen);
 	p += sprintf(p, "%s://", url->scheme);
 	/*
-	 * Dont include authentication here, since it 
+	 * Don't include authentication here, since it 
 	 * may show up in clear text on the info page.
 	 * And it is not used in URLs to access the site.
 	 * if (url->auth) p += sprintf(p, "%s@", url->auth);

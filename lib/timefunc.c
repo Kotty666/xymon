@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: timefunc.c 7433 2014-02-13 09:58:18Z storner $";
+static char rcsid[] = "$Id: timefunc.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <time.h>
 #include <sys/time.h>
@@ -411,7 +411,7 @@ int durationvalue(char *dur)
 	char *endpos;
 	char savedelim;
 
-	/* Make sure we only process the first token, dont go past whitespace or some other delimiter */
+	/* Make sure we only process the first token, don't go past whitespace or some other delimiter */
 	endpos = dur + strspn(dur, "01234567890mhdw");
 	savedelim = *endpos;
 	*endpos = '\0';

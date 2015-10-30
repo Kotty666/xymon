@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loaddata.c 7665 2015-05-23 01:03:56Z jccleaver $";
+static char rcsid[] = "$Id: loaddata.c 7689 2015-10-09 20:00:42Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -146,7 +146,7 @@ state_t *init_state(char *filename, logdata_t *log)
 	}
 
 	if (reportstart || snapshot) {
-		/* Dont do reports for info- and trends-columns */
+		/* Don't do reports for info- and trends-columns */
 		p = strrchr(filename, '.');
 		if (p == NULL) return NULL;
 		p++;
@@ -417,8 +417,8 @@ void generate_compactitems(state_t **topstate)
 			itm = (compact_t *)calloc(1, sizeof(compact_t));
 			itm->compactname = strdup(strtok_r(tok1, "=", &savep2));
 			members = strtok_r(NULL, "\n", &savep2);
-			itm->members = (char *)malloc(3 + strlen(members));
-			sprintf(itm->members, "|%s|", members);
+			itm->members = (char *)malloc(3 + (members ? strlen(members) : 0) );
+			sprintf(itm->members, "|%s|", (members ? members : "") );
 
 			if (complistsz == 0) {
 				complist = (compact_t **)calloc(2, sizeof(compact_t *));

@@ -13,7 +13,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: csvinfo.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: csvinfo.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -58,7 +58,7 @@ void parse_query(void)
 		else if (strcasecmp(cwalk->name, "db") == 0) {
 			char *val, *p;
 
-			/* Dont allow any slashes in the db-name */
+			/* Don't allow any slashes in the db-name */
 			val = cwalk->value;
 			p = strrchr(val, '/');
 			if (p) val = (p+1);
