@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: files.c 6712 2011-07-31 21:01:52Z storner $";
+static char rcsid[] = "$Id: files.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -52,7 +52,7 @@ void dropdirectory(char *dirfn, int background)
 					}
 					else if (S_ISDIR(st.st_mode)) {
 						dbgprintf("Recurse into %s\n", fn);
-						dropdirectory(fn, 0); /* Dont background the recursive calls! */
+						dropdirectory(fn, 0); /* Don't background the recursive calls! */
 					}
 				}
 			}

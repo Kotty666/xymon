@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymongen.c 7311 2013-09-04 08:49:12Z storner $";
+static char rcsid[] = "$Id: xymongen.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <stdio.h>
 #include <unistd.h>
@@ -564,7 +564,7 @@ int main(int argc, char *argv[])
 	if (xgetenv("XYMONSUBPAGEHTACCESS")) xymonsubpagehtaccess = strdup(xgetenv("XYMONSUBPAGEHTACCESS"));
 
 	/*
-	 * When doing embedded- or snapshot-pages, dont build the WML/RSS pages.
+	 * When doing embedded- or snapshot-pages, don't build the WML/RSS pages.
 	 */
 	if (embedded || snapshot) enable_wmlgen = wantrss = 0;
 	if (embedded) {

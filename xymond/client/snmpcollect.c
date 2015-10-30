@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char snmpcollect_rcsid[] = "$Id: snmpcollect.c 6712 2011-07-31 21:01:52Z storner $";
+static char snmpcollect_rcsid[] = "$Id: snmpcollect.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 /*
  * Split the snmpcollect client-message into individual mib-datasets.
@@ -41,7 +41,7 @@ void handle_snmpcollect_client(char *hostname, char *clienttype, enum ostype_t o
 		if (strcmp(mibname, "proxy") == 0) {
 			/*
 			 * Data was forwarded through a proxy - skip this section.
-			 * We dont want a "proxy" status for all SNMP-enabled hosts.
+			 * We don't want a "proxy" status for all SNMP-enabled hosts.
 			 */
 			goto sectiondone;
 		}

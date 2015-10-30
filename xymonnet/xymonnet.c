@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonnet.c 7345 2014-01-10 09:29:38Z storner $";
+static char rcsid[] = "$Id: xymonnet.c 7698 2015-10-19 08:18:34Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -101,6 +101,7 @@ char		pinglog[PATH_MAX];
 char		pingerrlog[PATH_MAX];
 pid_t		*pingpids;
 int		respcheck_color = COL_YELLOW;
+httpstatuscolor_t *httpstatusoverrides = NULL;
 int		extcmdtimeout = 30;
 int		bigfailure = 0;
 char		*defaultsourceip = NULL;
@@ -538,7 +539,7 @@ void load_tests(void)
 							if (ips) { *ips = '\0'; ips++; }
 						} while (ips && (*ips));
 					}
-					s = NULL; /* Dont add the test now - ping is special (enabled by default) */
+					s = NULL; /* Don't add the test now - ping is special (enabled by default) */
 				}
 				else if ((argnmatch(testspec, "ldap://")) || (argnmatch(testspec, "ldaps://"))) {
 					/*
@@ -828,7 +829,7 @@ void load_tests(void)
 
 			/* 
 			 * Check for a duplicate host def. Causes all sorts of funny problems.
-			 * However, dont drop the second definition - to do this, we will have
+			 * However, don't drop the second definition - to do this, we will have
 			 * to clean up the testitem lists as well, or we get crashes when 
 			 * tests belong to a non-existing host.
 			 */
@@ -1062,21 +1063,15 @@ void run_ntp_service(service_t *service)
 	p = getenv("SNTP");	/* Plain "getenv" as we want to know if it's unset */
 	use_sntp = (p != NULL);
 
-	if (use_sntp) {
-		strcpy(cmdpath, p);
-	}
-	else {
-		p = xgetenv("NTPDATE");
-		strcpy(cmdpath, (p ? p : "ntpdate"));
-	}
+	strcpy(cmdpath, (use_sntp ? xgetenv("SNTP") : xgetenv("NTPDATE")) );
 
 	for (t=service->items; (t); t = t->next) {
 		if (!t->host->dnserror) {
 			if (use_sntp) {
-				sprintf(cmd, "%s -u -d %d %s 2>&1", cmdpath, extcmdtimeout-1, ip_to_test(t->host));
+				sprintf(cmd, "%s %s -d %d %s 2>&1", cmdpath, xgetenv("SNTPOPTS"), extcmdtimeout-1, ip_to_test(t->host));
 			}
 			else {
-				sprintf(cmd, "%s -u -q -p 2 %s 2>&1", cmdpath, ip_to_test(t->host));
+				sprintf(cmd, "%s %s %s 2>&1", cmdpath, xgetenv("NTPDATEOPTS"), ip_to_test(t->host));
 			}
 
 			t->open = (run_command(cmd, "no server suitable for synchronization", t->banner, 1, extcmdtimeout) == 0);
@@ -1156,9 +1151,8 @@ int start_ping_service(service_t *service)
 
 	pingcount = 0;
 	pingpids = calloc(pingchildcount, sizeof(pid_t));
-	pingcmd = strdup(getenv_default("FPING", "xymonping", NULL));
-	pingcmd = realloc(pingcmd, strlen(pingcmd)+5);
-	strcat(pingcmd, " -Ae");
+	pingcmd = malloc(strlen(xgetenv("FPING")) + strlen(xgetenv("FPINGOPTS")) + 2);
+	sprintf(pingcmd, "%s %s", xgetenv("FPING"), xgetenv("FPINGOPTS"));
 
 	sprintf(pinglog, "%s/ping-stdout.%lu", xgetenv("XYMONTMP"), (unsigned long)getpid());
 	sprintf(pingerrlog, "%s/ping-stderr.%lu", xgetenv("XYMONTMP"), (unsigned long)getpid());
@@ -1484,11 +1478,12 @@ int decide_color(service_t *service, char *svcname, testitem_t *test, int failgo
 		if ((color == COL_RED) && test->host->dotrace && !test->host->dialup && !test->reverse && !test->dialup) {
 			char cmd[PATH_MAX];
 
-			if (xgetenv("TRACEROUTE")) {
-				sprintf(cmd, "%s %s 2>&1", xgetenv("TRACEROUTE"), test->host->ip);
+			if (getenv("TRACEROUTEOPTS")) {
+				/* post 4.3.21 */
+				sprintf(cmd, "%s %s %s 2>&1", xgetenv("TRACEROUTE"), xgetenv("TRACEROUTEOPTS"), test->host->ip);
 			}
 			else {
-				sprintf(cmd, "traceroute -n -q 2 -w 2 -m 15 %s 2>&1", test->host->ip);
+				sprintf(cmd, "%s %s 2>&1", xgetenv("TRACEROUTE"), test->host->ip);
 			}
 			test->host->traceroute = newstrbuffer(0);
 			run_command(cmd, NULL, test->host->traceroute, 0, extcmdtimeout);
@@ -1774,8 +1769,8 @@ void send_results(service_t *service, int failgoesclear)
 		}
 
 		if (t->duration.tv_sec != -1) {
-			sprintf(msgtext, "\nSeconds: %u.%02u\n", 
-				(unsigned int)t->duration.tv_sec, (unsigned int)t->duration.tv_nsec / 10000000);
+			sprintf(msgtext, "\nSeconds: %u.%.9ld\n", 
+				(unsigned int)t->duration.tv_sec, t->duration.tv_nsec);
 			addtostatus(msgtext);
 		}
 		addtostatus("\n\n");
@@ -2161,6 +2156,9 @@ int main(int argc, char *argv[])
 		else if (strcmp(argv[argi], "--no-cipherlist") == 0) {
 			sslincludecipherlist = 0;
 		}
+		else if (strcmp(argv[argi], "--showallciphers") == 0) {
+			sslshowallciphers = 1;
+		}
 
 		/* Debugging options */
 		else if (strcmp(argv[argi], "--debug") == 0) {
@@ -2212,7 +2210,7 @@ int main(int argc, char *argv[])
 			printf("    --timelimit=N               : Warns if the complete test run takes longer than N seconds [TASKSLEEP]\n");
 			printf("\nOptions for simple TCP service tests:\n");
 			printf("    --checkresponse             : Check response from known services\n");
-			printf("    --no-flags                  : Dont send extra xymonnet test flags\n");
+			printf("    --no-flags                  : Don't send extra xymonnet test flags\n");
 			printf("\nOptions for PING (connectivity) tests:\n");
 			printf("    --ping[=COLUMNNAME]         : Enable ping checking, default columname is \"conn\"\n");
 			printf("    --noping                    : Disable ping checking\n");
@@ -2226,6 +2224,8 @@ int main(int argc, char *argv[])
 			printf("    --no-ssl                    : Disable SSL certificate check\n");
 			printf("    --sslwarn=N                 : Go yellow if certificate expires in less than N days (default:30)\n");
 			printf("    --sslalarm=N                : Go red if certificate expires in less than N days (default:10)\n");
+			printf("    --no-cipherlist             : Do not display SSL cipher data in the SSL certificate check\n");
+			printf("    --showallciphers            : List all available ciphers supported by the local SSL library\n");
 			printf("\nDebugging options:\n");
 			printf("    --no-update                 : Send status messages to stdout instead of to Xymon\n");
 			printf("    --timing                    : Trace the amount of time spent on each series of tests\n");
@@ -2555,7 +2555,7 @@ int main(int argc, char *argv[])
 		sprintf(msgline, "\nStatistics:\n Hosts total           : %8d\n Hosts with no tests   : %8d\n Total test count      : %8d\n Status messages       : %8d\n Alert status msgs     : %8d\n Transmissions         : %8d\n", 
 			hostcount, notesthostcount, testcount, xymonstatuscount, xymonnocombocount, xymonmsgcount);
 		addtostatus(msgline);
-		sprintf(msgline, "\nDNS statistics:\n # hostnames resolved  : %8d\n # succesful           : %8d\n # failed              : %8d\n # calls to dnsresolve : %8d\n",
+		sprintf(msgline, "\nDNS statistics:\n # hostnames resolved  : %8d\n # successful          : %8d\n # failed              : %8d\n # calls to dnsresolve : %8d\n",
 			dns_stats_total, dns_stats_success, dns_stats_failed, dns_stats_lookups);
 		addtostatus(msgline);
 		sprintf(msgline, "\nTCP test statistics:\n # TCP tests total     : %8d\n # HTTP tests          : %8d\n # Simple TCP tests    : %8d\n # Connection attempts : %8d\n # bytes written       : %8ld\n # bytes read          : %8ld\n",

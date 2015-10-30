@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: environ.c 7646 2015-05-01 02:59:44Z jccleaver $";
+static char rcsid[] = "$Id: environ.c 7681 2015-10-08 01:15:48Z jccleaver $";
 
 #include <ctype.h>
 #include <string.h>
@@ -99,8 +99,13 @@ const static struct {
 	{ "IPTEST_2_CLEAR_ON_FAILED_CONN", "TRUE" },
 	{ "NONETPAGE", "" },
 	{ "FPING", "xymonping" },
+	{ "FPINGOPTS", "-Ae" },
+	{ "SNTP", "sntp" },
+	{ "SNTPOPTS", "-u" },
 	{ "NTPDATE", "ntpdate" },
+	{ "NTPDATEOPTS", "-u -q -p 1" },
 	{ "TRACEROUTE", "traceroute" },
+	{ "TRACEROUTEOPTS", "-n -q 2 -w 2 -m 15" },
 	{ "RPCINFO", "rpcinfo" },
 	{ "XYMONROUTERTEXT", "router" },
 	{ "NETFAILTEXT", "not OK" },
@@ -312,12 +317,12 @@ char *getenv_default(char *envname, char *envdefault, char **buf)
 {
 	static char *val;
 
-	val = getenv(envname);	/* Dont use xgetenv() here! */
+	val = getenv(envname);	/* Don't use xgetenv() here! */
 	if (!val) {
 		val = (char *)malloc(strlen(envname) + strlen(envdefault) + 2);
 		sprintf(val, "%s=%s", envname, envdefault);
 		putenv(val);
-		/* Dont free the string - it must be kept for the environment to work */
+		/* Don't free the string - it must be kept for the environment to work */
 		val = xgetenv(envname);	/* OK to use xgetenv here */
 	}
 

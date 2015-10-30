@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: ldaptest.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: ldaptest.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <sys/types.h>
 #include <stdlib.h>
@@ -106,7 +106,7 @@ int add_ldap_test(testitem_t *t)
 	 * At this point, the plain TCP checks have already run.
 	 * So we know from the test found in t->privdata whether
 	 * the LDAP port is open.
-	 * If it is not open, then dont run this check.
+	 * If it is not open, then don't run this check.
 	 */
 	if (basecheck->open == 0) {
 		/* Cannot connect to LDAP port. */
@@ -476,8 +476,8 @@ void send_ldap_results(service_t *ldaptest, testedhost_t *host, char *nonetpage,
 		}
 		if (req->faileddeps) addtostatus(req->faileddeps);
 
-		sprintf(msgline, "\nSeconds: %u.%02u\n",
-			(unsigned int)req->duration.tv_sec, (unsigned int)req->duration.tv_nsec / 10000000);
+		sprintf(msgline, "\nSeconds: %u.%.9ld\n",
+			(unsigned int)req->duration.tv_sec, req->duration.tv_nsec);
 
 		addtostatus(msgline);
 	}
@@ -496,9 +496,9 @@ void show_ldap_test_results(service_t *ldaptest)
 		req = (ldap_data_t *) t->privdata;
 
 		printf("URL        : %s\n", t->testspec);
-		printf("Time spent : %u.%02u\n", 
+		printf("Time spent : %u.%.9ld\n", 
 			(unsigned int)req->duration.tv_sec, 
-			(unsigned int)req->duration.tv_nsec / 10000000);
+			req->duration.tv_nsec);
 		printf("LDAP output:\n%s\n", textornull(req->output));
 		printf("------------------------------------------------------\n");
 	}
@@ -536,7 +536,7 @@ int main(int argc, char *argv[])
 		argi++;
 	}
 
-	/* For testing, dont crash in sendmsg when no XYMSRV defined */
+	/* For testing, don't crash in sendmsg when no XYMSRV defined */
 	dontsendmessages = 1;
 	if (xgetenv("XYMSRV") == NULL) putenv("XYMSRV=127.0.0.1");
 

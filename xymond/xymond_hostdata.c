@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_hostdata.c 7199 2013-07-23 05:27:30Z storner $";
+static char rcsid[] = "$Id: xymond_hostdata.c 7669 2015-06-11 22:39:01Z jccleaver $";
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -132,6 +132,7 @@ int main(int argc, char *argv[])
 	setup_signalhandler("xymond_hostdata");
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = sig_handler;
+	signal(SIGCHLD, SIG_IGN);
 	sigaction(SIGHUP, &sa, NULL);
 	signal(SIGPIPE, SIG_DFL);
 

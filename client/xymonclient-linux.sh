@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-linux.sh 7618 2015-03-30 03:27:16Z jccleaver $
+# $Id: xymonclient-linux.sh 7707 2015-10-19 22:34:59Z jccleaver $
 
 echo "[date]"
 date
@@ -81,6 +81,8 @@ if test "$TOP" != ""
 then
     if test -x "$TOP"
     then
+	echo "[nproc]"
+	nproc --all 2>/dev/null
         echo "[top]"
 	export CPULOOP ; CPULOOP=1 ;
 	$TOP -b -n 1 

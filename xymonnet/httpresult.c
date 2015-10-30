@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: httpresult.c 7502 2015-02-08 01:34:16Z jccleaver $";
+static char rcsid[] = "$Id: httpresult.c 7699 2015-10-19 09:25:16Z jccleaver $";
 
 #include <sys/types.h>
 #include <stdlib.h>
@@ -27,30 +27,30 @@ static char rcsid[] = "$Id: httpresult.c 7502 2015-02-08 01:34:16Z jccleaver $";
 #include "httpcookies.h"
 #include "httpresult.h"
 
-static int statuscolor(testedhost_t *h, long status)
+static int statuscolor(testedhost_t *h, int status)
 {
-	int result;
+	int result = COL_YELLOW;
+
+	/* Default behavior is to treat HTTP codes as follows:
+	 *     <100 = connection error (clear if dialup, otherwise red)
+	 *	1xx = yellow (xymonnet will handle 100 Continues already, so if we're here then something went wrong)
+	 *	2xx = green
+	 *	3xx = yellow
+	 *	4xx/5xx = red
+	 * Exceptions are listed below.
+	 * 
+	 * TODO: Site-specific defaults; extending 'httpstatus' to be layered ontop of other http modifiers
+	 */
 
 	switch(status) {
-	  case 000:			/* transportlayer reports error */
-		result = (h->dialup ? COL_CLEAR : COL_RED);
-		break;
-	  case 100: /* Continue - should be ok */
-	  case 200: case 201: case 202: case 203: case 204: case 205: case 206:
-	  case 301: case 302: case 303: case 307:
-	  case 401: case 403: 		/* Is "Forbidden" an OK status ? */
+	  case 200: /* OK - most common case */
+	  case 302: /* Temp Redirect */
+	  case 303: /* See Other */
+	  case 307: /* Temp Redirect (HTTP 1.1) */
 		result = COL_GREEN;
 		break;
-	  case 400: case 404: case 405: case 406:
-		result = COL_RED;	/* Trouble getting page */
-		break;
-	  case 500:
-	  case 501:
-	  case 502:  /* Proxy error */
-	  case 503:
-	  case 504:
-	  case 505:
-		result = COL_RED;	/* Server error */
+	  case 306: /* Defunct HTTP response */
+		result = COL_RED;
 		break;
 	  case STATUS_CONTENTMATCH_FAILED:
 		result = COL_RED;		/* Pseudo status: content match fails */
@@ -59,8 +59,16 @@ static int statuscolor(testedhost_t *h, long status)
 	  case STATUS_CONTENTMATCH_NOFILE:	/* Pseudo status: content match requested, but no match-file */
 		result = COL_YELLOW;
 		break;
+	  case 000:				/* transport layer reports error */
+		result = (h->dialup ? COL_CLEAR : COL_RED);
+		break;
 	  default:
-		result = COL_YELLOW;	/* Unknown status */
+		/* Unknown or custom status */
+		result = (result < 100) ? (h->dialup ? COL_CLEAR : COL_RED) :
+			 (result < 200) ? COL_YELLOW :
+			 (result < 300) ? COL_GREEN  :
+			 (result < 400) ? COL_YELLOW :
+			 COL_RED;
 		break;
 	}
 
@@ -68,14 +76,14 @@ static int statuscolor(testedhost_t *h, long status)
 }
 
 
-static int statuscolor_by_set(testedhost_t *h, long status, char *okcodes, char *badcodes)
+static int statuscolor_by_set(testedhost_t *h, int status, char *okcodes, char *badcodes)
 {
 	int result = -1;
 	char codestr[10];
 	pcre *ptn;
 
 	/* Use code 999 to indicate we could not fetch the URL */
-	sprintf(codestr, "%ld", (status ? status : 999));
+	sprintf(codestr, "%d", (status ? status : 999));
 
 	if (okcodes) {
 		ptn = compileregex(okcodes);
@@ -203,7 +211,7 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 			char m1[100];
 
 			if (req->weburl.okcodes || req->weburl.badcodes) {
-				sprintf(m1, "Unwanted HTTP status %ld", req->httpstatus);
+				sprintf(m1, "Unwanted HTTP status %d", req->httpstatus);
 			}
 			else if (req->headers) {
 				char *p = req->headers;
@@ -221,7 +229,7 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 				p = m1 + strcspn(m1, "\n\r"); *p = '\0';
 			}
 			else {
-				sprintf(m1, "Connected, but got empty response (code:%ld)", req->httpstatus);
+				sprintf(m1, "Connected, but got empty response (code: %d)", req->httpstatus);
 			}
 			addtobuffer(msgtext, m1);
 			req->errorcause = strdup(m1);
@@ -231,7 +239,7 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 			if (req->weburl.okcodes || req->weburl.badcodes) {
 				char m1[100];
 
-				sprintf(m1, " (HTTP status %ld)", req->httpstatus);
+				sprintf(m1, " (HTTP status %d)", req->httpstatus);
 				addtobuffer(msgtext, m1);
 			}
 		}
@@ -284,7 +292,7 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 			if (req->weburl.okcodes || req->weburl.badcodes) {
 				char m1[100];
 
-				sprintf(m1, " (HTTP status %ld)", req->httpstatus);
+				sprintf(m1, " (HTTP status %d)", req->httpstatus);
 				addtostatus(m1);
 			}
 			addtostatus("\n");
@@ -295,9 +303,9 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 			}
 			if (req->faileddeps) addtostatus(req->faileddeps);
 
-			sprintf(urlmsg, "\nSeconds: %5d.%02d\n\n", 
+			sprintf(urlmsg, "\nSeconds: %u.%.9ld\n\n", 
 				(unsigned int)req->tcptest->totaltime.tv_sec, 
-				(unsigned int)req->tcptest->totaltime.tv_nsec / 10000000 );
+				req->tcptest->totaltime.tv_nsec);
 			addtostatus(urlmsg);
 			xfree(urlmsg);
 		}
@@ -335,7 +343,7 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 		if (req->weburl.okcodes || req->weburl.badcodes) {
 			char m1[100];
 
-			sprintf(m1, " (HTTP status %ld)", req->httpstatus);
+			sprintf(m1, " (HTTP status %d)", req->httpstatus);
 			addtostatus(m1);
 		}
 		addtostatus("\n");
@@ -358,9 +366,9 @@ void send_http_results(service_t *httptest, testedhost_t *host, testitem_t *firs
 		}
 		if (req->faileddeps) addtostatus(req->faileddeps);
 
-		sprintf(msgline, "\nSeconds: %5d.%02d\n\n", 
+		sprintf(msgline, "\nSeconds: %u.%.9ld\n\n", 
 			(unsigned int)req->tcptest->totaltime.tv_sec, 
-			(unsigned int)req->tcptest->totaltime.tv_nsec / 10000000 );
+			req->tcptest->totaltime.tv_nsec);
 		addtostatus(msgline);
 
 		addtostatus("\n\n");
@@ -585,7 +593,7 @@ void send_content_results(service_t *httptest, testedhost_t *host,
 			addtostatus("\nNo body output received from server\n\n");
 		}
 		else if (!host->hidehttp) {
-			/* Dont flood xymond with data */
+			/* Don't flood xymond with data */
 			if (req->outlen > MAX_CONTENT_DATA) {
 				*(req->output + MAX_CONTENT_DATA) = '\0';
 				req->outlen = MAX_CONTENT_DATA;
@@ -638,7 +646,7 @@ void show_http_test_results(service_t *httptest)
 		req = (http_data_t *) t->privdata;
 
 		printf("URL                      : %s\n", req->url);
-		printf("HTTP status              : %lu\n", req->httpstatus);
+		printf("HTTP status              : %d\n", req->httpstatus);
 		printf("HTTP headers\n%s\n", textornull(req->headers));
 		printf("HTTP output\n%s\n", textornull(req->output));
 		printf("------------------------------------------------------\n");

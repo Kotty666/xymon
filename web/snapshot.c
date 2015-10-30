@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: snapshot.c 7136 2012-08-01 08:51:24Z storner $";
+static char rcsid[] = "$Id: snapshot.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
 	else if (childpid > 0) {
 		wait(&childstat);
 
-		/* Ignore SIGHUP so we dont get killed during cleanup of XYMONSNAPDIR */
+		/* Ignore SIGHUP so we don't get killed during cleanup of XYMONSNAPDIR */
 		signal(SIGHUP, SIG_IGN);
 
 		if (WIFEXITED(childstat) && (WEXITSTATUS(childstat) != 0) ) {

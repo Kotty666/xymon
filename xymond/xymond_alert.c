@@ -40,7 +40,7 @@
  *   active alerts for this host.test combination.
  */
 
-static char rcsid[] = "$Id: xymond_alert.c 7359 2014-01-21 16:09:01Z storner $";
+static char rcsid[] = "$Id: xymond_alert.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
 	MEMDEFINE(acklogfn);
 	MEMDEFINE(notiflogfn);
 
-	/* Dont save the error buffer */
+	/* Don't save the error buffer */
 	save_errbuf = 0;
 
 	/* Load alert config */
@@ -658,7 +658,7 @@ int main(int argc, char *argv[])
 			else {
 				/* 
 				 * Send one "recovered" message out now, then go to A_DEAD.
-				 * Dont update the color here - we want recoveries to go out 
+				 * Don't update the color here - we want recoveries to go out 
 				 * only if the alert color triggered an alert
 				 */
 				awalk->state = (newcolor == COL_BLUE) ? A_DISABLED : A_RECOVERED;

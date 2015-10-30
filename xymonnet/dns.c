@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: dns.c 7466 2014-09-26 13:05:06Z storner $";
+static char rcsid[] = "$Id: dns.c 7676 2015-10-01 05:31:49Z jccleaver $";
 
 #include <unistd.h>
 #include <string.h>
@@ -357,7 +357,7 @@ int dns_test_server(char *serverip, char *hostname, strbuffer_t *banner)
 		tst = strtok(NULL, ",");
 	}
 	xfree(tspec);
-	sprintf(msg, "\nSeconds: %u.%03u\n", (unsigned int)tspent->tv_sec, (unsigned int)tspent->tv_nsec/1000000);
+	sprintf(msg, "\nSeconds: %u.%.9ld\n", (unsigned int)tspent->tv_sec, tspent->tv_nsec);
 	addtobuffer(banner, msg);
 
 	ares_destroy(channel);

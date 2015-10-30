@@ -10,7 +10,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-darwin.sh 7155 2012-08-02 15:51:05Z storner $
+# $Id: xymonclient-darwin.sh 7707 2015-10-19 22:34:59Z jccleaver $
 
 # Use LANG=C, since some locales have different numeric delimiters
 # causing the Xymon load-average calculation to fail
@@ -26,22 +26,25 @@ uptime
 echo "[who]"
 who
 
-FILESYSTEMS=`mount | grep -v nobrowse | awk '{print $3}'`
+FILESYSTEMS=`mount | sed -E '/[\( ](nobrowse|afs|read-only)[ ,\)]/d;s/^.* on (.*) \(.*$/\1/'`
+
 echo "[df]"
-set $FILESYSTEMS
-(df -H $1; shift
+(IFS=$'\n'
+ set $FILESYSTEMS
+ df -P -H $1; shift
  while test $# -gt 0
  do
-   df -H $1 | tail -1
+   df -P -H $1 | tail -1 | sed 's/\([^ ]\) \([^ ]\)/\1_\2/g'
    shift
  done) | column -t -s " " | sed -e 's!Mounted *on!Mounted on!'
 
 echo "[inode]"
-set $FILESYSTEMS
-(df -i $1; shift
+(IFS=$'\n'
+ set $FILESYSTEMS
+ df -P -i $1; shift
  while test $# -gt 0
  do
-   df -H $1 | tail -1
+   df -P -H $1 | tail -1 | sed 's/\([^0123456789% ]\) \([^ ]\)/\1_\2/g'
    shift
  done) | awk '
 NR<2{printf "%-20s %10s %10s %10s %10s %s\n", $1, "itotal", $6, $7, $8, $9} 
@@ -60,7 +63,7 @@ netstat -s
 echo "[ifstat]"
 netstat -ibn | egrep -v "^lo|<Link"
 echo "[ports]"
-netstat -an|grep "^tcp"
+netstat -an | grep -e "^tcp" -e "^udp"
 echo "[ps]"
 ps -ax -ww -o pid,ppid,user,start,state,pri,pcpu,time,pmem,rss,vsz,command
 
@@ -69,6 +72,8 @@ if test "$TOP" != "" -a "$AWK" != ""
 then
     if test -x "$TOP" -a -x "$AWK"
     then
+        echo "[nproc]"
+        sysctl -n hw.ncpu
         echo "[top]"
 	$TOP -l 2 -n 20 -o cpu | $AWK '/^Processes:/ {toprun++} toprun == 2'
     fi

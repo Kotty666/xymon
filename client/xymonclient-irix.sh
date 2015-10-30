@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-irix.sh 6712 2011-07-31 21:01:52Z storner $
+# $Id: xymonclient-irix.sh 7707 2015-10-19 22:34:59Z jccleaver $
 
 echo "[date]"
 date
@@ -44,6 +44,8 @@ if test "$TOP" != ""
 then
     if test -x "$TOP"
     then
+	echo "[nproc]"
+	sysconf NPROC_ONLN
         echo "[top]"
 	$TOP -d2 -b 20 | tail +9
     fi

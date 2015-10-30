@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char do_net_rcsid[] = "$Id: do_net.c 7105 2012-07-23 11:47:20Z storner $";
+static char do_net_rcsid[] = "$Id: do_net.c 7676 2015-10-01 05:31:49Z jccleaver $";
 
 int do_net_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp)
 {
@@ -145,7 +145,7 @@ int do_net_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 		p = strstr(msg, "\nSeconds:");
 		if (p && (sscanf(p+1, "Seconds: %f", &seconds) == 1)) {
 			setupfn2("%s.%s.rrd", "tcp", testname);
-			snprintf(rrdvalues, sizeof(rrdvalues), "%d:%.2f", (int)tstamp, seconds);
+			snprintf(rrdvalues, sizeof(rrdvalues), "%d:%f", (int)tstamp, seconds);
 			return create_and_update_rrd(hostname, testname, classname, pagepaths, xymonnet_params, xymonnet_tpl);
 		}
 	}

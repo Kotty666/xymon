@@ -14,7 +14,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond_filestore.c 7506 2015-02-10 13:57:07Z jccleaver $";
+static char rcsid[] = "$Id: xymond_filestore.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 	int seq;
 	int running = 1;
 
-	/* Dont save the error buffer */
+	/* Don't save the error buffer */
 	save_errbuf = 0;
 
 	for (argi = 1; (argi < argc); argi++) {

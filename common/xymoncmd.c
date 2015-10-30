@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymoncmd.c 7645 2015-05-01 02:48:42Z jccleaver $";
+static char rcsid[] = "$Id: xymoncmd.c 7696 2015-10-18 00:29:54Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -143,18 +143,20 @@ int main(int argc, char *argv[])
 		struct stat st;
 
 		sprintf(envfn, "%s/etc/xymonserver.cfg", xgetenv("XYMONHOME"));
+		if (stat(envfn, &st) == -1) sprintf(envfn, "/etc/xymon/xymonserver.cfg");
 		if (stat(envfn, &st) == -1) sprintf(envfn, "%s/etc/xymonclient.cfg", xgetenv("XYMONHOME"));
-		errprintf("Using default environment file %s\n", envfn);
+		if (stat(envfn, &st) == -1) sprintf(envfn, "%s/etc/xymonclient.cfg", xgetenv("XYMONCLIENTHOME"));
+		if (stat(envfn, &st) == -1) sprintf(envfn, "/etc/xymon-client/xymonclient.cfg");
+		if (stat(envfn, &st) == -1) sprintf(envfn, "xymonserver.cfg");
+		if (stat(envfn, &st) == -1) sprintf(envfn, "xymonclient.cfg");
 
-		/* Make sure SERVEROSTYPE, MACHINEDOTS and MACHINE are setup for our child */
-		xymon_default_envs(envfn);
-		loadenv(envfn, envarea);
+		envfile = (char *)envfn;
+		dbgprintf("Using default environment file %s\n", envfile);
+
 	}
-	else {
-		/* Make sure SERVEROSTYPE, MACHINEDOTS and MACHINE are setup for our child */
-		xymon_default_envs(envfile);
-		loadenv(envfile, envarea);
-	}
+	/* Make sure SERVEROSTYPE, MACHINEDOTS and MACHINE are setup for our child */
+	xymon_default_envs(envfile);
+	loadenv(envfile, envarea);
 
 
 	/* Go! */

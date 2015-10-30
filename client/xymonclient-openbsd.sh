@@ -9,7 +9,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-openbsd.sh 7149 2012-08-01 16:16:57Z storner $
+# $Id: xymonclient-openbsd.sh 7707 2015-10-19 22:34:59Z jccleaver $
 
 echo "[date]"
 date
@@ -55,6 +55,8 @@ if test "$TOP" != ""
 then
     if test -x "$TOP"
     then
+        echo "[nproc]"
+        sysctl -n hw.ncpu
         echo "[top]"
 	$TOP -n 20
     fi

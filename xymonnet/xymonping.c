@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonping.c 7060 2012-07-14 16:32:11Z storner $";
+static char rcsid[] = "$Id: xymonping.c 7678 2015-10-01 14:42:42Z jccleaver $";
 
 #include "config.h"
 
@@ -182,7 +182,7 @@ int send_ping(int sock, int startidx, int minresponses)
 	if (idx >= hostcount) return hostcount;
 
 	/* 
-	 * Dont flood the net.
+	 * Don't flood the net.
 	 * By enforcing a brief sleep here, we force a delay
 	 * between sending packets. It is easiest to do before sending
 	 * a packet, because if done after the send completes, then
@@ -356,11 +356,11 @@ void show_results(void)
 		if (hosts[idx]->received > 0) {
 			printf("%s is alive", inet_ntoa(hosts[idx]->addr.sin_addr));
 			rtt_usecs = (hosts[idx]->rtt_total.tv_sec*1000000 + (hosts[idx]->rtt_total.tv_nsec / 1000)) / hosts[idx]->received;
-			if (rtt_usecs >= 1000) {
-				printf(" (%lu ms)\n", rtt_usecs / 1000);
+			if (rtt_usecs >= 3000) {
+				printf(" (%.1f ms)\n", rtt_usecs / 1000.0);
 			}
 			else {
-				printf(" (0.%02lu ms)\n", (rtt_usecs / 10));
+				printf(" (%u usec)\n", rtt_usecs);
 			}
 		}
 		else {
@@ -471,7 +471,7 @@ int main(int argc, char *argv[])
 		time_t cutoff = getcurrenttime(NULL) + timeout + 1;
 		sendidx = 0;
 
-		/* Change this on each iteration, so we dont mix packets from each round of pings */
+		/* Change this on each iteration, so we don't mix packets from each round of pings */
 		myicmpid = ((getpid()+tries) & 0x7FFF);
 
 		/* Do one loop over the hosts we havent had responses from yet. */

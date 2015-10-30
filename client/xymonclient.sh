@@ -12,7 +12,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient.sh 7498 2015-02-07 10:00:29Z jccleaver $
+# $Id: xymonclient.sh 7691 2015-10-16 20:41:12Z jccleaver $
 
 # Must make sure the commands return standard (english) texts.
 LANG=C
@@ -80,7 +80,7 @@ $XYMONHOME/bin/logfetch --clock >> $MSGTMPFILE
 
 if test "$LOCALMODE" = "yes"; then
 	echo "@@" >> $MSGTMPFILE
-	$XYMONHOME/bin/xymond_client --local --config=$XYMONHOME/etc/localclient.cfg <$MSGTMPFILE
+	$XYMONHOME/bin/xymond_client $XYMONLOCALCLIENTOPTS --local --config=$XYMONHOME/etc/localclient.cfg <$MSGTMPFILE
 else
 	$XYMON $XYMSRV "@" < $MSGTMPFILE >$LOGFETCHCFG.tmp
 	if test -f $LOGFETCHCFG.tmp

@@ -1,3 +1,55 @@
+Changes from 4.3.21 -> 4.3.22-beta (29 Oct 2015)
+===========================================
+
+* rev 7708
+
+* Ensure we don't leave xymond_hostdata or xymond_history zombies lying around
+  after dropping host records (Reported by Scot Kreienkamp)
+* Fix up HTML list layout to reflect current standards (Thanks, hallik@calyc3.com)
+* Fix documentation incorrectly describing multigraph syntax as (e.g.) GRAPH_cpu.
+  Should be GRAPHS_cpu (Thanks, Galen Johnson)
+* Supports scientific notation for NCV data (Thanks, Axel Beckert)
+* Increase resolution of xymonnet poll timing results (Thanks, Christoph Berg)
+* New clock skew RRD files will allow for negative delta values (Thanks, Axel Beckert)
+* Fix lots of typos! (Debian)
+* Don't skip over "mailq.rrd" (Roland Rosenfeld)
+* The signature algorithm used on an SSL-enabled TCP test run by xymonnet is now shown
+  on the sslcert page. (Thanks, Ralph Mitchell)
+* The cipher list displayed in 'sslcert' tests will now be limited to the cipher that was 
+  actually used on the SSL connection. The --showallciphers option to xymonnet will
+  restore the previous behavior. (From idea from Ralph Mitchell)
+* Provide configurable environment overrides in xymonserver.cfg for standard xymonnet 
+  options to fping/xymonping, ntpdate, and traceroute binaries. In regular installs, the
+  intended default options to traceroute (-n -q 2 -w 2 -m 15) were not actually used. This
+  may change in a future release, so it's suggested that users move any custom options to 
+  the new TRACEROUTEOPTS setting in xymonserver.cfg.
+  (Orig. thanks, Axel Beckert, ntpdate issues pointed out by Matt Vander Werf)
+* Enable latent additional SHA digest strengths (sha256, sha512, sha224, sha384)
+* Don't crash generating wml cards for statuses w/ very long lines (Reported by Axel Beckert)
+* Flip SenderIP and Hostname columns on ghostlist pages to allow easier cutting and pasting
+  to hosts files
+* Fix multiple disk volumes reported in on Darwin (OS X) clients. (Thanks, Axel Beckert)
+* Fix COMPACT parsing; update docs to match expected syntax (Thanks, Brian Scott)
+* Trailing slash no longer required for URL alias ("http://www.example.com/xymon" should work)
+* A new XYMONLOCALCLIENTOPTS variable in xymonclient.cfg allows options (e.g., --no-port-listing)
+  to be given to xymond_client when running in local client mode.
+* Add a method to indicate lines which should be skipped by the NCV RRD processor or
+  which mark the end of data-to-be-processed in the message.
+* Ensure that nostale is passed down during graph zooming (Thanks, Stef Coene)
+* Add missing XMH_DATA in loadhosts (Thanks, Jacek Tomasiak)
+* Search in more locations for default environment files when using xymoncmd
+* Add a "noflap" override to disable flap detection for any/all tests on a given host (Thanks, Martin Lenko)
+* Simplify default HTTP error code settings for xymonnet (2xx = green; 3xx = yellow; 4xx/5xx = red)
+* The protocol.cfg entry for RDP network tests has been updated and should work again (Thanks, Rob Steuer)
+* Add UDP ports to netstat output returned from darwin clients (Mac OS X)
+* Fixes to df/inode parsing on darwin clients (Mac OS X) (Thanks, Jason White et al.)
+* Add httphdr= tag to hosts.cfg to inject arbitrary headers into xymonnet HTTP tests for that host.
+* Turn memory test yellow if nonsensical numbers are found (>100% used for 'Actual' or Swap)
+* "optional include" and "optional directory" support actually added
+* xymongrep: load from the hosts.cfg file and error if unable, unless --loadhostsfromxymond is specified
+* Collect number of total cores in client data
+
+
 Changes from 4.3.20 -> 4.3.21 (22 May 2015)
 ===========================================
 

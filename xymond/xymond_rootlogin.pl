@@ -16,7 +16,7 @@
 #*                                                                            */
 #*----------------------------------------------------------------------------*/
 
-# $Id: xymond_rootlogin.pl 6650 2011-03-08 17:20:28Z storner $
+# $Id: xymond_rootlogin.pl 7678 2015-10-01 14:42:42Z jccleaver $
 
 
 my $xymon;
@@ -88,7 +88,7 @@ sub processmessage {
 	my $statusmsg;
 	my $cmd;
 
-	# Dont do anything unless we have the "who" section
+	# Don't do anything unless we have the "who" section
 	return unless ( $sections{"who"} );
 
 	# Is there a "root" login somewhere in the "who" section?

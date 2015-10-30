@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char ncv_rcsid[] = "$Id: do_ncv.c 7085 2012-07-16 11:08:37Z storner $";
+static char ncv_rcsid[] = "$Id: do_ncv.c 7692 2015-10-17 03:56:45Z jccleaver $";
 
 int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths, char *msg, time_t tstamp) 
 { 
@@ -57,6 +57,19 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 
 		l += strspn(l, " \t\n");
 		if (*l) { 
+			/* Look for a sign to alter processing */
+			if (strncmp(l, "<!-- ncv_", 9) == 0) {
+				/* expandable for future use */
+				l += 9;
+				if (strncmp(l, "skip -->", 8) == 0) { l += strcspn(l, "\n"); l++; continue; }
+				else if (strncmp(l, "end -->", 7) == 0) break;
+				else {
+					dbgprintf("Unexpected NCV directive found\n");
+					/* skip past directive */
+					l += strcspn(l, ">"); l++; l += strspn(l, " \t\n");
+				}
+			}
+
 			/* See if this line contains a '=' or ':' sign */
 			name = l; 
 			l += strcspn(l, ":=\n");
@@ -84,7 +97,7 @@ int do_ncv_rrd(char *hostname, char *testname, char *classname, char *pagepaths,
 			val = l + strspn(l, " \t"); 
 			/* Find the end of the value string */
 			l = val; if ((*l == '-') || (*l == '+')) l++; /* Pass leading sign */
-			l += strspn(l, "0123456789.+-"); /* and the numbers. */
+			l += strspn(l, "0123456789.+-eE"); /* and the numbers. */
 			if( *val ) {
 				int iseol = (*l == '\n');
 
