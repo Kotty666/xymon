@@ -1,31 +1,19 @@
 00_htmlcontenttype.patch
 03_doc-paths.patch
-06_603151-apache-alias.patch
 09_hobbitclient-debian.patch
 12_hobbitvars.patch
 15_hobbitgraph.netstat.patch
-18_rrd_net_granularity.patch
-21_hobbitgraph.mailq.patch
 24_hobbitclient-tmpfs.patch
 27_hobbit_files_ifexist.patch
 30_prefer-packaged-temp-plugin-over-unpackaged-devmon.patch
 
 # bug fixes
 33_526176-ldap.patch
-36_580493-negative-timeoffset.patch
 39_kfreebsd-makefile.patch
 42_bbcombotest-fix.patch
 45_fix-configure-for-multiarch.patch
 48_png-multiarch.patch
 51_hardening-buildflags.patch
-54_fix-spelling-errors.patch
-57_fix-hyphen-used-as-minus-sign.patch
-60_fix-exp-values-in-ncv.patch
 63_netstat-ant-vs-ipv6-address-truncating.patch
 66_apache2.4.patch
 69_disk-no-duplicate-root.patch
-72_workaround-changed-ntpdate-behaviour.patch
-
-# Cherry-picked from upstream
-75_cherry-pick-r7669-fix-zombies-after-dropping-host-records.patch
-78_fix-wmlgen-segfault.patch

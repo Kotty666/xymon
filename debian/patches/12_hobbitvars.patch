@@ -1,11 +1,11 @@
 Description: Fix paths to fit into the Debian directory structure
 Forwarded: not-needed
-Last-Update: 2015-09-10
+Last-Update: 2015-10-30
 
 Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
+--- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
++++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
 @@ -5,8 +5,8 @@
  XYMONCLIENTHOME="@XYMONTOPDIR@/client"		# XYMONHOME directory for the client
  
@@ -45,7 +45,7 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
  HOSTSCFG="$XYMONHOME/etc/hosts.cfg"		# The hosts.cfg file
  XYMON="$XYMONHOME/bin/xymon"			# The 'xymon' client program
  XYMONGEN="$XYMONHOME/bin/xymongen"		# The xymongen program
-@@ -318,3 +317,5 @@
+@@ -321,3 +320,5 @@
  HOBBITCLIENTHOME="$XYMONCLIENTHOME"
  BBCLIENTLOGS="$XYMONSERVERLOGS"
  
@@ -53,8 +53,8 @@ Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
 +include /var/run/xymon/xymonserver-include.cfg
 Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-05-26 22:13:35.000000000 +0200
+--- xymon.orig/xymond/etcfiles/xymon-apache-open.DIST	2015-10-30 16:19:56.000000000 +0100
++++ xymon/xymond/etcfiles/xymon-apache-open.DIST	2015-10-30 16:19:56.000000000 +0100
 @@ -16,11 +16,11 @@
      Options Indexes FollowSymLinks Includes MultiViews
      <IfModule mod_authz_core.c>
@@ -85,8 +85,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-open.DIST
  
 Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-26 22:14:22.000000000 +0200
+--- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-10-30 16:19:56.000000000 +0100
++++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-10-30 16:19:56.000000000 +0100
 @@ -16,11 +16,11 @@
      Options Indexes FollowSymLinks Includes MultiViews
      <IfModule mod_authz_core.c>
@@ -131,8 +131,8 @@ Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
      # Password file where users with access to these scripts are kept.
 Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 ===================================================================
---- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/xymond/etcfiles/tasks.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
+--- xymon.orig/xymond/etcfiles/tasks.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
++++ xymon/xymond/etcfiles/tasks.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
 @@ -18,7 +18,7 @@
  # you want to run).
  [xymond]
@@ -172,8 +172,8 @@ Index: xymon/xymond/etcfiles/tasks.cfg.DIST
 +include /var/run/xymon/tasks-include.cfg
 Index: xymon/client/clientlaunch.cfg.DIST
 ===================================================================
---- xymon.orig/client/clientlaunch.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/client/clientlaunch.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
+--- xymon.orig/client/clientlaunch.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
++++ xymon/client/clientlaunch.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
 @@ -16,7 +16,7 @@
  [msgcache]
  	DISABLED
@@ -190,8 +190,8 @@ Index: xymon/client/clientlaunch.cfg.DIST
 +include /var/run/xymon/clientlaunch-include.cfg
 Index: xymon/client/xymonclient.cfg.DIST
 ===================================================================
---- xymon.orig/client/xymonclient.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/client/xymonclient.cfg.DIST	2015-05-26 22:13:35.000000000 +0200
+--- xymon.orig/client/xymonclient.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
++++ xymon/client/xymonclient.cfg.DIST	2015-10-30 16:19:56.000000000 +0100
 @@ -1,18 +1,21 @@
  # Environment settings for the Xymon client.
  
@@ -205,7 +205,7 @@ Index: xymon/client/xymonclient.cfg.DIST
 +PATH="/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/lib/xymon/client/bin"  # PATH setting for the client scripts.
  SHELL="/bin/sh"				# Shell to use when forking programs
  
- # You normally dont need to modify anything below here
+ # You normally don't need to modify anything below here
  XYMONDPORT="1984"                   # Portnumber where xymond listens
 +XYMONCLIENTHOME="/usr/lib/xymon/client"
  XYMONHOME="$XYMONCLIENTHOME"       # Directory for the Xymon client files
@@ -217,12 +217,12 @@ Index: xymon/client/xymonclient.cfg.DIST
 +
 +include /var/run/xymon/xymonclient-include.cfg
  
- # Compatibility settings
- HOBBITCLIENTHOME="$XYMONCLIENTHOME"
+ # Options to xymond_client. Used only if this install is running in local client mode.
+ XYMONLOCALCLIENTOPTS=""
 Index: xymon/xymond/etcfiles/graphs.cfg
 ===================================================================
---- xymon.orig/xymond/etcfiles/graphs.cfg	2015-05-26 22:13:35.000000000 +0200
-+++ xymon/xymond/etcfiles/graphs.cfg	2015-05-26 22:13:35.000000000 +0200
+--- xymon.orig/xymond/etcfiles/graphs.cfg	2015-10-30 16:19:56.000000000 +0100
++++ xymon/xymond/etcfiles/graphs.cfg	2015-10-30 16:19:56.000000000 +0100
 @@ -2112,3 +2112,4 @@
  
  ########### end of ifmib graphs ###########

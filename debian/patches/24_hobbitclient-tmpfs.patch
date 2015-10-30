@@ -20,9 +20,11 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
 
  -- Christoph Berg <myon@debian.org>  Sat, 05 Jul 2008 14:43:23 +0200
 
---- a/client/xymonclient-linux.sh
-+++ b/client/xymonclient-linux.sh
-@@ -45,9 +45,14 @@ uptime
+Index: xymon/client/xymonclient-linux.sh
+===================================================================
+--- xymon.orig/client/xymonclient-linux.sh	2015-10-30 16:26:24.000000000 +0100
++++ xymon/client/xymonclient-linux.sh	2015-10-30 16:26:24.000000000 +0100
+@@ -45,9 +45,14 @@
  echo "[who]"
  who
  echo "[df]"
@@ -39,9 +41,11 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
  N
  s/[ 	]*\n[ 	]*/ /
  }' -e "s&^rootfs&${ROOTFS}&"
---- a/xymond/etcfiles/analysis.cfg
-+++ b/xymond/etcfiles/analysis.cfg
-@@ -353,6 +353,11 @@
+Index: xymon/xymond/etcfiles/analysis.cfg
+===================================================================
+--- xymon.orig/xymond/etcfiles/analysis.cfg	2015-10-30 16:26:24.000000000 +0100
++++ xymon/xymond/etcfiles/analysis.cfg	2015-10-30 16:26:24.000000000 +0100
+@@ -354,6 +354,11 @@
  
  
  DEFAULT

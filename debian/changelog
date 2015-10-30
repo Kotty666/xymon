@@ -1,6 +1,25 @@
-xymon (4.3.21-3) UNRELEASED; urgency=medium
+xymon (4.3.22~beta-1) UNRELEASED; urgency=medium
 
   * Rename all patches to sport a number prefix and a ".patch" suffix.
+  * New upstream beta release
+    + Refresh the following patches:
+      - 12_hobbitvars.patch
+      - 24_hobbitclient-tmpfs.patch
+      - 27_hobbit_files_ifexist.patch
+      - 30_prefer-packaged-temp-plugin-over-unpackaged-devmon.patch.
+    + Drop the following obsolete patches:
+      - 06_603151-apache-alias.patch (applied upstream)
+      - 18_rrd_net_granularity.patch (applied upstream)
+      - 21_hobbitgraph.mailq.patch (applied upstream)
+      - 36_580493-negative-timeoffset.patch (applied upstream)
+      - 54_fix-spelling-errors.patch (applied upstream)
+      - 57_fix-hyphen-used-as-minus-sign.patch (applied upstream)
+      - 60_fix-exp-values-in-ncv.patch (applied upstream)
+      - 72_workaround-changed-ntpdate-behaviour.patch (solved properly)
+      - 75_cherry-pick-r7669-fix-zombies-after-dropping-host-records.patch
+        (was cherry-picked from the 4.3.22 release cycle)
+      - 78_fix-wmlgen-segfault.patch (has been applied as propesed by
+        upstream)
 
  -- Axel Beckert <abe@debian.org>  Mon, 05 Oct 2015 19:02:02 +0200
 
