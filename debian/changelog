@@ -1,4 +1,4 @@
-xymon (4.3.22~beta-1) UNRELEASED; urgency=medium
+xymon (4.3.22~beta-1) unstable; urgency=low
 
   * Rename all patches to sport a number prefix and a ".patch" suffix.
   * New upstream beta release
@@ -21,7 +21,7 @@ xymon (4.3.22~beta-1) UNRELEASED; urgency=medium
       - 78_fix-wmlgen-segfault.patch (has been applied as propesed by
         upstream)
 
- -- Axel Beckert <abe@debian.org>  Mon, 05 Oct 2015 19:02:02 +0200
+ -- Axel Beckert <abe@debian.org>  Fri, 30 Oct 2015 18:26:40 +0100
 
 xymon (4.3.21-2) unstable; urgency=low
 
