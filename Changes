@@ -1,7 +1,7 @@
-Changes from 4.3.21 -> 4.3.22-beta (29 Oct 2015)
+Changes from 4.3.21 -> 4.3.22 (4 Nov 2015)
 ===========================================
 
-* rev 7708
+* rev ####
 
 * Ensure we don't leave xymond_hostdata or xymond_history zombies lying around
   after dropping host records (Reported by Scot Kreienkamp)
@@ -48,6 +48,12 @@ Changes from 4.3.21 -> 4.3.22-beta (29 Oct 2015)
 * "optional include" and "optional directory" support actually added
 * xymongrep: load from the hosts.cfg file and error if unable, unless --loadhostsfromxymond is specified
 * Collect number of total cores in client data
+* combostatus: Fix parenthesis processing (Thanks, Andy Smith)
+* Add per-group anchors to generated pages when a group title is present (Thanks, Thomas Giordmaina)
+* xymongen: Display group tables even if group has no test results yet unless --no-showemptygroups given
+* Add chpasswd CGI for user-level htpasswd file updates. Requires Apache 2.4.5 or later (Thanks, Andy Smith)
+* Fix memory/display on multihost hostgraphs.cgi reports; remove multi-disk (which won't work as-is)
+* Add ACK_COOKIE_EXPIRATION for environment control of cookie validity duration (Noted by Thomas Giordmaina)
 
 
 Changes from 4.3.20 -> 4.3.21 (22 May 2015)

@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7697 2015-10-18 03:36:05Z jccleaver $";
+static char rcsid[] = "$Id: xymond.c 7713 2015-11-02 14:56:33Z jccleaver $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -192,6 +192,7 @@ int      clientsavedisk = 0;	/* On disk via the CLICHG channel */
 int      allow_downloads = 1;
 int	 defaultvalidity = 30;	/* Minutes */
 int	 ackeachcolor = 0;
+int	 defaultcookietime = 86400;	/* 1 day */
 
 #define NOTALK 0
 #define RECEIVING 1
@@ -1731,7 +1732,7 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 			 * That's for later - for now, we'll just give it a long enough 
 			 * lifetime so that cookies will be valid.
 			 */
-			log->cookieexpires = now + 86400; /* Valid for 1 day */
+			log->cookieexpires = now + defaultcookietime; /* 1 day by default */
 		}
 	}
 	else {
@@ -5183,6 +5184,7 @@ int main(int argc, char *argv[])
 
 	defaultreddelay = xgetenv("DELAYRED"); if (defaultreddelay && (strlen(defaultreddelay) == 0)) defaultreddelay = NULL;
 	defaultyellowdelay = xgetenv("DELAYYELLOW"); if (defaultyellowdelay && (strlen(defaultyellowdelay) == 0)) defaultyellowdelay = NULL;
+	defaultcookietime = atoi(xgetenv("ACK_COOKIE_EXPIRATION"));
 
 	/* Load alert config */
 	alertcolors = colorset(xgetenv("ALERTCOLORS"), ((1 << COL_GREEN) | (1 << COL_BLUE)));

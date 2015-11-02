@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: hostgraphs.c 7441 2014-02-23 09:27:44Z storner $";
+static char rcsid[] = "$Id: hostgraphs.c 7717 2015-11-02 16:16:57Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -154,7 +154,7 @@ void parse_query(void)
 
 	if (alltests) {
 		if (tests) xfree(tests); testcount = 0;
-		tests = (char **) malloc(5 * sizeof(char *));
+		tests = (char **) calloc(8, sizeof(char *));
 
 		if (hostcount == 1) {
 			tests[testcount] = strdup("cpu"); testcount++;
@@ -164,9 +164,12 @@ void parse_query(void)
 		}
 		else {
 			tests[testcount] = strdup("cpu"); testcount++;
+			tests[testcount] = strdup("ram"); testcount++;
 			tests[testcount] = strdup("mem"); testcount++;
 			tests[testcount] = strdup("swap"); testcount++;
 			tests[testcount] = strdup("conn-multi"); testcount++;
+			tests[testcount] = strdup("netstat3"); testcount++;
+			tests[testcount] = strdup("apache3"); testcount++;
 		}
 
 		tests[testcount] = NULL;

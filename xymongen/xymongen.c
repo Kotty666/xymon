@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymongen.c 7678 2015-10-01 14:42:42Z jccleaver $";
+static char rcsid[] = "$Id: xymongen.c 7709 2015-11-01 15:48:11Z jccleaver $";
 
 #include <stdio.h>
 #include <unistd.h>
@@ -134,6 +134,12 @@ int main(int argc, char *argv[])
 			char *lp = strchr(argv[i], '=');
 			ignorecolumns = (char *) malloc(strlen(lp)+2);
 			sprintf(ignorecolumns, ",%s,", (lp+1));
+		}
+		else if (strcmp(argv[i], "--showemptygroups") == 0) {
+			showemptygroups = 1;
+		}
+		else if (strcmp(argv[i], "--no-showemptygroups") == 0) {
+			showemptygroups = 0;
 		}
 		else if (argnmatch(argv[i], "--critical-reds-only") || argnmatch(argv[i], "--nk-reds-only")) {
 			critonlyreds = 1;
@@ -486,6 +492,7 @@ int main(int argc, char *argv[])
 			printf("    --pages-last                : Put page- and subpage-links after hosts\n");
 			printf("    --subpagecolumns=N          : Number of columns for links to pages and subpages\n");
 			printf("    --maxrows=N                 : Repeat column headings for every N hosts shown\n");
+			printf("    --no-showemptygroups        : Do not show groups without test results for the listed hosts\n");
 			printf("    --recentgifs                : Use xxx-recent.gif icons for newly changed tests\n");
 			printf("    --sort-group-only-items     : Display group-only items in alphabetical order\n");
 			printf("    --page-title=TITLE          : Set a default page title for all pages\n");

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: environ.c 7681 2015-10-08 01:15:48Z jccleaver $";
+static char rcsid[] = "$Id: environ.c 7713 2015-11-02 14:56:33Z jccleaver $";
 
 #include <ctype.h>
 #include <string.h>
@@ -156,6 +156,7 @@ const static struct {
 	{ "XYMONALLOKTEXT", "<FONT SIZE=+2 FACE=\"Arial, Helvetica\"><BR><BR><I>All Monitored Systems OK</I></FONT><BR><BR>" },
 	{ "HOSTPOPUP", "CDI" },
 	{ "STATUSLIFETIME", "30" },
+	{ "ACK_COOKIE_EXPIRATION", "86400" },
 	{ NULL, NULL }
 };
 
