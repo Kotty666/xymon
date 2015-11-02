@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: contest.c 7698 2015-10-19 08:18:34Z jccleaver $";
+static char rcsid[] = "$Id: contest.c 7715 2015-11-02 15:06:17Z jccleaver $";
 
 #include "config.h"
 
@@ -446,7 +446,7 @@ static void setup_ssl(tcptest_t *item)
 	struct servent *sp;
 	char portinfo[100];
 	X509 *peercert;
-	char *certcn, *certstart, *certend, *certissuer, *certsigalg;
+	char *certcn, *certstart, *certend, *certissuer; const char *certsigalg;
 	int err, keysz = 0;
 	strbuffer_t *sslinfo;
 	char msglin[2048];
