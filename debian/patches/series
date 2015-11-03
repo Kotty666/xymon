@@ -17,3 +17,4 @@
 63_netstat-ant-vs-ipv6-address-truncating.patch
 66_apache2.4.patch
 69_disk-no-duplicate-root.patch
+72_disable_SSLv3.patch

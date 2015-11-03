@@ -1,7 +1,11 @@
-xymon (4.3.22~rc2-1) UNRELEASED; urgency=medium
+xymon (4.3.22~rc2-1) UNRELEASED; urgency=high
 
   * New upstream release candidate
   * Fix typo in previous changelog entry.
+  * Add patch to remove any occurrence of SSLv3_client_method, it has been
+    removed from Debian's OpenSSL package.
+    + Set urgency=high as this fixes a FTBFS.
+    + Bump minimum libssl-dev build-dependency to 1.0.2d-2~
 
  -- Axel Beckert <abe@debian.org>  Mon, 02 Nov 2015 11:40:49 +0100
 

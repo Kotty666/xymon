@@ -1,0 +1,21 @@
+Description: No more use SSLv3_client_method
+ It has been removed from Debian's OpenSSL package.
+ .
+ For forwarding it to upstream a dynamic test like for SSLv2 is
+ necessary. This is just a debian-specific hard-coded decision.
+Author: Axel Beckert <abe@debian.org>
+Forwarded: no
+
+Index: xymon/xymonnet/contest.c
+===================================================================
+--- xymon.orig/xymonnet/contest.c	2015-11-04 00:28:24.656363679 +0100
++++ xymon/xymonnet/contest.c	2015-11-04 00:32:09.260092407 +0100
+@@ -481,8 +481,6 @@
+ 		  case SSLVERSION_V2:
+ 			item->sslctx = SSL_CTX_new(SSLv2_client_method()); break;
+ #endif
+-		  case SSLVERSION_V3:
+-			item->sslctx = SSL_CTX_new(SSLv3_client_method()); break;
+ 		  case SSLVERSION_TLS1:
+ 			item->sslctx = SSL_CTX_new(TLSv1_client_method()); break;
+ 		  default:
