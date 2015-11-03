@@ -1,4 +1,4 @@
-xymon (4.3.22~rc2-1) UNRELEASED; urgency=high
+xymon (4.3.22~rc2-1) unstable; urgency=high
 
   * New upstream release candidate
   * Fix typo in previous changelog entry.
@@ -9,7 +9,7 @@ xymon (4.3.22~rc2-1) UNRELEASED; urgency=high
   * Actually also remove from debian/patches/ all patches which were just
     disabled in the previous upload.
 
- -- Axel Beckert <abe@debian.org>  Mon, 02 Nov 2015 11:40:49 +0100
+ -- Axel Beckert <abe@debian.org>  Wed, 04 Nov 2015 00:51:56 +0100
 
 xymon (4.3.22~beta-1) unstable; urgency=low
 
