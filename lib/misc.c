@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: misc.c 7678 2015-10-01 14:42:42Z jccleaver $";
+static char rcsid[] = "$Id: misc.c 7720 2015-11-04 20:23:13Z jccleaver $";
 
 #include "config.h"
 
@@ -195,6 +195,42 @@ char *skipword(char *l)
 char *skipwhitespace(char *l)
 {
 	return l + strspn(l, " \t");
+}
+
+
+char *stripnonwords(char *l)
+{
+	/* Attempt to strip non-word data */
+	static char reduced[255];
+	char *inp;
+	int outidx;
+
+	reduced[0] = '\0';
+	if (!l) return (char *)reduced;
+
+	/* Must be in the set [a-zA-Z0-9_] ... */
+	for (inp=l, outidx=0; (*inp && (outidx < 250)); inp++) {
+		if ( ((*inp >= 'A') && (*inp <= 'Z')) ||
+		     ((*inp >= 'a') && (*inp <= 'z')) ||
+		     ((*inp >= '0') && (*inp <= '9'))  ) {
+			reduced[outidx++] = *inp;
+		}
+			/* Replace anything else with an underscore, */
+			/* compacting successive invalid chars into 1 */
+		else if ((outidx == 0) || (reduced[outidx - 1] != '_')) {
+			reduced[outidx++] = '_';
+		}
+	}
+
+	/* strip a final invalid char */
+	if ((outidx > 0) && (reduced[outidx-1] == '_')) {
+		reduced[outidx-1] = '\0';
+	}
+	else {
+		reduced[outidx] = '\0';
+	}
+
+	return (char *)reduced;
 }
 
 
