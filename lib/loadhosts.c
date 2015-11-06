@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 
 
-static char rcsid[] = "$Id: loadhosts.c 7703 2015-10-19 19:51:29Z jccleaver $";
+static char rcsid[] = "$Id: loadhosts.c 7720 2015-11-04 20:23:13Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -196,6 +196,8 @@ static void xmh_item_list_setup(void)
 	xmh_item_name[XMH_COMPACT]             = "XMH_COMPACT";
 	xmh_item_key[XMH_INTERFACES]           = "INTERFACES:";
 	xmh_item_name[XMH_INTERFACES]          = "XMH_INTERFACES";
+	xmh_item_key[XMH_ACCEPT_ONLY]          = "ACCEPTONLY:";
+	xmh_item_name[XMH_ACCEPT_ONLY]         = "XMH_ACCEPT_ONLY";
 
 	xmh_item_name[XMH_IP]                  = "XMH_IP";
 	xmh_item_name[XMH_CLIENTALIAS]         = "XMH_CLIENTALIAS";
