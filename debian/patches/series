@@ -19,3 +19,4 @@
 69_disk-no-duplicate-root.patch
 72_disable_SSLv3.patch
 75_fix_spelling_errors.patch
+78_fix_manpage_syntax_errors.patch
