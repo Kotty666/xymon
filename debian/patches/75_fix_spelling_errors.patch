@@ -1,0 +1,63 @@
+Description: Fix spelling issues found by Lintian
+Author: Axel Beckert <abe@debian.org>
+Forwarded: no
+
+Index: xymon/client/xymonclient-sunos.sh
+===================================================================
+--- xymon.orig/client/xymonclient-sunos.sh	2015-10-30 18:17:22.108029881 +0100
++++ xymon/client/xymonclient-sunos.sh	2015-11-07 16:58:06.091201174 +0100
+@@ -109,7 +109,7 @@
+ esac
+ echo "[swap]"
+ /usr/sbin/swap -s
+-# dont report the swaplist in a non-global zone because it will cause the
++# don't report the swaplist in a non-global zone because it will cause the
+ # server client module to miscalculate memory
+ case $ZTYPE in
+ global|Global)
+Index: xymon/web/chpasswd.c
+===================================================================
+--- xymon.orig/web/chpasswd.c	2015-11-04 00:28:24.648363700 +0100
++++ xymon/web/chpasswd.c	2015-11-08 09:10:52.579482134 +0100
+@@ -137,13 +137,13 @@
+ 			}
+ 
+ 			if ( (strlen(adduser_name) == 0)) {
+-				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('I dont know who you are!'); </SCRIPT>\n";
++				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('I don&apos;t know who you are!'); </SCRIPT>\n";
+ 			}
+ 			else if ( (strlen(adduser_password1) == 0) || (strlen(adduser_password2) == 0)) {
+ 				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('New password cannot be blank'); </SCRIPT>\n";
+ 			}
+ 			else if (strcmp(adduser_password1, adduser_password2) != 0) {
+-				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('New passwords dont match'); </SCRIPT>\n";
++				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('New passwords don&apos;t match'); </SCRIPT>\n";
+ 			}
+ 			else if (strlen(adduser_name) != strspn(adduser_name,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.,@/=^") ) {
+ 				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('Username has invalid characters!'); </SCRIPT>\n";
+Index: xymon/xymond/do_alert.c
+===================================================================
+--- xymon.orig/xymond/do_alert.c	2015-10-30 18:17:22.124029817 +0100
++++ xymon/xymond/do_alert.c	2015-11-07 16:58:11.379183801 +0100
+@@ -413,7 +413,7 @@
+ 			if (!rpt) continue;	/* Happens for e.g. M_IGNORE recipients */
+ 
+ 			/* 
+-			 * Update alertcount here, because we dont want to hit an UNMATCHED
++			 * Update alertcount here, because we don't want to hit an UNMATCHED
+ 			 * rule when there is actually an alert active - it is just suppressed
+ 			 * for this run due to the REPEAT setting.
+ 			 */
+Index: xymon/xymond/xymond.c
+===================================================================
+--- xymon.orig/xymond/xymond.c	2015-11-06 22:47:58.471612843 +0100
++++ xymon/xymond/xymond.c	2015-11-07 16:58:18.955158922 +0100
+@@ -3146,7 +3146,7 @@
+ 			break;
+ 
+ 		  case FILTER_TAG:
+-			if (!matchontests) break;	/* When processing a xymondboard, we dont want to return entries that have a test in hosts.cfg but no test result */
++			if (!matchontests) break;	/* When processing a xymondboard, we don't want to return entries that have a test in hosts.cfg but no test result */
+ 			matched = 0;
+ 			val = xmh_item_walk(hinfo);
+ 			while (val) {

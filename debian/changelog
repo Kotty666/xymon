@@ -1,6 +1,7 @@
 xymon (4.3.22-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Add patch to fix spelling issues found by lintian (and similar ones).
 
  -- Axel Beckert <abe@debian.org>  Sat, 07 Nov 2015 16:40:41 +0100
 
