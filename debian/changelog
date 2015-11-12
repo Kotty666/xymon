@@ -1,3 +1,10 @@
+xymon (4.3.22-2) UNRELEASED; urgency=high
+
+  * Cherry-pick patch from upstream to fix TRACK/OPTIONAL analysis.cfg
+    tags no more being honored. (Regression from 4.3.21)
+
+ -- Axel Beckert <abe@debian.org>  Thu, 12 Nov 2015 13:40:24 +0100
+
 xymon (4.3.22-1) unstable; urgency=medium
 
   * New upstream release.

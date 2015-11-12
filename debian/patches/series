@@ -4,6 +4,7 @@
 12_hobbitvars.patch
 15_hobbitgraph.netstat.patch
 24_hobbitclient-tmpfs.patch
+25_fix_4.3.22_process_graph_regression.patch
 27_hobbit_files_ifexist.patch
 30_prefer-packaged-temp-plugin-over-unpackaged-devmon.patch
 
