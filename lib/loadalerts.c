@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: loadalerts.c 7678 2015-10-01 14:42:42Z jccleaver $";
+static char rcsid[] = "$Id: loadalerts.c 7733 2015-11-12 09:24:01Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -804,7 +804,7 @@ static int criteriamatch(activealerts_t *alert, criteria_t *crit, criteria_t *ru
 	 */
 
 	static char *pgnames = NULL;
-	char *dgname = NULL;
+	const char *dgname = NULL;
 	int pgmatchres, pgexclres;
 	time_t duration = (getcurrenttime(NULL) - alert->eventstart);
 	int result, cfid = 0;

@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: logfetch.c 7683 2015-10-08 02:05:22Z jccleaver $";
+static char rcsid[] = "$Id: logfetch.c 7731 2015-11-12 09:13:43Z jccleaver $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -266,7 +266,6 @@ char *logdata(char *filename, logdef_t *logdef)
 			}
 		}
 		logdef->deltacountcount = realcount;
-		logdef->deltacountcounts = (int *)calloc(logdef->deltacountcount, sizeof(int));	// initialize the equivalent count array with 0's
 	}
 	if (logdef->ignorecount) {
                int i, realcount = 0;
@@ -1097,6 +1096,9 @@ int loadconfig(char *cfgfn)
 						walk = walk->next;
 
 					    } while (walk && (walk != firstpipeitem->next));
+
+					    /* Initialize buckets since we may not re-walk this later */
+					    if (walk->check.logcheck.deltacountcount) walk->check.logcheck.deltacountcounts = (int *)calloc(walk->check.logcheck.deltacountcount, sizeof(int));
 					}
 				}
 				else {
@@ -1119,6 +1121,9 @@ int loadconfig(char *cfgfn)
 						currcfg->check.logcheck.deltacountnames[currcfg->check.logcheck.deltacountcount-1] = strdup(name);
 						currcfg->check.logcheck.deltacountpatterns[currcfg->check.logcheck.deltacountcount-1] = strdup(ptn);
 					}
+
+					/* Initialize buckets since we may not re-walk this later */
+					if (currcfg->check.logcheck.deltacountcount) currcfg->check.logcheck.deltacountcounts = (int *)calloc(currcfg->check.logcheck.deltacountcount, sizeof(int));
 				}
 			}
 		}
