@@ -19,7 +19,7 @@ same on client and server side.)
 
     [bbs]
     accept  = 127.0.0.1:1984
-    connect = sym.noone.org:1983
+    connect = <your-xymon-server>:1983
     client = yes
 
 ### Stunnel Server Side Configuration
