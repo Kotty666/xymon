@@ -1,3 +1,11 @@
+xymon (4.3.23-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+    + Drop cherry-picked 25_fix_4.3.22_process_graph_regression.patch.
+    + Refresh 78_fix_manpage_syntax_errors.patch.
+
+ -- Axel Beckert <abe@debian.org>  Fri, 13 Nov 2015 13:24:24 +0100
+
 xymon (4.3.22-2) unstable; urgency=high
 
   * Cherry-pick patch from upstream to fix TRACK/OPTIONAL analysis.cfg
