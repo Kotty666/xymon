@@ -1,11 +1,11 @@
-xymon (4.3.23-1) UNRELEASED; urgency=medium
+xymon (4.3.23-1) unstable; urgency=medium
 
   * New upstream release
     + Drop cherry-picked 25_fix_4.3.22_process_graph_regression.patch.
     + Refresh 78_fix_manpage_syntax_errors.patch.
   * Add a debian-specific README.encryption.
 
- -- Axel Beckert <abe@debian.org>  Fri, 13 Nov 2015 13:24:24 +0100
+ -- Axel Beckert <abe@debian.org>  Mon, 16 Nov 2015 20:49:51 +0100
 
 xymon (4.3.22-2) unstable; urgency=high
 
