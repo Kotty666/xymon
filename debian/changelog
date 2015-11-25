@@ -1,3 +1,11 @@
+xymon (4.3.24-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+    + Refresh 75_fix_spelling_errors.patch and
+      78_fix_manpage_syntax_errors.patch
+
+ -- Axel Beckert <abe@debian.org>  Wed, 25 Nov 2015 19:40:11 +0100
+
 xymon (4.3.23-1) unstable; urgency=medium
 
   * New upstream release

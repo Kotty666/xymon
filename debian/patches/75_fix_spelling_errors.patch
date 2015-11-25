@@ -4,8 +4,8 @@ Forwarded: no
 
 Index: xymon/client/xymonclient-sunos.sh
 ===================================================================
---- xymon.orig/client/xymonclient-sunos.sh	2015-10-30 18:17:22.108029881 +0100
-+++ xymon/client/xymonclient-sunos.sh	2015-11-07 16:58:06.091201174 +0100
+--- xymon.orig/client/xymonclient-sunos.sh	2015-11-25 19:39:11.028787502 +0100
++++ xymon/client/xymonclient-sunos.sh	2015-11-25 19:39:11.020787481 +0100
 @@ -109,7 +109,7 @@
  esac
  echo "[swap]"
@@ -17,8 +17,8 @@ Index: xymon/client/xymonclient-sunos.sh
  global|Global)
 Index: xymon/web/chpasswd.c
 ===================================================================
---- xymon.orig/web/chpasswd.c	2015-11-04 00:28:24.648363700 +0100
-+++ xymon/web/chpasswd.c	2015-11-08 09:10:52.579482134 +0100
+--- xymon.orig/web/chpasswd.c	2015-11-25 19:39:11.028787502 +0100
++++ xymon/web/chpasswd.c	2015-11-25 19:39:11.020787481 +0100
 @@ -137,13 +137,13 @@
  			}
  
@@ -37,8 +37,8 @@ Index: xymon/web/chpasswd.c
  				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('Username has invalid characters!'); </SCRIPT>\n";
 Index: xymon/xymond/do_alert.c
 ===================================================================
---- xymon.orig/xymond/do_alert.c	2015-10-30 18:17:22.124029817 +0100
-+++ xymon/xymond/do_alert.c	2015-11-07 16:58:11.379183801 +0100
+--- xymon.orig/xymond/do_alert.c	2015-11-25 19:39:11.028787502 +0100
++++ xymon/xymond/do_alert.c	2015-11-25 19:39:11.024787491 +0100
 @@ -413,7 +413,7 @@
  			if (!rpt) continue;	/* Happens for e.g. M_IGNORE recipients */
  
@@ -50,9 +50,9 @@ Index: xymon/xymond/do_alert.c
  			 */
 Index: xymon/xymond/xymond.c
 ===================================================================
---- xymon.orig/xymond/xymond.c	2015-11-06 22:47:58.471612843 +0100
-+++ xymon/xymond/xymond.c	2015-11-07 16:58:18.955158922 +0100
-@@ -3146,7 +3146,7 @@
+--- xymon.orig/xymond/xymond.c	2015-11-25 19:39:11.028787502 +0100
++++ xymon/xymond/xymond.c	2015-11-25 19:39:11.024787491 +0100
+@@ -3148,7 +3148,7 @@
  			break;
  
  		  case FILTER_TAG:
