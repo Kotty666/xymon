@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7721 2015-11-05 03:01:15Z jccleaver $";
+static char rcsid[] = "$Id: xymond.c 7771 2015-11-22 01:41:23Z jccleaver $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -1682,8 +1682,10 @@ void handle_status(unsigned char *msg, char *sender, char *hostname, char *testn
 	log->color = newcolor;
 	oldalertstatus = decide_alertstate(log->oldcolor);
 	newalertstatus = decide_alertstate(newcolor);
-	if (log->grouplist) xfree(log->grouplist);
-	if (grouplist) log->grouplist = strdup(grouplist);
+
+	/* grouplist and log->grouplist can point to the same address.. */
+	if (log->grouplist && log->grouplist != grouplist) xfree(log->grouplist);
+	if (grouplist && !log->grouplist) log->grouplist = strdup(grouplist);
 
 	if (log->acklist) {
 		ackinfo_t *awalk;
