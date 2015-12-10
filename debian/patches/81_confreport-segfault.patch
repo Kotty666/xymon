@@ -1,0 +1,31 @@
+Description: Fix segfault in confreport.cgi
+Author: "J.C. Cleaver" <cleaver@terabithia.org>
+Origin: http://lists.xymon.com/pipermail/xymon/2015-December/042757.html
+
+Index: xymon/web/confreport.c
+===================================================================
+--- xymon.orig/web/confreport.c	2015-12-10 17:40:25.666815308 +0100
++++ xymon/web/confreport.c	2015-12-10 17:40:25.662815333 +0100
+@@ -288,9 +288,10 @@
+ 		}
+ 		else if (is_net_test(itm)) {
+ 			colname = strdup(itm);
++			visdata = strdup("");
+ 		}
+ 
+-
++		if (!visdata) visdata = strdup("");
+ 		if (colname) {
+ 			tag_t *newitem;
+ 
+@@ -307,7 +308,9 @@
+ 			}
+ 			else {
+ 				/* Multiple tags for one column - must be http */
+-				newitem->visualdata = (char *)realloc(newitem->visualdata, strlen(newitem->visualdata) + strlen(visdata) + 5);
++				newitem->visualdata = newitem->visualdata ?
++					(char *)realloc(newitem->visualdata, strlen(newitem->visualdata) + strlen(visdata) + 5) :
++					(char *)malloc(strlen(visdata) + 5);
+ 				strcat(newitem->visualdata, "<br>");
+ 				strcat(newitem->visualdata, visdata);
+ 			}

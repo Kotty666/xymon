@@ -1,3 +1,9 @@
+xymon (4.3.24-2) UNRELEASED; urgency=medium
+
+  * Add upstream patch against segfault in confreport.cgi
+
+ -- Axel Beckert <abe@debian.org>  Thu, 10 Dec 2015 17:56:19 +0100
+
 xymon (4.3.24-1) unstable; urgency=medium
 
   * New upstream release.
