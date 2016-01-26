@@ -1,21 +1,16 @@
-Description: prefer temp plugin over temp values from devmon
- hobbit-plugins ships a temp plugin which supports putting temperature
- data into RRD and showing them as graphs. But the latter doesn't work
- if "temp=devmon" is listed in TEST2RRD.
- .
- That setting is meant for gathering temperatures from SNMP via the
- not packaged devmon (http://devmon.sourceforge.net/).
- .
- So for now we prefer working shipped plugins over supporting
- non-packaged add-on daemons.
-Author: Axel Beckert <abe@debian.org>
-Forwarded: not-needed
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
+Subject: 30_prefer-packaged-temp-plugin-over-unpackaged-devmon
 
-Index: xymon/xymond/etcfiles/xymonserver.cfg.DIST
-===================================================================
---- xymon.orig/xymond/etcfiles/xymonserver.cfg.DIST	2015-10-30 16:31:22.000000000 +0100
-+++ xymon/xymond/etcfiles/xymonserver.cfg.DIST	2015-10-30 16:31:22.000000000 +0100
-@@ -168,7 +168,7 @@
+---
+ xymond/etcfiles/xymonserver.cfg.DIST | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/xymond/etcfiles/xymonserver.cfg.DIST b/xymond/etcfiles/xymonserver.cfg.DIST
+index c3197a9..6686ff8 100644
+--- a/xymond/etcfiles/xymonserver.cfg.DIST
++++ b/xymond/etcfiles/xymonserver.cfg.DIST
+@@ -168,7 +168,7 @@ RRDWIDTH="576"		# The RRD's contain 576 data points, so this is a good value
  #
  # TEST2RRD and GRAPHS_* are used by the svcstatus.cgi script to determine if the detailed
  # status view of a test should include a graph.

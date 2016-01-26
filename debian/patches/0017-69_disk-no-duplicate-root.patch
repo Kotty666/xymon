@@ -1,12 +1,16 @@
-Description: Ignore duplicate submissions for the "/" partition
-Author: Christoph Berg <myon@debian.org>
-Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
-Last-Update: 2015-09-10
-Reviewed-By: Axel Beckert <abe@debian.org>
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:42 +0100
+Subject: 69_disk-no-duplicate-root
 
+---
+ xymond/rrd/do_disk.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/xymond/rrd/do_disk.c b/xymond/rrd/do_disk.c
+index 9afe0b6..cd93586 100644
 --- a/xymond/rrd/do_disk.c
 +++ b/xymond/rrd/do_disk.c
-@@ -20,6 +20,7 @@ int do_disk_rrd(char *hostname, char *te
+@@ -20,6 +20,7 @@ int do_disk_rrd(char *hostname, char *testname, char *classname, char *pagepaths
  	static int ptnsetup = 0;
  	static pcre *inclpattern = NULL;
  	static pcre *exclpattern = NULL;
@@ -14,7 +18,7 @@ Reviewed-By: Axel Beckert <abe@debian.org>
  
  	if (strstr(msg, "netapp.pl")) return do_netapp_disk_rrd(hostname, testname, classname, pagepaths, msg, tstamp);
  	if (strstr(msg, "dbcheck.pl")) return do_dbcheck_tablespace_rrd(hostname, testname, classname, pagepaths, msg, tstamp);
-@@ -163,6 +164,19 @@ int do_disk_rrd(char *hostname, char *te
+@@ -163,6 +164,19 @@ int do_disk_rrd(char *hostname, char *testname, char *classname, char *pagepaths
  
  		/* Check include/exclude patterns */
  		wanteddisk = 1;

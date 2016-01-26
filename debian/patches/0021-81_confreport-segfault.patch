@@ -1,12 +1,16 @@
-Description: Fix segfault in confreport.cgi
-Author: "J.C. Cleaver" <cleaver@terabithia.org>
-Origin: http://lists.xymon.com/pipermail/xymon/2015-December/042757.html
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:42 +0100
+Subject: 81_confreport-segfault
 
-Index: xymon/web/confreport.c
-===================================================================
---- xymon.orig/web/confreport.c	2015-12-10 17:40:25.666815308 +0100
-+++ xymon/web/confreport.c	2015-12-10 17:40:25.662815333 +0100
-@@ -288,9 +288,10 @@
+---
+ web/confreport.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/web/confreport.c b/web/confreport.c
+index 4c8a0b2..f6b29ae 100644
+--- a/web/confreport.c
++++ b/web/confreport.c
+@@ -288,9 +288,10 @@ static void print_host(hostlist_t *host, htnames_t *testnames[], int testcount)
  		}
  		else if (is_net_test(itm)) {
  			colname = strdup(itm);
@@ -18,7 +22,7 @@ Index: xymon/web/confreport.c
  		if (colname) {
  			tag_t *newitem;
  
-@@ -307,7 +308,9 @@
+@@ -307,7 +308,9 @@ addtolist:
  			}
  			else {
  				/* Multiple tags for one column - must be http */

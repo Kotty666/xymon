@@ -1,10 +1,6 @@
 From: dann frazier <dannf@debian.org>
-Subject: #526176: xymon: ldap_init implicitly converted to pointer
 Date: Wed, 29 Apr 2009 12:18:00 -0600
-Bug-Debian: https://bugs.debian.org/526176
-Forwarded: no
-Last-Update: 2015-09-10
-Reviewed-By: Axel Beckert <abe@debian.org>
+Subject: #526176: xymon: ldap_init implicitly converted to pointer
 
 Our automated buildd log filter[1] detected a problem that is likely to
 cause your package to segfault on architectures where the size of a
@@ -30,11 +26,14 @@ pointer is greater than the size of an integer, such as ia64 and amd64.
 
   [1] http://people.debian.org/~dannf/check-implicit-pointer-functions
   [2] http://wiki.debian.org/ImplicitPointerConversions
+---
+ build/test-ldap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Index: xymon/build/test-ldap.c
-===================================================================
---- xymon.orig/build/test-ldap.c	2012-07-23 23:39:37.000000000 +0200
-+++ xymon/build/test-ldap.c	2012-07-23 23:40:51.000000000 +0200
+diff --git a/build/test-ldap.c b/build/test-ldap.c
+index dd6bcb8..583eb87 100644
+--- a/build/test-ldap.c
++++ b/build/test-ldap.c
 @@ -2,6 +2,7 @@
  #include <sys/time.h>
  #include <stdio.h>

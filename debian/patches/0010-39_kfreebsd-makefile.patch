@@ -1,14 +1,18 @@
-Description: Add Makefile for GNU/kFreeBSD
-Bug-Debian: https://bugs.debian.org/458417
-Author: Christoph Berg <myon@debian.org>
-Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
-Last-Update: 2015-09-10
-Reviewed-By: Axel Beckert <abe@debian.org>
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
+Subject: 39_kfreebsd-makefile
 
-Index: xymon/build/Makefile.GNU_kFreeBSD
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ xymon/build/Makefile.GNU_kFreeBSD	2014-01-27 13:46:35.000000000 +0100
+---
+ build/Makefile.GNU_kFreeBSD | 27 +++++++++++++++++++++++++++
+ configure.server            |  9 +++++----
+ 2 files changed, 32 insertions(+), 4 deletions(-)
+ create mode 100644 build/Makefile.GNU_kFreeBSD
+
+diff --git a/build/Makefile.GNU_kFreeBSD b/build/Makefile.GNU_kFreeBSD
+new file mode 100644
+index 0000000..74b5fb1
+--- /dev/null
++++ b/build/Makefile.GNU_kFreeBSD
 @@ -0,0 +1,27 @@
 +# bbgen compile-time settings for GNU/kFreeBSD systems
 +
@@ -37,11 +41,11 @@ Index: xymon/build/Makefile.GNU_kFreeBSD
 +# Typically, this will be "mail" or "mailx"
 +MAILPROGRAM="mail"
 +
-Index: xymon/configure.server
-===================================================================
---- xymon.orig/configure.server	2014-01-27 13:46:35.000000000 +0100
-+++ xymon/configure.server	2014-01-27 13:46:35.000000000 +0100
-@@ -533,16 +533,17 @@
+diff --git a/configure.server b/configure.server
+index ff7803f..8662fc9 100755
+--- a/configure.server
++++ b/configure.server
+@@ -533,16 +533,17 @@ echo "# Large File Support settings"     >>Makefile
  echo "LFSDEF = $LFS"                     >>Makefile
  
  echo "" >>Makefile

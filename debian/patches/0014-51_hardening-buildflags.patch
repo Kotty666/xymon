@@ -1,13 +1,16 @@
-Description: Care that CFLAGS set in debian/rules are honoured.
-Author: Axel Beckert <abe@debian.org>
-Forwarded: no
-Last-Update: 2015-09-10
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
+Subject: 51_hardening-buildflags
 
-Index: xymon/build/Makefile.Linux
-===================================================================
---- xymon.orig/build/Makefile.Linux	2012-06-12 17:12:05.000000000 +0200
-+++ xymon/build/Makefile.Linux	2012-06-12 18:29:17.000000000 +0200
-@@ -7,12 +7,7 @@
+---
+ build/Makefile.Linux | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/build/Makefile.Linux b/build/Makefile.Linux
+index aeeced2..379ae28 100644
+--- a/build/Makefile.Linux
++++ b/build/Makefile.Linux
+@@ -7,12 +7,7 @@ NETLIBS =
  
  # Compile flags for normal build
  CC = gcc

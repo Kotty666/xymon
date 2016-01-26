@@ -1,14 +1,16 @@
-Description: Replace Apache 2.2 directives with those from 2.4
-Author: Axel Beckert <abe@debian.org>
-Bug-Debian: https://bugs.debian.org/669776
-Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
-Last-Update: 2015-09-10
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:42 +0100
+Subject: 66_apache2.4
 
-Index: xymon/xymond/etcfiles/xymon-apache-secure.DIST
-===================================================================
---- xymon.orig/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-26 22:46:58.000000000 +0200
-+++ xymon/xymond/etcfiles/xymon-apache-secure.DIST	2015-05-26 22:47:35.000000000 +0200
-@@ -61,17 +61,24 @@
+---
+ xymond/etcfiles/xymon-apache-secure.DIST | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/xymond/etcfiles/xymon-apache-secure.DIST b/xymond/etcfiles/xymon-apache-secure.DIST
+index e2b20d4..cac0e96 100644
+--- a/xymond/etcfiles/xymon-apache-secure.DIST
++++ b/xymond/etcfiles/xymon-apache-secure.DIST
+@@ -61,17 +61,24 @@ ScriptAlias @SECUREXYMONCGIURL@/ "@SECURECGIDIR@/"
      # a specific group membership. See the Apache docs for more details.
  
      AuthUserFile @INSTALLETCDIR@/xymonpasswd

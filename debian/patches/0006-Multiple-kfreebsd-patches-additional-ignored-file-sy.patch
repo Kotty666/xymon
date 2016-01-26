@@ -1,7 +1,6 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
 Subject: Multiple kfreebsd patches, additional ignored file systems
-Forwarded: http://lists.xymon.com/pipermail/xymon/2015-September/042224.html
-Last-Update: 2015-09-10
-Reviewed-By: Axel Beckert <abe@debian.org>
 
 xymon (4.3.0~beta2.dfsg-6) unstable; urgency=low
 
@@ -19,12 +18,16 @@ hobbit (4.2.0.dfsg-13) unstable; urgency=low
     /etc/hobbit/hobbit-clients.cfg. (Closes: #487157)
 
  -- Christoph Berg <myon@debian.org>  Sat, 05 Jul 2008 14:43:23 +0200
+---
+ client/xymonclient-linux.sh  | 9 +++++++--
+ xymond/etcfiles/analysis.cfg | 5 +++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-Index: xymon/client/xymonclient-linux.sh
-===================================================================
---- xymon.orig/client/xymonclient-linux.sh	2015-10-30 16:26:24.000000000 +0100
-+++ xymon/client/xymonclient-linux.sh	2015-10-30 16:26:24.000000000 +0100
-@@ -45,9 +45,14 @@
+diff --git a/client/xymonclient-linux.sh b/client/xymonclient-linux.sh
+index 25cdaed..235de11 100755
+--- a/client/xymonclient-linux.sh
++++ b/client/xymonclient-linux.sh
+@@ -45,9 +45,14 @@ uptime
  echo "[who]"
  who
  echo "[df]"
@@ -41,10 +44,10 @@ Index: xymon/client/xymonclient-linux.sh
  N
  s/[ 	]*\n[ 	]*/ /
  }' -e "s&^rootfs&${ROOTFS}&"
-Index: xymon/xymond/etcfiles/analysis.cfg
-===================================================================
---- xymon.orig/xymond/etcfiles/analysis.cfg	2015-10-30 16:26:24.000000000 +0100
-+++ xymon/xymond/etcfiles/analysis.cfg	2015-10-30 16:26:24.000000000 +0100
+diff --git a/xymond/etcfiles/analysis.cfg b/xymond/etcfiles/analysis.cfg
+index 722b332..efbf69b 100644
+--- a/xymond/etcfiles/analysis.cfg
++++ b/xymond/etcfiles/analysis.cfg
 @@ -354,6 +354,11 @@
  
  
