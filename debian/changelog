@@ -1,8 +1,11 @@
-xymon (4.3.24-2.1) wheezy; urgency=medium
+xymon (4.3.24-3) wheezy; urgency=medium
 
-  * Non-maintainer upload.
+  * added Patches
+		+ 0022-Added-grouped-nongreen-view.patch
+		+ 023-Hostname-refers-now-to-findhost.sh-so-we-can-jump-to.patch
+		+ 0024-now-our-http-checks-could-turn-green-yellow-red-with.patch
 
- -- Philipp Frik <kotty@guns-n-girls.de>  Tue, 26 Jan 2016 16:41:34 +0100
+ -- Philipp Frik <kotty@guns-n-girls.de>  Wed, 27 Jan 2016 11:15:09 +0100
 
 xymon (4.3.24-2) unstable; urgency=medium
 
