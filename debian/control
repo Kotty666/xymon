@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 9~),
                libldap2-dev (>= 2.4.25-2~),
                libpcre3-dev (>= 8.12-4~),
                librrd-dev,
-               libssl-dev (>= 1.0.1k-3),
+               libssl-dev (>= 1.0.1e),
                po-debconf,
                procps
 Standards-Version: 3.9.6
