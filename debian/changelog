@@ -1,4 +1,4 @@
-xymon (4.3.24-3) stable; urgency=medium
+xymon (4.3.24-3~bpo70+1) oldstable; urgency=medium
 
   * added Patches
 		+ 0022-Added-grouped-nongreen-view.patch
