@@ -84,7 +84,7 @@ install-server: build install-clean
 	chmod 4755 $S/usr/lib/xymon/server/bin/xymonping
 	mkdir -p debian/tmp
 	if [ -e $S/etc/apache2/conf.d/ ]; then \
-		mv $S/etc/xymon/xymon-apache.conf $S/etc/apache2/conf.d/xymon \
+		mv $S/etc/xymon/xymon-apache.conf $S/etc/apache2/conf.d/xymon ; \
 	fi
 	# We use a modified version of this as /etc/init.d/xymon
 	rm $S/usr/lib/xymon/server/xymon.sh
