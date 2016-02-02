@@ -87,7 +87,7 @@ install-server: build install-clean
 	mv $S/etc/xymon/xymon-apache.conf debian/tmp/xymon.conf
 	if [ -e /usr/share/apache2/apache2-maintscript-helper ] ; then
 		. /usr/share/apache2/apache2-maintscript-helper
-		apache2_invoke enconf yourapplication.conf || exit $?
+		apache2_invoke enconf xymon.conf || exit $?
 	fi
 	# We use a modified version of this as /etc/init.d/xymon
 	rm $S/usr/lib/xymon/server/xymon.sh
