@@ -1,3 +1,9 @@
+xymon (4.3.24-4) stable; urgency=medium
+
+  * addes symlinks 
+
+ -- Philipp Frik <kotty@guns-n-girls.de>  Tue, 09 Feb 2016 16:18:12 +0100
+
 xymon (4.3.24-3) stable; urgency=medium
 
   * added Patches
