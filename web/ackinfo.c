@@ -8,7 +8,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: ackinfo.c 7119 2012-07-24 16:19:58Z storner $";
+static char rcsid[] = "$Id: ackinfo.c 7119M 2016-02-05 20:50:17Z (local) $";
 
 #include <string.h>
 #include <stdlib.h>
@@ -92,6 +92,18 @@ int main(int argc, char *argv[])
 	}
 
 	redirect_cgilog("ackinfo");
+
+	/* We only want to accept posts from certain pages */
+	{
+	    char cgisource[1024]; char *p;
+	    p = csp_header("ackinfo"); if (p) fprintf(stdout, "%s", p);
+	    snprintf(cgisource, sizeof(cgisource), "%s/%s", xgetenv("SECURECGIBINURL"), "criticalview");
+	    if (!cgi_refererok(cgisource)) {
+		fprintf(stdout, "Location: %s.sh?\n\n", cgisource);
+		return 0;
+	    }
+	}
+
 	parse_query();
 
 	if (hostname && *hostname && testname && *testname && ((level == 0) || (validity>0)) && ackmsg && *ackmsg) {

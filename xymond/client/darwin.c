@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char darwin_rcsid[] = "$Id: darwin.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char darwin_rcsid[] = "$Id: darwin.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_darwin_client(char *hostname, char *clienttype, enum ostype_t os, 
 			  void *hinfo, char *sender, time_t timestamp, 
@@ -97,7 +97,9 @@ void handle_darwin_client(char *hostname, char *clienttype, enum ostype_t os,
 				memphysused  = memphysused * pgsize / 1024;
 
 				unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-						   memphystotal, memphysused, -1, -1, -1);
+						   memphystotal, memphysused, 
+						   -1, -1, 
+						   -1, -1);
 			}
 		}
 	}

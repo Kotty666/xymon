@@ -25,7 +25,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymond.c 7771 2015-11-22 01:41:23Z jccleaver $";
+static char rcsid[] = "$Id: xymond.c 7860M 2016-02-05 20:50:18Z (local) $";
 
 #include <limits.h>
 #include <sys/time.h>
@@ -2692,13 +2692,40 @@ int get_config(char *fn, conn_t *msg)
 {
 	char fullfn[PATH_MAX];
 	FILE *fd = NULL;
+	size_t fnlen;
+	static int allowallconfigs = -1;
+	struct stat st;
 	strbuffer_t *inbuf, *result;
 
 	dbgprintf("-> get_config %s\n", fn);
-	sprintf(fullfn, "%s/etc/%s", xgetenv("XYMONHOME"), fn);
+
+	if (allowallconfigs == -1) allowallconfigs = (strcmp(xgetenv("ALLOWALLCONFIGFILES"), "TRUE") == 0);
+
+	fnlen = strlen(fn);
+	if (fnlen < 4) {
+		errprintf("Config filename requested (%s) is too short\n", fn);
+		return -1;
+	}
+
+	/* Make sure it ends in .cfg */
+	if ((!allowallconfigs) && (strcasecmp(fn + fnlen - 4, ".cfg") != 0) ) {
+		errprintf("Config filename requested (%s) doesn't end in '.cfg'\n", fn);
+		return -1;
+	}
+
+	snprintf(fullfn, sizeof(fullfn), "%s/etc/%s", xgetenv("XYMONHOME"), fn);
+	if (! (lstat(fullfn, &st) == 0) ) {
+		errprintf("Config file %s (%s) error: %s\n", fn, fullfn, strerror(errno));
+		return -1;
+        }
+	if (! S_ISREG(st.st_mode)) {
+		errprintf("Config file requested (%s) is not a regular file\n", fullfn);
+		return -1;
+	}
+
 	fd = stackfopen(fullfn, "r", NULL);
 	if (fd == NULL) {
-		errprintf("Config file %s not found\n", fn);
+		errprintf("Config file %s not readable\n", fn);
 		return -1;
 	}
 
@@ -2726,7 +2753,7 @@ int get_binary(char *fn, conn_t *msg)
 	long flen;
 
 	dbgprintf("-> get_binary %s\n", fn);
-	sprintf(fullfn, "%s/download/%s", xgetenv("XYMONHOME"), fn);
+	snprintf(fullfn, sizeof(fullfn), "%s/download/%s", xgetenv("XYMONHOME"), fn);
 
 	result = get_filecache(fullfn, &flen);
 	if (!result) {
@@ -3495,7 +3522,7 @@ void do_message(conn_t *msg, char *origin)
 
 			gettimeofday(&tv, &tz);
 
-			sprintf(tracefn, "%s/%d_%06d_%s.trace", xgetenv("XYMONTMP"), 
+			snprintf(tracefn, sizeof(tracefn), "%s/%d_%06d_%s.trace", xgetenv("XYMONTMP"), 
 				(int) tv.tv_sec, (int) tv.tv_usec, sender);
 			fd = fopen(tracefn, "w");
 			if (fd) {
@@ -4379,7 +4406,7 @@ void do_message(conn_t *msg, char *origin)
 		/* Tell them we're here */
 		char id[128];
 
-		sprintf(id, "xymond %s\n", VERSION);
+		snprintf(id, sizeof(id), "xymond %s\n", VERSION);
 		msg->doingwhat = RESPONDING;
 		xfree(msg->buf);
 		msg->bufp = msg->buf = strdup(id);
@@ -5595,7 +5622,7 @@ int main(int argc, char *argv[])
 	if (dbghost) {
 		char fname[PATH_MAX];
 
-		sprintf(fname, "%s/xymond.dbg", xgetenv("XYMONTMP"));
+		snprintf(fname, sizeof(fname), "%s/xymond.dbg", xgetenv("XYMONTMP"));
 		dbgfd = fopen(fname, "a");
 		if (dbgfd == NULL) errprintf("Cannot open debug file %s: %s\n", fname, strerror(errno));
 	}

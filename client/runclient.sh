@@ -13,7 +13,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: runclient.sh 7208 2013-07-23 15:19:40Z storner $
+# $Id: runclient.sh 7884 2016-01-27 21:12:32Z jccleaver $
 
 # Default settings for this client
 MACHINEDOTS="`uname -n`"			# This systems hostname
@@ -120,12 +120,15 @@ case "$CMD" in
 		if test $? -eq 0
 		then
 			echo "Xymon client (clientlaunch) running with PID `cat $XYMONCLIENTHOME/logs/clientlaunch.$MACHINEDOTS.pid`"
+			exit 0
 		else
 			echo "Xymon client not running, removing stale PID file"
 			rm -f $XYMONCLIENTHOME/logs/clientlaunch.$MACHINEDOTS.pid
+			exit 1
 		fi
 	else
 		echo "Xymon client (clientlaunch) does not appear to be running"
+		exit 3
 	fi
 	;;
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char openbsd_rcsid[] = "$Id: openbsd.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char openbsd_rcsid[] = "$Id: openbsd.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_openbsd_client(char *hostname, char *clienttype, enum ostype_t os,
 			   void *hinfo, char *sender, time_t timestamp, 
@@ -88,7 +88,9 @@ void handle_openbsd_client(char *hostname, char *clienttype, enum ostype_t os,
 
 		if (found == 4) {
 			unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-				   memphystotal, memphysused, -1, memswaptotal, memswapused);
+				   memphystotal, memphysused, 
+				   -1, -1, 
+				   memswaptotal, memswapused);
 		}
 	}
 

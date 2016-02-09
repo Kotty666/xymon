@@ -1,2 +1,0 @@
-debian/init-common.sh usr/share/xymon
-debian/clientlaunch.d/README etc/xymon/clientlaunch.d

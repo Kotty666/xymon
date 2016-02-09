@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: logfetch.c 7731 2015-11-12 09:13:43Z jccleaver $";
+static char rcsid[] = "$Id: logfetch.c 7880M 2016-02-05 20:50:18Z (local) $";
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -25,6 +25,7 @@ static char rcsid[] = "$Id: logfetch.c 7731 2015-11-12 09:13:43Z jccleaver $";
 #include <limits.h>
 #include <errno.h>
 #include <regex.h>
+#include <glob.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -50,6 +51,7 @@ static char curpostxt[512];
 /* Default = use default */
 int scrollback = -1;
 
+static int allowexec = 1;
 
 typedef enum { C_NONE, C_LOG, C_FILE, C_DIR, C_COUNT } checktype_t;
 
@@ -749,12 +751,26 @@ void printdirdata(FILE *fd, char *fn)
 	char *cmd;
 	char buf[4096];
 	int buflen;
+	struct stat st;
+	int staterror;
 
-	ducmd = getenv("DU");
-	if (ducmd == NULL) ducmd = "du -k";
+	ducmd = xgetenv("DU");
+
+	staterror = stat(fn, &st);
+	if (staterror == -1) {
+		fprintf(fd, "ERROR: %s\n", strerror(errno));
+		return;
+	}
+	else if (!S_ISDIR(st.st_mode)) {
+		fprintf(fd, "ERROR: Not a directory\n");
+		return;
+	}
+
+	/* Cannot handle filenames with a quote in them (insecure) */
+	if (strchr(fn, '\'')) return;
 
 	cmd = (char *)malloc(strlen(ducmd) + strlen(fn) + 10);
-	sprintf(cmd, "%s %s 2>&1", ducmd, fn);
+	sprintf(cmd, "%s '%s' 2>&1", ducmd, fn);
 
 	cmdfd = popen(cmd, "r");
 	xfree(cmd);
@@ -889,11 +905,13 @@ int loadconfig(char *cfgfn)
 					/* Run the command to get filenames */
 					char *p;
 					char *cmd;
-					FILE *fd;
+					FILE *fd = NULL;
 
 					cmd = filename+1;
 					p = strchr(cmd, '`'); if (p) *p = '\0';
-					fd = popen(cmd, "r");
+					if (allowexec) fd = popen(cmd, "r");
+					else fprintf(stderr, "logfetch given --noexec option but config told to run command '%s'\n", cmd);
+
 					if (fd) {
 						char pline[PATH_MAX+1];
 
@@ -943,8 +961,77 @@ int loadconfig(char *cfgfn)
 							if (!firstpipeitem) firstpipeitem = newitem;
 						}
 
-						pclose(fd);
+						if (fd) pclose(fd);
 					}
+				}
+				else if (*filename == '<') {
+					/* Resolve the glob to get filenames */
+					char *p;
+					char *fileglob;
+					glob_t globbuf;
+					int n, i;
+
+					fileglob = filename+1;
+					p = strchr(fileglob, '>'); if (p) *p = '\0';
+					dbgprintf(" - searching file glob: %s\n", fileglob);
+/* Some of these are GNU extensions */
+#if !defined(HAVE_GLOB_NOMAGIC) || !defined(HAVE_GLOB_BRACE)
+					n = glob(fileglob, GLOB_MARK | GLOB_NOCHECK , NULL, &globbuf);
+#else
+					n = glob(fileglob, GLOB_MARK | GLOB_NOCHECK | GLOB_BRACE | GLOB_NOMAGIC , NULL, &globbuf);
+#endif
+
+					if (n) errprintf("Error searching glob pattern '%s': %s\n", fileglob, strerror(errno));
+					else {
+
+						for (i = 0; (globbuf.gl_pathv[i] && (*(globbuf.gl_pathv[i]))) ; i++) {
+							dbgprintf(" -- found matching path: %s\n", globbuf.gl_pathv[i]);
+
+							newitem = calloc(sizeof(checkdef_t), 1);
+
+							newitem->checktype = checktype;
+							newitem->filename = strdup(globbuf.gl_pathv[i]);
+
+							switch (checktype) {
+					  		  case C_LOG:
+								newitem->check.logcheck.maxbytes = maxbytes;
+								break;
+							  case C_FILE:
+								newitem->check.filecheck.domd5 = domd5;
+								newitem->check.filecheck.dosha1 = dosha1;
+								newitem->check.filecheck.dosha256 = dosha256;
+								newitem->check.filecheck.dosha512 = dosha512;
+								newitem->check.filecheck.dosha224 = dosha224;
+								newitem->check.filecheck.dosha384 = dosha384;
+								newitem->check.filecheck.dormd160 = dormd160;
+								break;
+							  case C_DIR:
+								break;
+							  case C_COUNT:
+								newitem->check.countcheck.patterncount = 0;
+								newitem->check.countcheck.patternnames = calloc(1, sizeof(char *));
+								newitem->check.countcheck.patterns = calloc(1, sizeof(char *));
+								break;
+					  		  case C_NONE:
+								break;
+							}
+
+							newitem->next = checklist;
+							checklist = newitem;
+
+							/*
+							 * Since we insert new items at the head of the list,
+							 * currcfg points to the first item in the list of
+							 * these log configs. firstpipeitem points to the
+							 * last item inside the list which is part of this
+							 * configuration.
+							 */
+							currcfg = newitem;
+							if (!firstpipeitem) firstpipeitem = newitem;
+						}
+
+					}
+					globfree(&globbuf);
 				}
 				else {
 					newitem = calloc(sizeof(checkdef_t), 1);
@@ -1245,6 +1332,9 @@ int main(int argc, char *argv[])
 			char *delim = strchr(argv[i], '=');
 			debug = 1;
 			if (delim) set_debugfile(delim+1, 0);
+		}
+		else if (strncmp(argv[i], "--noexec", 8) == 0) {
+			allowexec = 0;
 		}
 		else if (strcmp(argv[i], "--clock") == 0) {
 			struct timeval tv;

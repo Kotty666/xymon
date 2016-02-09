@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char aix_rcsid[] = "$Id: aix.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char aix_rcsid[] = "$Id: aix.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_aix_client(char *hostname, char *clienttype, enum ostype_t os,
 		       void *hinfo, char *sender, time_t timestamp,
@@ -87,7 +87,8 @@ void handle_aix_client(char *hostname, char *clienttype, enum ostype_t os,
 		}
 
 		unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-				memphystotal, (memphystotal - memphysfree), -1L,
+				memphystotal, (memphystotal - memphysfree), 
+				-1L, -1L,
 				memswaptotal, ((memswaptotal * memswappct) / 100L));
 	}
 
