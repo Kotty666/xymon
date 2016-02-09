@@ -1,0 +1,21 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
+Subject: 09_hobbitclient-debian
+
+---
+ client/xymonclient-linux.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/client/xymonclient-linux.sh b/client/xymonclient-linux.sh
+index e2e5b40..25cdaed 100755
+--- a/client/xymonclient-linux.sh
++++ b/client/xymonclient-linux.sh
+@@ -75,6 +75,8 @@ echo "[ifstat]"
+ if test -r /proc/mdstat; then echo "[mdstat]"; cat /proc/mdstat; fi
+ echo "[ps]"
+ ps -Aww f -o pid,ppid,user,start,state,pri,pcpu,time:12,pmem,rsz:10,vsz:10,cmd
++echo "[dpkg]"
++COLUMNS=200 dpkg -l | awk '/^..  / { print $1 " " $2 " " $3 }'
+ 
+ # $TOP must be set, the install utility should do that for us if it exists.
+ if test "$TOP" != ""

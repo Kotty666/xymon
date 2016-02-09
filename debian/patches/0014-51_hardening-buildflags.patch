@@ -1,0 +1,26 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
+Subject: 51_hardening-buildflags
+
+---
+ build/Makefile.Linux | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/build/Makefile.Linux b/build/Makefile.Linux
+index aeeced2..379ae28 100644
+--- a/build/Makefile.Linux
++++ b/build/Makefile.Linux
+@@ -7,12 +7,7 @@ NETLIBS =
+ 
+ # Compile flags for normal build
+ CC = gcc
+-GCCVER := $(shell gcc -dumpversion|cut -d. -f1)
+-ifeq ($(GCCVER),4)
+-   CFLAGS = -g -O2 -Wall -Wno-unused -Wno-pointer-sign -D_REENTRANT $(LFSDEF) $(OSDEF)
+-else
+-   CFLAGS = -g -O2 -Wall -Wno-unused -D_REENTRANT $(LFSDEF) $(OSDEF)
+-endif
++CFLAGS += -Wall -Wno-unused -Wno-pointer-sign -D_REENTRANT $(LFSDEF) $(OSDEF)
+ 
+ ifndef PKGBUILD
+ RPATH = -Wl,--rpath,

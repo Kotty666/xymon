@@ -1,0 +1,44 @@
+From: dann frazier <dannf@debian.org>
+Date: Wed, 29 Apr 2009 12:18:00 -0600
+Subject: #526176: xymon: ldap_init implicitly converted to pointer
+
+Our automated buildd log filter[1] detected a problem that is likely to
+cause your package to segfault on architectures where the size of a
+pointer is greater than the size of an integer, such as ia64 and amd64.
+
+  Function `ldap_init' implicitly converted to pointer at test-ldap.c:25
+
+  This is often due to a missing function prototype definition.
+  For more information, see [2].
+
+  Though it is guaranteed that this codepath will cause a segfault on certain
+  architectures, it is not guaranteed that this codepath would ever be executed
+  (e.g., if the returned pointer is never dereferenced). However, this bug
+  does prevent the ia64 buildd from successfully building this package, resulting
+  in a practical FTBFS issue and warranting the serious severity.
+
+  The libldap API has been updated and many functions used by the ldap
+  plugin are now deprecated. This package should either update to the
+  new API or define LDAP_DEPRECATED to continue using the deprecated
+  interfaces.
+
+  This patch implements the lazy solution.
+
+  [1] http://people.debian.org/~dannf/check-implicit-pointer-functions
+  [2] http://wiki.debian.org/ImplicitPointerConversions
+---
+ build/test-ldap.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/build/test-ldap.c b/build/test-ldap.c
+index dd6bcb8..583eb87 100644
+--- a/build/test-ldap.c
++++ b/build/test-ldap.c
+@@ -2,6 +2,7 @@
+ #include <sys/time.h>
+ #include <stdio.h>
+ 
++#define LDAP_DEPRECATED 1
+ #include <ldap.h>
+ #include <lber.h>
+ 
