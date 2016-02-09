@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char freebsd_rcsid[] = "$Id: freebsd.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char freebsd_rcsid[] = "$Id: freebsd.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_freebsd_client(char *hostname, char *clienttype, enum ostype_t os, 
 			   void *hinfo, char *sender, time_t timestamp,
@@ -129,7 +129,7 @@ void handle_freebsd_client(char *hostname, char *clienttype, enum ostype_t os,
 
 	if (found >= 2) {
 		unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-			   memphystotal, memphysused, memphysactual, memswaptotal, memswapused);
+			   memphystotal, memphysused, memphystotal, memphysactual, memswaptotal, memswapused);
 	}
 
 	splitmsg_done();
