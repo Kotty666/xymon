@@ -1,0 +1,21 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:42 +0100
+Subject: 72_disable_SSLv3
+
+---
+ xymonnet/contest.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/xymonnet/contest.c b/xymonnet/contest.c
+index 3de84d9..a8bf8f5 100644
+--- a/xymonnet/contest.c
++++ b/xymonnet/contest.c
+@@ -481,8 +481,6 @@ static void setup_ssl(tcptest_t *item)
+ 		  case SSLVERSION_V2:
+ 			item->sslctx = SSL_CTX_new(SSLv2_client_method()); break;
+ #endif
+-		  case SSLVERSION_V3:
+-			item->sslctx = SSL_CTX_new(SSLv3_client_method()); break;
+ 		  case SSLVERSION_TLS1:
+ 			item->sslctx = SSL_CTX_new(TLSv1_client_method()); break;
+ 		  default:

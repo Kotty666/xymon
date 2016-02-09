@@ -1,0 +1,2 @@
+/usr/lib/xymon/client/bin/xymon /usr/bin/xymon
+/usr/lib/xymon/client/bin/xymoncmd /usr/bin/xymoncmd
