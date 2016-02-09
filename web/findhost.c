@@ -37,7 +37,7 @@
  *
  */
 
-static char rcsid[] = "$Id: findhost.c 7370 2014-01-26 11:11:09Z storner $";
+static char rcsid[] = "$Id: findhost.c 7863 2016-01-21 03:33:16Z jccleaver $";
 
 #include <stdio.h>
 #include <string.h>
@@ -255,12 +255,12 @@ int main(int argc, char *argv[])
 	
 	if (dojump) {
 		if (gotany == 1) {
-			printf("Location: %s%s\n\n", xgetenv("XYMONWEBHOST"), oneurl);
+			printf("Location: %s\n\n", oneurl);
 			return 0;
 		}
 		else if ((gotany > 1) && (gotonepage == OP_YES)) {
-			printf("Location: %s%s/%s/\n\n", 
-			       xgetenv("XYMONWEBHOST"), xgetenv("XYMONWEB"), onepage);
+			printf("Location: %s/%s/\n\n", 
+			       xgetenv("XYMONWEB"), onepage);
 			return 0;
 		}
 	}

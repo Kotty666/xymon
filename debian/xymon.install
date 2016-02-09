@@ -1,3 +1,0 @@
-build/renametasks usr/lib/xymon/server/libexec
-build/renamevars usr/lib/xymon/server/libexec
-build/upgrade430.sh usr/lib/xymon/server/libexec

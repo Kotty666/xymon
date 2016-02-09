@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char solaris_rcsid[] = "$Id: solaris.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char solaris_rcsid[] = "$Id: solaris.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_solaris_client(char *hostname, char *clienttype, enum ostype_t os,
 			   void *hinfo, char *sender, time_t timestamp, 
@@ -138,7 +138,8 @@ void handle_solaris_client(char *hostname, char *clienttype, enum ostype_t os,
 
 		if ((memphystotal>=0) && (memphysfree>=0) && (memswapused>=0) && (memswapfree>=0)) {
 			unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-					   memphystotal, (memphystotal - memphysfree), -1,
+					   memphystotal, (memphystotal - memphysfree), 
+					   -1, -1,
 					   (memswapused + memswapfree), memswapused);
 		}
 	}

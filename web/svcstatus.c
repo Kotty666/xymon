@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus.c 7678 2015-10-01 14:42:42Z jccleaver $";
+static char rcsid[] = "$Id: svcstatus.c 7678M 2016-02-05 20:50:17Z (local) $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -756,6 +756,8 @@ int main(int argc, char *argv[])
 	}
 
 	redirect_cgilog("svcstatus");
+	fprintf(stdout, "%s", csp_header("svcstatus"));
+	fprintf(stdout, "Refresh: 30\n");
 
 	*errortxt = '\0';
 	hostname = service = tstamp = NULL;

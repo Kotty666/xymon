@@ -10,7 +10,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient-freebsd.sh 7707 2015-10-19 22:34:59Z jccleaver $
+# $Id: xymonclient-freebsd.sh 7847 2015-12-16 15:13:03Z jccleaver $
 
 echo "[date]"
 date
@@ -47,7 +47,7 @@ ifconfig -a
 echo "[route]"
 netstat -rn
 echo "[ifstat]"
-netstat -i -b -n | egrep -v "^lo|<Link"
+netstat -ibnW | egrep "<Link|Name" | grep -v ^lo
 echo "[netstat]"
 netstat -s
 echo "[ports]"

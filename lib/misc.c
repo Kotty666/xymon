@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: misc.c 7720 2015-11-04 20:23:13Z jccleaver $";
+static char rcsid[] = "$Id: misc.c 7720M 2016-02-05 20:50:18Z (local) $";
 
 #include "config.h"
 
@@ -472,6 +472,11 @@ const char *textornull(const char *text)
 	return (text ? text : "(NULL)");
 }
 
+int issimpleword(const char *text)
+{
+	if (text == NULL) return 0;
+	return (strlen(text) == strspn(text, "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ._-"));
+}
 
 int get_fqdn(void)
 {

@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: htmllog.c 7643 2015-05-01 00:44:54Z jccleaver $";
+static char rcsid[] = "$Id: htmllog.c 7861 2016-01-20 18:50:38Z jccleaver $";
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -199,6 +199,8 @@ void generate_html_log(char *hostname, char *displayname, char *service, char *i
 
 	if (is_history) tplfile = "histlog";
 	if (strcmp(service, xgetenv("INFOCOLUMN")) == 0) tplfile = "info";
+	else if (strcmp(service, xgetenv("TRENDSCOLUMN")) == 0) tplfile = "trends";
+
 	headfoot(output, tplfile, "", "header", color);
 
 	if (strcmp(service, xgetenv("TRENDSCOLUMN")) == 0) {

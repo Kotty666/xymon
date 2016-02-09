@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: xymonping.c 7678 2015-10-01 14:42:42Z jccleaver $";
+static char rcsid[] = "$Id: xymonping.c 7844 2015-12-11 05:59:24Z jccleaver $";
 
 #include "config.h"
 
@@ -360,7 +360,7 @@ void show_results(void)
 				printf(" (%.1f ms)\n", rtt_usecs / 1000.0);
 			}
 			else {
-				printf(" (%u usec)\n", rtt_usecs);
+				printf(" (%lu usec)\n", rtt_usecs);
 			}
 		}
 		else {

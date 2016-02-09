@@ -10,7 +10,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char osf_rcsid[] = "$Id: osf.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char osf_rcsid[] = "$Id: osf.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_osf_client(char *hostname, char *clienttype, enum ostype_t os, 
 		       void *hinfo, char *sender, time_t timestamp, 
@@ -129,7 +129,8 @@ void handle_osf_client(char *hostname, char *clienttype, enum ostype_t os,
 		}
 
 		unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-				   phystotal, (phystotal - physfree), -1, 
+				   phystotal, (phystotal - physfree),
+				   -1, -1, 
 				   swaptotal, (swaptotal - swapfree));
 	}
 

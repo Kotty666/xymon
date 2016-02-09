@@ -12,7 +12,7 @@
 #                                                                            #
 #----------------------------------------------------------------------------#
 #
-# $Id: xymonclient.sh 7691 2015-10-16 20:41:12Z jccleaver $
+# $Id: xymonclient.sh 7878 2016-01-26 05:21:46Z jccleaver $
 
 # Must make sure the commands return standard (english) texts.
 LANG=C
@@ -20,7 +20,6 @@ LC_ALL=C
 LC_MESSAGES=C
 export LANG LC_ALL LC_MESSAGES
 
-LOCALMODE="no"
 if test $# -ge 1; then
 	if test "$1" = "--local"; then
 		LOCALMODE="yes"
@@ -34,8 +33,27 @@ fi
 
 MSGFILE="$XYMONTMP/msg.$MACHINEDOTS.txt"
 MSGTMPFILE="$MSGFILE.$$"
-LOGFETCHCFG=$XYMONTMP/logfetch.$MACHINEDOTS.cfg
-LOGFETCHSTATUS=$XYMONTMP/logfetch.$MACHINEDOTS.status
+if test "$LOCALMODE" = "yes"; then
+    if test -z "$LOCAL_CLIENTCONFIG"; then
+	LOCAL_CLIENTCONFIG="$XYMONHOME/etc/localclient.cfg"
+    fi
+    if test -z "$LOCAL_LOGFETCHCFG"; then
+	LOCAL_LOGFETCHCFG="$XYMONHOME/etc/logfetch.cfg"
+    fi
+
+    # If not present, fall back to dynamic logfetch location below
+    if test -f "$LOCAL_LOGFETCHCFG"; then
+	LOGFETCHCFG="$LOCAL_LOGFETCHCFG"
+    fi
+fi
+
+if test -z "$LOGFETCHCFG"; then
+	LOGFETCHCFG=$XYMONTMP/logfetch.$MACHINEDOTS.cfg
+fi
+if test -z "$LOGFETCHSTATUS"; then
+	LOGFETCHSTATUS=$XYMONTMP/logfetch.$MACHINEDOTS.status
+fi
+
 export LOGFETCHCFG LOGFETCHSTATUS
 
 rm -f $MSGTMPFILE
@@ -56,7 +74,7 @@ $XYMONHOME/bin/$XYMONOSSCRIPT >> $MSGTMPFILE
 # logfiles
 if test -f $LOGFETCHCFG
 then
-    $XYMONHOME/bin/logfetch $LOGFETCHCFG $LOGFETCHSTATUS >>$MSGTMPFILE
+    $XYMONHOME/bin/logfetch $LOGFETCHOPTS $LOGFETCHCFG $LOGFETCHSTATUS >>$MSGTMPFILE
 fi
 # Client version
 echo "[clientversion]"  >>$MSGTMPFILE
@@ -80,7 +98,7 @@ $XYMONHOME/bin/logfetch --clock >> $MSGTMPFILE
 
 if test "$LOCALMODE" = "yes"; then
 	echo "@@" >> $MSGTMPFILE
-	$XYMONHOME/bin/xymond_client $XYMONLOCALCLIENTOPTS --local --config=$XYMONHOME/etc/localclient.cfg <$MSGTMPFILE
+	$XYMONHOME/bin/xymond_client --local $LOCAL_CLIENTOPTS --config=$LOCAL_CLIENTCONFIG <$MSGTMPFILE
 else
 	$XYMON $XYMSRV "@" < $MSGTMPFILE >$LOGFETCHCFG.tmp
 	if test -f $LOGFETCHCFG.tmp

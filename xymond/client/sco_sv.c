@@ -11,7 +11,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char sco_sv_rcsid[] = "$Id: sco_sv.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char sco_sv_rcsid[] = "$Id: sco_sv.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 void handle_sco_sv_client(char *hostname, char *clienttype, enum ostype_t os, 
 			  void *hinfo, char *sender, time_t timestamp,
@@ -103,7 +103,9 @@ void handle_sco_sv_client(char *hostname, char *clienttype, enum ostype_t os,
 			memswaptotal /= 2048 ; memswapfree /= 2048;
                 }
 		unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-				   memphystotal, (memphystotal - memphysfree), -1, memswaptotal, (memswaptotal - memswapfree));
+				   memphystotal, (memphystotal - memphysfree),
+				   -1, -1, 
+				   memswaptotal, (memswaptotal - memswapfree));
 	}
 
 	splitmsg_done();

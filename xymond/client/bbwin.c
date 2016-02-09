@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char bbwin_rcsid[] = "$Id: bbwin.c 7608 2015-03-21 15:00:40Z jccleaver $";
+static char bbwin_rcsid[] = "$Id: bbwin.c 7886 2016-02-02 20:16:19Z jccleaver $";
 
 static void bbwin_uptime_report(char *hostname, char *clientclass, enum ostype_t os,
                      void *hinfo, char *fromline, char *timestr,
@@ -485,9 +485,9 @@ void handle_win32_bbwin_client(char *hostname, char *clienttype, enum ostype_t o
                 if (p) sscanf(p, "\npage: %ld %ld", &memswaptotal, &memswapused);
                 p = strstr(memorystr, "\nvirtual:");
 		if (p) sscanf(p, "\nvirtual: %ld %ld", &memacttotal, &memactused);
-		dbgprintf("DEBUG Memory %ld %ld %ld %ld %ld\n", memphystotal, memphysused, memactused, memswaptotal, memswapused); /* DEBUG TODO Remove*/
+		dbgprintf("DEBUG Memory %ld %ld %ld %ld %ld %ld\n", memphystotal, memphysused, memacttotal, memactused, memswaptotal, memswapused); /* DEBUG TODO Remove*/
                 unix_memory_report(hostname, clienttype, os, hinfo, fromline, timestr,
-                                   memphystotal, memphysused, memactused, memswaptotal, memswapused);
+                                   memphystotal, memphysused, memacttotal, memactused, memswaptotal, memswapused);
         }
 
 	splitmsg_done();

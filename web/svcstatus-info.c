@@ -12,7 +12,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-static char rcsid[] = "$Id: svcstatus-info.c 7678 2015-10-01 14:42:42Z jccleaver $";
+static char rcsid[] = "$Id: svcstatus-info.c 7863 2016-01-21 03:33:16Z jccleaver $";
 
 #include <limits.h>
 #include <stdio.h>
@@ -992,7 +992,6 @@ char *generate_info(char *hostname, char *critconfigfn)
 		addtobuffer(infobuf, "<tr><th align=left>Notes:</th><td align=left><a href=\"");
 		addtobuffer(infobuf, val);
 		addtobuffer(infobuf, "\">");
-		addtobuffer(infobuf, xgetenv("XYMONWEBHOST"));
 		addtobuffer(infobuf, val);
 		addtobuffer(infobuf, "</a>\n");
 	}
