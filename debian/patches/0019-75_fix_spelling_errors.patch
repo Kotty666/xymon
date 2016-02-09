@@ -1,0 +1,70 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:42 +0100
+Subject: 75_fix_spelling_errors
+
+---
+ client/xymonclient-sunos.sh | 2 +-
+ web/chpasswd.c              | 4 ++--
+ xymond/do_alert.c           | 2 +-
+ xymond/xymond.c             | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/client/xymonclient-sunos.sh b/client/xymonclient-sunos.sh
+index e5639c5..b7e12b6 100755
+--- a/client/xymonclient-sunos.sh
++++ b/client/xymonclient-sunos.sh
+@@ -109,7 +109,7 @@ global|Global)
+ esac
+ echo "[swap]"
+ /usr/sbin/swap -s
+-# dont report the swaplist in a non-global zone because it will cause the
++# don't report the swaplist in a non-global zone because it will cause the
+ # server client module to miscalculate memory
+ case $ZTYPE in
+ global|Global)
+diff --git a/web/chpasswd.c b/web/chpasswd.c
+index 4dcdf76..518250a 100644
+--- a/web/chpasswd.c
++++ b/web/chpasswd.c
+@@ -137,13 +137,13 @@ int main(int argc, char *argv[])
+ 			}
+ 
+ 			if ( (strlen(adduser_name) == 0)) {
+-				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('I dont know who you are!'); </SCRIPT>\n";
++				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('I don&apos;t know who you are!'); </SCRIPT>\n";
+ 			}
+ 			else if ( (strlen(adduser_password1) == 0) || (strlen(adduser_password2) == 0)) {
+ 				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('New password cannot be blank'); </SCRIPT>\n";
+ 			}
+ 			else if (strcmp(adduser_password1, adduser_password2) != 0) {
+-				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('New passwords dont match'); </SCRIPT>\n";
++				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('New passwords don&apos;t match'); </SCRIPT>\n";
+ 			}
+ 			else if (strlen(adduser_name) != strspn(adduser_name,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.,@/=^") ) {
+ 				infomsg = "<SCRIPT LANGUAGE=\"Javascript\" type=\"text/javascript\"> alert('Username has invalid characters!'); </SCRIPT>\n";
+diff --git a/xymond/do_alert.c b/xymond/do_alert.c
+index 808a806..4858dbf 100644
+--- a/xymond/do_alert.c
++++ b/xymond/do_alert.c
+@@ -413,7 +413,7 @@ void send_alert(activealerts_t *alert, FILE *logfd)
+ 			if (!rpt) continue;	/* Happens for e.g. M_IGNORE recipients */
+ 
+ 			/* 
+-			 * Update alertcount here, because we dont want to hit an UNMATCHED
++			 * Update alertcount here, because we don't want to hit an UNMATCHED
+ 			 * rule when there is actually an alert active - it is just suppressed
+ 			 * for this run due to the REPEAT setting.
+ 			 */
+diff --git a/xymond/xymond.c b/xymond/xymond.c
+index 2b5d0c0..ebe8ed7 100644
+--- a/xymond/xymond.c
++++ b/xymond/xymond.c
+@@ -3148,7 +3148,7 @@ int match_host_filter(void *hinfo, hostfilter_rec_t *filter, int matchontests, c
+ 			break;
+ 
+ 		  case FILTER_TAG:
+-			if (!matchontests) break;	/* When processing a xymondboard, we dont want to return entries that have a test in hosts.cfg but no test result */
++			if (!matchontests) break;	/* When processing a xymondboard, we don't want to return entries that have a test in hosts.cfg but no test result */
+ 			matched = 0;
+ 			val = xmh_item_walk(hinfo);
+ 			while (val) {

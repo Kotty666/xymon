@@ -1,0 +1,21 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:41 +0100
+Subject: 42_bbcombotest-fix
+
+---
+ xymond/combostatus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/xymond/combostatus.c b/xymond/combostatus.c
+index 874980b..6104679 100644
+--- a/xymond/combostatus.c
++++ b/xymond/combostatus.c
+@@ -207,7 +207,7 @@ static int getxymondvalue(char *hostname, char *testname, char **errptr)
+ 		xymondresult = sendmessage("xymondboard fields=hostname,testname,color", NULL, XYMON_TIMEOUT, sres);
+ 		board = getsendreturnstr(sres, 1);
+ 
+-		if ((xymondresult != XYMONSEND_OK) || (board == NULL)) {
++		if (xymondresult != XYMONSEND_OK) {
+ 			board = "";
+ 			*errptr += sprintf(*errptr, "Could not access xymond board, error %d\n", xymondresult);
+ 			return COL_CLEAR;

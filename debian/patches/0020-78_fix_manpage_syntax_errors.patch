@@ -1,0 +1,152 @@
+From: Christoph Berg <myon@debian.org>
+Date: Tue, 26 Jan 2016 16:31:42 +0100
+Subject: 78_fix_manpage_syntax_errors
+
+---
+ common/hosts.cfg.5 |  6 ++++--
+ common/xymon-xmh.5 |  2 +-
+ common/xymon.1     |  6 +++---
+ web/graphs.cfg.5   |  4 ++--
+ xymond/xymond.8    | 11 +++++------
+ xymond/xymonweb.5  |  4 ++--
+ 6 files changed, 17 insertions(+), 16 deletions(-)
+
+diff --git a/common/hosts.cfg.5 b/common/hosts.cfg.5
+index 6a88572..bb9f0eb 100644
+--- a/common/hosts.cfg.5
++++ b/common/hosts.cfg.5
+@@ -75,7 +75,7 @@ files (devices, sockets, pipes etc).
+ 
+ .IP "optional include/directory"
+ Both "include" and "directory" can be prefixed with the tag
+-'optional', which will preven an error message being logged if
++"optional", which will preven an error message being logged if
+ the file or directory is not present on a system.
+ 
+ 
+@@ -181,7 +181,9 @@ I implement it in xymongen. The idea to explicitly list
+ the parent page in the "subparent" tag was what made
+ it easy to implement.
+ 
+-.IP "vpage" "vsubpage" "vsubparent"
++.IP "vpage"
++.IP "vsubpage"
++.IP "vsubparent"
+ These are page-definitions similar to the "page", "subpage" and
+ "subparent" definitions. However, on these pages the rows are 
+ the tests, and the columns are the hosts (normal pages have it
+diff --git a/common/xymon-xmh.5 b/common/xymon-xmh.5
+index e4e0f20..25c32f5 100644
+--- a/common/xymon-xmh.5
++++ b/common/xymon-xmh.5
+@@ -1,6 +1,6 @@
+ .TH XYMON-XMH 5 "Version 4.3.24: 23 Nov 2015" "Xymon"
+ .SH NAME
+-Xymon XMH variables \- Configuration items available online
++Xymon-XMH-variables \- Configuration items available online
+ 
+ .SH DESCRIPTION
+ The
+diff --git a/common/xymon.1 b/common/xymon.1
+index ff65c69..6f68625 100644
+--- a/common/xymon.1
++++ b/common/xymon.1
+@@ -293,16 +293,16 @@ Include only hosts with a xymon-xmh(5) variable matching this value
+ Advanced Filtering
+ .sp
+ .BR msg=MESSAGE
+-Include only tests with full content matching MESSAGE. Use "\s" to escape 
++Include only tests with full content matching MESSAGE. Use "\\s" to escape 
+ spaces (or other PCRE strings)
+ .sp
+ .BR ackmsg=MESSAGE
+-Include only tests with acknowledgement(s) MESSAGE. Use "\s" to escape 
++Include only tests with acknowledgement(s) MESSAGE. Use "\\s" to escape 
+ spaces (or other PCRE strings)
+ .sp
+ .BR dismsg=MESSAGE
+ Include only tests that have been disabled with strings matching MESSAGE. 
+-Use "\s" to escape spaces (or other PCRE strings). (It is most efficient
++Use "\\s" to escape spaces (or other PCRE strings). (It is most efficient
+ to pair this with color=blue.)
+ 
+ 
+diff --git a/web/graphs.cfg.5 b/web/graphs.cfg.5
+index 2127158..8caa12b 100644
+--- a/web/graphs.cfg.5
++++ b/web/graphs.cfg.5
+@@ -61,7 +61,7 @@ is a simple definition that uses a single RRD-file, la.rrd:
+ .br
+         GPRINT:la:MIN: \: %5.1lf (min)
+ .br
+-        GPRINT:la:AVERAGE: \: %5.1lf (avg)\n
++        GPRINT:la:AVERAGE: \: %5.1lf (avg)\\n
+ .sp
+ 
+ Here is an example of a graph that uses multiple RRD-files, determined
+@@ -92,7 +92,7 @@ for the graph legend:
+ .br
+         GPRINT:p@RRDIDX@:MIN: \: %5.1lf (min)
+ .br
+-        GPRINT:p@RRDIDX@:AVERAGE: \: %5.1lf (avg)\n
++        GPRINT:p@RRDIDX@:AVERAGE: \: %5.1lf (avg)\\n
+ 
+ .SH ADVANCED GRAPH  TITLES
+ Normally the title of a graph is a static text defined in
+diff --git a/xymond/xymond.8 b/xymond/xymond.8
+index 6846cda..2d9ec6a 100644
+--- a/xymond/xymond.8
++++ b/xymond/xymond.8
+@@ -84,9 +84,8 @@ Tells xymond to NOT use the local messagequeue interface for receiving status-
+ updates from xymond_client and xymonnet.
+ 
+ .IP "\-\-daemon"
+-xymond is normally started by 
+-.I xymonlaunch(8)
+-. If you do not want to use xymonlaunch, you can start xymond with this option;
++xymond is normally started by \fIxymonlaunch(8)\fR.
++If you do not want to use xymonlaunch, you can start xymond with this option;
+ it will then detach from the terminal and continue running as a background
+ task.
+ 
+@@ -100,8 +99,7 @@ Default: 10 seconds.
+ Track the N latest status-changes for flap-detection. See the
+ \fB\-\-flap\-seconds\fR option also. To disable flap-checks globally, 
+ set N to zero. To disable for a specific host, you must use the 
+-"noflap" option in 
+-.I hosts.cfg(5).
++"noflap" option in \fIhosts.cfg(5)\fR.
+ Default: 5
+ 
+ .IP "\-\-flap\-seconds=N"
+@@ -116,7 +114,8 @@ at least (N/300)\-1, e.g. if you set flap\-seconds to 3600 (1 hour), then
+ flap\-count should be at least (3600/300)\-1, i.e. 11.
+ Default: 1800 seconds (30 minutes).
+ 
+-.IP "\-\-delay\-red=N" / "\-\-delay\-yellow=N"
++.IP "\-\-delay\-red=N"
++.IP "\-\-delay\-yellow=N"
+ Sets the delay before a red/yellow status causes a change in the web
+ page display. Is usually controlled on a per-host basis via the
+ \fBdelayred\fR and \fBdelayyellow\fR settings in
+diff --git a/xymond/xymonweb.5 b/xymond/xymonweb.5
+index a8ce685..8cf5622 100644
+--- a/xymond/xymonweb.5
++++ b/xymond/xymonweb.5
+@@ -1,6 +1,6 @@
+ .TH XYMONWEB 5 "Version 4.3.24: 23 Nov 2015" "Xymon"
+ .SH NAME
+-Xymon web page headers, footers and forms.
++Xymon-Web-Templates \- web page headers, footers and forms.
+ 
+ .SH DESCRIPTION
+ The Xymon webpages are somewhat customizable, by modifying the header- and
+@@ -38,7 +38,7 @@ Header and footer for the Xymon \fBMain view\fR webpages, generated by
+ Header and footer for the Xymon \fBAll non-green view\fR webpage, generated by
+ .I xymongen(1)
+ 
+-.IP stdcritical (DEPRECATED)
++.IP "stdcritical (DEPRECATED)"
+ Header and footer for the now deprecated \fBold critical\fR webpage, generated by xymongen. 
+ You should use the newer
+ .I criticalview.cgi(1)

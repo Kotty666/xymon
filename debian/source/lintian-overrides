@@ -1,0 +1,5 @@
+# See http://bugs.debian.org/748688
+xymon source: missing-build-dependency-for-dh_-command dh_apache2 => apache2-dev
+# Don't tell me I'm uploading with the company email address
+xymon source: changelog-should-mention-nmu
+xymon source: source-nmu-has-incorrect-version-number
