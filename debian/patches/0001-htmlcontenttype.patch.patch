@@ -1,0 +1,426 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:03:04 +0100
+Subject: htmlcontenttype.patch
+
+---
+ xymond/webfiles/acknowledge_header  | 1 +
+ xymond/webfiles/columndoc_header    | 1 +
+ xymond/webfiles/confreport_header   | 5 ++++-
+ xymond/webfiles/critedit_header     | 1 +
+ xymond/webfiles/critical_header     | 1 +
+ xymond/webfiles/critmulti_header    | 1 +
+ xymond/webfiles/event_header        | 1 +
+ xymond/webfiles/findhost_header     | 1 +
+ xymond/webfiles/ghosts_header       | 1 +
+ xymond/webfiles/graphs_header       | 1 +
+ xymond/webfiles/hist_header         | 1 +
+ xymond/webfiles/histlog_header      | 1 +
+ xymond/webfiles/hostgraphs_header   | 1 +
+ xymond/webfiles/hostlist_header     | 1 +
+ xymond/webfiles/hostsvc_header      | 1 +
+ xymond/webfiles/info_header         | 1 +
+ xymond/webfiles/maint_header        | 1 +
+ xymond/webfiles/maintact_header     | 1 +
+ xymond/webfiles/notify_header       | 1 +
+ xymond/webfiles/perfdata_header     | 1 +
+ xymond/webfiles/replog_header       | 1 +
+ xymond/webfiles/repnormal_header    | 1 +
+ xymond/webfiles/report_header       | 1 +
+ xymond/webfiles/snapcritical_header | 1 +
+ xymond/webfiles/snapnongreen_header | 1 +
+ xymond/webfiles/snapnormal_header   | 1 +
+ xymond/webfiles/snapshot_header     | 1 +
+ xymond/webfiles/stdcritical_header  | 1 +
+ xymond/webfiles/stdnongreen_header  | 1 +
+ xymond/webfiles/stdnormal_header    | 1 +
+ xymond/webfiles/topchanges_header   | 1 +
+ xymond/webfiles/useradm_header      | 1 +
+ 32 files changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/xymond/webfiles/acknowledge_header b/xymond/webfiles/acknowledge_header
+index f529a45..a974a0c 100644
+--- a/xymond/webfiles/acknowledge_header
++++ b/xymond/webfiles/acknowledge_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Acknowledge Alert</TITLE>
+ 
+diff --git a/xymond/webfiles/columndoc_header b/xymond/webfiles/columndoc_header
+index 92a58b6..cd34822 100644
+--- a/xymond/webfiles/columndoc_header
++++ b/xymond/webfiles/columndoc_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Documentation</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+diff --git a/xymond/webfiles/confreport_header b/xymond/webfiles/confreport_header
+index 1c445be..11dceaf 100644
+--- a/xymond/webfiles/confreport_header
++++ b/xymond/webfiles/confreport_header
+@@ -1,6 +1,9 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ <html>
+-<head><title>Xymon configuration Report</title></head>
++<head>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
++<title>Xymon configuration Report</title>
++</head>
+ 
+ <body>
+ 
+diff --git a/xymond/webfiles/critedit_header b/xymond/webfiles/critedit_header
+index f5bea61..ae598c8 100644
+--- a/xymond/webfiles/critedit_header
++++ b/xymond/webfiles/critedit_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Critical Systems editor</TITLE>
+ 
+diff --git a/xymond/webfiles/critical_header b/xymond/webfiles/critical_header
+index bd4554b..e77295e 100644
+--- a/xymond/webfiles/critical_header
++++ b/xymond/webfiles/critical_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/critmulti_header b/xymond/webfiles/critmulti_header
+index ef2c835..347925a 100644
+--- a/xymond/webfiles/critmulti_header
++++ b/xymond/webfiles/critmulti_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/event_header b/xymond/webfiles/event_header
+index a26f4d9..124b048 100644
+--- a/xymond/webfiles/event_header
++++ b/xymond/webfiles/event_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Eventlog @ &XYMWEBDATE</TITLE>
+ 
+diff --git a/xymond/webfiles/findhost_header b/xymond/webfiles/findhost_header
+index 83371dc..78125b2 100644
+--- a/xymond/webfiles/findhost_header
++++ b/xymond/webfiles/findhost_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Find Host</TITLE>
+ 
+diff --git a/xymond/webfiles/ghosts_header b/xymond/webfiles/ghosts_header
+index 51bc0c1..4921f70 100644
+--- a/xymond/webfiles/ghosts_header
++++ b/xymond/webfiles/ghosts_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Ghost Clients</TITLE>
+ 
+diff --git a/xymond/webfiles/graphs_header b/xymond/webfiles/graphs_header
+index 591a24e..9a8c5f7 100644
+--- a/xymond/webfiles/graphs_header
++++ b/xymond/webfiles/graphs_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+diff --git a/xymond/webfiles/hist_header b/xymond/webfiles/hist_header
+index 3b4f514..4288d0c 100644
+--- a/xymond/webfiles/hist_header
++++ b/xymond/webfiles/hist_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&XYMWEBHIKEY; path=/">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - History @ &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/histlog_header b/xymond/webfiles/histlog_header
+index a10a7db..1d474d5 100644
+--- a/xymond/webfiles/histlog_header
++++ b/xymond/webfiles/histlog_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&XYMWEBHIKEY; path=/">
+ <TITLE>Xymon Historical Status: &XYMWEBHOST - &XYMWEBSVC @ &LOGTIME</TITLE>
+diff --git a/xymond/webfiles/hostgraphs_header b/xymond/webfiles/hostgraphs_header
+index 9371ce3..5c8babe 100644
+--- a/xymond/webfiles/hostgraphs_header
++++ b/xymond/webfiles/hostgraphs_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Metrics Report</TITLE>
+ 
+diff --git a/xymond/webfiles/hostlist_header b/xymond/webfiles/hostlist_header
+index 7c8654f..747bb7b 100644
+--- a/xymond/webfiles/hostlist_header
++++ b/xymond/webfiles/hostlist_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - List of Hosts</TITLE>
+ 
+diff --git a/xymond/webfiles/hostsvc_header b/xymond/webfiles/hostsvc_header
+index 324eff3..b562373 100644
+--- a/xymond/webfiles/hostsvc_header
++++ b/xymond/webfiles/hostsvc_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="&XYMWEBREFRESH">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+diff --git a/xymond/webfiles/info_header b/xymond/webfiles/info_header
+index e3af09d..7653b0a 100644
+--- a/xymond/webfiles/info_header
++++ b/xymond/webfiles/info_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=&XYMWEBHIKEY; path=/">
+ <TITLE>Xymon - &XYMWEBHOST Host Information</TITLE>
+diff --git a/xymond/webfiles/maint_header b/xymond/webfiles/maint_header
+index 46c4f52..632f4f3 100644
+--- a/xymond/webfiles/maint_header
++++ b/xymond/webfiles/maint_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Maintenance</TITLE>
+ 
+diff --git a/xymond/webfiles/maintact_header b/xymond/webfiles/maintact_header
+index 2c8e59f..e16be96 100644
+--- a/xymond/webfiles/maintact_header
++++ b/xymond/webfiles/maintact_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Maintenance</TITLE>
+ 
+diff --git a/xymond/webfiles/notify_header b/xymond/webfiles/notify_header
+index a2b1149..4665b4d 100644
+--- a/xymond/webfiles/notify_header
++++ b/xymond/webfiles/notify_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Notification Log @ &XYMWEBDATE</TITLE>
+ 
+diff --git a/xymond/webfiles/perfdata_header b/xymond/webfiles/perfdata_header
+index 275b0c5..3d37eb2 100644
+--- a/xymond/webfiles/perfdata_header
++++ b/xymond/webfiles/perfdata_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Performance data @ &XYMWEBDATE</TITLE>
+ 
+diff --git a/xymond/webfiles/replog_header b/xymond/webfiles/replog_header
+index eb1ba48..1a4ae68 100644
+--- a/xymond/webfiles/replog_header
++++ b/xymond/webfiles/replog_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>Xymon Availability Report : &XYMWEBHOST - &XYMWEBSVC &XYMWEBDATE</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+diff --git a/xymond/webfiles/repnormal_header b/xymond/webfiles/repnormal_header
+index c7bfbad..b45fbff 100644
+--- a/xymond/webfiles/repnormal_header
++++ b/xymond/webfiles/repnormal_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&XYMWEBPAGEPATH; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
+ <TITLE>Xymon Availability Report : &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/report_header b/xymond/webfiles/report_header
+index defd391..a1751ca 100644
+--- a/xymond/webfiles/report_header
++++ b/xymond/webfiles/report_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Availability Report</TITLE>
+ 
+diff --git a/xymond/webfiles/snapcritical_header b/xymond/webfiles/snapcritical_header
+index f2e2001..e098708 100644
+--- a/xymond/webfiles/snapcritical_header
++++ b/xymond/webfiles/snapcritical_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Snapshot @ &XYMWEBDATE</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+diff --git a/xymond/webfiles/snapnongreen_header b/xymond/webfiles/snapnongreen_header
+index 3e5aa1b..78b925e 100644
+--- a/xymond/webfiles/snapnongreen_header
++++ b/xymond/webfiles/snapnongreen_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Snapshot</TITLE>
+ 
+ <!-- Styles for the Xymon body  -->
+diff --git a/xymond/webfiles/snapnormal_header b/xymond/webfiles/snapnormal_header
+index 99dff01..5261e5f 100644
+--- a/xymond/webfiles/snapnormal_header
++++ b/xymond/webfiles/snapnormal_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&XYMWEBPAGEPATH; path=/">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="host=; path=/">
+ <TITLE>Xymon Snapshot Report : &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/snapshot_header b/xymond/webfiles/snapshot_header
+index f7e69b3..0cdcccf 100644
+--- a/xymond/webfiles/snapshot_header
++++ b/xymond/webfiles/snapshot_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Snapshot Report</TITLE>
+ 
+diff --git a/xymond/webfiles/stdcritical_header b/xymond/webfiles/stdcritical_header
+index bd4554b..e77295e 100644
+--- a/xymond/webfiles/stdcritical_header
++++ b/xymond/webfiles/stdcritical_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/stdnongreen_header b/xymond/webfiles/stdnongreen_header
+index 3e0fd40..b74eb7a 100644
+--- a/xymond/webfiles/stdnongreen_header
++++ b/xymond/webfiles/stdnongreen_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Status @ &XYMWEBDATE</TITLE>
+diff --git a/xymond/webfiles/stdnormal_header b/xymond/webfiles/stdnormal_header
+index 6a8d10d..d003e26 100644
+--- a/xymond/webfiles/stdnormal_header
++++ b/xymond/webfiles/stdnormal_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="REFRESH" CONTENT="60">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <META HTTP-EQUIV="Set-Cookie" CONTENT="pagepath=&XYMWEBPAGEPATH; path=/">
+diff --git a/xymond/webfiles/topchanges_header b/xymond/webfiles/topchanges_header
+index 2d8ab43..a5f4d16 100644
+--- a/xymond/webfiles/topchanges_header
++++ b/xymond/webfiles/topchanges_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ <META HTTP-EQUIV="EXPIRES" CONTENT="Sat, 01 Jan 2001 00:00:00 GMT">
+ <TITLE>&XYMWEBBACKGROUND : Xymon - Top Changes @ &XYMWEBDATE</TITLE>
+ 
+diff --git a/xymond/webfiles/useradm_header b/xymond/webfiles/useradm_header
+index 9a9401f..27fd457 100644
+--- a/xymond/webfiles/useradm_header
++++ b/xymond/webfiles/useradm_header
+@@ -1,6 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+ <HTML>
+ <HEAD>
++<META HTTP-EQUIV="Content-Type" CONTENT="&HTMLCONTENTTYPE">
+ 
+ <TITLE>Xymon - Manage Users</TITLE>
+ 

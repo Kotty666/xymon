@@ -1,0 +1,62 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:04:10 +0100
+Subject: doc-paths.patch
+
+---
+ docs/install.html         |  2 +-
+ docs/xymon-apacheconf.txt | 14 +++++++-------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/docs/install.html b/docs/install.html
+index f011c13..3d36b72 100644
+--- a/docs/install.html
++++ b/docs/install.html
+@@ -165,7 +165,7 @@ directory (recommended for better security), you will also need to setup the
+ password-file that controls access to this directory. Use the <tt>htpasswd</tt>
+ command both to create the password file and to add or delete users:<br>
+ <pre><tt>
+-	# /usr/sbin/htpasswd -c /usr/local/xymon/server/etc/xymonpasswd admin
++	# /usr/sbin/htpasswd -c /usr/lib/xymon/server/etc/xymonpasswd admin
+ 	New password:
+ 	Re-type new password:
+ 	Adding password for user admin
+diff --git a/docs/xymon-apacheconf.txt b/docs/xymon-apacheconf.txt
+index 803c229..094ca5c 100644
+--- a/docs/xymon-apacheconf.txt
++++ b/docs/xymon-apacheconf.txt
+@@ -9,10 +9,10 @@
+ #     the Xymon webfiles as the root URL. In that case,
+ #     you should instead set this:
+ #
+-#          DocumentRoot /usr/local/xymon/server/www/
++#          DocumentRoot /usr/lib/xymon/server/www/
+ 
+-Alias /xymon/  "/usr/local/xymon/server/www/"
+-<Directory "/usr/local/xymon/server/www/">
++Alias /xymon  "/usr/lib/xymon/server/www"
++<Directory "/usr/lib/xymon/server/www">
+     Options Indexes FollowSymLinks Includes MultiViews
+     <IfModule mod_authz_core.c>
+         # Apache 2.4+
+@@ -24,8 +24,8 @@ Alias /xymon/  "/usr/local/xymon/server/www/"
+     </IfModule>
+ </Directory>
+ 
+-ScriptAlias /xymon-cgi/ "/usr/local/xymon/cgi-bin/"
+-<Directory "/usr/local/xymon/cgi-bin">
++ScriptAlias /xymon-cgi "/usr/lib/xymon/cgi-bin"
++<Directory "/usr/lib/xymon/cgi-bin">
+     AllowOverride None
+     Options ExecCGI Includes
+     <IfModule mod_authz_core.c>
+@@ -38,8 +38,8 @@ ScriptAlias /xymon-cgi/ "/usr/local/xymon/cgi-bin/"
+     </IfModule>
+ </Directory>
+ 
+-ScriptAlias /xymon-seccgi/ "/usr/local/xymon/cgi-secure/"
+-<Directory "/usr/local/xymon/cgi-secure">
++ScriptAlias /xymon-seccgi "/usr/lib/xymon/cgi-secure"
++<Directory "/usr/lib/xymon/cgi-secure">
+     AllowOverride None
+     Options ExecCGI Includes
+     <IfModule mod_authz_core.c>

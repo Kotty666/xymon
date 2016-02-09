@@ -1,0 +1,288 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:08:21 +0100
+Subject: Added-grouped-nongreen-view.patch
+
+---
+ xymongen/pagegen.c  | 199 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ xymongen/pagegen.h  |   1 +
+ xymongen/process.c  |   1 +
+ xymongen/xymongen.c |   8 ++-
+ xymongen/xymongen.h |   2 +-
+ 5 files changed, 208 insertions(+), 3 deletions(-)
+
+diff --git a/xymongen/pagegen.c b/xymongen/pagegen.c
+index 7093f91..82a2fb2 100644
+--- a/xymongen/pagegen.c
++++ b/xymongen/pagegen.c
+@@ -1379,3 +1379,202 @@ int do_nongreen_page(char *nssidebarfilename, int summarytype, char *filenamebas
+ 
+ 	return nongreenpage.color;
+ }
++
++int grouped_hosts(FILE *output, host_t *curhost, char *title) {
++	xymongen_page_t groupedpage;
++	host_t 			*h;
++	int				useit = 0;
++	nongreencolors = ((1 << COL_RED) | (1 << COL_YELLOW) | (1 << COL_PURPLE));
++	
++	/* Build a "page" with the hosts that should be included in grouped page */
++	groupedpage.name = title;
++	groupedpage.title = title;
++	groupedpage.color = COL_GREEN;
++	groupedpage.subpages = NULL;
++	groupedpage.groups = NULL;
++	groupedpage.hosts = NULL;
++	groupedpage.next = NULL;
++	
++	for (h=curhost; (h); h=h->next) {
++		dbgprintf ("%s: %s\n", title, h->hostname);
++		
++		/*
++		 * Why dont we use the interesting_column() routine here ? 
++		 *
++		 * Well, because what we are interested in for now is
++		 * to determine if this HOST should be included on the page.
++		 *
++		 * We dont care if individual COLUMNS are included if the 
++		 * host shows up - some columns are always included, e.g.
++		 * the info- and trends-columns, but we dont want that to
++		 * trigger a host being on the bb2 page!
++		*/
++		dbgprintf("h->nongreencolor: %i, h-nonongreen: %i, nongreennodialups: %i, h->dialup: %i \n",h->nongreencolor,h->nonongreen,nongreennodialups,h->dialup);
++		int fu = (1 << h->nongreencolor);
++		int fu2 = ((1 << h->nongreencolor) & nongreencolors );
++		dbgprintf("Fu: %i ,  Fu2: %i\n",fu,fu2);
++		/* Normal grouped page */
++		if (h->nonongreen || (nongreennodialups && h->dialup))
++		{
++			useit = 0;
++		}
++		else
++		{
++			useit = (( (1 << h->nongreencolor) & nongreencolors ) != 0);
++		}
++		dbgprintf ("useit: %i, h->nongreencolor: %i\n", useit, h->nongreencolor);
++
++		if (useit) {
++			host_t *newhost, *walk;
++			if (h->nongreencolor > groupedpage.color) groupedpage.color = h->nongreencolor;
++
++			/* We need to create a copy of the original record, */
++			/* as we will diddle with the pointers */
++			newhost = (host_t *) calloc(1, sizeof(host_t));
++			memcpy(newhost, h, sizeof(host_t));
++			newhost->next = NULL;
++
++			/* Insert into sorted host list */
++			if ((!groupedpage.hosts) || (strcmp(newhost->hostname, groupedpage.hosts->hostname) < 0)) {
++				/* Empty list, or new entry goes before list head item */
++				newhost->next = groupedpage.hosts;
++				groupedpage.hosts = newhost;
++			}
++			else {
++				/* Walk list until we find element that goes after new item */
++				for (walk = groupedpage.hosts; 
++				      (walk->next && (strcmp(newhost->hostname, ((host_t *)walk->next)->hostname) > 0)); 
++				      walk = walk->next) ;
++
++				/* "walk" points to element before the new item.
++				 *
++		 		 * Check for duplicate hosts. We can have a host on two normal Xymon
++		 		 * pages, but in the non-green page we want it only once.
++		 		 */
++				if (strcmp(walk->hostname, newhost->hostname) == 0) {
++					/* Duplicate at start of list */
++					xfree(newhost);
++				}
++				else if (walk->next && (strcmp(((host_t *)walk->next)->hostname, newhost->hostname) == 0)) {
++					/* Duplicate inside list */
++					xfree(newhost);
++				}
++				else {
++					/* New host */
++					newhost->next = walk->next;
++					walk->next = newhost;
++				}
++			}
++		}
++	}
++	
++	if (groupedpage.hosts)
++        {
++		dbgprintf ("we have hosts to write to file");
++		do_hosts(groupedpage.hosts, 0, NULL, NULL, output, NULL, groupedpage.title, PAGE_NONGREEN, NULL);
++
++                /* Free temporary hostlist */
++                host_t *h2;
++
++                h = groupedpage.hosts;
++                while (h)
++                {
++                        h2 = h;
++                        h = h->next;
++                        xfree (h2);
++                }
++        }
++	return groupedpage.color;
++}
++
++int grouped_subpage(FILE* output, xymongen_page_t *curpage) {
++	xymongen_page_t	*nextpage;
++	group_t			*nextgroup;
++	int				tmpcolor, grouped_color = COL_GREEN;
++	
++	for (nextpage = curpage; (nextpage); nextpage = nextpage->next) {
++		dbgprintf ("grouped_subpage: %s\n", nextpage->name);
++		tmpcolor = grouped_hosts (output, nextpage->hosts, nextpage->name);
++		if (tmpcolor > grouped_color) grouped_color = tmpcolor;
++		for (nextgroup = nextpage->groups; (nextgroup); nextgroup = nextgroup->next) {
++			dbgprintf ("grouped_grouppage: %s\n", nextgroup->title);
++			tmpcolor = grouped_hosts (output, nextgroup->hosts, nextgroup->title);
++			if (tmpcolor > grouped_color) grouped_color = tmpcolor;
++		}
++		tmpcolor = grouped_subpage (output, nextpage->subpages);
++		if (tmpcolor > grouped_color) grouped_color = tmpcolor;
++	}
++	
++	return grouped_color;
++}
++
++int do_grouped_page(xymongen_page_t *page) {
++	int		grouped_color = COL_GREEN;
++	FILE	*output = NULL;
++	char	filename[PATH_MAX];
++	char	tmpfilename[PATH_MAX];
++	char    tmpfilename2[PATH_MAX];
++	char	curdir[PATH_MAX];
++	
++	getcwd(curdir, sizeof(curdir));
++
++	sprintf(filename, "grouped%s", htmlextension);
++	sprintf (tmpfilename, "%s.tmp", filename);
++	sprintf (tmpfilename2, "%s.2.tmp", filename);
++	
++	output = fopen(tmpfilename, "w+");
++	
++	if (output == NULL) {
++		errprintf("Cannot create file %s (in %s): %s\n", 
++					  tmpfilename, curdir, strerror(errno));
++		return grouped_color;
++	}
++	
++	fprintf(output, "<center>\n");
++	fprintf(output, "\n<A NAME=begindata>&nbsp;</A>\n");
++	
++	grouped_color = grouped_subpage(output, page);
++	if (grouped_color == COL_GREEN) {
++		/* "All Monitored Systems OK */
++		fprintf (output, "<FONT SIZE=+2 FACE=\"Arial, Helvetica\"><BR><BR><I>All Monitored Systems OK</I></FONT><BR><BR>");
++	}
++	
++	if ((snapshot == 0)) {
++		havedoneeventlog = 0;
++		do_nongreenext(output, "XYMONNONGREENEXT", "mkbb");
++
++		/* Dont redo the eventlog or acklog things */
++		if (nongreeneventlog && !havedoneeventlog) {
++			do_eventlog(output, nongreeneventlogmaxcount, nongreeneventlogmaxtime, 
++				    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, nongreennodialups, 
++				    host_exists,
++				    NULL, NULL, NULL, XYMON_COUNT_NONE, XYMON_S_NONE, NULL);
++		}
++		if (nongreenacklog && !havedoneacklog) do_acklog(output, nongreenacklogmaxcount, nongreenacklogmaxtime);
++	}
++	
++	fprintf (output, "</center>\n");
++	
++	headfoot(output, hf_prefix[PAGE_NONGREEN], "", "footer", grouped_color);
++	
++	unsigned int size = ftell (output);
++        rewind (output);
++
++	FILE* output2 = fopen(tmpfilename2, "w");
++	headfoot(output2, hf_prefix[PAGE_NONGREEN], "", "header", grouped_color);
++
++        char* data = (char *) calloc (1, size + 1);
++        unsigned int ret = fread (data, size, 1, output);
++        fwrite (data, size, ret, output2);
++        free(data);
++
++        fclose (output2);
++        fclose (output);
++        unlink (tmpfilename);
++        if (rename (tmpfilename2, filename))
++        {
++                errprintf ("Cannot rename %s to %s - error %d\n", tmpfilename2, filename, errno);
++        }
++
++	return grouped_color;
++}
+diff --git a/xymongen/pagegen.h b/xymongen/pagegen.h
+index faedce0..eecedb4 100644
+--- a/xymongen/pagegen.h
++++ b/xymongen/pagegen.h
+@@ -46,5 +46,6 @@ extern void select_headers_and_footers(char *prefix);
+ extern void do_one_page(xymongen_page_t *page, dispsummary_t *sums, int embedded);
+ extern void do_page_with_subs(xymongen_page_t *curpage, dispsummary_t *sums);
+ extern int  do_nongreen_page(char *nssidebarfilename, int summarytype, char *filenamebase);
++extern int  do_grouped_page(xymongen_page_t *page);
+ 
+ #endif
+diff --git a/xymongen/process.c b/xymongen/process.c
+index 5de085c..d607e88 100644
+--- a/xymongen/process.c
++++ b/xymongen/process.c
+@@ -222,6 +222,7 @@ void send_summaries(summary_t *sumhead)
+ 		else if (strcmp(suburl, "") == 0) summarycolor = xymon_color;
+ 		else if (strcmp(suburl, "nongreen.html") == 0) summarycolor = nongreen_color;
+ 		else if (strcmp(suburl, "critical.html") == 0) summarycolor = critical_color;
++		else if (strcmp(suburl, "grouped.html") == 0) summarycolor = grouped_color;
+ 		else {
+ 			/* 
+ 			 * Specific page - find it in the page tree.
+diff --git a/xymongen/xymongen.c b/xymongen/xymongen.c
+index 0b9d656..823727a 100644
+--- a/xymongen/xymongen.c
++++ b/xymongen/xymongen.c
+@@ -39,7 +39,7 @@ xymongen_page_t	*pagehead = NULL;			/* Head of page list */
+ state_t		*statehead = NULL;			/* Head of list of all state entries */
+ summary_t	*sumhead = NULL;			/* Summaries we send out */
+ dispsummary_t	*dispsums = NULL;			/* Summaries we received and display */
+-int		xymon_color, nongreen_color, critical_color;	/* Top-level page colors */
++int		xymon_color, nongreen_color, critical_color, grouped_color;	/* Top-level page colors */
+ int		fqdn = 1;				/* Xymon FQDN setting */
+ int		loadhostsfromxymond = 0;
+ 
+@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
+ 	/* Setup standard header+footer (might be modified by option pageset) */
+ 	select_headers_and_footers("std");
+ 
+-	xymon_color = nongreen_color = critical_color = -1;
++	xymon_color = nongreen_color = critical_color = grouped_color = -1;
+ 	pagedir = NULL;
+ 	init_timestamp();
+ 	fqdn = get_fqdn();
+@@ -668,6 +668,10 @@ int main(int argc, char *argv[])
+ 	/* Reduced summary (alerts) page - critical.html */
+ 	critical_color = do_nongreen_page(NULL, PAGE_CRITICAL, "critical");
+ 	add_timestamp("Critical page generation done");
++	
++	/* The full summary page in groups - grouped.html */
++	grouped_color = do_grouped_page(pagehead);
++	add_timestamp("Grouped page generation done");
+ 
+ 	if (snapshot) {
+ 		/* Snapshots end here */
+diff --git a/xymongen/xymongen.h b/xymongen/xymongen.h
+index 5be8c61..a7d0e05 100644
+--- a/xymongen/xymongen.h
++++ b/xymongen/xymongen.h
+@@ -229,7 +229,7 @@ extern state_t		*statehead;
+ extern xymongen_col_t	*colhead, null_column;
+ extern summary_t	*sumhead;
+ extern dispsummary_t	*dispsums;
+-extern int		xymon_color, nongreen_color, critical_color;
++extern int		xymon_color, nongreen_color, critical_color, grouped_color;
+ extern time_t		reportstart, reportend;
+ extern double           reportwarnlevel, reportgreenlevel;
+ extern int		reportwarnstops;

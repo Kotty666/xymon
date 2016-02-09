@@ -1,0 +1,20 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:06:12 +0100
+Subject: xymon-ldap_init-implicitly-converted-to-point.patch
+
+---
+ build/test-ldap.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/build/test-ldap.c b/build/test-ldap.c
+index dd6bcb8..583eb87 100644
+--- a/build/test-ldap.c
++++ b/build/test-ldap.c
+@@ -2,6 +2,7 @@
+ #include <sys/time.h>
+ #include <stdio.h>
+ 
++#define LDAP_DEPRECATED 1
+ #include <ldap.h>
+ #include <lber.h>
+ 

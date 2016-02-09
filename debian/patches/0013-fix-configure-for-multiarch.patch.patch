@@ -1,0 +1,26 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:06:41 +0100
+Subject: fix-configure-for-multiarch.patch
+
+---
+ build/pcre.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/build/pcre.sh b/build/pcre.sh
+index b2a5c0e..8879046 100755
+--- a/build/pcre.sh
++++ b/build/pcre.sh
+@@ -21,11 +21,11 @@
+ 		then
+ 			PCRELIB=$DIR/lib
+ 		fi
+-		if test -f $DIR/lib64/libpcre.so
++		if test -f $DIR/lib/`dpkg-architecture -qDEB_BUILD_MULTIARCH`/libpcre.so
+ 		then
+ 			PCRELIB=$DIR/lib64
+ 		fi
+-		if test -f $DIR/lib64/libpcre.a
++		if test -f $DIR/lib/`dpkg-architecture -qDEB_BUILD_MULTIARCH`/libpcre.a
+ 		then
+ 			PCRELIB=$DIR/lib64
+ 		fi

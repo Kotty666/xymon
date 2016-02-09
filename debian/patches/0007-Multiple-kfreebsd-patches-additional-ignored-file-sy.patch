@@ -1,0 +1,46 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:05:08 +0100
+Subject: Multiple-kfreebsd-patches-additional-ignored-file-sy.patch
+
+---
+ client/xymonclient-linux.sh  | 9 +++++++--
+ xymond/etcfiles/analysis.cfg | 5 +++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/client/xymonclient-linux.sh b/client/xymonclient-linux.sh
+index 25cdaed..235de11 100755
+--- a/client/xymonclient-linux.sh
++++ b/client/xymonclient-linux.sh
+@@ -45,9 +45,14 @@ uptime
+ echo "[who]"
+ who
+ echo "[df]"
+-EXCLUDES=`cat /proc/filesystems | grep nodev | grep -v rootfs | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
++if test -f /proc/filesystems ; then # Linux
++	EXCLUDES=`cat /proc/filesystems | grep nodev | egrep -v 'tmpfs|rootfs' | awk '{print $2}' | xargs echo | sed -e 's! ! -x !g'`
++else # kfreebsd (or /proc not mounted)
++	EXCLUDES=`mount | grep -v '^/' | egrep -v 'tmpfs|rootfs' | awk '{print $1}' | xargs echo | sed -e 's! ! -x !g'`
++fi
+ ROOTFS=`readlink -m /dev/root`
+-df -Pl -x iso9660 -x $EXCLUDES | sed -e '/^[^ 	][^ 	]*$/{
++# kfreebsd needs an extra grep -v
++df -Pl -x iso9660 -x $EXCLUDES | grep -v '^/sys' | sed -e '/^[^ 	][^ 	]*$/{
+ N
+ s/[ 	]*\n[ 	]*/ /
+ }' -e "s&^rootfs&${ROOTFS}&"
+diff --git a/xymond/etcfiles/analysis.cfg b/xymond/etcfiles/analysis.cfg
+index 722b332..efbf69b 100644
+--- a/xymond/etcfiles/analysis.cfg
++++ b/xymond/etcfiles/analysis.cfg
+@@ -354,6 +354,11 @@
+ 
+ 
+ DEFAULT
++	# Ignore some usually uninteresting tmpfs mounts.
++	DISK    /dev IGNORE
++	DISK    /dev/shm IGNORE
++	DISK    /lib/init/rw IGNORE
++	DISK    /run IGNORE
+ 	# These are the built-in defaults. You should only modify these
+ 	# lines, not add new ones (no PROC, DISK, LOG ... lines).
+ 	UP      1h

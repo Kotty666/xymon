@@ -1,0 +1,35 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:08:12 +0100
+Subject: confreport-segfault.patch
+
+---
+ web/confreport.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/web/confreport.c b/web/confreport.c
+index ed6ce8c..4ee05ce 100644
+--- a/web/confreport.c
++++ b/web/confreport.c
+@@ -288,10 +288,9 @@ static void print_host(hostlist_t *host, htnames_t *testnames[], int testcount)
+ 		}
+ 		else if (is_net_test(itm)) {
+ 			colname = strdup(itm);
+-			visdata = strdup("");
+ 		}
+ 
+-		if (!visdata) visdata = strdup("");
++
+ 		if (colname) {
+ 			tag_t *newitem;
+ 
+@@ -308,9 +307,7 @@ addtolist:
+ 			}
+ 			else {
+ 				/* Multiple tags for one column - must be http */
+-				newitem->visualdata = newitem->visualdata ?
+-					(char *)realloc(newitem->visualdata, strlen(newitem->visualdata) + strlen(visdata) + 5) :
+-					(char *)malloc(strlen(visdata) + 5);
++				newitem->visualdata = (char *)realloc(newitem->visualdata, strlen(newitem->visualdata) + strlen(visdata) + 5);
+ 				strcat(newitem->visualdata, "<br>");
+ 				strcat(newitem->visualdata, visdata);
+ 			}

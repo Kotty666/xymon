@@ -1,0 +1,36 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:04:45 +0100
+Subject: hobbitgraph.netstat.patch
+
+---
+ xymond/etcfiles/graphs.cfg | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/xymond/etcfiles/graphs.cfg b/xymond/etcfiles/graphs.cfg
+index 6ef35e4..3ce30bf 100644
+--- a/xymond/etcfiles/graphs.cfg
++++ b/xymond/etcfiles/graphs.cfg
+@@ -1111,15 +1111,15 @@
+ 	DEF:outbytes@RRDIDX@=@RRDFN@:ds1:AVERAGE
+ 	CDEF:out@RRDIDX@=outbytes@RRDIDX@,8,*
+ 	LINE2:in@RRDIDX@#@COLOR@:@RRDPARAM@  inbound
+-	GPRINT:in@RRDIDX@:LAST: \: %5.1lf%s (cur)
+-	GPRINT:in@RRDIDX@:MAX: \: %5.1lf%s (max)
+-	GPRINT:in@RRDIDX@:MIN: \: %5.1lf%s (min)
+-	GPRINT:in@RRDIDX@:AVERAGE: \: %5.1lf%s (avg)\n
++	GPRINT:in@RRDIDX@:LAST: \: %10.1lf (cur)
++	GPRINT:in@RRDIDX@:MAX: \: %10.1lf (max)
++	GPRINT:in@RRDIDX@:MIN: \: %10.1lf (min)
++	GPRINT:in@RRDIDX@:AVERAGE: \: %10.1lf (avg)\n
+ 	LINE2:out@RRDIDX@#@COLOR@:@RRDPARAM@ outbound
+-	GPRINT:out@RRDIDX@:LAST: \: %5.1lf%s (cur)
+-	GPRINT:out@RRDIDX@:MAX: \: %5.1lf%s (max)
+-	GPRINT:out@RRDIDX@:MIN: \: %5.1lf%s (min)
+-	GPRINT:out@RRDIDX@:AVERAGE: \: %5.1lf%s (avg)\n
++	GPRINT:out@RRDIDX@:LAST: \: %10.1lf (cur)
++	GPRINT:out@RRDIDX@:MAX: \: %10.1lf (max)
++	GPRINT:out@RRDIDX@:MIN: \: %10.1lf (min)
++	GPRINT:out@RRDIDX@:AVERAGE: \: %10.1lf (avg)\n
+ 
+ [mysqlslow]
+ 	DEF:slow=mysql.rrd:Slowqueries:AVERAGE

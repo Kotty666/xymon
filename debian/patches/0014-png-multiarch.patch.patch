@@ -1,0 +1,21 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:06:50 +0100
+Subject: png-multiarch.patch
+
+---
+ build/rrd.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/build/rrd.sh b/build/rrd.sh
+index 902c646..fa16808 100755
+--- a/build/rrd.sh
++++ b/build/rrd.sh
+@@ -3,7 +3,7 @@
+ 	RRDDEF=""
+ 	RRDINC=""
+ 	RRDLIB=""
+-	PNGLIB=""
++	PNGLIB="$(libpng12-config --ldflags)"
+ 	ZLIB=""
+ 	for DIR in /opt/rrdtool* /usr/local/rrdtool* /usr/local /usr/pkg /opt/csw /opt/sfw /usr/sfw
+ 	do

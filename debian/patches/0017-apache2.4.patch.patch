@@ -1,0 +1,39 @@
+From: Kotty <kotty@guns-n-girls.de>
+Date: Tue, 9 Feb 2016 18:07:10 +0100
+Subject: apache2.4.patch
+
+---
+ xymond/etcfiles/xymon-apache-secure.DIST | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/xymond/etcfiles/xymon-apache-secure.DIST b/xymond/etcfiles/xymon-apache-secure.DIST
+index c7edaee..af4c8fa 100644
+--- a/xymond/etcfiles/xymon-apache-secure.DIST
++++ b/xymond/etcfiles/xymon-apache-secure.DIST
+@@ -72,17 +72,24 @@ ScriptAlias @SECUREXYMONCGIURL@/ "@SECURECGIDIR@/"
+     # a specific group membership. See the Apache docs for more details.
+ 
+     AuthUserFile @INSTALLETCDIR@/xymonpasswd
+-    AuthGroupFile @INSTALLETCDIR@/xymongroups
++
++    # The group limitation below needs Apache 2.4's mod_authz_groufile
++    # to be enabled. Call "a2enmod authz_groupfile" for that.
++    #
++    # AuthGroupFile @INSTALLETCDIR@/xymongroups
++
+     AuthType Basic
+     AuthName "Xymon Administration"
+ 
++    <RequireAll>
+     # "valid-user" restricts access to anyone who is logged in.
+     Require valid-user
+ 
+     # "group admins" restricts access to users who have logged in, AND
+     # are members of the "admins" group in xymongroups.
++    #
+     # Require group admins
+-
++    </RequireAll>
+ </Directory>
+ 
+ # Rewrite-rules for migrating from the URL's used in Hobbit
