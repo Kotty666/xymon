@@ -8,7 +8,6 @@
 0008-hobbit_files_ifexist.patch
 0009-prefer-packaged-temp-plugin-over-unpackaged-devmo.patch
 0010-xymon-ldap_init-implicitly-converted-to-point.patch
-0011-kfreebsd-makefile.patch
 0012-bbcombotest-fix.patch
 0013-fix-configure-for-multiarch.patch
 0014-png-multiarch.patch
